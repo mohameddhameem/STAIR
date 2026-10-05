@@ -1,0 +1,40 @@
+{
+  "n_project": 7405,
+  "n_AgentTTS_dev": 7405,
+  "id_sets_equal": true,
+  "questions_equal": 7405,
+  "answers_match": 7405,
+  "supporting_title_sets_match": 7405,
+  "split_counts": {
+    "train": 4814,
+    "val": 1110,
+    "test": 1481
+  },
+  "disjoint_splits": true,
+  "split_seed": 20260729,
+  "ratios": {
+    "train": 65,
+    "val": 15,
+    "test": 20
+  },
+  "split_metadata": {
+    "seed": 20260729,
+    "ratios": {
+      "train": 65,
+      "val": 15,
+      "test": 20
+    },
+    "alpha": 0.6,
+    "combo_source": "/mnt/hdd/jonathan/runs/full_run/combo_results_full.jsonl",
+    "combo_md5": "6ea860d4f356ec9e3b8796b333e47140",
+    "n_total": 7405,
+    "counts": {
+      "train": 4814,
+      "val": 1110,
+      "test": 1481
+    }
+  },
+  "split_sha256": "4ec686a411194467d234938c6d16ce80d11cc8af9306b613ce5bc6cd5035da22",
+  "upstream_dev_file": "https://github.com/FairyFali/AgentTTS/blob/3f0c2df814c059d0df57a71056c3266ff02c8559/data/HotpotQA/hotpotqa-dev.json",
+  "limitation": "Archive does not include the split-generation algorithm; cannot establish whether labels or outcomes were used for stratification."
+}

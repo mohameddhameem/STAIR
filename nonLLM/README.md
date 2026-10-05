@@ -77,3 +77,13 @@ Selected classifiers and vectorizers are saved locally in
 Local results also include every test prediction in `test_predictions.csv`.
 The stored-grid cost excludes CPU routing overhead; the newly downloaded GGUF
 models are not run by these routing experiments.
+
+
+## Actual model inference
+
+[Live QA validation pilot](results/live_qa_val20_v1/REPORT.md): 20 held-out validation
+questions, cached strong retrieval evidence, actual 1.5B Base and 7B Base GGUF generation.
+The generation script is `deployment/live_qa_eval.py`. Unlike the stored-grid
+baseline evaluation, this reruns the answering models and uses official answer EM/F1.
+It does not rerun retrieval or replace the final test benchmark.
+[Data provenance](results/data_provenance.json) verifies the origin and frozen split.

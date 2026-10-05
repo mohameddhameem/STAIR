@@ -1,0 +1,128 @@
+{
+  "config": {
+    "split": "internal validation",
+    "n": 20,
+    "sample_seed": 707,
+    "sample_indices": [
+      15,
+      266,
+      528,
+      941,
+      1299,
+      1489,
+      3623,
+      3640,
+      3719,
+      4091,
+      4439,
+      5838,
+      5911,
+      6388,
+      6438,
+      6707,
+      6911,
+      7034,
+      7202,
+      7277
+    ],
+    "gpu": 0,
+    "context": 8192,
+    "max_new_tokens": 64,
+    "temperature": 0,
+    "retrieval": "cached evidence_S; no actual retrieval run",
+    "metrics": "official answer EM/F1; diagnostic case-insensitive whole-word containment",
+    "official_metric_sha256": "d35fc91a6db21d791dbdda11daf3856e9359f5701d54e3eefba20d88fecc02c0",
+    "official_metric_url": "https://raw.githubusercontent.com/hotpotqa/hotpot/master/hotpot_evaluate_v1.py",
+    "prompt": "References: {evidence_S}\nQuestion: {question}\nGive only a short answer.\nAnswer:",
+    "models": {
+      "W": {
+        "repo": "mradermacher/Qwen2.5-1.5B-GGUF",
+        "base_model": "Qwen/Qwen2.5-1.5B",
+        "filename": "Qwen2.5-1.5B.Q4_K_M.gguf",
+        "directory": "Qwen2.5-1.5B-GGUF",
+        "revision": "4d8150eba159047c0ad5f72a8473e4ad60419c4a",
+        "quantization": "Q4_K_M",
+        "size_bytes": 986048544,
+        "sha256": "ea47cef917fa77a3458206d0848f81dd033dfb859bbb3b176bf6006d3b620814"
+      },
+      "S": {
+        "repo": "mradermacher/Qwen2.5-7B-GGUF",
+        "base_model": "Qwen/Qwen2.5-7B",
+        "filename": "Qwen2.5-7B.Q4_K_M.gguf",
+        "directory": "Qwen2.5-7B-GGUF",
+        "revision": "70758bc7e4ea7671578fdcb3fbc62e6d2870e66c",
+        "quantization": "Q4_K_M",
+        "size_bytes": 4683073984,
+        "sha256": "c1c8899139b014b35d0b205e99319a8de73cf122c615b5cb0d2cd28c8a97b4d2"
+      }
+    }
+  },
+  "policies": {
+    "always_weak": {
+      "n": 20,
+      "answer_em_pct": 15.0,
+      "answer_f1_pct": 36.7627683484461,
+      "diagnostic_containment_pct": 60.0,
+      "answerer_picks": {
+        "W": 20
+      }
+    },
+    "always_strong": {
+      "n": 20,
+      "answer_em_pct": 35.0,
+      "answer_f1_pct": 50.71428571428571,
+      "diagnostic_containment_pct": 50.0,
+      "answerer_picks": {
+        "S": 20
+      }
+    },
+    "majority": {
+      "n": 20,
+      "answer_em_pct": 15.0,
+      "answer_f1_pct": 36.7627683484461,
+      "diagnostic_containment_pct": 60.0,
+      "answerer_picks": {
+        "W": 20
+      }
+    },
+    "logreg": {
+      "n": 20,
+      "answer_em_pct": 25.0,
+      "answer_f1_pct": 42.238958824636576,
+      "diagnostic_containment_pct": 55.00000000000001,
+      "answerer_picks": {
+        "S": 6,
+        "W": 14
+      }
+    },
+    "linear_svm": {
+      "n": 20,
+      "answer_em_pct": 25.0,
+      "answer_f1_pct": 42.238958824636576,
+      "diagnostic_containment_pct": 55.00000000000001,
+      "answerer_picks": {
+        "S": 5,
+        "W": 15
+      }
+    },
+    "multinomial_nb": {
+      "n": 20,
+      "answer_em_pct": 15.0,
+      "answer_f1_pct": 36.7627683484461,
+      "diagnostic_containment_pct": 60.0,
+      "answerer_picks": {
+        "W": 20
+      }
+    },
+    "random_forest": {
+      "n": 20,
+      "answer_em_pct": 35.0,
+      "answer_f1_pct": 47.81573498964803,
+      "diagnostic_containment_pct": 55.00000000000001,
+      "answerer_picks": {
+        "S": 14,
+        "W": 6
+      }
+    }
+  }
+}
