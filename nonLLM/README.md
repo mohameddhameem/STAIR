@@ -1,6 +1,6 @@
 # nonLLM
 
-Workspace for non-LLM routing methods in STAIR. Implementation is pending.
+CPU routing baselines and GGUF inference setup for STAIR.
 Here, non-LLM refers to the routing decision model; the upstream retrieval and
 answering models in the recorded pipeline may still be LLMs.
 
@@ -38,3 +38,42 @@ with repository write access, or a fork and pull request.
 
 Keep source code and documentation here. Put local datasets, checkpoints, and
 run outputs in the ignored directories listed in `.gitignore`.
+
+## Routing baselines
+
+`baselines.py` implements majority, TF-IDF logistic regression, TF-IDF linear SVM,
+TF-IDF multinomial naive Bayes, and random forest over 20 numerical text features.
+Three separate classifiers are trained per family: retrieval, QA after weak
+retrieval, and QA after strong retrieval. Actual outcomes and gold annotations
+are never features. Classifier scoring excludes unresolved labels; composed
+routing evaluates all 1,481 test instances by selecting the corresponding grid cell.
+
+The initial experiment uses `router_data_lenient.jsonl.gz` measured labels.
+Tune only on validation balanced accuracy; TF-IDF vocabulary is fit on labeled
+training rows only. Logistic regression and SVM use balanced class weights;
+random forest also uses balanced weights. NB retains its learned class prior.
+This reports stage accuracy, balanced accuracy, macro F1, confusion matrices,
+composed lenient/strict QA accuracy, choices and pipeline cost.
+
+Run with the existing environment (no GPU is used):
+
+```bash
+cd /ssd1/zmcheng/cs707/STAIR/nonLLM
+env OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+  /ssd1/zmcheng/cs701/.env/bin/python baselines.py \
+  --data /ssd1/zmcheng/cs707/extracted/Dataset/router_data_lenient.jsonl.gz \
+  --splits /ssd1/zmcheng/cs707/extracted/Dataset/splits.json \
+  --out /ssd1/zmcheng/cs707/runs/baselines_real_v2
+```
+
+Use a fresh output directory. Run `report_baselines.py <run-directory>` to render
+the report and plot; the report does not retrain or select models on test.
+`python -m unittest test_baselines.py` checks branch selection and feature leakage
+using synthetic data. Dependencies for this experiment are in `requirements.txt`.
+
+Completed experiment: [full report](results/measured_v1/REPORT.md).
+Selected classifiers and vectorizers are saved locally in
+`/ssd1/zmcheng/cs707/runs/baselines_real_v1/{ret,qa_W,qa_S}.joblib`.
+Local results also include every test prediction in `test_predictions.csv`.
+The stored-grid cost excludes CPU routing overhead; the newly downloaded GGUF
+models are not run by these routing experiments.
