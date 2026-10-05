@@ -1,0 +1,9 @@
+data/
+runs/
+outputs/
+checkpoints/
+*.pt
+*.pth
+*.safetensors
+*.joblib
+*.pkl
