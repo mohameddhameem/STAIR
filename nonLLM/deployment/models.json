@@ -1,0 +1,32 @@
+[
+  {
+    "repo": "mradermacher/Qwen2.5-7B-GGUF",
+    "base_model": "Qwen/Qwen2.5-7B",
+    "filename": "Qwen2.5-7B.Q4_K_M.gguf",
+    "directory": "Qwen2.5-7B-GGUF",
+    "revision": "70758bc7e4ea7671578fdcb3fbc62e6d2870e66c",
+    "quantization": "Q4_K_M",
+    "size_bytes": 4683073984,
+    "sha256": "c1c8899139b014b35d0b205e99319a8de73cf122c615b5cb0d2cd28c8a97b4d2"
+  },
+  {
+    "repo": "mradermacher/Qwen2.5-1.5B-GGUF",
+    "base_model": "Qwen/Qwen2.5-1.5B",
+    "filename": "Qwen2.5-1.5B.Q4_K_M.gguf",
+    "directory": "Qwen2.5-1.5B-GGUF",
+    "revision": "4d8150eba159047c0ad5f72a8473e4ad60419c4a",
+    "quantization": "Q4_K_M",
+    "size_bytes": 986048544,
+    "sha256": "ea47cef917fa77a3458206d0848f81dd033dfb859bbb3b176bf6006d3b620814"
+  },
+  {
+    "repo": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+    "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "filename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "directory": "Qwen2.5-1.5B-Instruct-GGUF",
+    "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "quantization": "Q4_K_M",
+    "size_bytes": 1117320736,
+    "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+  }
+]

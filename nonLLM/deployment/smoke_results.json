@@ -1,0 +1,68 @@
+[
+  {
+    "repo": "mradermacher/Qwen2.5-7B-GGUF",
+    "gpu": 0,
+    "context": 1024,
+    "free_mib_before": 9379,
+    "process_memory_after_load": [
+      "1958222, 4498"
+    ],
+    "prompt": "The capital of France is",
+    "content": " Paris. It is a beautiful city. There are many famous buildings in Paris. The most famous one is the Eiffel Tower. It is about 3",
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 5,
+      "prompt_ms": 30.575,
+      "prompt_per_token_ms": 6.115,
+      "prompt_per_second": 163.5322976287817,
+      "predicted_n": 32,
+      "predicted_ms": 721.831,
+      "predicted_per_token_ms": 23.284870967741934,
+      "predicted_per_second": 42.94634062543725
+    }
+  },
+  {
+    "repo": "mradermacher/Qwen2.5-1.5B-GGUF",
+    "gpu": 0,
+    "context": 1024,
+    "free_mib_before": 9379,
+    "process_memory_after_load": [
+      "1958301, 1218"
+    ],
+    "prompt": "The capital of France is",
+    "content": " Paris, and the capital of Italy is Rome. The capital of the United States is Washington, D.C., and the capital of Canada is Ottawa. The capital",
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 5,
+      "prompt_ms": 16.931,
+      "prompt_per_token_ms": 3.3862,
+      "prompt_per_second": 295.3162837398854,
+      "predicted_n": 32,
+      "predicted_ms": 295.079,
+      "predicted_per_token_ms": 9.51867741935484,
+      "predicted_per_second": 105.05661195815358
+    }
+  },
+  {
+    "repo": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+    "gpu": 0,
+    "context": 1024,
+    "free_mib_before": 9379,
+    "process_memory_after_load": [
+      "1958381, 1218"
+    ],
+    "prompt": "<|im_start|>user\nWhat is the capital of France? Answer briefly.<|im_end|>\n<|im_start|>assistant\n",
+    "content": "The capital of France is Paris.",
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 18,
+      "prompt_ms": 20.754,
+      "prompt_per_token_ms": 1.153,
+      "prompt_per_second": 867.3026886383348,
+      "predicted_n": 8,
+      "predicted_ms": 69.846,
+      "predicted_per_token_ms": 9.978,
+      "predicted_per_second": 100.22048506714772
+    }
+  }
+]
