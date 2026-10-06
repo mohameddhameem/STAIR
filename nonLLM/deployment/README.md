@@ -90,3 +90,39 @@ GPU jobs, so it is not a reliable performance benchmark.
 All three generated Paris in response to a France-capital prompt. All temporary
 servers were shut down and their GPU memory released. Full local results:
 `/ssd1/zmcheng/cs707/runs/gguf_smoke/results.json`.
+
+
+## Full actual pipeline benchmark
+
+`full_pipeline_eval.py` runs actual retrieval and QA on a frozen split. For each
+question it measures both Base retrievers and all four retrieval/answerer cells.
+Frozen classifiers are evaluated on the newly selected evidence. No gold
+annotations enter prompts or classifier features.
+
+The v1 protocol includes two synthetic retrieval demonstrations, up to four
+selected passages, constrained reference-number generation, greedy decoding,
+Q4_K_M weights, q8_0 KV cache, 32768 context per slot, and two request slots.
+All 100 candidate passages are shown. Overlength prompts cause an error rather
+than silent truncation. These settings define a new benchmark and are distinct
+from the previous result-grid protocol.
+
+Validation sanity run: `runs/full_pipeline_val3_v2`. Its 18 real model calls
+verified selection parsing, evidence propagation, scoring and checkpointing.
+The test benchmark is `runs/full_pipeline_test_v1`: 1481 questions, 2962 actual
+retrieval calls and 5924 actual answering calls. Each completed call is committed
+to `calls.sqlite`; repeating the same command resumes without recomputing it.
+The run does not train classifiers or adjust settings on test.
+
+```bash
+env OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+  /ssd1/zmcheng/cs701/.env/bin/python \
+  /ssd1/zmcheng/cs707/STAIR/nonLLM/deployment/run_full_test.py
+```
+
+The wrapper renders the final report and synchronizes its summary to the
+`nonLLM` branch only after all calls and completeness checks succeed.
+Progress: `/ssd1/zmcheng/cs707/runs/full_pipeline_test_v1/status.json`.
+Launcher log: `/ssd1/zmcheng/cs707/runs/full_pipeline_test_v1.log`.
+Do not start a second worker against the same run directory.
+`test_full_pipeline.py` checks reference parsing and rejects invalid selections.
+The model servers terminate after each scheduled group of stages.
