@@ -1,5 +1,6 @@
 """Run the full test benchmark, render its report, and publish only its summary artifacts."""
 import json
+import argparse
 import os
 from pathlib import Path
 import shutil
@@ -8,6 +9,9 @@ import sys
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--no-push", action="store_true", help="Save report for synchronization from another host")
+    args = parser.parse_args()
     root = Path("/ssd1/zmcheng/cs707")
     repo = root / "STAIR"
     run = root / "runs/full_pipeline_test_v1"
@@ -47,6 +51,10 @@ def main():
     target.mkdir(parents=True, exist_ok=True)
     for name in ["REPORT.md", "results.json"]:
         shutil.copyfile(run / name, target / name)
+    if args.no_push:
+        (run / "publication.json").write_text(json.dumps({"state": "ready_for_sync", "branch": "nonLLM"})+"\n")
+        print("Complete full-test report saved for synchronization.", flush=True)
+        return
     if subprocess.check_output(["git", "branch", "--show-current"], cwd=repo, text=True).strip() != "nonLLM":
         print("Report saved locally; checkout branch changed, so publication was skipped", flush=True)
         return

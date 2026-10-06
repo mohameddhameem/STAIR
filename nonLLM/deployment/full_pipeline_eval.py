@@ -13,6 +13,7 @@ import socket
 import sqlite3
 import subprocess
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -67,17 +68,22 @@ def status(out, value):
     tmp.replace(out / "status.json")
 
 
+def gpu_processes(gpu, own_pid=None):
+    raw = subprocess.check_output(["nvidia-smi", f"--id={gpu}",
+           "--query-compute-apps=pid", "--format=csv,noheader,nounits"], text=True)
+    return [int(line.strip()) for line in raw.splitlines()
+            if line.strip().isdigit() and int(line.strip()) != own_pid]
+
+
 @contextmanager
 def server(a, choice, log_name):
     minimum = 10000 if choice == "S" else 4500
-    while True:
-        free = int(subprocess.check_output(["nvidia-smi", f"--id={a.gpu}", "--query-gpu=memory.free",
-                     "--format=csv,noheader,nounits"], text=True).strip())
-        if free >= minimum:
-            break
-        status(a.out, {"state": "waiting_for_vram", "model": choice, "free_mib": free, "required_mib": minimum})
-        print(f"Waiting for GPU {a.gpu}: {free} MiB free, need {minimum}", flush=True)
-        time.sleep(30)
+    free = int(subprocess.check_output(["nvidia-smi", f"--id={a.gpu}", "--query-gpu=memory.free",
+                 "--format=csv,noheader,nounits"], text=True).strip())
+    occupied = gpu_processes(a.gpu)
+    if occupied or free < minimum:
+        raise RuntimeError(f"GPU {a.gpu} cannot start: other compute PIDs={occupied}, "
+                           f"free={free} MiB, required={minimum}. User notification required; no automatic retry.")
     m = a.models[choice]
     cmd = [str(a.root / "tools/llama.cpp/build/bin/llama-server"),
            "-m", str(a.root / "models" / m["directory"] / m["filename"]),
@@ -85,7 +91,27 @@ def server(a, choice, log_name):
            "-b", "2048", "-ub", "1024", "-fa", "on", "-ctk", "q8_0", "-ctv", "q8_0",
            "-t", "2", "--host", "127.0.0.1", "--port", str(a.port)]
     with (a.out / log_name).open("a") as log:
-        proc = subprocess.Popen(cmd, env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(a.gpu)), stdout=log, stderr=log)
+        env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(a.gpu))
+        runtime = a.root / "tools/runtime"
+        if runtime.exists():
+            env["LD_LIBRARY_PATH"] = str(runtime) + ":" + env.get("LD_LIBRARY_PATH", "")
+        proc = subprocess.Popen(cmd, env=env, stdout=log, stderr=log)
+        watch_stop = threading.Event()
+        def watch():
+            while not watch_stop.wait(2):
+                try:
+                    occupied = gpu_processes(a.gpu, proc.pid)
+                    if occupied:
+                        print(f"Stopping own model to avoid GPU contention with PIDs {occupied}", flush=True)
+                        proc.terminate()
+                        return
+                except Exception as error:
+                    print(f"GPU occupancy monitoring failed; stopping own model: {error}", flush=True)
+                    if proc.poll() is None:
+                        proc.terminate()
+                    return
+        watchdog = threading.Thread(target=watch, daemon=True)
+        watchdog.start()
         try:
             base = f"http://127.0.0.1:{a.port}"; start = time.monotonic()
             while True:
@@ -100,6 +126,8 @@ def server(a, choice, log_name):
                     time.sleep(0.5)
             yield base
         finally:
+            watch_stop.set()
+            watchdog.join(timeout=5)
             if proc.poll() is None:
                 proc.terminate()
                 try:
@@ -188,7 +216,8 @@ def main():
         response = http(base, "/completion", body)
         record = {"idx": idx, "stage": stage, "output": response["content"].strip(),
                   "prompt_tokens": len(tokens), "seconds": time.monotonic()-start,
-                  "timings": response.get("timings"), "stopped_limit": response.get("stopped_limit")}
+                  "timings": response.get("timings"), "stopped_limit": response.get("stopped_limit"),
+                  "execution_host": socket.gethostname(), "execution_gpu": a.gpu}
         if retrieval:
             selected, evidence = selected_evidence(row["question"], row["pool_text"], record["output"])
             record.update(selected_ids=selected, evidence=evidence)
@@ -280,6 +309,8 @@ def main():
     report = {"config": config, "official_metric_sha256": scorer_hash, "policies": results,
               "oracle_em_pct": oracle, "router_timing": router_seconds,
               "runtime_note": "Two concurrent requests share a GPU with other jobs. Cached call times are not isolated routed latency or FLOPs."}
+    if (a.out / "migration.json").exists():
+        report["execution_provenance"] = json.loads((a.out / "migration.json").read_text())
     (a.out / "results.json").write_text(json.dumps(report, indent=2)+"\n")
     with (a.out / "decisions.jsonl").open("w") as sink:
         for row in decisions:

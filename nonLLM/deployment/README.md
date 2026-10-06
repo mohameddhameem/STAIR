@@ -126,3 +126,23 @@ Launcher log: `/ssd1/zmcheng/cs707/runs/full_pipeline_test_v1.log`.
 Do not start a second worker against the same run directory.
 `test_full_pipeline.py` checks reference parsing and rejects invalid selections.
 The model servers terminate after each scheduled group of stages.
+
+
+## serverC migration and GPU sharing policy
+
+The full run moved to `SMU_C_4A5000` (`10.193.104.142`, hostname `gpuserver1`),
+GPU 2. The 136 completed weak-retrieval calls from the source host were preserved.
+New records identify the execution host and GPU; migration provenance is included
+in the final results. Timing comparisons therefore need to account for both hosts.
+
+Model startup now refuses an occupied GPU or insufficient free VRAM. It requires
+at least 4500 MiB for the weak-model configuration and 10000 MiB for the strong
+configuration. It does not wait and automatically retry. If another compute
+process appears on the selected GPU while running, the monitor terminates our
+model server and preserves completed calls. It never terminates another user's
+processes.
+
+The remote wrapper runs with `--no-push`. The source machine runs only
+`sync_serverC_results.py`, a CPU-only SSH monitor that copies progress and, after
+completion checks, pulls the raw checkpoint and publishes the summary to GitHub.
+The source machine runs no model server and uses no GPU for this task.
