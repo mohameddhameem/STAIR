@@ -146,3 +146,7 @@ The remote wrapper runs with `--no-push`. The source machine runs only
 `sync_serverC_results.py`, a CPU-only SSH monitor that copies progress and, after
 completion checks, pulls the raw checkpoint and publishes the summary to GitHub.
 The source machine runs no model server and uses no GPU for this task.
+
+GPU assignment updated by the user on 2026-10-07: serverC GPU 3.
+The GPU 2 run stopped on contention after 236 completed calls. Those calls
+are preserved; restart uses `run_full_test.py --gpu 3 --no-push`.

@@ -102,10 +102,12 @@ def server(a, choice, log_name):
                 try:
                     occupied = gpu_processes(a.gpu, proc.pid)
                     if occupied:
+                        a.gpu_stop_reason = f"GPU {a.gpu} occupied by compute PIDs {occupied}; our model was stopped."
                         print(f"Stopping own model to avoid GPU contention with PIDs {occupied}", flush=True)
                         proc.terminate()
                         return
                 except Exception as error:
+                    a.gpu_stop_reason = f"GPU occupancy monitoring failed: {error}"
                     print(f"GPU occupancy monitoring failed; stopping own model: {error}", flush=True)
                     if proc.poll() is None:
                         proc.terminate()
@@ -245,6 +247,7 @@ def main():
                     done = sum((stage, i) in cached for i in ids)
                     status(a.out, {"state": "running", "stage": stage, "stage_done": done,
                                    "stage_total": len(ids), "calls_done": len(cached), "calls_total": planned,
+                                   "execution_host": socket.gethostname(), "execution_gpu": a.gpu,
                                    "elapsed_current_session_seconds": time.monotonic()-began})
                     if done % 10 == 0 or done == len(ids):
                         print(f"{stage}: {done}/{len(ids)} | calls {len(cached)}/{planned}", flush=True)
@@ -261,7 +264,10 @@ def main():
                 for stage in stages:
                     phase(base, stage)
     except Exception as error:
-        status(a.out, {"state": "failed", "error": str(error), "calls_done": len(cached), "calls_total": planned})
+        reason = getattr(a, "gpu_stop_reason", None)
+        status(a.out, {"state": "paused_for_gpu_contention" if reason else "failed",
+                       "error": reason or str(error), "calls_done": len(cached), "calls_total": planned,
+                       "execution_host": socket.gethostname(), "execution_gpu": a.gpu})
         raise
     assert len(cached) == planned
     print("Actual model grid complete; evaluating frozen routers on NEW evidence.", flush=True)
@@ -315,7 +321,9 @@ def main():
     with (a.out / "decisions.jsonl").open("w") as sink:
         for row in decisions:
             sink.write(json.dumps(row)+"\n")
-    status(a.out, {"state": "complete", "calls_done": planned, "calls_total": planned, "results": str(a.out / "results.json")})
+    status(a.out, {"state": "complete", "calls_done": planned, "calls_total": planned,
+                   "execution_host": socket.gethostname(), "execution_gpu": a.gpu,
+                   "results": str(a.out / "results.json")})
     print(json.dumps(results, indent=2), flush=True)
 
 

@@ -11,13 +11,14 @@ import sys
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--no-push", action="store_true", help="Save report for synchronization from another host")
+    parser.add_argument("--gpu", type=int, default=2)
     args = parser.parse_args()
     root = Path("/ssd1/zmcheng/cs707")
     repo = root / "STAIR"
     run = root / "runs/full_pipeline_test_v1"
     script = Path(__file__).with_name("full_pipeline_eval.py")
     env = dict(os.environ, OMP_NUM_THREADS="2", OPENBLAS_NUM_THREADS="2", MKL_NUM_THREADS="2")
-    subprocess.run([sys.executable, str(script), "--split", "test", "--gpu", "2", "--out", str(run)],
+    subprocess.run([sys.executable, str(script), "--split", "test", "--gpu", str(args.gpu), "--out", str(run)],
                    env=env, check=True)
     result = json.loads((run / "results.json").read_text())
     assert len(result["config"]["ids"]) == 1481

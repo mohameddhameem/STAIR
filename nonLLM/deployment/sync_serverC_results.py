@@ -26,13 +26,13 @@ def main():
             continue
         progress = json.loads(reply.stdout)
         progress["execution_host"] = "gpuserver1 (10.193.104.142)"
-        progress["execution_gpu"] = 2
+        progress["execution_gpu"] = progress.get("execution_gpu", 3)
         progress["local_gpu_used"] = False
         temp = RUN / "status.json.sync.tmp"
         temp.write_text(json.dumps(progress, indent=2)+"\n")
         temp.replace(RUN / "status.json")
         print(json.dumps(progress), flush=True)
-        if progress["state"] == "failed":
+        if progress["state"] == "failed" or progress["state"].startswith("paused"):
             print("Remote run stopped; no automatic restart. User notification required.", flush=True)
             return
         if progress["state"] == "complete":
@@ -42,7 +42,7 @@ def main():
                 continue
             break
         time.sleep(30)
-    names = ["REPORT.md", "results.json", "calls.sqlite", "decisions.jsonl", "publication.json"]
+    names = ["REPORT.md", "results.json", "calls.sqlite", "decisions.jsonl", "publication.json", "config.json", "migration.json"]
     with tempfile.TemporaryDirectory(prefix="serverC-sync-", dir=RUN) as staging:
         for name in names:
             subprocess.run(["scp", "-o", "BatchMode=yes", f"{HOST}:{RUN}/{name}", str(Path(staging)/name)], check=True)
