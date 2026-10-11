@@ -1,5 +1,5 @@
 """Strict official HotpotQA answer EM/F1 and retrospective prefix oracle."""
-import argparse,ast,gzip,json,sqlite3,string,re
+import argparse,ast,csv,gzip,json,sqlite3,string,re
 from pathlib import Path
 import numpy as np
 
@@ -44,6 +44,16 @@ def main(root):
     for g,pair in enumerate(['WW','WS','SW','SS']):
         b=min(range(g*40,(g+1)*40),key=lambda j:(-means[j],cost[j],j));per_pair[pair]={'fixed_k':b%40+1,'fixed_test_em':float(scores[test,b,0].mean()),'budget_oracle_test_em':float(scores[test,g*40:(g+1)*40,0].max(axis=1).mean())}
     report['per_pair']=per_pair
+    rng=np.random.default_rng(20261011)
+    gain=oracle-fixed
+    boot=np.array([gain[rng.integers(0,len(gain),len(gain))].mean() for _ in range(2000)])
+    report['joint_oracle']['paired_bootstrap_gain_ci95']=np.quantile(boot,[.025,.975]).tolist()
+    with open(root/'runs/per_question_oracle.csv','w') as f:
+        writer=csv.writer(f);writer.writerow(['index','id','split','oracle_pair','oracle_k','oracle_em','oracle_cost','fixed_em','fixed_k'])
+        membership={i:s for s,ids in splits.items() for i in ids}
+        for i in range(len(data)):
+            high=scores[i,:,0].max();eligible=np.flatnonzero(scores[i,:,0]==high);j=min(eligible,key=lambda j:(costs[i,j],j))
+            writer.writerow([i,data[i]['_id'],membership[i],['WW','WS','SW','SS'][j//40],j%40+1,high,costs[i,j],scores[i,best,0],best%40+1])
     # Lagrangian oracle frontier; all winners include the globally fixed action.
     frontier=[]
     for lam in np.r_[0,np.logspace(-8,-3,40)]:

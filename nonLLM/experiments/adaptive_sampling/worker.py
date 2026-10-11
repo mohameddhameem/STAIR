@@ -26,7 +26,7 @@ async def main(a):
             ids=tok.encode(text,add_special_tokens=False)
             # Match original HF right-truncation at tokenizer.model_max_length.
             truncated=max(0,len(ids)-tok.model_max_length); ids=ids[:tok.model_max_length]
-            if len(ids)+512>131072:raise RuntimeError(f'Context exceeds deployed capacity: {key} {len(ids)}')
+            if len(ids)+512>131584:raise RuntimeError(f'Context exceeds deployed capacity: {key} {len(ids)}')
             body={'input_ids':ids,'sampling_params':{'temperature':temp,'top_k':50,'top_p':1.0,'repetition_penalty':1.0,'max_new_tokens':512,'n':n,'sampling_seed':seed(key)},'return_logprob':False}
             start=time.time()
             for attempt in range(4):
@@ -50,8 +50,9 @@ async def main(a):
                         pair=rm+a.model
                         candidates=await generate(f'{i}:qa:{pair}',prompt('qa',example,retrieval=ret(i,rm)),.7,40)
                         answers=[x['text'] for x in candidates['outputs']]
-                        # Sequential prefixes maximize shared prefix cache; questions run concurrently.
-                        for k in range(1,41):await generate(f'{i}:fuse:{pair}:{k}',prompt('fusion',example,answers=answers[:k]),.3)
+                        # Warm the longest prefix so queued shorter requests find a populated radix cache.
+                        await generate(f'{i}:fuse:{pair}:40',prompt('fusion',example,answers=answers),.3)
+                        await asyncio.gather(*(generate(f'{i}:fuse:{pair}:{k}',prompt('fusion',example,answers=answers[:k]),.3) for k in range(1,40)))
                 print(json.dumps({'stage':a.stage,'model':a.model,'shard':a.shard,'index':i,'completed':db.execute('SELECT COUNT(*) FROM results').fetchone()[0]}),flush=True)
         indices=[i for i in range(len(data)) if i%4==a.shard]
         if a.limit:indices=indices[:a.limit]

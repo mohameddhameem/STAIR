@@ -16,5 +16,9 @@ async def main():
             outputs=result if isinstance(result,list) else [result]
             print(json.dumps({'kind':kind,'n':n,'input_tokens':len(ids),'seconds':time.time()-start,'outputs':len(outputs),'completion_tokens':sum(x['meta_info']['completion_tokens'] for x in outputs)}),flush=True)
             return outputs
-        qa=await call('qa',40);await call('fusion',1,[x['text'] for x in qa]);await call('fusion',1,[qa[0]['text']])
+        qa=await call('qa',40);answers=[x['text'] for x in qa]
+        start=time.time();await call('fusion',1,answers)
+        await asyncio.gather(*(call('fusion',1,answers[:k]) for k in range(1,40)))
+        print(json.dumps({'prefix_fusions':40,'seconds':time.time()-start}),flush=True)
+        (R/'runs/benchmark.success').write_text('40 candidates and all 40 prefix fusions verified\n')
 if __name__=='__main__':asyncio.run(main())

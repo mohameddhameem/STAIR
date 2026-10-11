@@ -1,3 +1,5 @@
+> Execution update (2026-10-11): the user requested all 7,405 questions, 40 shared QA candidates per WW/WS/SW/SS pair, all prefixes 1–40, and deployment on serverA four L40S GPUs. The selected alignment is public HotpotQA code temperatures 0.9/0.7/0.3 and max output 512. The current executable protocol is documented in README.md; earlier pilot/budget suggestions below are superseded.
+
 # Per-question model and sampling allocation on HotpotQA
 
 ## Objective and terminology
