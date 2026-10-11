@@ -74,6 +74,20 @@ Deployment is sequential. The first controller chooses retrieval W/S using quest
 
 Do not retrain a classifier using test-derived optimum labels. Keep retrospective test-optimum plots separate from deployable policy evaluation.
 
+## Optional second experiment: retrieval and QA sampling jointly
+
+After the QA-budget oracle pilot, add k_R in {1,2,5}. The action becomes
+(retriever, k_R, answerer, k_QA), giving 4*3*5=60 configurations per question.
+Retrieval repeated sampling must also have a nonzero temperature and separate
+seeds; the deterministic retrieval from phase one remains a control, not an
+independent sample in the new pool. Fuse each retrieval prefix with a frozen rule,
+then copy the selected original passages into evidence. QA candidates must be
+generated anew for each distinct fused evidence set. They cannot be reused across
+different k_R conditions unless the evidence is exactly identical. Charge
+retrieval generation/fusion and downstream generation/fusion throughout. Keep
+this expanded experiment separate so that any improvement in phase one can be
+attributed to QA-budget/model allocation without changing retrieval sampling.
+
 ## Cost and reporting
 
 C_total = C_retrieval + C_candidate_generation + C_aggregation + C_controller + C_any_extra_retrieval.
