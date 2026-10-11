@@ -59,6 +59,11 @@ def main(root):
     for lam in np.r_[0,np.logspace(-8,-3,40)]:
         ix=np.argmax(scores[test,:,0]-lam*costs[test],axis=1);rr=np.arange(len(test));frontier.append({'lambda':float(lam),'em':float(scores[test,:,0][rr,ix].mean()),'cost':float(costs[test][rr,ix].mean())})
     report['cost_aware_oracle_frontier']=frontier
+    baseline_cost=float(costs[test,best].mean())
+    feasible=[r for r in frontier if r['cost']<=baseline_cost]+[{'em':float(fixed.mean()),'cost':baseline_cost,'lambda':None}]
+    report['evaluated_oracle_at_fixed_cost']=max(feasible,key=lambda r:r['em'])
+    report['evaluated_oracle_at_fixed_cost']['qualification']='Best evaluated gold-assisted policy below baseline average cost; not an exact constrained optimum'
+    report['test_fixed_action_grid']=[{'pair':['WW','WS','SW','SS'][j//40],'k':j%40+1,'validation_em':float(means[j]),'test_em':float(scores[test,j,0].mean()),'test_f1':float(scores[test,j,1].mean()),'cost':float(costs[test,j].mean())} for j in range(160)]
     (root/'runs/report.json').write_text(json.dumps(report,indent=2));np.savez_compressed(root/'runs/scores.npz',scores=scores,costs=costs);print(json.dumps(report,indent=2))
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',required=True);main(Path(p.parse_args().root))
