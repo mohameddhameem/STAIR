@@ -27,7 +27,7 @@ async def main(a):
             # Match original HF right-truncation at tokenizer.model_max_length.
             truncated=max(0,len(ids)-tok.model_max_length); ids=ids[:tok.model_max_length]
             if len(ids)+512>131584:raise RuntimeError(f'Context exceeds deployed capacity: {key} {len(ids)}')
-            body={'input_ids':ids,'sampling_params':{'temperature':temp,'top_k':50,'top_p':1.0,'repetition_penalty':1.0,'max_new_tokens':512,'n':n,'sampling_seed':seed(key)},'return_logprob':False}
+            body={'input_ids':ids,'sampling_params':{'temperature':temp,'top_k':50,'top_p':1.0,'repetition_penalty':1.0,'max_new_tokens':512,'n':n},'return_logprob':False}
             start=time.time()
             for attempt in range(4):
                 try:
@@ -36,7 +36,7 @@ async def main(a):
                         if response.status!=200:raise RuntimeError(str(raw)[:800])
                     outputs=raw if isinstance(raw,list) else [raw]
                     if len(outputs)!=n:raise RuntimeError(f'Expected {n} outputs, got {len(outputs)}')
-                    value={'outputs':outputs,'seconds':time.time()-start,'input_tokens':len(ids),'truncated_tokens':truncated,'seed':seed(key)};save(key,value);return value
+                    value={'outputs':outputs,'seconds':time.time()-start,'input_tokens':len(ids),'truncated_tokens':truncated,'request_id_seed':seed(key),'sampling_rng':'SGLang server global RNG, seed 192605767; deterministic inference disabled'};save(key,value);return value
                 except Exception:
                     if attempt==3:raise
                     await asyncio.sleep(3*(attempt+1))
