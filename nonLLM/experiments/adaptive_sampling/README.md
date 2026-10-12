@@ -28,3 +28,5 @@ The immutable assignment is A indices 0–3859 (including existing completed que
 A controller uses `CS707_INDEX_FILE=/data1/zmcheng/cs707_sampling40/code/tasks_A.json`. B uses `CS707_ROOT=/data1/zmcheng/cs707_sampling40_helper`, `CS707_HELPER=1`, `CS707_INDEX_FILE=/data1/zmcheng/cs707_sampling40_helper/code/tasks_B.json`, and `CS707_CUDA_HOME=/data1/zmcheng/cs707_sampling40_helper/runtime/cuda-13.0`. Both retain the external-GPU-process watchdog. `status.py --root ...` reports saved requests and assignment markers.
 
 Validation: merge insertion, idempotent retransmission, conflicting-payload rejection, assignment coverage and preserved source model SHA256. All experiment code passes Python compilation.
+
+The local relay is hosted in the detached tmux session `cs707_helper_sync`, with its log at `/ssd1/zmcheng/cs707/runs/sampling40_helper_sync/sync.log`. This keeps synchronization running after the interactive command exits. Both hosts passed health checks and began assigned 7B requests on all four GPUs.
