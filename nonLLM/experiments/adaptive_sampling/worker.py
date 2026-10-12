@@ -1,5 +1,5 @@
 """Resumable native SGLang sampling and prefix-fusion experiment."""
-import argparse, asyncio, gzip, hashlib, json, sqlite3, time
+import argparse, asyncio, gzip, hashlib, json, sqlite3, socket, time
 from pathlib import Path
 import aiohttp
 from transformers import AutoTokenizer
@@ -36,7 +36,7 @@ async def main(a):
                         if response.status!=200:raise RuntimeError(str(raw)[:800])
                     outputs=raw if isinstance(raw,list) else [raw]
                     if len(outputs)!=n:raise RuntimeError(f'Expected {n} outputs, got {len(outputs)}')
-                    value={'outputs':outputs,'seconds':time.time()-start,'input_tokens':len(ids),'truncated_tokens':truncated,'request_id_seed':seed(key),'sampling_rng':'SGLang server global RNG, seed 192605767; deterministic inference disabled'};save(key,value);return value
+                    value={'server_host':socket.gethostname(),'gpu_shard':a.shard,'outputs':outputs,'seconds':time.time()-start,'input_tokens':len(ids),'truncated_tokens':truncated,'request_id_seed':seed(key),'sampling_rng':'SGLang server global RNG, seed 192605767; deterministic inference disabled'};save(key,value);return value
                 except Exception:
                     if attempt==3:raise
                     await asyncio.sleep(3*(attempt+1))
@@ -55,9 +55,12 @@ async def main(a):
                         await asyncio.gather(*(generate(f'{i}:fuse:{pair}:{k}',prompt('fusion',example,answers=answers[:k]),.3) for k in range(1,40)))
                 print(json.dumps({'stage':a.stage,'model':a.model,'shard':a.shard,'index':i,'completed':db.execute('SELECT COUNT(*) FROM results').fetchone()[0]}),flush=True)
         indices=[i for i in range(len(data)) if i%4==a.shard]
+        if a.indices_file:
+            allowed=set(json.load(open(a.indices_file)));indices=[i for i in indices if i in allowed]
         if a.limit:indices=indices[:a.limit]
         # Bounded task creation avoids holding millions of futures.
         for offset in range(0,len(indices),a.concurrency):await asyncio.gather(*(question(i) for i in indices[offset:offset+a.concurrency]))
-    (root/'runs'/f'{a.stage}_{a.model}_{a.shard}.done').write_text('complete\n');db.close()
+    suffix='assigned.done' if a.indices_file else ('pilot.done' if a.limit else 'done')
+    (root/'runs'/f'{a.stage}_{a.model}_{a.shard}.{suffix}').write_text('complete\n');db.close()
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--root',required=True);p.add_argument('--stage',choices=['retrieval','answers'],required=True);p.add_argument('--model',choices=['W','S'],required=True);p.add_argument('--shard',type=int,required=True);p.add_argument('--port',type=int,required=True);p.add_argument('--concurrency',type=int,default=4);p.add_argument('--limit',type=int,default=0);asyncio.run(main(p.parse_args()))
+    p=argparse.ArgumentParser();p.add_argument('--root',required=True);p.add_argument('--stage',choices=['retrieval','answers'],required=True);p.add_argument('--model',choices=['W','S'],required=True);p.add_argument('--shard',type=int,required=True);p.add_argument('--port',type=int,required=True);p.add_argument('--concurrency',type=int,default=4);p.add_argument('--limit',type=int,default=0);p.add_argument('--indices-file');asyncio.run(main(p.parse_args()))

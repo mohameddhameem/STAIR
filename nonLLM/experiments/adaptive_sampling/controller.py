@@ -1,7 +1,7 @@
 """Four independent GPU replicas, staged W/S jobs, exclusive-use watchdog."""
 import json, os, signal, subprocess, sys, time, urllib.request
 from pathlib import Path
-ROOT=Path('/data1/zmcheng/cs707_sampling40')
+ROOT=Path(os.environ.get('CS707_ROOT','/data1/zmcheng/cs707_sampling40'))
 PYTHON='/home/zmcheng/miniconda3/envs/sglang518/bin/python'
 children=[]
 class Adopted:
@@ -45,15 +45,18 @@ def run():
     safety()
     (ROOT/'runs/FAILED.txt').unlink(missing_ok=True)
     servers=[];previous_model=None
-    for stage,model in [('retrieval','S'),('retrieval','W'),('answers','W'),('answers','S')]:
-        if all((ROOT/'runs'/f'{stage}_{model}_{g}.done').exists() for g in range(4)):continue
+    index_file=os.environ.get('CS707_INDEX_FILE');helper=os.environ.get('CS707_HELPER')=='1'
+    stages=[('answers','S')] if helper else [('retrieval','S'),('retrieval','W'),('answers','W'),('answers','S')]
+    for stage,model in stages:
+        suffix='assigned.done' if index_file and stage=='answers' and model=='S' else 'done'
+        if all((ROOT/'runs'/f'{stage}_{model}_{g}.{suffix}').exists() for g in range(4)):continue
         size='1.5B' if model=='W' else '7B'
         if model!=previous_model:
             stop(servers);servers=[]
         for g in range(4) if model!=previous_model else []:
             if adopt and stage=='retrieval' and model=='S' and g==0:
                 servers.append(children[0]);continue
-            env=os.environ.copy();env['CUDA_VISIBLE_DEVICES']=str(g);env['SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN']='1';env['SGLANG_CACHE_DIR']=str(ROOT/'runtime_cache');env['OMP_NUM_THREADS']='8';env['PATH']='/home/zmcheng/miniconda3/envs/sglang518/bin:/usr/local/cuda-13.0/bin:'+env.get('PATH','')
+            env=os.environ.copy();env['CUDA_VISIBLE_DEVICES']=str(g);env['SGLANG_ALLOW_OVERWRITE_LONGER_CONTEXT_LEN']='1';env['SGLANG_CACHE_DIR']=str(ROOT/'runtime_cache');env['OMP_NUM_THREADS']='8';env['CUDA_HOME']=os.environ.get('CS707_CUDA_HOME','/usr/local/cuda-13.0');env['PATH']='/home/zmcheng/miniconda3/envs/sglang518/bin:'+env['CUDA_HOME']+'/bin:'+env.get('PATH','')
             servers.append(spawn([PYTHON,'-m','sglang.launch_server','--model-path',str(ROOT/'models'/f'Qwen2.5-{size}-GGUF'/f'Qwen2.5-{size}.Q4_K_M.gguf'),'--tokenizer-path',str(ROOT/'tokenizers'/f'Qwen2.5-{size}'),'--load-format','gguf','--quantization','gguf','--host','127.0.0.1','--port',str(30080+g),'--context-length','131584','--mem-fraction-static','0.82','--max-running-requests','128','--chunked-prefill-size','8192'],f'server_{stage}_{model}_{g}',env))
         deadline=time.time()+1200
         while not all(healthy(30080+g) for g in range(4)):
@@ -66,7 +69,7 @@ def run():
                 safety()
                 if time.time()>deadline:raise RuntimeError('Benchmark gate timed out')
                 time.sleep(3)
-        workers=[spawn([PYTHON,str(ROOT/'code/worker.py'),'--root',str(ROOT),'--stage',stage,'--model',model,'--shard',str(g),'--port',str(30080+g),'--concurrency','16' if stage=='retrieval' else '4'],f'worker_{stage}_{model}_{g}') for g in range(4)]
+        workers=[spawn([PYTHON,str(ROOT/'code/worker.py'),'--root',str(ROOT),'--stage',stage,'--model',model,'--shard',str(g),'--port',str(30080+g),'--concurrency','16' if stage=='retrieval' else '4']+(['--indices-file',index_file] if index_file and stage=='answers' and model=='S' else []),f'worker_{stage}_{model}_{g}') for g in range(4)]
         while any(p.poll() is None for p in workers):
             safety()
             if any(p.poll() is not None for p in servers):raise RuntimeError('Model server died')
@@ -75,7 +78,8 @@ def run():
         if any(p.returncode!=0 for p in workers):raise RuntimeError('Worker failed')
         previous_model=model;print(json.dumps({'completed_stage':stage,'model':model}),flush=True)
     stop(servers)
-    subprocess.run([PYTHON,str(ROOT/'code/analyze.py'),'--root',str(ROOT)],check=True);print('ALL COMPLETE',flush=True)
+    if index_file:print('LOCAL ASSIGNMENT COMPLETE; waiting for cross-server merge',flush=True)
+    else:subprocess.run([PYTHON,str(ROOT/'code/analyze.py'),'--root',str(ROOT)],check=True);print('ALL COMPLETE',flush=True)
 if __name__=='__main__':
     try:run()
     except Exception as e:

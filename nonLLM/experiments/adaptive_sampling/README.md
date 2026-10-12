@@ -16,3 +16,15 @@ Remote root is `/data1/zmcheng/cs707_sampling40`, containing transferred assets,
 ```
 
 Initial 7B benchmark: 40 QA outputs, 13,976 generated tokens in 25.46 seconds. After longest-prefix warming, all 40 prefix fusion calls completed in 56.16 seconds on one question. This warm-cache microbenchmark is not a full-run time estimate or proof of globally optimal concurrency.
+
+## Eight-GPU continuation on serverA and serverB
+
+On 2026-10-12 the user authorized adding serverB's four idle L40S GPUs. Both servers use SGLang 0.5.18 and Torch 2.13.0+cu130 with the identical SHA256-verified 7B GGUF and tokenizer. Prompts, sampling parameters and candidate-prefix protocol are unchanged. Each host runs four TP=1 replicas. B has Python 3.11 whereas A has Python 3.12; record this runtime difference. Serving RNG is global and not deterministic per request. A restart preserves successful SQLite records and resumes missing requests; incomplete in-flight work may be regenerated.
+
+The immutable assignment is A indices 0–3859 (including existing completed questions) and B indices 3860–7404. These sets are disjoint and cover all 7,405 questions. `tasks_A.json` and `tasks_B.json` specify ownership; workers retain the original index modulo four shard IDs. B reuses A's finished retrieval outputs, so no retrieval or weak-answer jobs are repeated. Helper assets, CUDA 13 toolkit, weights, logs and results are under `/data1/zmcheng/cs707_sampling40_helper`. The toolkit is copied into this folder without modifying the existing B environment.
+
+`sync_helper.py` is a CPU-only local relay. Every five minutes it exports appended helper rows from SQLite read snapshots, transfers them and merges them into A's canonical databases. Merge retries are idempotent and conflicting payloads are rejected. It persists row offsets only after successful merge. `*.assigned.done` means a host finished its own assignment; final `*.done` markers and full evaluation require 82 saved actions for all 7,405 questions after merging. Final reports remain on A and are also copied locally to `/ssd1/zmcheng/cs707/runs/sampling40_helper_sync`.
+
+A controller uses `CS707_INDEX_FILE=/data1/zmcheng/cs707_sampling40/code/tasks_A.json`. B uses `CS707_ROOT=/data1/zmcheng/cs707_sampling40_helper`, `CS707_HELPER=1`, `CS707_INDEX_FILE=/data1/zmcheng/cs707_sampling40_helper/code/tasks_B.json`, and `CS707_CUDA_HOME=/data1/zmcheng/cs707_sampling40_helper/runtime/cuda-13.0`. Both retain the external-GPU-process watchdog. `status.py --root ...` reports saved requests and assignment markers.
+
+Validation: merge insertion, idempotent retransmission, conflicting-payload rejection, assignment coverage and preserved source model SHA256. All experiment code passes Python compilation.
