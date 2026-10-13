@@ -1,0 +1,61 @@
+{
+  "snapshot": "/data1/zmcheng/cs707_sampling40/runs/partial_training_common_20261013_213519.npz",
+  "questions": 2733,
+  "scope": "same completed training questions only",
+  "margin_f1_points": 5,
+  "definitions": {
+    "k1_better_k40": "F1(k=1)-F1(k=40)>=0.05 within the same model pair",
+    "small_strictly_better_all_larger": "max F1(k=1..5)-max F1(k=6..40)>=0.05 within the same model pair",
+    "joint_small_strictly_better_all_larger": "max over all model pairs and k=1..5 minus max over all pairs and k=6..40 >=0.05"
+  },
+  "pairs": {
+    "WW": {
+      "k1_better_k40": 65,
+      "k40_better_k1": 41,
+      "small_strictly_better_all_larger": 54,
+      "larger_strictly_better_all_small": 525,
+      "all_k_f1_zero": 563,
+      "earliest_best_f1_k1to5_nonzero": 571,
+      "em_k1_correct_k40_wrong": 0,
+      "em_k40_correct_k1_wrong": 0,
+      "ever_em_correct": 0
+    },
+    "WS": {
+      "k1_better_k40": 34,
+      "k40_better_k1": 11,
+      "small_strictly_better_all_larger": 84,
+      "larger_strictly_better_all_small": 212,
+      "all_k_f1_zero": 588,
+      "earliest_best_f1_k1to5_nonzero": 520,
+      "em_k1_correct_k40_wrong": 0,
+      "em_k40_correct_k1_wrong": 0,
+      "ever_em_correct": 0
+    },
+    "SW": {
+      "k1_better_k40": 51,
+      "k40_better_k1": 34,
+      "small_strictly_better_all_larger": 53,
+      "larger_strictly_better_all_small": 526,
+      "all_k_f1_zero": 593,
+      "earliest_best_f1_k1to5_nonzero": 556,
+      "em_k1_correct_k40_wrong": 0,
+      "em_k40_correct_k1_wrong": 0,
+      "ever_em_correct": 0
+    },
+    "SS": {
+      "k1_better_k40": 28,
+      "k40_better_k1": 9,
+      "small_strictly_better_all_larger": 84,
+      "larger_strictly_better_all_small": 276,
+      "all_k_f1_zero": 597,
+      "earliest_best_f1_k1to5_nonzero": 509,
+      "em_k1_correct_k40_wrong": 0,
+      "em_k40_correct_k1_wrong": 0,
+      "ever_em_correct": 0
+    }
+  },
+  "unique_questions_k1_better_k40_in_atleast_one_pair": 164,
+  "unique_questions_small_strictly_better_all_larger_in_atleast_one_pair": 255,
+  "joint_small_strictly_better_all_larger": 126,
+  "joint_larger_strictly_better_all_small": 818
+}

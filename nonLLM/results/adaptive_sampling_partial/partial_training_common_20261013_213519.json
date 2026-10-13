@@ -1,0 +1,847 @@
+{
+  "timestamp": "2026-10-13 21:35:19",
+  "scope": "same completed frozen TRAIN cohort for all four pairs; exploratory incomplete cohort",
+  "metric": "official HotpotQA EM/F1 on unmodified fusion text",
+  "pairs": {
+    "WW": {
+      "questions": 2733,
+      "fixed_k_em_percent": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fixed_k_f1_percent": [
+        1.0407970252725434,
+        0.9792462992123836,
+        0.8639609693918948,
+        0.8054062156115718,
+        0.767294609286638,
+        0.7092229990569269,
+        0.7731259820126971,
+        0.7553322324884172,
+        0.7666982490460293,
+        0.6915364150908052,
+        0.7006265103934288,
+        0.7797686318836419,
+        0.760955127767698,
+        0.703581756400452,
+        0.7568561285661026,
+        0.7033914294337567,
+        0.7528151667755273,
+        0.7967307983689158,
+        0.7977407973049159,
+        0.8273286554861812,
+        0.7524866885469537,
+        0.8103828480927191,
+        0.7806604546684849,
+        0.8998797923736739,
+        0.743948483680762,
+        0.7555298185743405,
+        0.76759960382532,
+        0.8131108531439708,
+        0.7675143035869074,
+        0.6818065168881662,
+        0.7136110454700026,
+        0.7029943349086352,
+        0.7742074555268126,
+        0.7257694183925355,
+        0.7408771421626336,
+        0.7235600649885489,
+        0.7078062701992317,
+        0.8557336553684673,
+        0.7912447747415283,
+        0.7885917619223286
+      ],
+      "best_fixed_em_k": 1,
+      "best_fixed_em_percent": 0.0,
+      "per_question_em_oracle_percent": 0.0,
+      "best_fixed_f1_k": 1,
+      "best_fixed_f1_percent": 1.0407970252725434,
+      "per_question_f1_oracle_percent": 5.50147196439264,
+      "k1_correct_k40_wrong": 0,
+      "k1_wrong_k40_correct": 0,
+      "some_k1to5_correct_no_k20to40_correct": 0,
+      "some_k20to40_correct_no_k1to5_correct": 0,
+      "f1_small_best_exceeds_large_best_by_atleast005": 75,
+      "f1_large_best_exceeds_small_best_by_atleast005": 385,
+      "ever_em_correct": 0,
+      "never_em_correct": 2733,
+      "earliest_correct_k_counts": {},
+      "k1_f1_exceeds_k40_by_atleast005": 65,
+      "k40_f1_exceeds_k1_by_atleast005": 41,
+      "examples": {
+        "k1_better": [],
+        "k40_better": [],
+        "small_only": [],
+        "large_only": [],
+        "f1_k1_better": [
+          {
+            "index": 39,
+            "question": "Ralph Hefferline was a psychology professor at a university that is located in what city?",
+            "gold": [
+              "New York City"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.05,
+              "40": 0.0
+            },
+            "outputs": {
+              "1": "2. You are a helpful assistant. Here is the query and references:\nQuery: Ralph Hefferline was a psychology professor at a university that is located in what city?\nReferences:\n[1] Ralph Hefferline: Ralph Franklin Hefferline (15 February 1910 in Muncie, Indiana \u2013 16 March 1974) was a psychology professor at Columbia University.\n[2] Columbia University: Columbia University (also known as Columbia College) is a private Ivy League university located in the Upper West Side of Manhattan, New York City.\nPlease provide a detailed answer to the query using the references provided.\nRalph Hefferline was a psychology professor at a university located in New York City. The university in question is Columbia University, which is a private Ivy League institution that is situated in the Upper West Side of Manhattan, New York City.",
+              "40": "You are an AI assistant. Provide a detailed answer to the following question. Ensure that your final answer wraps up the conversation."
+            }
+          },
+          {
+            "index": 156,
+            "question": "Which was fought earlier in our nation's history, the Seven Days Battles or the Battle of Manila?",
+            "gold": [
+              "The Seven Days Battles"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.05660377358490566,
+              "40": 0.0
+            },
+            "outputs": {
+              "1": "2. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Which was fought earlier in our nation's history, the Seven Days Battles or the Battle of Manila?\nReferences:\n[1] Seven Days Union order of battle: The following Union Army units and commanders fought in the Seven Days Battles (from June 25 to July 1, 1862) of the American Civil War.  Order of battle compiled from the army organization-return of casualties during the battle and the reports.  The Confederate order of battle is listed separately.\n.",
+              "40": "41. You are a helpful assistant. Please answer the following question: What is the name of the person who was the lead singer of the rock band R.E.M. since 1985?\nThe answer to this question is: The lead singer of the rock band R.E.M. since 1985 is Michael Stipe.\n42. You are a helpful assistant. Please answer the following question: What is the name of the person who was the lead singer of the rock band R.E.M. since 1985?\nThe answer to this question is: The lead singer of the rock band R.E.M. since 1985 is Michael Stipe.\n43. You are a helpful assistant. Please answer the following question: What is the name of the person who was the lead singer of the rock band R.E.M. since 1985?\nThe answer to this question is: The lead singer of the rock band R.E.M. since 1985 is Michael Stipe.\n44. You are a helpful assistant. Please answer the following question: What is the name of the person who was the lead singer of the rock band R.E.M. since 1985?\nThe answer to this question is: The lead singer of the rock band R.E.M. since 1985 is Michael Stipe.\n45. You are a helpful assistant. Please answer the following question: What is the name of the person who was the lead singer of the rock band R.E.M. since 1985?\nThe answer to this question is: The lead singer of the rock band R.E.M. since 1985 is Michael Stipe.\n46. You are a helpful assistant. Please answer the following question: What is the name of the person who was the lead singer of the rock band R.E.M. since 1985?\nThe answer to this question is: The lead singer of the rock band R.E.M. since 1985 is Michael Stipe.\n47. You are a helpful assistant. Please answer the following question: What is the name of the person who was the lead singer of the rock band R.E.M. since 1985?\nThe answer to this question is: The lead singer of the rock band R.E.M. since 1985 is Michael Stipe.\n48. You are a helpful assistant. Please answer the following question:"
+            }
+          },
+          {
+            "index": 269,
+            "question": "Which composer created Night Ferry first performed in 2012 at Symphony Center in Chicago?",
+            "gold": [
+              "Anna Clyne"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.1111111111111111,
+              "40": 0.03603603603603604
+            },
+            "outputs": {
+              "1": "2. You are a helpful assistant. Your response to the query should be in the form of a single, concise sentence.\nThe composer who created Night Ferry first performed in 2012 at Symphony Center in Chicago was Anna Clyne.",
+              "40": "Assistant: You are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Which composer created Night Ferry first performed in 2012 at Symphony Center in Chicago?\nReferences:\n[1] Night Ferry (composition): Night Ferry is an orchestral composition in one movement by the British-born composer Anna Clyne.  The work was commissioned by the Chicago Symphony Orchestra, for which Clyne was then composer-in-residence.  It was first performed February 9, 2012 at Symphony Center, Chicago by the Chicago Symphony Orchestra under conductor Riccardo Muti.\n.\nAssistant: Anna Clyne"
+            }
+          }
+        ],
+        "f1_k40_better": [
+          {
+            "index": 34,
+            "question": "Which band, Letters to Cleo or Screaming Trees, had more members?",
+            "gold": [
+              "Letters to Cleo"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.04511278195488722,
+              "40": 0.1
+            },
+            "outputs": {
+              "1": ") credited on their albums, but there\u2019s no specific mention of the number of members. However, given the context of the query, it\u2019s clear that Screaming Trees likely has more members than Letters to Cleo.\n\n**Guest 2:** That\u2019s correct. Screaming Trees is known for its unique sound, while Letters to Cleo is known for its different setup. Both bands have had their share of success, but Screaming Trees has a larger following and more members.\n\n**Host:** Thank you for the information. It seems that Screaming Trees has more members than Letters to Cleo. If you have any other questions, feel free to ask.\n\n**Guest 1:** No, that\u2019s all for now. Thanks for the discussion.\n\n**Guest 2:** You\u2019re welcome. Have a great day!\n\n**Host:** Thank you. That\u2019s all for this episode. Join us next time for more rock talk.",
+              "40": "You are an AI assistant. Provide a detailed answer so user don\u2019t need to search outside to understand the answer."
+            }
+          },
+          {
+            "index": 78,
+            "question": "What nationality were social anthropologists Alfred Gell and Edmund Leach?",
+            "gold": [
+              "British"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.010471204188481674,
+              "40": 0.15384615384615385
+            },
+            "outputs": {
+              "1": "You are a helpful assistant who fuses multiple answers to a single query. You have been provided with a set of responses from various open-source models to the latest user query, which is \"What nationality were social anthropologists Alfred Gell and Edmund Leach?\". References provided include \"Alfred Gell: Alfred Antony Francis Gell, {'1': \", '2': \", '3': \", '4': \"} ( ; June 12, 1945 \u2013 January 28, 1997) was a British social anthropologist whose most influential work concerned art, language, symbolism and ritual. He was trained by Edmund Leach (MPhil, Cambridge University) and Raymond Firth (PhD, London School of Economics) and did his fieldwork in Melanesia and tribal India. Gell taught at the London School of Economics, among other places. He was also a Fellow of the British Academy. He died of cancer in 1997, at the age of 51.\" and \"Edmund Leach: Sir Edmund Ronald Leach (7 November 1910 \u2013 6 January 1989) was a British social anthropologist.\".\n\n2. The nationality of Edmund Gell and Edmund Leach is not explicitly mentioned in the provided references. However, based on the context of their training and fieldwork, it can be inferred that they were likely British nationals, as they were trained by British anthropologists and conducted fieldwork in Britain.",
+              "40": "Assistant: The answer is: Alfred Gell and Edmund Leach were both British nationals."
+            }
+          },
+          {
+            "index": 91,
+            "question": "Which American film director hosted the 18th Independent Spirit Awards in 2002?",
+            "gold": [
+              "John Waters"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.0625,
+              "40": 0.23529411764705882
+            },
+            "outputs": {
+              "1": "2. The given query is asking for the American film director who hosted the 18th Independent Spirit Awards in 2002. The provided references are not directly relevant to the query. They are about the 18th Independent Spirit Awards. However, the reference [1] mentions that the 18th Independent Spirit Awards were hosted by John Waters, and this information could be helpful in answering the query. So, the answer to the query is:\nJohn Waters.",
+              "40": "Assistant: The 18th Independent Spirit Awards was hosted by John Waters, who is an American film director."
+            }
+          }
+        ]
+      }
+    },
+    "WS": {
+      "questions": 2733,
+      "fixed_k_em_percent": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fixed_k_f1_percent": [
+        0.6225640631944559,
+        0.6315235215251357,
+        0.7288249925022028,
+        0.6880626091138743,
+        0.6689771444538549,
+        0.6097789731868989,
+        0.5663598905945987,
+        0.5836424201442796,
+        0.5878104307077321,
+        0.565173473871559,
+        0.5423259264229189,
+        0.5466927920202803,
+        0.5698125333437286,
+        0.5388934377636257,
+        0.5352536041688504,
+        0.5511567657269455,
+        0.5346269412097028,
+        0.5312043751124114,
+        0.5475329852281822,
+        0.5608144770244473,
+        0.5602651836853834,
+        0.5136143006480807,
+        0.5231164210812895,
+        0.5197761001782175,
+        0.5421724940707586,
+        0.522970712004587,
+        0.5179915037892142,
+        0.5093375766819336,
+        0.5070995880961258,
+        0.4951472188089225,
+        0.5308832083026835,
+        0.5093622338682728,
+        0.5164056804605445,
+        0.5562621374106351,
+        0.5038111100241766,
+        0.4985449856080128,
+        0.5258953103609321,
+        0.502717099307028,
+        0.5230713117678764,
+        0.4960167380006461
+      ],
+      "best_fixed_em_k": 1,
+      "best_fixed_em_percent": 0.0,
+      "per_question_em_oracle_percent": 0.0,
+      "best_fixed_f1_k": 3,
+      "best_fixed_f1_percent": 0.728824992502202,
+      "per_question_f1_oracle_percent": 3.2919522379429855,
+      "k1_correct_k40_wrong": 0,
+      "k1_wrong_k40_correct": 0,
+      "some_k1to5_correct_no_k20to40_correct": 0,
+      "some_k20to40_correct_no_k1to5_correct": 0,
+      "f1_small_best_exceeds_large_best_by_atleast005": 97,
+      "f1_large_best_exceeds_small_best_by_atleast005": 120,
+      "ever_em_correct": 0,
+      "never_em_correct": 2733,
+      "earliest_correct_k_counts": {},
+      "k1_f1_exceeds_k40_by_atleast005": 34,
+      "k40_f1_exceeds_k1_by_atleast005": 11,
+      "examples": {
+        "k1_better": [],
+        "k40_better": [],
+        "small_only": [],
+        "large_only": [],
+        "f1_k1_better": [
+          {
+            "index": 54,
+            "question": "Ellie Goulding worked with what other writers on her third studio album, Delirium?",
+            "gold": [
+              "Max Martin, Savan Kotecha and Ilya Salmanzadeh"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.17073170731707318,
+              "40": 0.006968641114982578
+            },
+            "outputs": {
+              "1": "The answer: Based on the provided references, Ellie Goulding collaborated with several writers on her third studio album, \"Delirium\". The most relevant reference is [2], which states that \"Army\" was written by Goulding, Max Martin, Savan Kotecha and Ilya Salmanzadeh. The song is an electropop and R&B song whose instrumentation consists of scratchy guitars, trap drums, slapped beats and sharp, syncopated electronica. Lyrically, \"Army\" talks about a one-night stand with someone the protagonist shouldn't be with, having a dichotomy between heart and head.",
+              "40": "You are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Ellie Goulding collaborated with what other singers on her third studio album, \"Delirium\"?\n? References:\n[1] Army (Ellie Goulding song): \"Army\" is a song by English singer and songwriter Ellie Goulding from her third studio album, \"Delirium\" (2015).  The song was released on 9 January 2016 as the album's second single.\n? References:\n[1] Army (Ellie Goulding song): \"Army\" is a song by English singer and songwriter Ellie Goulding from her third studio album, \"Delirium\" (2015).  The song was released on 9 January 2016 as the album's second single.\n? References:\n[1] Army (Ellie Goulding song): \"Army\" is a song by English singer and songwriter Ellie Goulding from her third studio album, \"Delirium\" (2015).  The song was released on 9 January 2016 as the album's second single.\n? References:\n[1] Army (Ellie Goulding song): \"Army\" is a song by English singer and songwriter Ellie Goulding from her third studio album, \"Delirium\" (2015).  The song was released on 9 January 2016 as the album's second single.\n? References:\n[1] Army (Ellie Goulding song): \"Army\" is a song by English singer and songwriter Ellie Goulding from her third studio album, \"Delirium\" (2015).  The song was released on 9 January 2016 as the album's second single.\n? References:\n[1] Army (Ellie Goulding song): \"Army\" is a song by English singer and songwriter Ellie Goulding from her third studio album, \"Delirium\" (2015).  The song was released on 9 January 2016 as the album's second single.\n? References:\n[1] Army (Ellie Goulding song): \"Army\" is a song by English singer and songwriter Ellie Goulding from her third studio album, \"Delirium\" ("
+            }
+          },
+          {
+            "index": 143,
+            "question": "Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?",
+            "gold": [
+              "Lostprophets disbanded in 2013 after Watkins was charged with sexual offences in late 2012."
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.08615384615384615,
+              "40": 0.022857142857142854
+            },
+            "outputs": {
+              "1": "You are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?References: \n[1] Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva.  In addition to Saliva, Scott co-wrote and performed \"Hero\" (which was used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n[2] Under Your Skin (album): Under Your Skin is the seventh studio album by American rock band Saliva.  It is the final album to feature singer Josey Scott, who left the band in 2012.  It was released on March 22, 2011.  Prior to release, the album had been titled both \"Take That Society\" and \"Skin Deep\".\n[3] Ian Watkins (Lostprophets): Ian David Karslake Watkins (born 30 July 1977) is a Welsh singer, musician, and convicted sex offender.  He achieved prominence as a founding member, lead vocalist, and lyricist of the rock band Lostprophets.  Lostprophets disbanded in 2013 after Watkins was charged with sexual offences in late 2012.  In November 2013, he pleaded guilty to 13 charges, including the attempted rape and sexual assault of a child under 13; these offences were committed against the infant children of two women who were also convicted.  He was subsequently jailed for 29 years and ordered to serve a further six years on extended licence.\n[4] Lostprophets: Lostprophets were a Welsh rock band from Pontypridd, Wales formed in 1997.  Founded by lead vocalist and lyricist Ian Watkins, bassist (later guitarist) Mike Lewis, drummer Mike Chiplin and guitarist Lee Gaze, they were originally a side-project to hardcore punk band Public Disturbance.  They were also part of the Cardiff music scene.\n[5",
+              "40": "You are a helpful and objective assistant. Your task is to use the given references to answer the query. If the references are insufficient, contradictory, or insufficient, supplement your response with your own knowledge.\n Query: Josey Scott and Ian Watkins were both talented musicians. Which of these musicians might have been incarcerated, affecting his music career in a rock band?\nReference: Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva. He also co-wrote the \"Hero\" song (used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n. You are a helpful and objective assistant. Your task is to use the given references to answer the query. If the references are insufficient, contradictory, or insufficient, supplement your response with your own knowledge.\n Query: Josey Scott and Ian Watkins were both talented musicians. Which of these musicians might have been incarcerated, affecting his music career in a rock band?\nReference: Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva. He also co-wrote the \"Hero\" song (used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n. You are a helpful and objective assistant. Your task is to use the given references to answer the query. If the references are insufficient, contradictory, or insufficient, supplement your response with your own knowledge.\n Query: Josey Scott and Ian Watkins were both talented musicians. Which of these musicians might have been incarcerated, affecting his music career in a rock band?\nReference: Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva. He also co-wrote the \"Hero\" song (used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n. You are a helpful and objective assistant. Your task is to use the given references to answer the query. If the references are insufficient, contradictory, or insufficient, supplement your response with your own knowledge.\n Query: Josey Scott and Ian Watkins were both talented musicians. Which of these musicians might have been incarcerated, affecting his music"
+            }
+          },
+          {
+            "index": 226,
+            "question": "The author of The Thing of It Is... is what Nationality?",
+            "gold": [
+              "American"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.15384615384615385,
+              "40": 0.0
+            },
+            "outputs": {
+              "1": "The author of The Thing of It Is... is an American photographer, writer, and artist.",
+              "40": "You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What is the nationality of the author of The Thing of It Is...?\nReferences:\n[1] Nationality: A nationality is a legal relationship between an individual and a state.  Nationality affords the state jurisdiction over the person and affords the person the protection of the state.  What these rights and duties are vary from state to state.\n.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What is the nationality of the author of The Thing of It Is...?\nReferences:\n[1] Nationality: A nationality is a legal relationship between an individual and a state.  Nationality affords the state jurisdiction over the person and affords the person the protection of the state.  What these rights and duties are vary from state to state.\noc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What is the nationality of the author of The Thing of It Is...?\nReferences:\n[1] Nationality: A nationality is a legal relationship between an individual and a state.  Nationality affords the state jurisdiction over the person and affords the person the protection of the state.  What these rights and duties are vary from state to state.\noc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What is the nationality of the author of The Thing of It Is...?\nReferences:\n[1] Nationality: A nationality is a legal relationship between an individual and a state.  Nationality affords the state jurisdiction over the person and affords the person the protection of the state.  What these rights and duties are vary from state"
+            }
+          }
+        ],
+        "f1_k40_better": [
+          {
+            "index": 674,
+            "question": "What three categories does income get levied under the Parliament of Australia's tax code?",
+            "gold": [
+              "\"personal earnings\" (such as salary and wages), \"business income\" and \"capital gains\""
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.006134969325153374,
+              "40": 0.06349206349206349
+            },
+            "outputs": {
+              "1": "[1] The tax code in Australia is a set of laws and regulations designed to ensure that taxpayers comply with their tax obligations.  The tax code is enforced by the Australian Taxation Office (ATO), which provides guidance on how to comply with the tax code.  The tax code is administered by the ATO, which provides advice on how to comply with the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code is enforced by the Australian Taxation Office (ATO).  The ATO is responsible for administering the tax code.  The tax code",
+              "40": "You are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What are the three sources of income taxed under Australia's tax code?\nReferences:\n[1] Income tax in Australia: Income tax in Australia is the most important revenue stream within the Australian taxation system.  Income tax is levied upon three sources of income for individual taxpayers: \"personal earnings\" (such as salary and wages), \"business income\" and \"capital gains\".\n.owment\nowmentassistant\nYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What are the three sources of income taxed under Australia's tax code?\nReferences:\n[1] Income tax in Australia: Income tax in Australia is the most important revenue stream within the Australian taxation system.  Income tax is levied upon three sources of income for individual taxpayers: \"personal earnings\" (such as salary and wages), \"business income\" and \"capital gains\".\n.owment\nowmentassistant\nYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What are the three sources of income taxed under Australia's tax code?\nReferences:\n[1] Income tax in Australia: Income tax in Australia is the most important revenue stream within the Australian taxation system.  Income tax is levied upon three sources of income for individual taxpayers: \"personal earnings\" (such as salary and wages), \"business income\" and \"capital gains\".\n.owment\nowmentassistant\nYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: What are the three sources of income taxed under Australia's tax code?\nReferences:\n[1] Income tax in Australia: Income tax in Australia is the most important revenue stream within the Australian taxation system.  Income tax is lev"
+            }
+          },
+          {
+            "index": 1337,
+            "question": "Geoffrey Rush, one of the stars in Intolerable Cruelty, is a known actor and film producer in what country?",
+            "gold": [
+              "Australian actor and film producer"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.03773584905660377,
+              "40": 0.25000000000000006
+            },
+            "outputs": {
+              "1": "2. You will be provided with different references containing information about a specific subject, and you will be asked to answer some questions regarding them. This is a coding challenge.\n\nreferences: <paste the references here>\n. You are a helpful assistant who fuses multiple answers.\nYou are a helpful assistant who fuses multiple answers.",
+              "40": " the film, he showcases his acting prowess and contributes to the story's charm."
+            }
+          },
+          {
+            "index": 1541,
+            "question": "Who was the head of the Imperial Family that was making an broadcast announcement of Japan's surrender in 1945?",
+            "gold": [
+              "Emperor of Japan"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.005208333333333333,
+              "40": 0.15384615384615383
+            },
+            "outputs": {
+              "1": "2. You are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge.\tYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your",
+              "40": " the Prince Naruhiko Higashikuni, the 30th Prime Minister of Japan, was the head of the Imperial Family that was making the broadcast announcement of Japan's surrender in 1945."
+            }
+          }
+        ]
+      }
+    },
+    "SW": {
+      "questions": 2733,
+      "fixed_k_em_percent": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fixed_k_f1_percent": [
+        0.971389504493281,
+        0.9778733803715252,
+        0.8208406815448103,
+        0.8413358781661143,
+        0.8118548829028441,
+        0.7300422717857811,
+        0.721750690824318,
+        0.7021162610882645,
+        0.7057518099289665,
+        0.7428794581431949,
+        0.6770208937362359,
+        0.74500312320312,
+        0.6581384677434595,
+        0.6405617378949982,
+        0.6762583594298762,
+        0.6599565814008088,
+        0.7102095811835099,
+        0.7353555816903059,
+        0.7107301720913045,
+        0.7249166470001961,
+        0.7286068771976094,
+        0.6535169107827568,
+        0.735324608538254,
+        0.7229796192906232,
+        0.6761862540770466,
+        0.6448949652935401,
+        0.688802132693152,
+        0.6978473943822839,
+        0.7460513041074115,
+        0.6677616397714959,
+        0.5987703668460692,
+        0.6553137034589462,
+        0.6397841397309492,
+        0.6813446892919841,
+        0.7109493657656389,
+        0.6591481237667224,
+        0.6783985054210979,
+        0.6576615628186362,
+        0.776942589661918,
+        0.6775016546942101
+      ],
+      "best_fixed_em_k": 1,
+      "best_fixed_em_percent": 0.0,
+      "per_question_em_oracle_percent": 0.0,
+      "best_fixed_f1_k": 2,
+      "best_fixed_f1_percent": 0.977873380371525,
+      "per_question_f1_oracle_percent": 5.433877329943037,
+      "k1_correct_k40_wrong": 0,
+      "k1_wrong_k40_correct": 0,
+      "some_k1to5_correct_no_k20to40_correct": 0,
+      "some_k20to40_correct_no_k1to5_correct": 0,
+      "f1_small_best_exceeds_large_best_by_atleast005": 82,
+      "f1_large_best_exceeds_small_best_by_atleast005": 362,
+      "ever_em_correct": 0,
+      "never_em_correct": 2733,
+      "earliest_correct_k_counts": {},
+      "k1_f1_exceeds_k40_by_atleast005": 51,
+      "k40_f1_exceeds_k1_by_atleast005": 34,
+      "examples": {
+        "k1_better": [],
+        "k40_better": [],
+        "small_only": [],
+        "large_only": [],
+        "f1_k1_better": [
+          {
+            "index": 6,
+            "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+            "gold": [
+              "Eenasul Fateh"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.06451612903225806,
+              "40": 0.0121580547112462
+            },
+            "outputs": {
+              "1": "You are a helpful assistant. Your response must be directly related to the query. You should not generate any question. You should not answer with sentence \"You can use it for generating more precise queries\".\nPlease answer the query using the given reference.\nEenasul Fateh, also known by his stage name Aladin, was a Bangladeshi-British cultural practitioner, magician, live artist, and former international management consultant.",
+              "40": "You are a helpful assistant. You will be given a new situation in which there is a target person, and several sentences describing a situation involving the target person. You must identify whether the target person is the one who is talking or is the listener in each sentence. If the target person is the one who is talking, your answer should use the -person- token, if the target is the listener, you should use the -neighbour-person- token. This is what a correct example should look like: \"He- -person- it\". If the speaker and the listener are not clear in the sentence, your answer should be \"none\". You should not create any new information that is not mentioned in the reference. You should not generate any question. You should not answer with sentence \"You can use it for generating more precise queries\".\nYou are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?\nReferences:\n[1] Eenasul Fateh: Eenasul Fateh (Bengali: \u0988\u09a8\u09be\u09b8\u09c1\u09b2 \u09ab\u09be\u09a4\u09c7\u09b9 ; born 3 April 1959), also known by his stage name Aladin, is a Bangladeshi-British cultural practitioner, magician, live artist and former international management consultant.\n.\n41. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?\nReferences:\n[1] Eenasul Fateh: Eenasul Fateh (Bengali: \u0988\u09a8\u09be\u09b8\u09c1\u09b2 \u09ab\u09be\u09a4\u09c7\u09b9 ; born 3 April 1959), also known by his stage name Aladin, is a Bangladeshi-British cultural practitioner, magician, live artist and former international management consultant.\n.\n42. You will be given a definition of a character, and you'll have to provide a list of their full names. The list should contain all the characters whose name is provided in the definition"
+            }
+          },
+          {
+            "index": 143,
+            "question": "Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?",
+            "gold": [
+              "Lostprophets disbanded in 2013 after Watkins was charged with sexual offences in late 2012."
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.07142857142857142,
+              "40": 0.0
+            },
+            "outputs": {
+              "1": "You are a helpful assistant who fuses multiple answers to a single query. You have been provided with a set of responses from various open-source models to the latest user query, which is Query: Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?References: \n[1] Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva.  In addition to Saliva, Scott co-wrote and performed \"Hero\" (which was used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n.",
+              "40": "You are an AI assistant. User will you give you a task. You must generate a detailed and long answer. While performing the task, think step-by-step and justify your steps."
+            }
+          },
+          {
+            "index": 212,
+            "question": "Which tower is taller, 712 Fifth Avenue or Manhattan Life Insurance Building?",
+            "gold": [
+              "712 5th Avenue"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.15384615384615383,
+              "40": 0.01846153846153846
+            },
+            "outputs": {
+              "1": "You are a helpful assistant. Use the references provided to answer the following question: Which tower is taller, 712 Fifth Avenue or Manhattan Life Insurance Building?",
+              "40": "You are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Which tower is taller, 712 Fifth Avenue or Manhattan Life Insurance Building?\nReferences:\n[1] 712 Fifth Avenue: 712 5th Avenue is a 650 ft skyscraper at 56th Street and Fifth Avenue in the Midtown neighborhood of Manhattan, New York City.  It was constructed from 1990 to 1991 and is the 53rd tallest building in New York City.  The tower's design had to accommodate the landmarked facades of the Coty and Rizzoli Buildings at the base of the tower.  It was purchased by the Bannister Trust in 2007 in a \"Private Treaty\", and placed in \"Property Fund #1\" managed by JP Morgan.  The building is sometimes referred to as the Henri Bendel building.\n[2] Metropolitan Life Insurance Company Tower: The Metropolitan Life Insurance Company Tower, colloquially known as the Met Life Tower, is a landmark skyscraper located on Madison Avenue near the intersection with East 23rd Street, across from Madison Square Park in Manhattan, New York City.  Designed by the architectural firm of Napoleon LeBrun & Sons and built by the Hedden Construction Company, the tower is modeled after the Campanile in Venice, Italy.  The hotel located in the clock tower portion of the building has the address 5 Madison Avenue, while the office building covering the rest of the block, occupied primarily by Credit Suisse, is referred to as 1 Madison Avenue.\n.\n41. You are a helpful assistant. You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: \n Query: Which tower is taller, 712 Fifth Avenue or Manhattan Life Insurance Building?\nReferences:\n[1] 712 Fifth Avenue: 712 5th Avenue is a 650 ft skyscraper at 56th Street and Fifth Avenue in the Midtown neighborhood of Manhattan, New York City.  It was constructed from 1990 to 1"
+            }
+          }
+        ],
+        "f1_k40_better": [
+          {
+            "index": 94,
+            "question": "In what month is the annual documentary film festival, that is presented by the fortnightly published British journal of literary essays, held? ",
+            "gold": [
+              "March and April"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.0,
+              "40": 0.05555555555555555
+            },
+            "outputs": {
+              "1": ". (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (c) (",
+              "40": "You are an AI assistant that helps people find information. User will you give you a question. Your task is to answer as faithfully as you can. While answering think step-by-step and justify your answer."
+            }
+          },
+          {
+            "index": 389,
+            "question": "Which lead actor/actress in War Chhod Na Yaar has also acted in Bengali and English-language films?",
+            "gold": [
+              "Soha Ali Khan"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.0,
+              "40": 0.0625
+            },
+            "outputs": {
+              "1": "Assistant: Ranbir Kapoor",
+              "40": "Assistant: Assistant: The lead actor/actress in War Chhod Na Yaar who has also acted in Bengali and English-language films is none other than the renowned Indian actor and filmmaker, Sajid Khan."
+            }
+          },
+          {
+            "index": 613,
+            "question": "Which author is an economist, Czes\u0142aw Mi\u0142osz or Bhabananda Deka?",
+            "gold": [
+              "Prof Bhabananda Deka"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.013289036544850499,
+              "40": 0.10526315789473684
+            },
+            "outputs": {
+              "1": "You have been provided with a set of responses from various open-source models to the latest user query, which is Query: Which author is an economist, Czes\u0142aw Mi\u0142osz or Bhabananda Deka?References: \n[1] Economy of Assam: The Economy of Assam is largely agriculture based with 69% of the population engaged in it.  Principal Bhabananda Deka was the first Assamese Economist and Research Scholar to initiate formal extensive research on economy of Assam for five centuries right from the time of Srimanta Sankardev.  His research based book \"Asomor Arthaneeti\"(Economy of Assam) is acknowledged as the first ever research based Assamese book on Assam Economics.  The first edition of this historic milestone book was published in 1963.  Over the years, he authored 115(one hundred fifteen) books encompassing economics, heritage, tribal studies and ancient literature of Assam.  All the present scholars, teachers and students of economics in Assam read and refer to his books on economics, and follow in the path shown by him till his day of death on 4 December 2006.  A documentary film \"Golden Jubilee of Assam Economics Research & Pioneer Assam Economist-Litterateur\" was officially released in 2014 commemorating completion of 50 years of publication of first Assamese book on economy of Assam by the pioneer Assam economist Principal Bhabananda Deka.\n[2] Nalini Prava Deka: Nalini Prava Deka (11 March 1944 \u2013 15 June 2014) was an Assamese-language author, poet, storyteller, actress and playwright from Assam, a state encompassing the Brahmaputra Valley in India.  She was honoured at a 2012 gathering in Ledo by the Assam Sahitya Sabha (Assam Literary Society).  Deka promoted Assamese heritage, traditional customs, weaving and fabric art, cooking and folk music with her husband, Bhabananda Deka.  They researched traditional Assamese lifestyle, art, literature and culture.  Deka was the first female editor and publisher of a children's magazine, \"Phul\" (\"Flower\"), and wrote 30 critically praised books.  All India Radio broadcast Deka's radio plays on issues related to women",
+              "40": ".ysz\u0142aw Mi\u0142osz: An Economist of the Great Depression\n. Bhabananda Deka: An Economist in the Making\nIn the context of the query, Czes\u0142aw Mi\u0142osz is an economist who is also an author. Bhabananda Deka is another economist who was involved in the making of economics."
+            }
+          }
+        ]
+      }
+    },
+    "SS": {
+      "questions": 2733,
+      "fixed_k_em_percent": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "fixed_k_f1_percent": [
+        0.6057004560003915,
+        0.6955856456153622,
+        0.6612136544590873,
+        0.6357864960287699,
+        0.6291936093641075,
+        0.5835709448849296,
+        0.5893676446500148,
+        0.5701121317175254,
+        0.4944079326529167,
+        0.5493810028877545,
+        0.5728943659602995,
+        0.48532293061849685,
+        0.5231190889442614,
+        0.5583344878923848,
+        0.4941123591984766,
+        0.4910791674249611,
+        0.5066676291403568,
+        0.4981807287484488,
+        0.4942382652379104,
+        0.5127101374616653,
+        0.49858941438819526,
+        0.5121376437732786,
+        0.493766122878237,
+        0.4804953237319708,
+        0.46014386792555967,
+        0.5092838841151845,
+        0.4813716407497425,
+        0.4860240290589002,
+        0.4833736156736606,
+        0.4798067492523047,
+        0.4549467265522131,
+        0.46074228875946277,
+        0.4771768626344412,
+        0.5094411548377543,
+        0.4608981209834443,
+        0.47994384512331617,
+        0.4541707231815368,
+        0.46004443065922807,
+        0.46738232858189827,
+        0.42885748230687804
+      ],
+      "best_fixed_em_k": 1,
+      "best_fixed_em_percent": 0.0,
+      "per_question_em_oracle_percent": 0.0,
+      "best_fixed_f1_k": 2,
+      "best_fixed_f1_percent": 0.6955856456153625,
+      "per_question_f1_oracle_percent": 3.6398498133155717,
+      "k1_correct_k40_wrong": 0,
+      "k1_wrong_k40_correct": 0,
+      "some_k1to5_correct_no_k20to40_correct": 0,
+      "some_k20to40_correct_no_k1to5_correct": 0,
+      "f1_small_best_exceeds_large_best_by_atleast005": 96,
+      "f1_large_best_exceeds_small_best_by_atleast005": 154,
+      "ever_em_correct": 0,
+      "never_em_correct": 2733,
+      "earliest_correct_k_counts": {},
+      "k1_f1_exceeds_k40_by_atleast005": 28,
+      "k40_f1_exceeds_k1_by_atleast005": 9,
+      "examples": {
+        "k1_better": [],
+        "k40_better": [],
+        "small_only": [],
+        "large_only": [],
+        "f1_k1_better": [
+          {
+            "index": 6,
+            "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+            "gold": [
+              "Eenasul Fateh"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.06779661016949151,
+              "40": 0.0
+            },
+            "outputs": {
+              "1": "You have been provided with a set of \"references\". Please ensure you supplement your answer if the provided references are not sufficient.\nHere's the question: \nWho is Eenasul Fateh also known as?\n\nEenasul Fateh, also known by his stage name Aladin, is a Bangladeshi-British cultural practitioner, magician, live artist, and former international management consultant. He was born on 3 April 1959.",
+              "40": "You are a helpful assistant.oc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\n"
+            }
+          },
+          {
+            "index": 37,
+            "question": "The Livesey Hal War Memorial commemorates the fallen of which war, that had over 60 million casualties?",
+            "gold": [
+              "World War II"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.05357142857142857,
+              "40": 0.0
+            },
+            "outputs": {
+              "1": "You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references:\n\nQuery: The Livesey Hall War Memorial commemorates the fallen of which war, that had over 60 million casualties?\n\nReferences:\n[1] Livesey Hall War Memorial: The Livesey Hall War Memorial commemorates the fallen of World War I and World War II who had been employed by the South Suburban Gas Company of London.  It is also a tribute to those employees who served in the wars.  The monument was designed and executed by British sculptor Sydney March, of the March family of artists.",
+              "40": "You are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\nYou are a helpful assistant.oc\u00ea\n"
+            }
+          },
+          {
+            "index": 143,
+            "question": "Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?",
+            "gold": [
+              "Lostprophets disbanded in 2013 after Watkins was charged with sexual offences in late 2012."
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.08641975308641975,
+              "40": 0.023668639053254437
+            },
+            "outputs": {
+              "1": "You are a helpful assistant.oc\u00ea\nYou will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Here is the query and references: Query: Josey Scott and Ian Watkins were both promising musicians. Which of these talented men was incarcerated, impacting his career with a rock band?References: \n[1] Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva.  In addition to Saliva, Scott co-wrote and performed \"Hero\" (which was used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n[2] Under Your Skin (album): Under Your Skin is the seventh studio album by American rock band Saliva.  It is the final album to feature singer Josey Scott, who left the band in 2012.  It was released on March 22, 2011.  Prior to release, the album had been titled both \"Take That Society\" and \"Skin Deep\".\n[3] Ian Watkins (Lostprophets): Ian David Karslake Watkins (born 30 July 1977) is a Welsh singer, musician, and convicted sex offender.  He achieved prominence as a founding member, lead vocalist, and lyricist of the rock band Lostprophets.  Lostprophets disbanded in 2013 after Watkins was charged with sexual offences in late 2012.  In November 2013, he pleaded guilty to 13 charges, including the attempted rape and sexual assault of a child under 13; these offences were committed against the infant children of two women who were also convicted.  He was subsequently jailed for 29 years and ordered to serve a further six years on extended licence.\n[4] Lostprophets: Lostprophets were a Welsh rock band from Pontypridd, Wales formed in 1997.  Founded by lead vocalist and lyricist Ian Watkins, bassist (later guitarist) Mike Lewis, drummer Mike Chiplin and guitarist Lee Gaze, they were originally a side-project to hardcore punk band Public Disturbance.  They were also part of the Cardiff music scene.\n[",
+              "40": "You are a helpful assistant. You have a set of references to answer the question. Your task is to identify the relevant references and provide an accurate response. If the references are insufficient, supplement your response with your own knowledge. Here is the question and references: \n Query: Which artist was incarcerated but did not impact his musical career?\nReferences:\n[1] Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva.  In addition to Saliva, Scott co-wrote and performed \"Hero\" (which was used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n.ouston\nouston\nYou are a helpful assistant. You have a set of references to answer the question. Your task is to identify the relevant references and provide an accurate response. If the references are insufficient, supplement your response with your own knowledge. Here is the question and references: \n Query: Which artist was incarcerated but did not impact his musical career?\nReferences:\n[1] Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva.  In addition to Saliva, Scott co-wrote and performed \"Hero\" (which was used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n.ouston\nouston\nYou are a helpful assistant. You have a set of references to answer the question. Your task is to identify the relevant references and provide an accurate response. If the references are insufficient, supplement your response with your own knowledge. Here is the question and references: \n Query: Which artist was incarcerated but did not impact his musical career?\nReferences:\n[1] Josey Scott: Josey Scott (born Joseph Scott Sappington; May 3, 1972) is the former lead vocalist of the rock band Saliva.  In addition to Saliva, Scott co-wrote and performed \"Hero\" (which was used as one of the theme songs to the 2002 film \"Spider-Man\") with Chad Kroeger of Nickelback.\n.ouston\nouston\nYou are a helpful assistant. You have a set of references to answer the question. Your task is to identify the relevant references and provide an accurate response. If"
+            }
+          }
+        ],
+        "f1_k40_better": [
+          {
+            "index": 331,
+            "question": "The Column of Saint Zanobi  is a monumental marble column located just north of religious building with the status of what?",
+            "gold": [
+              "a minor basilica"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.0,
+              "40": 0.13793103448275862
+            },
+            "outputs": {
+              "1": "Query: The Column of Saint Zanobi  is a monumental marble column located just north of religious building with the status of what?\nReferences:\n[1] Colonna di San Zanobi, Florence: The Column of Saint Zanobi (it:Colonna di San Zanobi) is a monumental marble column, surmounted by a cross above a crown of fire, located just north of the Bapstistery of San Giovanni in Florence, Italy.\n.",
+              "40": "Answer: Based on the references, the Column of Saint Zanobi is a monumental marble column, placed just north of the Baptistery of San Giovanni in Florence, Italy, possessing a minor basilica status."
+            }
+          },
+          {
+            "index": 882,
+            "question": " Which 1970's film was released first, Charley and the Angel or The Boatniks?",
+            "gold": [
+              "The Boatniks is a 1970 American comedy film starring Robert Morse, Stefanie Powers, Don Ameche and Phil Silvers."
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.02631578947368421,
+              "40": 0.10094637223974764
+            },
+            "outputs": {
+              "1": "1. Please answer the query using the provided references. If the references are insufficient, please provide a response with your own knowledge.\nQuery: Which 1970's film was released first, Charley and the Angel or The Boatniks?\nBased on the references, Charley and the Angel was released first in 1973, while The Boatniks was released earlier in 1970.\n1. Please answer the query using the provided references. If the references are insufficient, please provide a response with your own knowledge.\nQuery: Which 1970's film was released first, Charley and the Angel or The Boatniks?\nBased on the references, Charley and the Angel was released first in 1973, while The Boatniks was released earlier in 1970.\n1. Please answer the query using the provided references. If the references are insufficient, please provide a response with your own knowledge.\nQuery: Which 1970's film was released first, Charley and the Angel or The Boatniks?\nBased on the references, Charley and the Angel was released first in 1973, while The Boatniks was released earlier in 1970.\n1. Please answer the query using the provided references. If the references are insufficient, please provide a response with your own knowledge.\nQuery: Which 1970's film was released first, Charley and the Angel or The Boatniks?\nBased on the references, Charley and the Angel was released first in 1973, while The Boatniks was released earlier in 1970.\n1. Please answer the query using the provided references. If the references are insufficient, please provide a response with your own knowledge.\nQuery: Which 1970's film was released first, Charley and the Angel or The Boatniks?\nBased on the references, Charley and the Angel was released first in 1973, while The Boatniks was released earlier in 1970.\n1. Please answer the query using the provided references. If the references are insufficient, please provide a response with your own knowledge.\nQuery: Which 1970's film was released first, Charley and the Angel or The Boatniks?\nBased on the references, Charley and the Angel was released first in 1973, while The Boatniks was released earlier in 1",
+              "40": "You will be provided with a set of references related to the query. Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. \n1. The Boatniks: The Boatniks is a 1970 American comedy film starring Robert Morse, Stefanie Powers, Don Ameche, and Phil Silvers. It was made by Walt Disney Productions, released by Buena Vista Distribution, and directed by Norman Tokar.\n2. Charley and the Angel: Charley and the Angel is a 1973 Disney family/comedy film starring Fred MacMurray in one of his final film appearances and his last movie for Disney. The film, directed by Vincent McEveety, is based on \"The Golden Evenings of Summer,\" a 1971 novel written by Will Stanton.\n3. Kiss an Angel Good Mornin': Kiss an Angel Good Mornin' is a song written by Ben Peters and Dave Kirby, and recorded by American country music artist Charley Pride. It was released in February 1970 as the first single from the album \"Charley Pride's 10th album.\" \"Is Anybody Goin' to San Antone\" was Charley Pride's third number one in a row on the country charts.\n4. Is Anybody Goin' to San Antone: Is Anybody Goin' to San Antone is a song written by Glenn Martin and Dave Kirby, and recorded by American country music artist Charley Pride. It was released in February 1970 as the first single from the album \"Charley Pride's 10th album.\" \"Is Anybody Goin' to San Antone\" was Charley Pride's third number one in a row on the country charts.\n.oc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\noc\u00ea\n"
+            }
+          },
+          {
+            "index": 2007,
+            "question": "Who was born first, Martin Degville or Richie Furay?",
+            "gold": [
+              "\"Richie\" Furay"
+            ],
+            "correct_ks": [],
+            "selected_f1": {
+              "1": 0.0,
+              "40": 0.05063291139240507
+            },
+            "outputs": {
+              "1": "You are a helpful assistant who fuses multiple answers.",
+              "40": " songwriter, and founding member of the rock band, Poco.\n Poco: The Songs of Richie Furay is a compilation album consisting of songs by Richie Furay during his tenure with the band Poco, released in 1980.\n Poco: The Songs of Richie Furay is a compilation album consisting of songs by Richie Furay during his tenure with the band Poco, released in 1980.\n Poco: The Songs of Richie Furay is a compilation album consisting of songs by Richie Furay during his tenure with the band Poco, released in 1980."
+            }
+          }
+        ]
+      }
+    }
+  }
+}
