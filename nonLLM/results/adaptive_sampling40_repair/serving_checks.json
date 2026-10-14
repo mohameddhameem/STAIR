@@ -1,0 +1,84 @@
+{
+  "quality_gate_instruct15": {
+    "endpoint": "http://127.0.0.1:30184",
+    "tokenizer": "/data1/zmcheng/cs707_sampling40/diagnostics/models/Qwen2.5-1.5B-Instruct-HF",
+    "passed": true,
+    "checks": [
+      {
+        "question": "What is the capital of France? Answer with the city name only.",
+        "expected": "paris",
+        "output": "Paris",
+        "passed": true
+      },
+      {
+        "question": "What is 2 + 2? Answer with the number only.",
+        "expected": "4",
+        "output": "4",
+        "passed": true
+      },
+      {
+        "question": "Reply with exactly the word READY and nothing else.",
+        "expected": "ready",
+        "output": "READY",
+        "passed": true
+      }
+    ]
+  },
+  "quality_gate_instruct7": {
+    "endpoint": "http://127.0.0.1:30185",
+    "tokenizer": "/data1/zmcheng/cs707_sampling40/diagnostics/models/Qwen2.5-7B-Instruct-HF",
+    "passed": true,
+    "checks": [
+      {
+        "question": "What is the capital of France? Answer with the city name only.",
+        "expected": "paris",
+        "output": "Paris",
+        "passed": true
+      },
+      {
+        "question": "What is 2 + 2? Answer with the number only.",
+        "expected": "4",
+        "output": "4",
+        "passed": true
+      },
+      {
+        "question": "Reply with exactly the word READY and nothing else.",
+        "expected": "ready",
+        "output": "READY",
+        "passed": true
+      }
+    ]
+  },
+  "long_context_realistic_instruct15": {
+    "model": "instruct15",
+    "input_tokens": 60244,
+    "seconds": 4.449371814727783,
+    "output": ". The.\n. The St. The 10, the, 199, the 201, the 19, in 199, 197, the in the\n\nStu, the 1992. Theater,. Christina, theater, theina, of the in,. The, inera, the. . 20, 200....\n. The. .\nFaber, the 119, 196, 19, 19, 1 and.\nStap.\nA",
+    "needle_recovered": false,
+    "prompt_tokens_received": 60244
+  },
+  "long_context_realistic_instruct7": {
+    "model": "instruct7",
+    "input_tokens": 60244,
+    "seconds": 11.092967510223389,
+    "output": ", and the, and the019, the1000 B. (the 190000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "needle_recovered": false,
+    "prompt_tokens_received": 60244
+  },
+  "long_context_yarn_v5_instruct15": {
+    "model": "instruct15",
+    "input_tokens": 60244,
+    "seconds": 4.292446613311768,
+    "output": "Based on the information provided, the verification code assigned to project Bluebird is K7P3. This code is associated with Scott Derrickson, an American director, screenwriter, and producer. Scott Derrickson is known for directing horror films such as \"Sinister\", \"The Exorcism of Emily Rose\", and \"Deliver Us From Evil\", as well as the 2016 Marvel Cinematic Universe installment, \"Doctor Strange\". The project Bluebird is a supernatural horror film directed by Scott Derrickson and written by him and C. Robert Cargill. Therefore, the verification code assigned to project Bluebird is K",
+    "needle_recovered": true,
+    "prompt_tokens_received": 60244
+  },
+  "long_context_yarn_v5_instruct7": {
+    "model": "instruct7",
+    "input_tokens": 60244,
+    "seconds": 9.079946994781494,
+    "output": "Based on the provided references, the verification code assigned to project Bluebird is K7P3. This information is explicitly stated in reference [1], which mentions that \"Project Bluebird: The verification code assigned to project Bluebird is K7P3. \"",
+    "needle_recovered": true,
+    "prompt_tokens_received": 60244
+  }
+}

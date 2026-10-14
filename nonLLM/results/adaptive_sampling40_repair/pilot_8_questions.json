@@ -1,0 +1,61 @@
+{
+  "training_indices": [
+    0,
+    1,
+    5,
+    6,
+    9,
+    10,
+    12,
+    13
+  ],
+  "skipped_for_32768_diagnostic_context_limit": [],
+  "questions": 8,
+  "rows": 64,
+  "generation_prompts": "pinned public AgentTTS unchanged",
+  "generation_sampling": "retrieval .9; QA .7; fusion .3; max512; other parameters inherited from official generation_config as in upstream model.generate",
+  "model_generation_configs": {
+    "W": {
+      "bos_token_id": 151643,
+      "pad_token_id": 151643,
+      "do_sample": true,
+      "eos_token_id": [
+        151645,
+        151643
+      ],
+      "repetition_penalty": 1.1,
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "transformers_version": "4.37.0"
+    },
+    "S": {
+      "bos_token_id": 151643,
+      "pad_token_id": 151643,
+      "do_sample": true,
+      "eos_token_id": [
+        151645,
+        151643
+      ],
+      "repetition_penalty": 1.05,
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "transformers_version": "4.37.0"
+    }
+  },
+  "qa_candidates": 4,
+  "budgets": [
+    1,
+    4
+  ],
+  "postprocessor": "deterministic parser then fixed Qwen2.5-7B-Instruct, greedy JSON answer/evidence extraction with quoted-evidence grounding; no gold input; separately recorded inference cost",
+  "raw_em": 0.0,
+  "extracted_em": 0.46875,
+  "extracted_f1": 0.4756944444444444,
+  "extraction_coverage": 0.734375,
+  "extractor_prompt_tokens": 26889,
+  "extractor_completion_tokens": 2466,
+  "extraction_seconds": 56.88524770736694,
+  "caution": "Small training-only debugging pilot, not a held-out performance estimate or proof of adaptive-budget benefit"
+}

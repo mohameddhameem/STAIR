@@ -1,0 +1,40 @@
+{
+  "model_generation_configs": {
+    "W": {
+      "bos_token_id": 151643,
+      "pad_token_id": 151643,
+      "do_sample": true,
+      "eos_token_id": [
+        151645,
+        151643
+      ],
+      "repetition_penalty": 1.1,
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "transformers_version": "4.37.0"
+    },
+    "S": {
+      "bos_token_id": 151643,
+      "pad_token_id": 151643,
+      "do_sample": true,
+      "eos_token_id": [
+        151645,
+        151643
+      ],
+      "repetition_penalty": 1.05,
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20,
+      "transformers_version": "4.37.0"
+    }
+  },
+  "context_limit": 131072,
+  "candidates": 4,
+  "budgets": [
+    1,
+    4
+  ],
+  "questions": 8,
+  "hf_repetition_penalty": true
+}

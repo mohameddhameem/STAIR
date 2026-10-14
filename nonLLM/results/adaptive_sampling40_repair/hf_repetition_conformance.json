@@ -1,0 +1,178 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "penalty": 1.0,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [],
+      "passed": true
+    },
+    {
+      "penalty": 1.0,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [
+        1,
+        2,
+        2
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 1.0,
+      "prompt": [
+        4
+      ],
+      "output": [
+        0,
+        4
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 1.0,
+      "prompt": [],
+      "output": [],
+      "passed": true
+    },
+    {
+      "penalty": 1.05,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [],
+      "passed": true
+    },
+    {
+      "penalty": 1.05,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [
+        1,
+        2,
+        2
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 1.05,
+      "prompt": [
+        4
+      ],
+      "output": [
+        0,
+        4
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 1.05,
+      "prompt": [],
+      "output": [],
+      "passed": true
+    },
+    {
+      "penalty": 1.1,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [],
+      "passed": true
+    },
+    {
+      "penalty": 1.1,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [
+        1,
+        2,
+        2
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 1.1,
+      "prompt": [
+        4
+      ],
+      "output": [
+        0,
+        4
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 1.1,
+      "prompt": [],
+      "output": [],
+      "passed": true
+    },
+    {
+      "penalty": 2.0,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [],
+      "passed": true
+    },
+    {
+      "penalty": 2.0,
+      "prompt": [
+        0,
+        1,
+        1,
+        3
+      ],
+      "output": [
+        1,
+        2,
+        2
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 2.0,
+      "prompt": [
+        4
+      ],
+      "output": [
+        0,
+        4
+      ],
+      "passed": true
+    },
+    {
+      "penalty": 2.0,
+      "prompt": [],
+      "output": [],
+      "passed": true
+    }
+  ],
+  "reference": "installed Transformers RepetitionPenaltyLogitsProcessor"
+}

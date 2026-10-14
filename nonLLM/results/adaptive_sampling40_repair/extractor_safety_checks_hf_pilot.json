@@ -1,0 +1,303 @@
+[
+  {
+    "question": "What is the capital of France?",
+    "response": "The answer is Berlin.",
+    "expected": "Berlin",
+    "result": {
+      "answer": "Berlin",
+      "evidence": "The answer is Berlin.",
+      "grounding_valid": true,
+      "method": "deterministic",
+      "seconds": 0,
+      "usage": {}
+    },
+    "passed": true
+  },
+  {
+    "question": "What is 2 + 2?",
+    "response": "The answer is 5.",
+    "expected": "5",
+    "result": {
+      "answer": "5",
+      "evidence": "The answer is 5.",
+      "grounding_valid": true,
+      "method": "deterministic",
+      "seconds": 0,
+      "usage": {}
+    },
+    "passed": true
+  },
+  {
+    "question": "What is the capital of France?",
+    "response": "Berlin is the capital. Paris is not the answer.",
+    "expected": "Berlin",
+    "result": {
+      "method": "llm_grounded",
+      "answer": null,
+      "evidence": null,
+      "grounding_valid": false,
+      "raw_extraction": {
+        "answer": null,
+        "evidence": null
+      },
+      "seconds": 0.26827335357666016,
+      "usage": {
+        "id": "fd0113137c804aa9ab81522976ad5977",
+        "finish_reason": {
+          "type": "stop",
+          "matched": 151645
+        },
+        "prompt_tokens": 270,
+        "weight_version": "default",
+        "num_retractions": 0,
+        "reasoning_tokens": 0,
+        "completion_tokens": 12,
+        "cached_tokens": 269,
+        "cached_tokens_details": {
+          "device": 269,
+          "host": 0
+        },
+        "dp_rank": null,
+        "e2e_latency": 0.26583277247846127,
+        "response_sent_to_client_ts": 1791994475.4882803
+      }
+    },
+    "passed": true
+  },
+  {
+    "question": "What is 2 + 2?",
+    "response": "The sum given in this response is five.",
+    "expected": "five",
+    "result": {
+      "method": "llm_grounded",
+      "answer": "five",
+      "evidence": "The sum given in this response is five.",
+      "grounding_valid": true,
+      "raw_extraction": {
+        "answer": "five",
+        "evidence": "The sum given in this response is five."
+      },
+      "seconds": 0.47164034843444824,
+      "usage": {
+        "id": "1c7b9c25435f4d98bd6dd7526a7c55e6",
+        "finish_reason": {
+          "type": "stop",
+          "matched": 151645
+        },
+        "prompt_tokens": 269,
+        "weight_version": "default",
+        "num_retractions": 0,
+        "reasoning_tokens": 0,
+        "completion_tokens": 22,
+        "cached_tokens": 268,
+        "cached_tokens_details": {
+          "device": 268,
+          "host": 0
+        },
+        "dp_rank": null,
+        "e2e_latency": 0.47026455122977495,
+        "response_sent_to_client_ts": 1791994475.9614472
+      }
+    },
+    "passed": true
+  },
+  {
+    "question": "Who wrote this book?",
+    "response": "I cannot determine the author.",
+    "expected": null,
+    "result": {
+      "method": "llm_grounded",
+      "answer": null,
+      "evidence": null,
+      "grounding_valid": false,
+      "raw_extraction": {
+        "answer": null,
+        "evidence": null
+      },
+      "seconds": 0.2668001651763916,
+      "usage": {
+        "id": "d477b06900ed45768c94da1b93f67ce3",
+        "finish_reason": {
+          "type": "stop",
+          "matched": 151645
+        },
+        "prompt_tokens": 263,
+        "weight_version": "default",
+        "num_retractions": 0,
+        "reasoning_tokens": 0,
+        "completion_tokens": 12,
+        "cached_tokens": 262,
+        "cached_tokens_details": {
+          "device": 262,
+          "host": 0
+        },
+        "dp_rank": null,
+        "e2e_latency": 0.2655880469828844,
+        "response_sent_to_client_ts": 1791994476.2299716
+      }
+    },
+    "passed": true
+  },
+  {
+    "question": "What is the capital of France?",
+    "response": "What is the capital of France?",
+    "expected": null,
+    "result": {
+      "method": "llm_grounded",
+      "answer": null,
+      "evidence": null,
+      "grounding_valid": false,
+      "raw_extraction": {
+        "answer": null,
+        "evidence": null
+      },
+      "seconds": 0.266740083694458,
+      "usage": {
+        "id": "c31b57f6eb8c4a20a6f30f0cdecffaf3",
+        "finish_reason": {
+          "type": "stop",
+          "matched": 151645
+        },
+        "prompt_tokens": 266,
+        "weight_version": "default",
+        "num_retractions": 0,
+        "reasoning_tokens": 0,
+        "completion_tokens": 12,
+        "cached_tokens": 265,
+        "cached_tokens_details": {
+          "device": 265,
+          "host": 0
+        },
+        "dp_rank": null,
+        "e2e_latency": 0.26556999143213034,
+        "response_sent_to_client_ts": 1791994476.4985416
+      }
+    },
+    "passed": true
+  },
+  {
+    "question": "Are they of the same nationality?",
+    "response": "No, they are not of the same nationality.",
+    "expected": "no",
+    "result": {
+      "answer": "no",
+      "evidence": "No, they are not of the same nationality.",
+      "grounding_valid": true,
+      "method": "deterministic",
+      "seconds": 0,
+      "usage": {}
+    },
+    "passed": true
+  },
+  {
+    "question": "Are J and K of the same nationality?",
+    "response": "Both J and K are British.",
+    "expected": "yes",
+    "result": {
+      "method": "llm_grounded",
+      "answer": "yes",
+      "evidence": "Both J and K are British.",
+      "grounding_valid": true,
+      "raw_extraction": {
+        "answer": "yes",
+        "evidence": "Both J and K are British."
+      },
+      "seconds": 0.43265247344970703,
+      "usage": {
+        "id": "dea2bd383f564e70a210e16a0601a14e",
+        "finish_reason": {
+          "type": "stop",
+          "matched": 151645
+        },
+        "prompt_tokens": 304,
+        "weight_version": "default",
+        "num_retractions": 0,
+        "reasoning_tokens": 0,
+        "completion_tokens": 20,
+        "cached_tokens": 303,
+        "cached_tokens_details": {
+          "device": 303,
+          "host": 0
+        },
+        "dp_rank": null,
+        "e2e_latency": 0.43131202552467585,
+        "response_sent_to_client_ts": 1791994476.9322422
+      }
+    },
+    "passed": true
+  },
+  {
+    "question": "Are J and K of the same nationality?",
+    "response": "J is British, while K is German.",
+    "expected": "no",
+    "result": {
+      "method": "llm_grounded",
+      "answer": "no",
+      "evidence": "J is British, while K is German.",
+      "grounding_valid": true,
+      "raw_extraction": {
+        "answer": "no",
+        "evidence": "J is British, while K is German."
+      },
+      "seconds": 0.47170567512512207,
+      "usage": {
+        "id": "c7f3029564b04948b64cf7a6836127a3",
+        "finish_reason": {
+          "type": "stop",
+          "matched": 151645
+        },
+        "prompt_tokens": 306,
+        "weight_version": "default",
+        "num_retractions": 0,
+        "reasoning_tokens": 0,
+        "completion_tokens": 22,
+        "cached_tokens": 305,
+        "cached_tokens_details": {
+          "device": 305,
+          "host": 0
+        },
+        "dp_rank": null,
+        "e2e_latency": 0.4703895263373852,
+        "response_sent_to_client_ts": 1791994477.4054136
+      }
+    },
+    "passed": true
+  },
+  {
+    "question": "Is 2 + 2 equal to 4?",
+    "response": "Is 2 + 2 equal to 4?",
+    "expected": null,
+    "result": {
+      "method": "llm_grounded",
+      "answer": null,
+      "evidence": null,
+      "grounding_valid": false,
+      "raw_extraction": {
+        "answer": null,
+        "evidence": null
+      },
+      "seconds": 0.2684447765350342,
+      "usage": {
+        "id": "cfa3ccd0d33d499cbbf9187d3ded8e5b",
+        "finish_reason": {
+          "type": "stop",
+          "matched": 151645
+        },
+        "prompt_tokens": 310,
+        "weight_version": "default",
+        "num_retractions": 0,
+        "reasoning_tokens": 0,
+        "completion_tokens": 12,
+        "cached_tokens": 309,
+        "cached_tokens_details": {
+          "device": 309,
+          "host": 0
+        },
+        "dp_rank": null,
+        "e2e_latency": 0.26706923823803663,
+        "response_sent_to_client_ts": 1791994477.6748397
+      }
+    },
+    "passed": true
+  }
+]

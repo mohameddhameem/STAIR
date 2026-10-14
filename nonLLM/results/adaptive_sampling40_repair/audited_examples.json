@@ -1,0 +1,44 @@
+[
+  {
+    "index": 5,
+    "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+    "gold": [
+      "YG Entertainment"
+    ],
+    "raw_text": "Based on the provided references and synthesized information, the correct answer is that 2014 S/S is the debut album of the South Korean boy group WINNER, which was formed by YG Entertainment.\n\nThe relevant reference is [4], which clearly states: \"2014 S/S is the debut album of South Korean group WINNER. It was released on August 12, 2014 by the group's record label, YG Entertainment.\"\n\nThis response is consistent across multiple sources, confirming that WINNER is indeed the group that debuted with the album \"2014 S/S\" and that they were formed by YG Entertainment.",
+    "raw_em": 0.0,
+    "extracted_em": 1.0,
+    "profile": "hf_penalty_yarn",
+    "extracted_answer": "YG Entertainment",
+    "extraction_method": "llm_grounded",
+    "quoted_evidence": "It was released on August 12, 2014 by the group's record label, YG Entertainment."
+  },
+  {
+    "index": 10,
+    "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+    "gold": [
+      "Kansas Song"
+    ],
+    "raw_text": "The fight song of the university whose main campus is in Lawrence, Kansas, and which has branch campuses in the Kansas City metropolitan area is \"Kansas Song,\" also known as \"We\u2019re From Kansas.\" This song belongs to the University of Kansas (often referred to as KU or Kansas), which has its primary campus in Lawrence and branch campuses in the Kansas City metropolitan area, including the Edwards Campus in Overland Park and the university's medical school and hospital in Kansas City.",
+    "raw_em": 0.0,
+    "extracted_em": 1.0,
+    "profile": "hf_penalty_yarn",
+    "extracted_answer": "Kansas Song",
+    "extraction_method": "llm_grounded",
+    "quoted_evidence": "The fight song of the university whose main campus is in Lawrence, Kansas, and which has branch campuses in the Kansas City metropolitan area is \"Kansas Song,\" also known as \"We\u2019re From Kansas.\""
+  },
+  {
+    "index": 12,
+    "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+    "gold": [
+      "1999"
+    ],
+    "raw_text": "Based on the provided references, Guns N' Roses performed a promo for the movie \"End of Days,\" which stars Arnold Schwarzenegger as a former New York Police detective, in 1999. Specifically, the song \"Oh My God\" was used as a promotional tool for the soundtrack of the film. This information is derived from reference [1], which indicates that \"End of Days\" is a 1999 American fantasy action horror thriller film starring Arnold Schwarzenegger, and reference [3], which mentions that \"Oh My God\" was released in 1999 on the soundtrack to \"End of Days\" as a promo for the film and the band.",
+    "raw_em": 0.0,
+    "extracted_em": 1.0,
+    "profile": "hf_penalty_yarn",
+    "extracted_answer": "1999",
+    "extraction_method": "llm_grounded",
+    "quoted_evidence": "1999"
+  }
+]
