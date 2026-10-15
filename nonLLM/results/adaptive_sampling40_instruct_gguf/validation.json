@@ -1,0 +1,348 @@
+{
+  "passed": true,
+  "training_indices": [
+    0,
+    1
+  ],
+  "pilot_rows": 32,
+  "controls": {
+    "W": [
+      {
+        "question": "What is the capital of France? Answer with the city name only.",
+        "expected": "paris",
+        "output": "Paris",
+        "passed": true
+      },
+      {
+        "question": "What is 2 + 2? Answer with the number only.",
+        "expected": "4",
+        "output": "4",
+        "passed": true
+      },
+      {
+        "question": "Reply with exactly the word READY and nothing else.",
+        "expected": "ready",
+        "output": "READY",
+        "passed": true
+      }
+    ],
+    "W_batch40": {
+      "outputs": 40,
+      "unique_seeds": 40,
+      "seconds": 0.12460637092590332
+    },
+    "S": [
+      {
+        "question": "What is the capital of France? Answer with the city name only.",
+        "expected": "paris",
+        "output": "Paris",
+        "passed": true
+      },
+      {
+        "question": "What is 2 + 2? Answer with the number only.",
+        "expected": "4",
+        "output": "4",
+        "passed": true
+      },
+      {
+        "question": "Reply with exactly the word READY and nothing else.",
+        "expected": "ready",
+        "output": "READY",
+        "passed": true
+      }
+    ],
+    "S_batch40": {
+      "outputs": 40,
+      "unique_seeds": 40,
+      "seconds": 0.13686275482177734
+    },
+    "W_long": {
+      "passed": true,
+      "outputs": [
+        {
+          "text": "Based on the information provided, the verification code assigned to project Bluebird is K7P3. Scott Derrickson is an American director, screenwriter, and producer who is best known for directing horror films such as \"Sinister\", \"The Exorcism of Emily Rose\", and \"Deliver Us From Evil\", as well as the 2016 Marvel Cinematic Universe installment, \"Doctor Strange\".",
+          "sample_index": 0,
+          "seed": 1740659788,
+          "meta_info": {
+            "completion_tokens": 84,
+            "prompt_tokens": 60244
+          },
+          "llama": {
+            "id_slot": 61,
+            "stop_type": "eos",
+            "stopping_word": "",
+            "truncated": false,
+            "tokens_cached": 60327,
+            "timings": {
+              "cache_n": 60243,
+              "prompt_n": 1,
+              "prompt_ms": 16.97,
+              "prompt_per_token_ms": 16.97,
+              "prompt_per_second": 58.927519151443725,
+              "predicted_n": 84,
+              "predicted_ms": 556.962,
+              "predicted_per_token_ms": 6.710385542168675,
+              "predicted_per_second": 149.0227340464879
+            }
+          }
+        }
+      ],
+      "input_tokens": 60244,
+      "truncated_tokens": 0,
+      "seconds": 0.8587024211883545,
+      "request_seed": 1740659788,
+      "sampling": {
+        "temperature": 0,
+        "n_predict": 128,
+        "top_k": 20,
+        "top_p": 0.8,
+        "min_p": 0,
+        "typical_p": 1,
+        "repeat_penalty": 1.1,
+        "repeat_last_n": 131072,
+        "presence_penalty": 0,
+        "frequency_penalty": 0,
+        "dry_multiplier": 0,
+        "mirostat": 0,
+        "samplers": [
+          "penalties",
+          "temperature",
+          "top_k",
+          "top_p"
+        ],
+        "n_cmpl": 1,
+        "seed": 1740659788,
+        "cache_prompt": true,
+        "stream": false,
+        "stop": [
+          "<|im_end|>",
+          "<|endoftext|>"
+        ],
+        "return_tokens": false
+      }
+    },
+    "S_long": {
+      "passed": true,
+      "outputs": [
+        {
+          "text": "Based on the provided references, the verification code assigned to project Bluebird is K7P3. This information is directly stated in reference [1], which identifies Scott Derrickson as the director of project Bluebird and specifies the verification code as K7P3.",
+          "sample_index": 0,
+          "seed": 1068540155,
+          "meta_info": {
+            "completion_tokens": 54,
+            "prompt_tokens": 60244
+          },
+          "llama": {
+            "id_slot": 59,
+            "stop_type": "eos",
+            "stopping_word": "",
+            "truncated": false,
+            "tokens_cached": 60297,
+            "timings": {
+              "cache_n": 14,
+              "prompt_n": 60230,
+              "prompt_ms": 11233.898,
+              "prompt_per_token_ms": 0.1865166528308152,
+              "prompt_per_second": 5361.451563829403,
+              "predicted_n": 54,
+              "predicted_ms": 734.252,
+              "predicted_per_token_ms": 13.853811320754716,
+              "predicted_per_second": 72.18230253373501
+            }
+          }
+        }
+      ],
+      "input_tokens": 60244,
+      "truncated_tokens": 0,
+      "seconds": 12.035419940948486,
+      "request_seed": 1068540155,
+      "sampling": {
+        "temperature": 0,
+        "n_predict": 128,
+        "top_k": 20,
+        "top_p": 0.8,
+        "min_p": 0,
+        "typical_p": 1,
+        "repeat_penalty": 1.05,
+        "repeat_last_n": 131072,
+        "presence_penalty": 0,
+        "frequency_penalty": 0,
+        "dry_multiplier": 0,
+        "mirostat": 0,
+        "samplers": [
+          "penalties",
+          "temperature",
+          "top_k",
+          "top_p"
+        ],
+        "n_cmpl": 1,
+        "seed": 1068540155,
+        "cache_prompt": true,
+        "stream": false,
+        "stop": [
+          "<|im_end|>",
+          "<|endoftext|>"
+        ],
+        "return_tokens": false
+      }
+    }
+  },
+  "extractor_checks": [
+    {
+      "expected": "Berlin",
+      "result": {
+        "answer": "Berlin",
+        "evidence": "The answer is Berlin.",
+        "grounding_valid": true,
+        "method": "deterministic",
+        "seconds": 0,
+        "usage": {}
+      },
+      "passed": true
+    },
+    {
+      "expected": "5",
+      "result": {
+        "answer": "5",
+        "evidence": "The answer is 5.",
+        "grounding_valid": true,
+        "method": "deterministic",
+        "seconds": 0,
+        "usage": {}
+      },
+      "passed": true
+    },
+    {
+      "expected": "Berlin",
+      "result": {
+        "answer": null,
+        "evidence": null,
+        "grounding_valid": false,
+        "raw_extraction": {
+          "answer": null,
+          "evidence": null
+        },
+        "method": "llm_grounded_gguf",
+        "seconds": 0.12193727493286133,
+        "usage": {
+          "completion_tokens": 12,
+          "prompt_tokens": 270
+        }
+      },
+      "passed": true
+    },
+    {
+      "expected": "five",
+      "result": {
+        "answer": "five",
+        "evidence": "The sum given in this response is five.",
+        "grounding_valid": true,
+        "raw_extraction": {
+          "answer": "five",
+          "evidence": "The sum given in this response is five."
+        },
+        "method": "llm_grounded_gguf",
+        "seconds": 0.18868803977966309,
+        "usage": {
+          "completion_tokens": 22,
+          "prompt_tokens": 269
+        }
+      },
+      "passed": true
+    },
+    {
+      "expected": null,
+      "result": {
+        "answer": null,
+        "evidence": null,
+        "grounding_valid": false,
+        "raw_extraction": {
+          "answer": null,
+          "evidence": null
+        },
+        "method": "llm_grounded_gguf",
+        "seconds": 0.11560297012329102,
+        "usage": {
+          "completion_tokens": 12,
+          "prompt_tokens": 263
+        }
+      },
+      "passed": true
+    },
+    {
+      "expected": null,
+      "result": {
+        "answer": null,
+        "evidence": null,
+        "grounding_valid": false,
+        "method": "question_echo_abstention",
+        "seconds": 0,
+        "usage": {}
+      },
+      "passed": true
+    },
+    {
+      "expected": "no",
+      "result": {
+        "answer": "no",
+        "evidence": "No, they are not of the same nationality.",
+        "grounding_valid": true,
+        "method": "deterministic",
+        "seconds": 0,
+        "usage": {}
+      },
+      "passed": true
+    },
+    {
+      "expected": "yes",
+      "result": {
+        "answer": "yes",
+        "evidence": "Both J and K are British.",
+        "grounding_valid": true,
+        "raw_extraction": {
+          "answer": "yes",
+          "evidence": "Both J and K are British."
+        },
+        "method": "llm_grounded_gguf",
+        "seconds": 0.1873471736907959,
+        "usage": {
+          "completion_tokens": 20,
+          "prompt_tokens": 304
+        }
+      },
+      "passed": true
+    },
+    {
+      "expected": "no",
+      "result": {
+        "answer": "no",
+        "evidence": "J is British, while K is German.",
+        "grounding_valid": true,
+        "raw_extraction": {
+          "answer": "no",
+          "evidence": "J is British, while K is German."
+        },
+        "method": "llm_grounded_gguf",
+        "seconds": 0.18931913375854492,
+        "usage": {
+          "completion_tokens": 22,
+          "prompt_tokens": 306
+        }
+      },
+      "passed": true
+    },
+    {
+      "expected": null,
+      "result": {
+        "answer": null,
+        "evidence": null,
+        "grounding_valid": false,
+        "method": "question_echo_abstention",
+        "seconds": 0,
+        "usage": {}
+      },
+      "passed": true
+    }
+  ],
+  "note": "Training-only validity checks, not held-out benchmark performance."
+}

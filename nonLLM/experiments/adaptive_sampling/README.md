@@ -1,5 +1,10 @@
 # Per-question prefix sampling on serverA
 
+The active user-requested rerun uses **official Instruct GGUF weights with
+llama.cpp on serverA only**. See [GGUF_RUN.md](GGUF_RUN.md) and
+[CURRENT_RUN.json](CURRENT_RUN.json). The configuration below describes the
+archived Base GGUF/SGLang run and must not be used to resume the new experiment.
+
 User-selected alignment target: AgentTTS public HotpotQA full retrieval–merge–QA–fusion code, commit `3f0c2df814c059d0df57a71056c3266ff02c8559`. Temperatures are retrieval 0.9, QA 0.7, fusion 0.3; each generation has a 512-token limit. Prompt methods are extracted via AST from that source and executed unchanged, including Merge and evidence parsing. Fusion receives the original full reference pool twice, exactly as upstream. Even k=1 runs fusion. Native SGLang parameters explicitly match HF defaults top_k=50, top_p=1, repetition_penalty=1. Backend metadata and server RNG seed are recorded. Deterministic inference is disabled for throughput; SGLang 0.5.18 ignores per-request seeds in this mode. Forty candidates use independent draws from the server RNG. Exact replay after resume is not guaranteed. Backend-dependent random streams are not expected to reproduce HF bitwise.
 
 W = community Qwen2.5-1.5B Base GGUF Q4_K_M. S = community Qwen2.5-7B Base GGUF Q4_K_M. These models, quantization and serving backend differ from the paper. This is a prompt/settings-aligned experiment, not reproduction of the paper's numerical results. Same-model retrieval/QA combinations bypass upstream CLI's different-name assertion.

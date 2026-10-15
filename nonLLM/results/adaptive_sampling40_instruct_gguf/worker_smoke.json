@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "training_index": 0,
+  "checks": {
+    "retrieval_W": {
+      "rows": 1,
+      "expected": 1
+    },
+    "retrieval_S": {
+      "rows": 1,
+      "expected": 1
+    },
+    "answers_W": {
+      "rows": 82,
+      "expected": 82
+    },
+    "answers_S": {
+      "rows": 82,
+      "expected": 82
+    },
+    "extraction_S": {
+      "rows": 160,
+      "expected": 160
+    }
+  },
+  "ss_yes_budgets": 39,
+  "reusable_as_main_cache": true,
+  "note": "Uses frozen main settings; each QA batch generated once, all 40 prefixes fused."
+}

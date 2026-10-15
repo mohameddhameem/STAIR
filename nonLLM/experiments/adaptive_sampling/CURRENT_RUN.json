@@ -1,0 +1,18 @@
+{
+  "run": "sampling40_instruct_gguf",
+  "host": "SMU_A",
+  "root": "/data1/zmcheng/cs707_sampling40_instruct_gguf",
+  "backend": "llama.cpp",
+  "weak": "Qwen/Qwen2.5-1.5B-Instruct-GGUF Q4_K_M",
+  "strong": "Qwen/Qwen2.5-7B-Instruct-GGUF Q4_K_M",
+  "serverB": false,
+  "requested_gpus": [0, 1, 2, 3],
+  "launched_gpus": [0, 1, 3],
+  "gpu2_status": "Uncorrectable ECC; reset blocked by monitoring clients; permission to close monitors pending",
+  "questions": 7405,
+  "candidates_per_pair": 40,
+  "prefix_budgets": "1..40",
+  "temperature_sweep": false,
+  "live_state": "/data1/zmcheng/cs707_sampling40_instruct_gguf/state.json",
+  "documentation": "GGUF_RUN.md"
+}

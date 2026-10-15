@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "questions": 7405,
+  "scope": "conservative full-pool 40-candidate fusion bound",
+  "max_tokens_including_output": 66965,
+  "maximum_at": 4359,
+  "context_limit": 131072,
+  "gold_answers_used": false
+}
