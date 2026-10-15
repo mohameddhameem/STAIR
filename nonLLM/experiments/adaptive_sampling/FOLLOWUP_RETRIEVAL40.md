@@ -56,3 +56,12 @@ References:
 
 - https://docs.nvidia.com/deploy/gpu-debug-guidelines/gpu-node-triage.html
 - https://docs.nvidia.com/deploy/nvidia-smi/
+
+Update at 18:49 +08: the user subsequently authorized pausing the current run.
+GPU2 was successfully reset after temporarily unloading idle NVIDIA graphics
+modules as well as releasing monitoring handles. Modules and system monitoring
+were restored. Row remapping is applied, recovery action is None and volatile
+DRAM uncorrectable errors are zero. A 36 GiB two-pattern memory check and
+matrix-compute checks passed. The same experiment resumed on all four GPUs;
+see GGUF_RUN.md and the run-root maintenance audit. Retrieval-40 remains a
+separate follow-up and was not introduced into the current run.

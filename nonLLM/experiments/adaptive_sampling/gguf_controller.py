@@ -85,15 +85,13 @@ def main(root, gpus):
                 state(stage='loading', next_stage=stage, model=model, servers=metadata)
                 wait_ready(servers, [30380 + rank for rank in range(len(gpus))])
                 current = model
-            if gpus == [0, 1, 2, 3]:
-                workers = [child([PYTHON, str(root / 'code/gguf_worker.py'), '--root', str(root),
-                                  '--stage', stage, '--model', model, '--shard', str(g),
-                                  '--port', str(30380 + g)], f'worker_{stage}_{model}_{g}.log') for g in range(4)]
-            else:
-                workers = [child([PYTHON, str(root / 'code/gguf_gpu_queue.py'), '--root', str(root),
-                                  '--stage', stage, '--model', model, '--rank', str(rank),
-                                  '--ranks', str(len(gpus)), '--port', str(30380 + rank)],
-                                 f'worker_{stage}_{model}_gpu{gpu}.log') for rank, gpu in enumerate(gpus)]
+            # Keep all replicas involved in each logical shard. A resumed run
+            # can have most cached answers in one shard after reduced-GPU work;
+            # assigning a whole shard to each GPU would then leave a card idle.
+            workers = [child([PYTHON, str(root / 'code/gguf_gpu_queue.py'), '--root', str(root),
+                              '--stage', stage, '--model', model, '--rank', str(rank),
+                              '--ranks', str(len(gpus)), '--port', str(30380 + rank)],
+                             f'worker_{stage}_{model}_gpu{gpu}.log') for rank, gpu in enumerate(gpus)]
             state(stage=stage, model=model, workers=[p.pid for p in workers], servers=[p.pid for p in servers])
             while any(p.poll() is None for p in workers):
                 exclusive(processes)

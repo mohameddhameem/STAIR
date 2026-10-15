@@ -1,0 +1,289 @@
+{
+  "time": "2026-10-15 18:58:21",
+  "gpu_uuid": "GPU-b32c400f-6936-def0-5abc-21a38010e91c",
+  "gpu_index": 2,
+  "reset_commands": [
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "docker",
+        "stop",
+        "--time",
+        "10",
+        "07d028074902"
+      ],
+      "returncode": 0,
+      "output": "07d028074902\n"
+    },
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "systemctl",
+        "stop",
+        "nvidia-persistenced"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "fuser",
+        "-v",
+        "/dev/nvidia0",
+        "/dev/nvidia1",
+        "/dev/nvidia2",
+        "/dev/nvidia3",
+        "/dev/nvidiactl",
+        "/dev/nvidia-uvm"
+      ],
+      "returncode": 1,
+      "output": ""
+    },
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "modprobe",
+        "-r",
+        "nvidia_drm",
+        "nvidia_modeset"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "nvidia-smi",
+        "--gpu-reset",
+        "-i",
+        "GPU-b32c400f-6936-def0-5abc-21a38010e91c"
+      ],
+      "returncode": 0,
+      "output": "GPU 00000000:81:00.0 was successfully reset.\nAll done.\n"
+    },
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "modprobe",
+        "nvidia_drm",
+        "modeset=Y",
+        "fbdev=Y"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "systemctl",
+        "start",
+        "nvidia-persistenced"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "args": [
+        "sudo",
+        "-n",
+        "docker",
+        "start",
+        "07d028074902"
+      ],
+      "returncode": 0,
+      "output": "07d028074902\n"
+    }
+  ],
+  "cuda_validation": {
+    "passed": true,
+    "memory_gib": 36,
+    "patterns": [
+      85,
+      170
+    ],
+    "matrix": [
+      4096,
+      4096
+    ],
+    "matrix_iterations": 30,
+    "seconds": 1.0640957355499268
+  },
+  "cache_preservation": {
+    "before": {
+      "answers_S_0.sqlite": 82,
+      "answers_W_0.sqlite": 49633,
+      "extraction_S_0.sqlite": 160,
+      "retrieval_S_0.sqlite": 1852,
+      "retrieval_S_1.sqlite": 1851,
+      "retrieval_S_2.sqlite": 1851,
+      "retrieval_S_3.sqlite": 1851,
+      "retrieval_W_0.sqlite": 1852,
+      "retrieval_W_1.sqlite": 1851,
+      "retrieval_W_2.sqlite": 1851,
+      "retrieval_W_3.sqlite": 1851
+    },
+    "after": {
+      "answers_S_0.sqlite": 82,
+      "answers_W_0.sqlite": 49633,
+      "extraction_S_0.sqlite": 160,
+      "retrieval_S_0.sqlite": 1852,
+      "retrieval_S_1.sqlite": 1851,
+      "retrieval_S_2.sqlite": 1851,
+      "retrieval_S_3.sqlite": 1851,
+      "retrieval_W_0.sqlite": 1852,
+      "retrieval_W_1.sqlite": 1851,
+      "retrieval_W_2.sqlite": 1851,
+      "retrieval_W_3.sqlite": 1851
+    },
+    "fingerprint": "ea58e1e7d61d14f3a76c5316234f2253dfd42cda97a0d2249fd47ae8662ba678",
+    "passed": true
+  },
+  "throughput": [
+    {
+      "model": "W",
+      "lanes": 1,
+      "questions": [
+        0,
+        12
+      ],
+      "requests": 24,
+      "seconds": 17.1076819896698,
+      "requests_per_second": 1.4028785439483862,
+      "output_tokens": 2289
+    },
+    {
+      "model": "W",
+      "lanes": 2,
+      "questions": [
+        0,
+        12
+      ],
+      "requests": 24,
+      "seconds": 24.801359176635742,
+      "requests_per_second": 0.9676889008006195,
+      "output_tokens": 2357
+    },
+    {
+      "model": "W",
+      "lanes": 4,
+      "questions": [
+        0,
+        12
+      ],
+      "requests": 24,
+      "seconds": 45.24078845977783,
+      "requests_per_second": 0.530494733117608,
+      "output_tokens": 2245
+    },
+    {
+      "model": "S",
+      "lanes": 1,
+      "questions": [
+        0,
+        12
+      ],
+      "requests": 24,
+      "seconds": 61.74016308784485,
+      "requests_per_second": 0.38872589250942585,
+      "output_tokens": 4854
+    },
+    {
+      "model": "S",
+      "lanes": 2,
+      "questions": [
+        0,
+        12
+      ],
+      "requests": 24,
+      "seconds": 64.34993481636047,
+      "requests_per_second": 0.37296075075274493,
+      "output_tokens": 5205
+    },
+    {
+      "model": "S",
+      "lanes": 4,
+      "status": "incomplete_at_timeout",
+      "wall_seconds": 90.53941512107849
+    }
+  ],
+  "scheduling": {
+    "version": 1,
+    "models": {
+      "W": {
+        "fusion_lanes": 1,
+        "question_lanes": 2
+      },
+      "S": {
+        "fusion_lanes": 2,
+        "question_lanes": 2
+      }
+    },
+    "reason": "W training-only benchmark: 24 requests take 17.11s with one fusion lane vs 24.80s with two. S one/two lanes differ little; keep established two. Same prompts, tokens, seeds, candidate count and model profile. No temperature sweep."
+  },
+  "resume": {
+    "pid": 2220179,
+    "command": [
+      "/home/zmcheng/miniconda3/envs/sglang518/bin/python",
+      "/data1/zmcheng/cs707_sampling40_instruct_gguf/code/gguf_controller.py",
+      "--root",
+      "/data1/zmcheng/cs707_sampling40_instruct_gguf",
+      "--gpus",
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "time": "2026-10-15 19:00:12",
+    "reuses_completed_requests": true,
+    "scheduling": "Each physical GPU processes a disjoint subset of every logical shard; cache skew does not strand a whole GPU."
+  },
+  "current_state": {
+    "updated": "2026-10-15 19:00:15",
+    "controller_pid": 2220179,
+    "host": "serverA",
+    "uses_serverB": false,
+    "physical_gpus": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "stage": "answers",
+    "model": "W",
+    "workers": [
+      2220306,
+      2220307,
+      2220308,
+      2220309
+    ],
+    "servers": [
+      2220186,
+      2220194,
+      2220222,
+      2220250
+    ]
+  },
+  "monitoring": {
+    "persistenced": "active",
+    "dcgm_running": "true"
+  },
+  "final_check": {
+    "time": "2026-10-15 19:00:58",
+    "answers_W_counts": {
+      "0": 49987,
+      "1": 191,
+      "2": 164,
+      "3": 173
+    },
+    "answers_W_total": 50515,
+    "gpu_status": "index, utilization.gpu [%], memory.used [MiB], ecc.errors.uncorrected.volatile.dram\n0, 73 %, 16353 MiB, 0\n1, 73 %, 16353 MiB, 0\n2, 74 %, 16353 MiB, 0\n3, 73 %, 16353 MiB, 0\n"
+  }
+}

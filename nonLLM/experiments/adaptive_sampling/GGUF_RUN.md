@@ -14,6 +14,37 @@ each of the four logical SQLite shards into disjoint subsets, with each physical
 GPU processing its subsets sequentially. Final logical-shard counts are checked
 before marking a phase complete. This can resume on four GPUs after recovery.
 
+On 2026-10-15 the user authorized pausing the run to repair GPU2. The controller
+stopped, preserving all committed requests. After releasing monitoring clients,
+the reset was still blocked until the idle `nvidia_drm`/`nvidia_modeset` modules
+were temporarily unloaded. A targeted UUID reset succeeded at 18:49 +08; the
+modules and system monitoring were restored without rebooting the server.
+GPU2's row remapping is no longer pending, recovery action is None and volatile
+DRAM uncorrectable errors are zero. A 36 GiB two-pattern memory check and 30
+4096-square matrix checks passed. Historical aggregate error counts remain.
+The workload resumed on **all four physical GPUs 0, 1, 2, 3**, reusing its caches.
+The four-card controller now uses disjoint rank subsets within every logical
+shard, as the three-card queues did. This distributes the earlier run's cache
+skew across all four GPUs instead of assigning the mostly cached shard to one
+GPU and leaving that GPU idle early. Three- and four-rank assignments were
+checked to cover all 7,405 questions exactly once.
+
+Training-only fusion throughput measurements led to a separate
+`runtime_schedule.json`: W uses one fusion lane, S retains two; both keep two
+question lanes. For the same 24 W fusion requests on training indices 0 and 12,
+one lane took 17.11 s, two took 24.80 s, and four took 45.24 s. Eight and twelve
+lanes were much slower and stopped before completion. For S, one/two lanes
+took 61.74/64.35 s with different output lengths; that small difference did not
+justify changing the established two-lane setting. Higher utilization alone
+does not indicate higher request throughput. This small benchmark does not
+establish the speedup over the whole corpus. `gguf_throughput.py` records the
+workload and raw diagnostic replies outside experiment databases.
+
+Only worker scheduling and logging changed. Model/prompt/sampler/parser files,
+the frozen profile and database fingerprint are unchanged. The scheduling-only
+worker lock update and original source/lock are archived under
+`maintenance/20261015_184550` in the run root. No existing results were deleted.
+
 Remote run root: `/data1/zmcheng/cs707_sampling40_instruct_gguf`.
 All runtime files, weights, tokenizers, source snapshots, logs and caches are
 under this folder. Unchanged assets and libraries are hard-linked to avoid extra

@@ -68,9 +68,20 @@ async def main(a):
     client = Client(root, a.model, a.port, tok)
     prompt = load_protocol(root / 'upstream')
     admission = Admission(int(profile['kv_pool_tokens'] * .75), profile['slots'])
-    # Many long fusions in parallel replicate their reference-pool prefill and
-    # evict useful prefixes. Two lanes retain prefix locality; QA still forks 40.
-    fusion_lanes = asyncio.Semaphore(2)
+    # Scheduling is separate from the frozen model/prompt/sampling profile.
+    schedule_path = root / 'runtime_schedule.json'
+    schedule = json.loads(schedule_path.read_text()) if schedule_path.exists() else {}
+    settings = schedule.get('models', {}).get(a.model, {})
+    fusion_limit = int(settings.get('fusion_lanes', 2))
+    concurrency = int(settings.get('question_lanes', 2))
+    if not (1 <= fusion_limit <= profile['slots'] and 1 <= concurrency <= profile['slots']):
+        raise RuntimeError('Invalid runtime scheduling limits')
+    # Long fusions replicate reference-pool prefill. More simultaneous requests
+    # can reduce prefix reuse and throughput even when GPU utilization rises.
+    fusion_lanes = asyncio.Semaphore(fusion_limit)
+    print(json.dumps({'runtime_schedule': {'fusion_lanes': fusion_limit,
+                                          'question_lanes': concurrency},
+                      'stage': a.stage, 'model': a.model, 'shard': a.shard}), flush=True)
 
     def get(key):
         row = db.execute('SELECT payload FROM results WHERE key=?', (key,)).fetchone()
@@ -174,7 +185,6 @@ async def main(a):
                 indices = indices[:a.limit]
             # Independent long retrieval prompts do not share KV. Large batches
             # multiply attention over the unified pool; use two question lanes.
-            concurrency = 2
             for offset in range(0, len(indices), concurrency):
                 await asyncio.gather(*(question(i) for i in indices[offset:offset + concurrency]))
     marker = 'pilot.done' if a.limit or a.indices_file else 'done'

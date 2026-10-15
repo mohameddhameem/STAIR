@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "models": {
+    "W": {
+      "fusion_lanes": 1,
+      "question_lanes": 2
+    },
+    "S": {
+      "fusion_lanes": 2,
+      "question_lanes": 2
+    }
+  },
+  "reason": "W training-only benchmark: 24 requests take 17.11s with one fusion lane vs 24.80s with two. S one/two lanes differ little; keep established two. Same prompts, tokens, seeds, candidate count and model profile. No temperature sweep."
+}
