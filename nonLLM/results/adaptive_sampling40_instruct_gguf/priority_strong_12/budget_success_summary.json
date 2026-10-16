@@ -1,0 +1,234 @@
+{
+  "scope": "Twelve matched training questions, evaluation v2, strict extracted EM. Earliest success is descriptive and gold-assisted, not a learned or true optimal budget. Pair coverage counts overlap.",
+  "pairs": {
+    "WW": {
+      "ever_correct_questions": 5,
+      "first_success_k_histogram": {
+        "1": 2,
+        "2": 1,
+        "4": 2
+      },
+      "first_success_bins": {
+        "k1": 2,
+        "k2to5": 3,
+        "k6to10": 0,
+        "k11to20": 0,
+        "k21to40": 0
+      },
+      "correct_pair_budget_cells": 137,
+      "best_fixed_ks": [
+        4,
+        11,
+        16
+      ],
+      "best_fixed_hits": 5
+    },
+    "WS": {
+      "ever_correct_questions": 8,
+      "first_success_k_histogram": {
+        "1": 5,
+        "3": 1,
+        "22": 1,
+        "36": 1
+      },
+      "first_success_bins": {
+        "k1": 5,
+        "k2to5": 1,
+        "k6to10": 0,
+        "k11to20": 0,
+        "k21to40": 2
+      },
+      "correct_pair_budget_cells": 99,
+      "best_fixed_ks": [
+        1
+      ],
+      "best_fixed_hits": 5
+    },
+    "SW": {
+      "ever_correct_questions": 5,
+      "first_success_k_histogram": {
+        "1": 2,
+        "4": 1,
+        "6": 1,
+        "18": 1
+      },
+      "first_success_bins": {
+        "k1": 2,
+        "k2to5": 1,
+        "k6to10": 1,
+        "k11to20": 1,
+        "k21to40": 0
+      },
+      "correct_pair_budget_cells": 100,
+      "best_fixed_ks": [
+        39
+      ],
+      "best_fixed_hits": 4
+    },
+    "SS": {
+      "ever_correct_questions": 7,
+      "first_success_k_histogram": {
+        "1": 4,
+        "2": 1,
+        "4": 1,
+        "22": 1
+      },
+      "first_success_bins": {
+        "k1": 4,
+        "k2to5": 2,
+        "k6to10": 0,
+        "k11to20": 0,
+        "k21to40": 1
+      },
+      "correct_pair_budget_cells": 136,
+      "best_fixed_ks": [
+        33
+      ],
+      "best_fixed_hits": 6
+    }
+  },
+  "joint_earliest": {
+    "ever_correct_questions": 8,
+    "histogram": {
+      "1": 6,
+      "3": 1,
+      "36": 1
+    },
+    "winning_pairs_with_ties": {
+      "WW": 2,
+      "WS": 7,
+      "SS": 4,
+      "SW": 2
+    }
+  },
+  "questions": [
+    {
+      "index": 829,
+      "first_success_by_pair": {},
+      "joint_first_k": null,
+      "joint_first_pairs": []
+    },
+    {
+      "index": 1102,
+      "first_success_by_pair": {
+        "WW": 1,
+        "WS": 1,
+        "SW": 18,
+        "SS": 1
+      },
+      "joint_first_k": 1,
+      "joint_first_pairs": [
+        "WW",
+        "WS",
+        "SS"
+      ]
+    },
+    {
+      "index": 1436,
+      "first_success_by_pair": {},
+      "joint_first_k": null,
+      "joint_first_pairs": []
+    },
+    {
+      "index": 2414,
+      "first_success_by_pair": {
+        "WS": 1,
+        "SS": 1
+      },
+      "joint_first_k": 1,
+      "joint_first_pairs": [
+        "WS",
+        "SS"
+      ]
+    },
+    {
+      "index": 3385,
+      "first_success_by_pair": {
+        "WW": 4,
+        "WS": 22,
+        "SW": 1,
+        "SS": 1
+      },
+      "joint_first_k": 1,
+      "joint_first_pairs": [
+        "SW",
+        "SS"
+      ]
+    },
+    {
+      "index": 3698,
+      "first_success_by_pair": {},
+      "joint_first_k": null,
+      "joint_first_pairs": []
+    },
+    {
+      "index": 4561,
+      "first_success_by_pair": {
+        "WS": 1,
+        "SS": 22
+      },
+      "joint_first_k": 1,
+      "joint_first_pairs": [
+        "WS"
+      ]
+    },
+    {
+      "index": 4969,
+      "first_success_by_pair": {},
+      "joint_first_k": null,
+      "joint_first_pairs": []
+    },
+    {
+      "index": 5109,
+      "first_success_by_pair": {
+        "WS": 36
+      },
+      "joint_first_k": 36,
+      "joint_first_pairs": [
+        "WS"
+      ]
+    },
+    {
+      "index": 6405,
+      "first_success_by_pair": {
+        "WW": 1,
+        "WS": 1,
+        "SW": 4,
+        "SS": 2
+      },
+      "joint_first_k": 1,
+      "joint_first_pairs": [
+        "WW",
+        "WS"
+      ]
+    },
+    {
+      "index": 6612,
+      "first_success_by_pair": {
+        "WW": 4,
+        "WS": 3,
+        "SW": 6,
+        "SS": 4
+      },
+      "joint_first_k": 3,
+      "joint_first_pairs": [
+        "WS"
+      ]
+    },
+    {
+      "index": 7188,
+      "first_success_by_pair": {
+        "WW": 2,
+        "WS": 1,
+        "SW": 1,
+        "SS": 1
+      },
+      "joint_first_k": 1,
+      "joint_first_pairs": [
+        "WS",
+        "SW",
+        "SS"
+      ]
+    }
+  ]
+}

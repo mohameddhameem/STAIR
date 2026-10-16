@@ -59,3 +59,25 @@ verifies all original cache counts were preserved, both evaluation versions have
 
 comparison_v2.csv contains all forty budgets and EM/F1/coverage for each pair.
 Both JSON reports retain representative full replies and extracted answers.
+
+## Earliest strict-EM success by pair
+
+Each question is counted once per pair, using its smallest successful k. Counts
+overlap across pairs. This descriptive gold-assisted statistic is not a true
+optimal compute budget or evidence that earlier replies were semantically wrong.
+
+| Pair | Questions with any successful k | Earliest-success k and question count |
+|---|---:|---|
+| WW | 5 | 1: 2; 2: 1; 4: 2 |
+| WS | 8 | 1: 5; 3: 1; 22: 1; 36: 1 |
+| SW | 5 | 1: 2; 4: 1; 6: 1; 18: 1 |
+| SS | 7 | 1: 4; 2: 1; 4: 1; 22: 1 |
+
+Across all pairs, eight questions have at least one strict hit: six first hit
+at k=1, one at k=3, and one at k=36. Four never hit under this scorer. The k=36
+case (index 5109) involves Burton Cummings versus the gold Burton Lorne Cummings;
+earlier short-name replies can identify the same person. This must not be read
+as proof that the question requires 36 samples. The shared-k peaks are WW at
+4/11/16 (5 hits), WS at 1 (5), SW at 39 (4), and SS at 33 (6). These peaks are
+post-hoc on twelve training examples, not recommended budgets for the full test.
+budget_success_summary.json includes the per-question values and tie accounting.
