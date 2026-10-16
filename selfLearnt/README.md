@@ -1,143 +1,168 @@
 # Self-learnt model switching (retrieve, then answer)
 
-Part of STAIR / RightRoute. **No router: the models learn their own work, and a rulebook that is itself learnt from
-experiments decides when to escalate to a bigger model.** Small retrievers are fine-tuned to shortlist the right passages;
-the cheapest one always runs, and the rulebook escalates retrieval and answering only when the evidence says so. Every
-answer carries a calibrated Sure / Unsure flag.
+Part of STAIR / RightRoute. **No router: the models learn their own work by fine-tuning, and a rulebook that is itself learnt
+from experiments decides, per question, when to escalate to a bigger model.** The cheapest retriever always runs; the rulebook
+escalates retrieval and answering only when the evidence says so, ensembling what the models produced. Every answer carries a
+calibrated Sure / Unsure flag, also when the largest model answered.
 
-The development work behind this (Google Colab, notebooks 00–28) is kept on the
-[`selfLearnt-colab-dev`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt-colab-dev) branch. This folder holds the
-method, its results and the full-scale pipeline.
+- **Live progress of the cluster run:** branch [`selfLearnt-runs`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt-runs)
+  (status, estimated finish, results so far, charts; one commit, replaced at every update).
+- **Development history** (Google Colab, notebooks 00–28, results per experiment set): branch
+  [`selfLearnt-colab-dev`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt-colab-dev).
+- This branch: the method and the full-scale pipeline for the SMU Origami GPU cluster (`pipeline/`).
 
-## How it works
+## Five workstreams, one test set
+
+All five are scored on **AgentTTS's own 500 HotpotQA test questions** (dev file [500:1000], each with the gold paragraphs plus
+the top-100 BM25 paragraphs), with AgentTTS's metric (the gold answer contained in the final response) and its compute budget,
+plus FLOPs actually spent.
+
+| # | Workstream | Retrievers | Answerers | Switching | Purpose |
+|---|---|---|---|---|---|
+| 1 | **Baseline 1: AgentTTS**, as in its code | Qwen2.5 7B / 32B / 72B | Llama 3.2 3B / 3.1 8B / 3.1 70B | none: one setting (models + sample counts) found by AgentTTS's planner search on 50 questions, budget 900 | Baseline calibration |
+| 2 | **Baseline 2: strongest models** | Qwen2.5 72B | Llama 3.1 70B | none: largest models on every question | Baseline calibration |
+| 3 | Hidden-state probe + calibrated rules | AgentTTS's (untrained) | AgentTTS's (untrained) | rulebook on probe scores | Savings over Baseline 1 without fine-tuning? |
+| 4 | **Our method** on AgentTTS's models | Qwen2.5 7B / 32B / 72B, fine-tuned | Llama 3.2 3B / 3.1 8B / 3.1 70B, fine-tuned | self-learnt rulebook | Apple-to-apple with Baselines 1–2 |
+| 5 | **Our method**, full ladders | Qwen2.5 0.5B / Qwen3 0.6B / Qwen3.5 0.8B / Qwen2.5 3B / 7B / 32B / 72B, fine-tuned | Llama 3.2 3B / 3.1 8B / 3.1 70B, fine-tuned | self-learnt rulebook | More model sizes to switch between |
+
+Llama has no size between 8B and 70B; Llama 3.2 1B can be added as a smaller answerer in `configs/default.yaml`.
+
+### Workstream 1 follows AgentTTS's code
+
+From [github.com/FairyFali/AgentTTS](https://github.com/FairyFali/AgentTTS) (`code_others/archon_hotpotqa.py`, `AgentTTS.py`):
+the same data construction, prompts (verbatim), retrieve → Merge (reference numbers voted) → answer samples → fusion pipeline,
+temperatures, budget formula and search agent (`stair/agenttts_search.py` is their agent with a local LLM). Differences, all
+forced by what is public or available:
+
+| AgentTTS | Here | Why |
+|---|---|---|
+| Planner o3-mini (OpenAI) | Qwen2.5 72B (local) | Your choice: no API key |
+| Scores looked up in their wandb sweep CSVs | Our sweep of every setting in a grid on the same 50 search questions, looked up with their fuzzy matching | Their CSVs are not public |
+| Elasticsearch BM25 | BM25 in Python over title + text | No Elasticsearch on the cluster |
+| Llama 3.1 70B in 16-bit | 4-bit AWQ copy | Fits 2 GPUs |
+| Metric file `evaluation_2wiki.py` | Gold contained in the response | The file is not in their repository; containment matches their reported 0.742 |
+
+AgentTTS's reported best HotpotQA setting (Qwen 72B ×1, Llama 3B ×40, 0.742) is also run on the test questions as a check.
+
+### Our method (workstreams 4 and 5)
 
 | Layer | What it is | How it changes |
 |---|---|---|
-| Models | A ladder of retrievers (Qwen2.5 0.5B → Qwen3 0.6B → Qwen3.5 0.8B → Qwen2.5 3B) and two answerers (Llama 3.1 8B, Qwen2.5 32B) | Retrievers are fine-tuned with LoRA (backpropagation) on HotpotQA's gold-passage labels |
-| Soft rules | `IF signal < threshold THEN escalate` (and to which model), ensemble settings | Tuned by micro-experiments on dev questions; a planner LLM proposes new rules |
-| Hard rules | Locked rules and guardrails (H1–H8 below) | Never changed by the experiments |
+| Models | Ladders of retrievers and answerers | Fine-tuned by backpropagation (LoRA; QLoRA for 32B / 70B / 72B on 2,000 questions, the 'lighter' plan): retrievers on HotpotQA's gold-passage labels, answerers on gold answers |
+| Soft rules | `IF signal < threshold THEN escalate` (to the next size, a named size, or skipping sizes), ensemble settings | Tuned by micro-experiments on 1,000 dev questions; the planner LLM proposes new rules |
+| Hard rules | Locked rules and guardrails H1–H8 | Never changed by the experiments |
 
-Per question:
+Per question: the cheapest retriever shortlists → retrieval rules may escalate (shortlists ensembled; up to 3 retrievers) →
+the cheapest answerer answers → answer rules may escalate; an answer that agrees with an earlier one is accepted; otherwise
+rules may escalate again, and finally the answers plus sampled answers vote → Sure / Unsure flag.
 
-1. The cheapest retriever shortlists the passages.
-2. Retrieval rules may escalate to a bigger retriever (skipping rungs is allowed), and the shortlists are ensembled. A second rule may escalate once more.
-3. The small answerer answers.
-4. Answer rules may escalate to the big answerer: if the two agree, that answer is kept; otherwise sampled big-answerer answers join a majority vote.
-5. A calibrated score gives the Sure / Unsure flag.
+Starting rules (soft unless locked):
 
-**The micro-experiments (dev questions only).**
-- The dev questions are split into halves A and B.
-- In each round, code tries fine threshold steps, and the planner (Qwen 32B) reads evidence tables and proposes up to 3 changes.
-- A change is kept only if three things hold:
-  - on both halves, it is cheaper at no accuracy loss, or more accurate at ≤ 10% extra compute per point;
-  - it beats escalating the same number of random questions;
-  - it breaks no hard rule.
-- After the last round the rulebook is frozen and applied once to the test questions.
+| Rule | Decision |
+|---|---|
+| H1 (locked) | First retriever's confidence in its lowest 10% → escalate retrieval |
+| R1 | First retriever unsure (lowest 20%) → escalate, skipping one size, and ensemble |
+| R2 | After escalating, shortlists disagree and the bigger retriever is also unsure → escalate again |
+| H2 (locked) | Empty or "cannot be determined" answer → escalate |
+| A2 | Yes/no answer → keep |
+| A1 | Some of the answer's words are not in the passages → escalate; agree → accept, else vote |
+| A3 | Answerer's token confidence in its lowest 15% → escalate |
 
-### Hard rules (locked; edit `configs/default.yaml` by hand only)
+Workstream 3 starts from the same structure, with the hidden-state probes as its only signals.
+
+**Micro-experiments** (dev questions only, halves A and B). Each round, code tries fine threshold steps and the planner
+proposes up to 3 changes. A change is kept only if (1) on both halves it is cheaper at no accuracy loss, or more accurate at
+≤ 10% extra compute per point; (2) it beats escalating the same number of random questions; (3) it breaks no hard rule.
+After 4 rounds the rulebook is frozen and applied once to the test questions.
+
+### Hard rules (locked; edit `pipeline/configs/default.yaml` by hand only)
 
 | # | Rule | Prevents |
 |---|---|---|
-| H1 | Always escalate retrieval when the cheapest retriever's confidence is in its lowest 10% | Drifting to never escalating |
+| H1 | Always escalate retrieval when the first retriever's confidence is in its lowest 10% | Drifting to never escalating |
 | H2 | Always escalate an empty or "cannot be determined" answer | Accepting non-answers |
-| H3 | At most 60% of questions reach the big answerer | Drifting to always using the biggest model |
-| H4 | Dev accuracy ≥ the best fixed pipeline − 1 point (below it, only accuracy-raising changes are accepted) | Trading away accuracy |
+| H3 | At most 60% of questions reach the largest answerer, and 60% the largest retriever | Drifting to always using the biggest model |
+| H4 | Dev accuracy ≥ the best fixed pipeline of no higher cost − 1 point (below it, only accuracy-raising changes are accepted) | Switching that is worse than not switching |
 | H5 | "Sure" needs a calibrated score ≥ 0.85 | The flag losing its meaning |
 | H6 | ≤ 8 soft rules, each deciding on ≥ 2% of dev questions | Rules fitted to a handful of cases |
 | H7 | A threshold moves ≤ 0.05 per round | Chasing noise |
 | H8 | An accuracy gain may cost ≤ 10% extra compute per point | An unbounded price for accuracy |
 
-## Development results (Colab, 400 HotpotQA test questions)
+## Development results (Colab; 400 test questions, 20 candidates; not directly comparable with the cluster run)
 
-| Pipeline | Accuracy (corrected label) | Compute vs AgentTTS's pick |
+| Pipeline | Accuracy (corrected label) | Compute vs our earlier fixed pick |
 |---|---|---|
-| AgentTTS's pick: Qwen 7B retrieves, Qwen 32B answers | 76.8% | 0% |
-| Fine-tuned Qwen 3B retrieves, Qwen 32B answers | 84.2–84.5% | −42% |
+| Qwen 7B retrieves, Qwen 32B answers (scaled-down AgentTTS setting) | 76.8% | 0% |
+| Fine-tuned Qwen 3B retrieves, Qwen 32B answers | 84.2% | −42% |
 | Fine-tuned Qwen3.5 0.8B retrieves, Qwen 32B answers | 84.0% | −57% |
-| Fine-tuned Qwen2.5 0.5B (2 passes) retrieves, Qwen 32B answers | 79.5% | −58% |
-| 0.5B; when unsure → 0.6B → 0.8B; Qwen 32B answers (49% escalated) | 83.5% | −55% |
-| Starting rulebook (both stages; saved outputs, before micro-experiments) | 80.5% | −69.5% |
-| Llama-or-Qwen oracle (needs the answer key) | 86.8% | −72% |
+| 0.5B; when unsure → 0.6B → 0.8B; Qwen 32B answers | 83.5% | −55% |
+| Starting rulebook (both stages; saved outputs) | 80.5% | −69.5% |
 
-- **Fine-tuning works.** Small retrievers trained on gold-passage labels beat AgentTTS's pick by about 7 points, at about half its compute.
-- **Retrieval switching works.** The 0.5B knows when its own shortlist is bad: its confidence separates good from bad shortlists at 0.90 (0.5 = no signal). Escalating on it beats random escalation by +1.4 points (+0.6 to +2.3).
-- **Answer switching needs evidence from after the answer.** Whether Llama 8B will be wrong cannot be predicted beforehand (0.54–0.59). Checks on its answer reach 0.76: are its words in the passages, its confidence, yes/no.
-- **The starting rulebook beats random escalation** by +4.6 points (+2.2 to +7.2). Two of its cut-offs were chosen after seeing development test results, so read this as slightly optimistic.
-- **The Sure flag is honest:** answers flagged Sure at 0.90 were right 91.5% of the time.
+Fine-tuning works; retrieval switching beats random escalation (+1.4 points); answer switching needs evidence from after the
+answer (checks on the answer reach AUC 0.76); the Sure flag was right 91.5% of the time.
 
-## Running on the cluster
+## Running on the SMU Origami cluster
 
-**1. Environment** (once):
-```
-conda env create -f selfLearnt/pipeline/environment.yml
-conda activate stair
-```
+All commands from `STAIR/selfLearnt/pipeline` on the login node (`ssh <account>@origami.smu.edu.sg`).
 
-**2. Configure.** Edit `selfLearnt/pipeline/configs/default.yaml`:
-- `paths: project_dir` is the shared storage for models, data and runs.
-- Set `download_models: false` if compute nodes have no internet.
-- Model sizes, question counts, rules and guardrails are all in the same file.
+**1. Settings.** Run `myinfo`; put your partition, account and QOS into `jobs/cluster.env`. In `configs/default.yaml` set
+`paths: project_dir` to storage with **~600 GB free** (models ~500 GB, runs ~50 GB).
 
-Then edit the lines marked `EDIT` in `selfLearnt/pipeline/jobs/env.sh` (conda location, modules, a Hugging Face token for Llama, which is gated) and the partition name in the job files.
+**2. Environment (once, ~15 min):** `bash jobs/install_env.sh`
 
-**3. Dry run (CPU, about 6 minutes)**, to check the installation. It uses fake models and a tiny training model:
-```
-cd selfLearnt/pipeline
-python run.py --config configs/dryrun.yaml --stage all
-```
+**3. Models and data (once, login node, needs internet; several hours).** Accept the Llama licences on huggingface.co
+(Llama 3.1 8B, 3.1 70B, 3.2 3B), run `huggingface-cli login`, then inside `tmux`: `bash jobs/setup_login.sh`.
 
-**4. Full run (SLURM)**:
-```
-cd selfLearnt/pipeline
-sbatch jobs/00_setup.sbatch               # needs internet: models + HotpotQA files + question sets
-CONFIG=configs/default.yaml bash jobs/submit_all.sh
-```
-`submit_all.sh` chains every stage. Training runs two retrievers at a time, and the two answerers run side by side (one per A100). Every stage is resumable: if a job stops, submit it again.
+**4. GitHub token for the status page.** On github.com: Settings → Developer settings → Personal access tokens → Tokens
+(classic) → Generate, scope **public_repo** only. On the cluster:
+`echo <token> > ~/.stair_github_token && chmod 600 ~/.stair_github_token`. The token never goes into the repository.
 
-| Stage | Job | GPU | Estimated time (2,000 dev + 2,000 test questions) |
+**5. Check on CPU first (~2 min):** `python run.py --config configs/dryrun.yaml --stage all` (fake models, tiny training).
+
+**6. Submit everything:** `python jobs/submit_all.py` (preview with `--dry`). 72 jobs with dependencies, in priority order:
+
+| Phase | Workstreams | Rough wall time on 2 GPUs | Results |
 |---|---|---|---|
-| Models, HotpotQA, question sets | `00_setup` | – | 30–60 min (about 60 GB of models) |
-| Fine-tune the 4 retrievers | `02_train` (array) | 1 each, 2 at once | about 5 h (0.5B 2 h, 0.6B 1.5 h, 0.8B 1.75 h, 3B 3.5 h) |
-| Shortlists + baseline retrieval | `03_retrieve` | 1 | about 1 h |
-| Small answerer / big answerer + samples | `04`, `05` (parallel) | 1 each | about 1 h / 3–4 h |
-| Micro-experiments (planner) | `06_learn` | 1 | 30–45 min |
-| Test + report | `07_test` | – | about 10 min |
+| 1 | WS1 + WS2 | ~20 h | after ~1 day |
+| 2 | WS4: fine-tune 6 models, then rules | ~45–55 h | after ~3 days |
+| 3 | WS5: fine-tune 4 small retrievers, then rules | ~15–20 h | after ~4 days |
+| 4 | WS3: probes and rules | ~10–15 h | after ~4.5 days |
 
-These estimates are scaled from the Colab runs (one A100); the first cluster run will show the real figures, which are logged in `runs/<run>/stage_times.jsonl`.
+Every job resumes from its saved outputs; a job that reaches its time limit or is pre-empted requeues itself. If a job fails,
+fix the cause and re-submit (`python jobs/submit_all.py --phases 2`): finished work is skipped. If jobs cannot reach GitHub,
+run `bash jobs/status_loop.sh` in `tmux` on the login node.
 
-**Scaling up.** To add Qwen2.5 72B or Llama 3.1 70B, uncomment their entries under `models:`. They use `tensor_parallel: 2`, i.e. both A100s. In 4-bit form (AWQ) they need 80 GB cards. Make one of them the big answerer or the planner.
+GPUs: the jobs ask for A40 / L40S / H100 (`CONSTRAINT` in `jobs/cluster.env`; V100s cannot run these models). The 70B and
+72B models use both GPUs (`tensor_parallel: 2`); on 80 GB H100s set it to 1.
 
 ## Outputs (`runs/<run_name>/`)
 
 ```
-adapters/<retriever>/      LoRA checkpoints and the training curve (train_state.json)
-merged/<retriever>/        the fine-tuned retriever, merged for vLLM
-step/                      every shortlist, answer and sample (JSONL, with token probabilities and compute)
-rules/rulebooks/           the rulebook after every round (v0 = starting rules, final)
-rules/learn_state.json     every change tried, with its evidence and why it was accepted or rejected
-rules/planner_round*.txt   the planner's prompt and answer, per round
-results/summary.md         test results: accuracy, compute, intervals, against random escalation, Sure / Unsure
-results/rulebook_results.xlsx  the same, plus the learnt rules and a per-question table (which rule decided, models run, flag)
+status/page/              the status page (also on branch selfLearnt-runs)
+results/comparison.md     all workstreams side by side; results.csv; charts/
+ws1/search_table.csv      every AgentTTS setting on the search questions;  search_result.json, search_log.txt (planner transcript)
+ws1/test_results.json     WS1-2 on the test questions (per question too)
+ws3|ws4|ws5/results.json  test policies, learnt rules, accepted changes; results.xlsx; per_question.jsonl
+ws*/rules/                rulebooks after every round, learn_state.json (every change tried, and why kept or rejected), planner prompts
+adapters/<model>/         LoRA checkpoints and train_state.json (validation curve); merged/<model>/ for the small models
+step/                     every shortlist, answer, sample, hidden-state probe score (JSONL)
 ```
-
-## Differences from the development runs
-
-- **Larger sets.** The defaults are 2,000 dev questions (from HotpotQA's training file, never used for training) and 2,000 test questions (from HotpotQA's dev file); development used 1,000 and 400. Numbers are therefore not directly comparable.
-- **No learned route.** Notebook 27 showed that the 0.5B could not learn which answerer a question needs; the rulebook uses signals measured after each model runs.
-- **Generation fix.** Hugging Face generation now sets `repetition_penalty=1.0` explicitly (Qwen2.5's default of 1.1 had distorted validation decoding in development).
-- **Sampled answers are charged their full prompt each,** a conservative compute count.
 
 ## Code
 
 ```
 pipeline/
-  run.py                   stage runner (python run.py --config ... --stage ...)
-  configs/default.yaml     full-scale settings; configs/dryrun.yaml for the CPU check
-  jobs/                    SLURM job scripts, env.sh, submit_all.sh
-  stair_switch/
-    common.py              prompts (unchanged from development), metrics, vLLM / mock engines, voting
-    data.py                question sets (gold passages + BM25 distractors)
-    train.py               LoRA fine-tuning of the retrievers, checkpoint choice, merge
-    generate.py            shortlists, answers, samples (resumable)
-    rulebook.py            rules, micro-experiments, guardrails, test report
+  run.py                  stage runner: python run.py --config ... --stage ... [--model | --part | --ws]
+  configs/default.yaml    models, workstreams, fine-tuning, rules and guardrails; configs/dryrun.yaml for the CPU check
+  jobs/                   cluster.env, install_env.sh, setup_login.sh, submit_all.py, job.sbatch, status_loop.sh
+  stair/
+    common.py             prompts (AgentTTS's verbatim; ours), metrics, budget formula, ensembles, BM25
+    data.py               question sets (AgentTTS's search / test; train / val / dev from the training file)
+    engines.py            vLLM (tensor parallel, LoRA, log-probabilities, hidden states) and the mock engine
+    agenttts.py           WS1-2: settings grid, search, test runs;  agenttts_search.py: AgentTTS's agent (Apache-2.0)
+    train.py              LoRA / QLoRA fine-tuning of retrievers and answerers
+    states.py             WS3-5: shortlists, reachable shortlists, answers, samples
+    probe.py              WS3: hidden states and probes
+    rulebook.py           rules, micro-experiments, guardrails, test
+    report.py, progress.py  comparison, charts, status page, GitHub push
 ```

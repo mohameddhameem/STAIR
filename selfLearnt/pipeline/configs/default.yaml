@@ -1,91 +1,156 @@
-# Self-learnt switching: full-scale configuration.
-# Edit the paths for your cluster. Everything else reproduces the development setup (notebooks 22-28) at a larger scale.
+# STAIR / self-learnt switching: full-scale configuration for the SMU Origami cluster.
+# Five workstreams share one set of question files, models and saved outputs (see README.md).
+# Edit the paths (and, if needed, tensor_parallel for your GPUs). Everything else is the design as agreed.
 
 run_name: full_v1
-backend: vllm                   # vllm | mock  (mock = fake models, for a dry run on CPU)
+backend: vllm                   # vllm | mock (mock = fake models, for the CPU dry run)
 
 paths:
-  project_dir: /path/to/your/project            # EDIT: shared storage on the cluster
-  models_dir: ${project_dir}/models             # one folder per model (see models: dir)
-  data_dir: ${project_dir}/data/hotpotqa_${run_name}
+  project_dir: /path/to/your/project            # EDIT: storage with ~600 GB free (models ~420 GB, see README)
+  models_dir: ${project_dir}/models
+  data_dir: ${project_dir}/runs/${run_name}/data
   runs_dir: ${project_dir}/runs
   hf_cache: ${project_dir}/hf_cache
 
-download_models: true           # false if the compute nodes have no internet: copy the model folders into models_dir beforehand
+download_models: true           # false if jobs cannot reach the internet: run the setup stage on the login node instead
 
 gpu:
-  max_model_len: 8192
-  gpu_util: 0.88
-  chunk: 256                    # questions per vLLM call (rows are saved after every chunk, so jobs can resume)
+  max_model_len: 20480          # 100 candidate passages are ~13-16k tokens
+  gpu_util: 0.90
+  chunk: 128                    # prompts per vLLM call; outputs are saved after every chunk (jobs resume from there)
+
+progress:
+  github: true                  # push a status page to the branch below (needs ~/.stair_github_token, see README)
+  repo: https://github.com/mohameddhameem/STAIR.git
+  branch: selfLearnt-runs       # one commit, replaced at every update: the branch never grows
+  every_minutes: 20             # at most one push per 20 minutes (and one at the end of every stage)
+  author_name: Andy-TaiHL
+  author_email: taihocklin@gmail.com
 
 data:
-  hotpot_train: ${project_dir}/hotpotqa/hotpot_train_v1.1.json
-  hotpot_train_url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_train_v1.1.json
   hotpot_dev: ${project_dir}/hotpotqa/hotpot_dev_distractor_v1.json
   hotpot_dev_url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json
-  level: hard
-  n_candidates: 20              # gold paragraphs + BM25 distractors
+  hotpot_train: ${project_dir}/hotpotqa/hotpot_train_v1.1.json
+  hotpot_train_url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_train_v1.1.json
+  n_retrieve: 100               # BM25 paragraphs added to the gold ones (AgentTTS: 100)
+  search_range: [0, 50]         # AgentTTS search questions: dev file [0:50]
+  test_range: [500, 1000]       # AgentTTS test questions: dev file [500:1000]
+  level: hard                   # training-file questions used (the dev file is all 'hard')
   seed: 7
-  n_train: 12000                # teach the retrievers (as in development)
-  n_val: 300                    # choose the best checkpoint
-  n_dev: 2000                   # calibration + rule-learning micro-experiments (development used 1,000)
-  test_seed: 43
-  n_test: 2000                  # 0 = the whole dev file (7,405); development used 400
+  n_train: 12000
+  n_val: 300
+  n_dev: 1000
 
-models:                         # params = parameter count used for compute (2 x params x tokens)
-  q05: {hf_id: Qwen/Qwen2.5-0.5B-Instruct, dir: Qwen2.5-0.5B-Instruct, params: 0.49e9, label: Qwen2.5 0.5B}
-  q06: {hf_id: Qwen/Qwen3-0.6B, dir: Qwen3-0.6B, params: 0.6e9, label: Qwen3 0.6B, no_thinking: true}
-  q08: {hf_id: Qwen/Qwen3.5-0.8B, dir: Qwen3.5-0.8B, params: 0.8e9, label: Qwen3.5 0.8B, no_thinking: true}
-  q3:  {hf_id: Qwen/Qwen2.5-3B-Instruct, dir: Qwen2.5-3B-Instruct, params: 3.09e9, label: Qwen2.5 3B}
-  q7:  {hf_id: Qwen/Qwen2.5-7B-Instruct, dir: Qwen2.5-7B-Instruct, params: 7.62e9, label: Qwen2.5 7B}
-  l8:  {hf_id: meta-llama/Llama-3.1-8B-Instruct, dir: Llama-3.1-8B-Instruct, params: 8.03e9, label: Llama 3.1 8B}
-  q32: {hf_id: Qwen/Qwen2.5-32B-Instruct-AWQ, dir: Qwen2.5-32B-Instruct-AWQ, params: 32.76e9, label: Qwen2.5 32B}
-  # Scale-up (needs both A100s, tensor_parallel: 2; 80 GB cards for 70B/72B in 4-bit AWQ):
-  # q72: {hf_id: Qwen/Qwen2.5-72B-Instruct-AWQ, dir: Qwen2.5-72B-Instruct-AWQ, params: 72.7e9, label: Qwen2.5 72B, tensor_parallel: 2}
-  # l70: {hf_id: hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4, dir: Llama-3.1-70B-Instruct-AWQ, params: 70.6e9, label: Llama 3.1 70B, tensor_parallel: 2}
+# ---------------------------------------------------------------------------------
+# Models. params = parameter count for compute (2 x params x tokens); nominal = the size AgentTTS's budget formula uses.
+# hf_id = the copy used for inference; train_hf_id = full-precision copy for 4-bit (QLoRA) training of the big models.
+models:
+  q05: {hf_id: Qwen/Qwen2.5-0.5B-Instruct, params: 0.49e9, nominal: 0.5e9, label: Qwen2.5 0.5B}
+  q06: {hf_id: Qwen/Qwen3-0.6B, params: 0.6e9, nominal: 0.6e9, label: Qwen3 0.6B, no_thinking: true}
+  q08: {hf_id: Qwen/Qwen3.5-0.8B, params: 0.8e9, nominal: 0.8e9, label: Qwen3.5 0.8B, no_thinking: true}
+  q3:  {hf_id: Qwen/Qwen2.5-3B-Instruct, params: 3.09e9, nominal: 3e9, label: Qwen2.5 3B}
+  q7:  {hf_id: Qwen/Qwen2.5-7B-Instruct-AWQ, train_hf_id: Qwen/Qwen2.5-7B-Instruct, params: 7.62e9, nominal: 7e9, label: Qwen2.5 7B}
+  q32: {hf_id: Qwen/Qwen2.5-32B-Instruct-AWQ, train_hf_id: Qwen/Qwen2.5-32B-Instruct, params: 32.76e9, nominal: 32e9, label: Qwen2.5 32B}
+  q72: {hf_id: Qwen/Qwen2.5-72B-Instruct-AWQ, train_hf_id: Qwen/Qwen2.5-72B-Instruct, params: 72.7e9, nominal: 72e9, label: Qwen2.5 72B,
+        tensor_parallel: 2}         # 1 is enough on an 80 GB+ H100
+  l3:  {hf_id: meta-llama/Llama-3.2-3B-Instruct, params: 3.21e9, nominal: 3e9, label: Llama 3.2 3B, max_model_len: 65536}
+  l8:  {hf_id: meta-llama/Llama-3.1-8B-Instruct, params: 8.03e9, nominal: 8e9, label: Llama 3.1 8B, max_model_len: 65536}
+  l70: {hf_id: hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4, train_hf_id: meta-llama/Llama-3.1-70B-Instruct, params: 70.6e9,
+        nominal: 70e9, label: Llama 3.1 70B, tensor_parallel: 2, max_model_len: 49152}
+  # Optional extra answerer below 3B (Llama has no size between 8B and 70B):
+  # l1: {hf_id: meta-llama/Llama-3.2-1B-Instruct, params: 1.24e9, nominal: 1e9, label: Llama 3.2 1B, max_model_len: 65536}
 
-# The retriever ladder, cheapest first. Each is fine-tuned (LoRA) to shortlist; the cheapest always runs.
-retrievers:
-  - {key: r05, model: q05, train: {n_train: 12000, epochs: 2, ckpt_questions: [4000, 8000, 12000, 16000, 20000, 24000]}}
-  - {key: r06, model: q06, train: {n_train: 12000, epochs: 1, ckpt_questions: [2000, 4000, 8000, 12000]}}
-  - {key: r08, model: q08, train: {n_train: 12000, epochs: 1, ckpt_questions: [2000, 4000, 8000, 12000]}}
-  - {key: r3,  model: q3,  train: {n_train: 12000, epochs: 1, ckpt_questions: [2000, 4000, 8000, 12000]}}
+# Fine-tuning (backpropagation). lora = bf16 LoRA, merged afterwards; qlora = 4-bit base + LoRA, served as LoRA on the AWQ copy.
+# 'Lighter' plan for the big models: 2,000 training questions and long prompts shortened to max_len (distractors dropped, never gold).
+finetune:
+  defaults: {r: 16, alpha: 32, dropout: 0.05, lr: 1.0e-4, grad_accum: 8, micro_batch: 1, epochs: 1, n_val: 300, save_every_questions: 500}
+  retrievers:
+    q05: {method: lora, n_train: 12000, epochs: 2, ckpt_questions: [4000, 8000, 12000, 16000, 20000, 24000], max_len: 20480}
+    q06: {method: lora, n_train: 12000, ckpt_questions: [2000, 4000, 8000, 12000], max_len: 20480}
+    q08: {method: lora, n_train: 12000, ckpt_questions: [2000, 4000, 8000, 12000], max_len: 20480}
+    q3:  {method: lora, n_train: 12000, ckpt_questions: [2000, 4000, 8000, 12000], max_len: 20480}
+    q7:  {method: lora, n_train: 12000, ckpt_questions: [2000, 4000, 8000, 12000], max_len: 20480}
+    q32: {method: qlora, n_train: 2000, ckpt_questions: [500, 1000, 2000], max_len: 12288, n_val: 150, gpus: 1}
+    q72: {method: qlora, n_train: 2000, ckpt_questions: [500, 1000, 2000], max_len: 10240, n_val: 150, gpus: 2}
+  answerers:
+    l3:  {method: lora, n_train: 12000, ckpt_questions: [3000, 6000, 12000], max_len: 4096, micro_batch: 4}
+    l8:  {method: lora, n_train: 12000, ckpt_questions: [3000, 6000, 12000], max_len: 4096, micro_batch: 4}
+    l70: {method: qlora, n_train: 2000, ckpt_questions: [1000, 2000], max_len: 4096, n_val: 150, gpus: 2}
+  answer_inputs: {distractors: [0, 2], drop_gold_share: 0.15}   # answerer training: gold passages + 0-2 distractors; sometimes one gold missing
 
-baseline: {key: base_q7, model: q7, label: Qwen2.5 7B}     # AgentTTS's pick: untrained Qwen 7B retrieves step-by-step, big answerer answers
+planner: q72                    # LLM for AgentTTS's search (replaces o3-mini) and for proposing rule changes
 
-answerers:
-  small: {model: l8}
-  big: {model: q32}
-  samples: 4                    # sampled big-answerer answers per shortlist, for votes (temperature 0.7)
+# ---------------------------------------------------------------------------------
+workstreams:
+  ws1:
+    name: "Baseline 1: AgentTTS (original method)"
+    kind: agenttts
+    retrievers: [q7, q32, q72]
+    answerers: [l3, l8, l70]
+    budget: 900                 # AgentTTS's default for retrieval QA: one pass of the largest models (814 + 115 = 929), rounded
+    np_nd: {Retrieval: [2048, 128], "Question Answering": [256, 64]}
+    iterations: 5               # AgentTTS defaults: 5 rounds x 10 candidates (+ initial trials) = ~50 trials
+    batch_size: 10
+    grid:                       # sample counts evaluated on the search questions (AgentTTS looks the nearest one up)
+      retrieval: {q7: [1, 2, 3, 5, 10, 20, 40, 60], q32: [1, 2, 3, 5, 10, 20], q72: [1, 2]}
+      answer: {l3: [1, 3, 5, 10, 20, 30, 40, 60], l8: [1, 3, 5, 10, 20, 30, 40, 60], l70: [1, 3, 5, 10, 20, 30]}
+    also_test: [[q72, 1, l3, 40]]   # AgentTTS's reported best HotpotQA setting (their code comments), for reference
+  ws2:
+    name: "Baseline 2: strongest models on every question"
+    kind: strong
+    config: [q72, 1, l70, 1]    # AgentTTS's pipeline with the largest retriever and answerer, one sample each
+  ws3:
+    name: "Hidden-state probe + calibrated rules (AgentTTS's models, untrained)"
+    kind: rules
+    retrievers: [q7, q32, q72]          # untrained, AgentTTS's retrieval prompt, one greedy pass
+    answerers: [l3, l8, l70]            # untrained, step-by-step short answer
+    signals: [ret_probe_pct, ans_probe_pct, is_cannot, rung]
+    seed_rules:
+      - {id: H1, stage: retrieval, hard: true, at: [0], when: [[ret_probe_pct, "<", 0.10]], then: escalate, text: "IF the first retriever's probe score is in its lowest 10% THEN escalate (locked)"}
+      - {id: R1, stage: retrieval, when: [[ret_probe_pct, "<", 0.25]], then: escalate, text: "IF the probe says this shortlist is likely incomplete (lowest 25%) THEN escalate to the next retriever and ensemble"}
+      - {id: H2, stage: answer, hard: true, when: [[is_cannot, "==", 1]], then: escalate, text: "IF the answer is empty or says it cannot be determined THEN escalate (locked)"}
+      - {id: A1, stage: answer, when: [[ans_probe_pct, "<", 0.30]], then: escalate, text: "IF the probe says the answer is likely wrong (lowest 30%) THEN escalate to the next answerer"}
+  ws4:
+    name: "Our fine-tuning + self-learnt rules (AgentTTS's models)"
+    kind: rules
+    retrievers: ["q7:ft", "q32:ft", "q72:ft"]
+    answerers: ["l3:ft", "l8:ft", "l70:ft"]
+    signals: all
+    seed_rules: &ft_rules
+      - {id: H1, stage: retrieval, hard: true, at: [0], when: [[ret_conf_pct, "<", 0.10]], then: escalate, text: "IF the first retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"}
+      - {id: R1, stage: retrieval, at: [0], when: [[ret_conf_pct, "<", 0.20]], then: escalate, skip: 1, text: "IF the first retriever is unsure (lowest 20%) THEN escalate, skipping one size, and ensemble"}
+      - {id: R2, stage: retrieval, when: [[rung, ">=", 1], [ret_agree, "==", 0], [ret_conf_pct, "<", 0.20]], then: escalate, text: "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"}
+      - {id: H2, stage: answer, hard: true, when: [[is_cannot, "==", 1]], then: escalate, text: "IF the answer is empty or says it cannot be determined THEN escalate (locked)"}
+      - {id: A2, stage: answer, when: [[is_yes_no, "==", 1]], then: keep, text: "IF the answer is yes/no THEN keep it"}
+      - {id: A1, stage: answer, when: [[words_in_passages, "<", 0.97]], then: escalate, text: "IF some of the answer's words are not in the passages THEN escalate; agree -> accept, else vote"}
+      - {id: A3, stage: answer, when: [[ans_conf_pct, "<", 0.15]], then: escalate, text: "IF the answerer's token confidence is in its lowest 15% THEN escalate"}
+  ws5:
+    name: "Our fine-tuning + self-learnt rules (full model ladders)"
+    kind: rules
+    retrievers: ["q05:ft", "q06:ft", "q08:ft", "q3:ft", "q7:ft", "q32:ft", "q72:ft"]
+    answerers: ["l3:ft", "l8:ft", "l70:ft"]
+    signals: all
+    seed_rules: *ft_rules
 
-planner: q32                    # the model that proposes rule changes
-
+# ---------------------------------------------------------------------------------
+# Rulebook learning (workstreams 3-5)
 rules:
   rounds: 4
   dev_split_seed: 11
   random_control_draws: 10
+  max_ret_members: 3            # retrievers run per question at most (outputs are saved for every such chain)
+  answer_samples: 4             # sampled answers saved per shortlist for every answerer above the first (votes)
+  params: {votes: 2, sure_threshold: 0.90, merge: union}
   hard:                         # LOCKED: the micro-experiments can never change these (only a person editing this file)
-    H3_max_share_big: 0.60                  # at most 60% of questions reach the big answerer
-    H4_max_acc_drop_vs_best_fixed: 0.01     # dev accuracy >= best fixed pipeline - 1 point (below it: repair mode)
+    H3_max_share_top_answerer: 0.60         # at most 60% of questions reach the largest answerer
+    H3b_max_share_top_retriever: 0.60       # ... and the largest retriever: never 'always the biggest'
+    H4_max_acc_drop_vs_best_fixed: 0.01     # dev accuracy >= best fixed pipeline costing no more - 1 point (below: repair mode)
     H5_min_sure_score: 0.85                 # 'Sure' needs a calibrated score >= 0.85
     H6_max_soft_rules: 8
     H6_min_support_share: 0.02              # each escalate rule decides on >= 2% of dev questions
     H7_max_step: 0.05                       # a threshold moves <= 0.05 per round (percentile / 0-1 units; 1 word = 0.05)
     H8_max_compute_per_point: 0.10          # an accuracy gain may cost <= 10% extra compute per point
-  params: {ret_target: r08, ret_merge: union, votes: 2, sure_threshold: 0.90}
-  seed_rules:                   # soft unless hard: true. Checked in order (locked first); first match decides; default keep.
-    - {id: H1, stage: retrieval, hard: true, when: [[base_conf_pct, "<", 0.10]], then: escalate,
-       text: "IF the cheapest retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"}
-    - {id: R1, stage: retrieval, when: [[base_conf_pct, "<", 0.20]], then: escalate, to: r08,
-       text: "IF the cheapest retriever's confidence is in its lowest 20% THEN escalate to the 0.8B (0.6B skipped) and ensemble"}
-    - {id: R2, stage: retrieval2, when: [[ret_agree, "==", 0], [target_conf_pct, "<", 0.20]], then: escalate,
-       text: "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"}
-    - {id: H2, stage: answer, hard: true, when: [[is_cannot, "==", 1]], then: escalate,
-       text: "IF the answer is empty or says it cannot be determined THEN escalate (locked)"}
-    - {id: A2, stage: answer, when: [[is_yes_no, "==", 1]], then: keep, text: "IF the answer is yes/no THEN keep it"}
-    - {id: A1, stage: answer, when: [[is_yes_no, "==", 0], [words_in_passages, "<", 0.97]], then: escalate,
-       text: "IF the answer is not yes/no AND some of its words are not in the passages THEN escalate; agree -> accept, else samples vote"}
-    - {id: A3, stage: answer, when: [[words_in_passages, ">=", 0.97], [answer_stated, ">", 0.95]], then: keep,
-       text: "IF all its words are in the passages AND stated confidence > 95% THEN keep (Sure)"}
-    - {id: A4, stage: answer, when: [[words_in_passages, ">=", 0.97], [answer_stated, "<=", 0.95]], then: keep,
-       text: "IF all its words are in the passages AND stated confidence <= 95% THEN keep (borderline)"}
+
+# Planned hours per stage on 2 GPUs (A40/L40S class), for the progress page until real rates are measured
+estimates_hours: {setup: 3, data: 0.5, train: 55, ws1_grid: 10, ws1_search: 2, ws1_test: 4, retrieve: 12, probe: 5, answer: 12, sample: 6,
+                  learn: 2, test: 0.5, report: 0.2}
