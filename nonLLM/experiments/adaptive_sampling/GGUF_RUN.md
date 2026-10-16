@@ -55,6 +55,10 @@ After the reference batch finished, the full run was paused for review at
 evaluation_v2 report re-extracts the existing twelve-question replies with the
 same grounded reader for narrative responses; original caches remain unchanged.
 The current root state and CURRENT_RUN.json indicate this pause.
+The user subsequently requested continuing Strong and its downstream steps.
+The active [Strong-first workflow](STRONG_WORKFLOW.md) now uses all four cards
+for WS/SS, followed automatically by frozen v2 extraction and Strong-only analysis.
+Weak generation remains paused; no existing inference results are discarded.
 All runtime files, weights, tokenizers, source snapshots, logs and caches are
 under this folder. Unchanged assets and libraries are hard-linked to avoid extra
 disk allocation; they are never modified in place.

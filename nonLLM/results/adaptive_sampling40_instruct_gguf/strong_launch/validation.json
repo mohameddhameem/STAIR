@@ -1,0 +1,61 @@
+{
+  "time": "2026-10-16 16:03:19",
+  "strong_pair_analyzer_preflight": {
+    "total_questions": 7405,
+    "pairs": [
+      "WS",
+      "SS"
+    ],
+    "reader_root": "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12/evaluation_v2",
+    "raw_complete_questions": 13,
+    "complete_questions": 12,
+    "metric_order": [
+      "raw_em",
+      "raw_f1",
+      "raw_lenient",
+      "extracted_em",
+      "extracted_f1",
+      "extracted_lenient"
+    ],
+    "metric_notes": "Official normalized EM/F1. Lenient is a locally defined guarded bidirectional word containment, not certified identical to the missing upstream scorer. Reader is gold-independent; abstentions are incorrect.",
+    "cost_notes": "Parameter billions times prompt/output token counts, not measured FLOPs or wall time. QA prefix prompt counted once for shared KV. Extracted scores include the fixed 7B GGUF reader tokens.",
+    "qualification": "Retrospective gold-assisted oracle over stochastic prefix/fusion outcomes; not a deployable controller or an unbiased estimate of true optimal budgets.",
+    "extraction_asserted_answer_rate": 0.625
+  },
+  "copied_v2_records": 1920,
+  "frozen_reader_profile_preserved": true,
+  "generation_profile_sha256": "8e27e474db386610560c57fa13e0591cb903be6f2efad1220c8516c96aff724d",
+  "downstream_synthetic_test": "PASS: Strong-only complete analysis, validation selection, oracle, 80-cell indexing, and incomplete four-pair guard",
+  "state": {
+    "updated": "2026-10-16 16:03:24",
+    "controller_pid": 2411730,
+    "host": "serverA",
+    "uses_serverB": false,
+    "physical_gpus": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "model": "S",
+    "stage": "answers",
+    "reader_root": "/data1/zmcheng/cs707_sampling40_instruct_gguf/evaluation_v2",
+    "weak_generation_paused": true,
+    "reader_expected": 964566,
+    "workers": [
+      2411864,
+      2411865,
+      2411866,
+      2411867
+    ],
+    "servers": [
+      2411735,
+      2411741,
+      2411749,
+      2411779
+    ],
+    "workflow": "strong_first"
+  },
+  "checked_at": "2026-10-16 16:05:48",
+  "gpu_status": "index, memory.used [MiB], utilization.gpu [%], ecc.errors.uncorrected.volatile.dram\n0, 34009 MiB, 0 %, 0\n1, 34011 MiB, 84 %, 0\n2, 34011 MiB, 82 %, 0\n3, 34011 MiB, 63 %, 0\n"
+}

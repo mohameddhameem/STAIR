@@ -1,0 +1,33 @@
+{
+  "reader_root": "/data1/zmcheng/cs707_sampling40_instruct_gguf/evaluation_v2",
+  "pairs": [
+    "WS",
+    "SS"
+  ],
+  "physical_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "stages": [
+    "answers_S",
+    "extraction_v2_available_W_and_all_S",
+    "analysis_WS_SS"
+  ],
+  "weak_generation_paused": true,
+  "temperature_sweep": false,
+  "evaluation": {
+    "version": 2,
+    "rule": "Replies over six whitespace-separated words always use the existing gold-independent grounded reader.",
+    "wrapper_sha256": "5727e893a67fc777f4e66375a63490bc7c5e67fadc257402cc26ab8e6d247eaf",
+    "original_profile_sha256": "8e27e474db386610560c57fa13e0591cb903be6f2efad1220c8516c96aff724d"
+  },
+  "weak_answer_counts_at_start": [
+    151864,
+    151782,
+    77657,
+    173
+  ],
+  "reader_expected": 964566
+}

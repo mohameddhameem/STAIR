@@ -20,6 +20,20 @@ for stage, model, factor in [('retrieval', 'W', 1), ('retrieval', 'S', 1),
             count += db.execute('SELECT COUNT(*) FROM results').fetchone()[0]
             db.close()
     out['stages'][stage + '_' + model] = {'saved_requests': count, 'expected': 7405 * factor}
+plan_path = root / 'strong_workflow.json'
+if plan_path.exists():
+    plan = json.loads(plan_path.read_text())
+    reader = Path(plan['reader_root'])
+    count = 0
+    for shard in range(4):
+        path = reader / 'runs' / f'extraction_S_{shard}.sqlite'
+        if path.exists():
+            db = sqlite3.connect(f'file:{path}?mode=ro', uri=True)
+            count += db.execute('SELECT COUNT(*) FROM results').fetchone()[0]
+            db.close()
+    out['stages']['extraction_v2'] = {'saved_requests': count, 'expected': plan['reader_expected'],
+                                     'scope': 'All Strong fusions and already available Weak fusions',
+                                     'reader_root': str(reader)}
 if (root / 'runs/FAILED.txt').exists():
     out['failure'] = (root / 'runs/FAILED.txt').read_text()
 print(json.dumps(out, indent=2))
