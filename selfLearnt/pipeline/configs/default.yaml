@@ -1,0 +1,91 @@
+# Self-learnt switching: full-scale configuration.
+# Edit the paths for your cluster. Everything else reproduces the development setup (notebooks 22-28) at a larger scale.
+
+run_name: full_v1
+backend: vllm                   # vllm | mock  (mock = fake models, for a dry run on CPU)
+
+paths:
+  project_dir: /path/to/your/project            # EDIT: shared storage on the cluster
+  models_dir: ${project_dir}/models             # one folder per model (see models: dir)
+  data_dir: ${project_dir}/data/hotpotqa_${run_name}
+  runs_dir: ${project_dir}/runs
+  hf_cache: ${project_dir}/hf_cache
+
+download_models: true           # false if the compute nodes have no internet: copy the model folders into models_dir beforehand
+
+gpu:
+  max_model_len: 8192
+  gpu_util: 0.88
+  chunk: 256                    # questions per vLLM call (rows are saved after every chunk, so jobs can resume)
+
+data:
+  hotpot_train: ${project_dir}/hotpotqa/hotpot_train_v1.1.json
+  hotpot_train_url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_train_v1.1.json
+  hotpot_dev: ${project_dir}/hotpotqa/hotpot_dev_distractor_v1.json
+  hotpot_dev_url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json
+  level: hard
+  n_candidates: 20              # gold paragraphs + BM25 distractors
+  seed: 7
+  n_train: 12000                # teach the retrievers (as in development)
+  n_val: 300                    # choose the best checkpoint
+  n_dev: 2000                   # calibration + rule-learning micro-experiments (development used 1,000)
+  test_seed: 43
+  n_test: 2000                  # 0 = the whole dev file (7,405); development used 400
+
+models:                         # params = parameter count used for compute (2 x params x tokens)
+  q05: {hf_id: Qwen/Qwen2.5-0.5B-Instruct, dir: Qwen2.5-0.5B-Instruct, params: 0.49e9, label: Qwen2.5 0.5B}
+  q06: {hf_id: Qwen/Qwen3-0.6B, dir: Qwen3-0.6B, params: 0.6e9, label: Qwen3 0.6B, no_thinking: true}
+  q08: {hf_id: Qwen/Qwen3.5-0.8B, dir: Qwen3.5-0.8B, params: 0.8e9, label: Qwen3.5 0.8B, no_thinking: true}
+  q3:  {hf_id: Qwen/Qwen2.5-3B-Instruct, dir: Qwen2.5-3B-Instruct, params: 3.09e9, label: Qwen2.5 3B}
+  q7:  {hf_id: Qwen/Qwen2.5-7B-Instruct, dir: Qwen2.5-7B-Instruct, params: 7.62e9, label: Qwen2.5 7B}
+  l8:  {hf_id: meta-llama/Llama-3.1-8B-Instruct, dir: Llama-3.1-8B-Instruct, params: 8.03e9, label: Llama 3.1 8B}
+  q32: {hf_id: Qwen/Qwen2.5-32B-Instruct-AWQ, dir: Qwen2.5-32B-Instruct-AWQ, params: 32.76e9, label: Qwen2.5 32B}
+  # Scale-up (needs both A100s, tensor_parallel: 2; 80 GB cards for 70B/72B in 4-bit AWQ):
+  # q72: {hf_id: Qwen/Qwen2.5-72B-Instruct-AWQ, dir: Qwen2.5-72B-Instruct-AWQ, params: 72.7e9, label: Qwen2.5 72B, tensor_parallel: 2}
+  # l70: {hf_id: hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4, dir: Llama-3.1-70B-Instruct-AWQ, params: 70.6e9, label: Llama 3.1 70B, tensor_parallel: 2}
+
+# The retriever ladder, cheapest first. Each is fine-tuned (LoRA) to shortlist; the cheapest always runs.
+retrievers:
+  - {key: r05, model: q05, train: {n_train: 12000, epochs: 2, ckpt_questions: [4000, 8000, 12000, 16000, 20000, 24000]}}
+  - {key: r06, model: q06, train: {n_train: 12000, epochs: 1, ckpt_questions: [2000, 4000, 8000, 12000]}}
+  - {key: r08, model: q08, train: {n_train: 12000, epochs: 1, ckpt_questions: [2000, 4000, 8000, 12000]}}
+  - {key: r3,  model: q3,  train: {n_train: 12000, epochs: 1, ckpt_questions: [2000, 4000, 8000, 12000]}}
+
+baseline: {key: base_q7, model: q7, label: Qwen2.5 7B}     # AgentTTS's pick: untrained Qwen 7B retrieves step-by-step, big answerer answers
+
+answerers:
+  small: {model: l8}
+  big: {model: q32}
+  samples: 4                    # sampled big-answerer answers per shortlist, for votes (temperature 0.7)
+
+planner: q32                    # the model that proposes rule changes
+
+rules:
+  rounds: 4
+  dev_split_seed: 11
+  random_control_draws: 10
+  hard:                         # LOCKED: the micro-experiments can never change these (only a person editing this file)
+    H3_max_share_big: 0.60                  # at most 60% of questions reach the big answerer
+    H4_max_acc_drop_vs_best_fixed: 0.01     # dev accuracy >= best fixed pipeline - 1 point (below it: repair mode)
+    H5_min_sure_score: 0.85                 # 'Sure' needs a calibrated score >= 0.85
+    H6_max_soft_rules: 8
+    H6_min_support_share: 0.02              # each escalate rule decides on >= 2% of dev questions
+    H7_max_step: 0.05                       # a threshold moves <= 0.05 per round (percentile / 0-1 units; 1 word = 0.05)
+    H8_max_compute_per_point: 0.10          # an accuracy gain may cost <= 10% extra compute per point
+  params: {ret_target: r08, ret_merge: union, votes: 2, sure_threshold: 0.90}
+  seed_rules:                   # soft unless hard: true. Checked in order (locked first); first match decides; default keep.
+    - {id: H1, stage: retrieval, hard: true, when: [[base_conf_pct, "<", 0.10]], then: escalate,
+       text: "IF the cheapest retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"}
+    - {id: R1, stage: retrieval, when: [[base_conf_pct, "<", 0.20]], then: escalate, to: r08,
+       text: "IF the cheapest retriever's confidence is in its lowest 20% THEN escalate to the 0.8B (0.6B skipped) and ensemble"}
+    - {id: R2, stage: retrieval2, when: [[ret_agree, "==", 0], [target_conf_pct, "<", 0.20]], then: escalate,
+       text: "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"}
+    - {id: H2, stage: answer, hard: true, when: [[is_cannot, "==", 1]], then: escalate,
+       text: "IF the answer is empty or says it cannot be determined THEN escalate (locked)"}
+    - {id: A2, stage: answer, when: [[is_yes_no, "==", 1]], then: keep, text: "IF the answer is yes/no THEN keep it"}
+    - {id: A1, stage: answer, when: [[is_yes_no, "==", 0], [words_in_passages, "<", 0.97]], then: escalate,
+       text: "IF the answer is not yes/no AND some of its words are not in the passages THEN escalate; agree -> accept, else samples vote"}
+    - {id: A3, stage: answer, when: [[words_in_passages, ">=", 0.97], [answer_stated, ">", 0.95]], then: keep,
+       text: "IF all its words are in the passages AND stated confidence > 95% THEN keep (Sure)"}
+    - {id: A4, stage: answer, when: [[words_in_passages, ">=", 0.97], [answer_stated, "<=", 0.95]], then: keep,
+       text: "IF all its words are in the passages AND stated confidence <= 95% THEN keep (borderline)"}

@@ -1,0 +1,20 @@
+# conda env create -f environment.yml && conda activate stair
+# vLLM brings a matching PyTorch/CUDA build; install it first so pip does not replace it.
+name: stair
+channels: [conda-forge]
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - vllm                      # needs a release that supports Qwen3 and Qwen3.5 (the development runs used the newest Colab build, Oct 2026)
+      - transformers
+      - peft
+      - accelerate
+      - flash-linear-attention    # fast kernels for Qwen3.5 0.8B training
+      - huggingface_hub
+      - scikit-learn
+      - scipy
+      - numpy
+      - pandas
+      - openpyxl
+      - pyyaml
