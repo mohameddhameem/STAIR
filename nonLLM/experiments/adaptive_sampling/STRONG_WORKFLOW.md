@@ -8,6 +8,11 @@ fusion budget is changed. The retrieval-40 follow-up is still separate.
 
 Execution order:
 
+The active job is temporarily the [500-question priority cohort](COHORT_500.md),
+requested later on 2026-10-16. It completes a matched training reference table
+first, merges reusable v2 reader results, and resumes this full Strong workflow.
+All existing generation caches remain valid.
+
 1. Finish WS and SS on all 7,405 questions. Each pair gets forty Strong candidates
    and all prefix fusions 1..40. Four disjoint work queues share every logical
    shard. Completion requires 607,210 committed Strong requests.

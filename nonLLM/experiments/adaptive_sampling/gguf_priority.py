@@ -117,7 +117,7 @@ def report(root, pilot):
                 'retrospective_budget_oracle_em': sum(max(scored[i, pair, k] for k in range(1, 41))
                                                     for i in config['indices']) / len(config['indices'])}
         result = {'config': config, 'completed': time.strftime('%Y-%m-%d %H:%M:%S'),
-                  'qualification': 'Twelve training questions selected without using correctness. Preliminary matched comparison only; not held-out accuracy, not an AgentTTS reproduction score. Oracle uses gold retrospectively and cannot be used at inference. No model/prompt/temperature changes.',
+                  'qualification': f'{len(config["indices"])} training questions selected without using correctness. Preliminary matched comparison only; not held-out accuracy, not an AgentTTS reproduction score. Oracle uses gold retrospectively and cannot be used at inference. No model/prompt/temperature changes.',
                   'grid': means, 'budget_observations': observations,
                   'strong_output_checks': dict(quality), 'examples': examples}
         (pilot / 'report.json').write_text(json.dumps(result, ensure_ascii=False, indent=2))

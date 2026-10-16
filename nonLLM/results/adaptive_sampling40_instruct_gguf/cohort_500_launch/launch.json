@@ -1,0 +1,15 @@
+{
+  "pid": 2475635,
+  "command": [
+    "/home/zmcheng/miniconda3/envs/sglang518/bin/python",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/code/gguf_cohort_controller.py",
+    "--root",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf",
+    "--cohort",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/cohort_500"
+  ],
+  "time": "2026-10-16 23:16:56",
+  "checks": "PASS: 500 unique training IDs/texts, matched Weak availability, frozen profiles, known metric fixture, histogram accounting, safe merge and rollback",
+  "checks_verified_at": "2026-10-16 23:17:53",
+  "test_fixture_note": "The twelve-question fixture uses selection metadata; mapped it to the cohort scope field before the successful checks."
+}
