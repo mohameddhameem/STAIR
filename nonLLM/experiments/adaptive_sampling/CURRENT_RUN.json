@@ -7,7 +7,8 @@
   "strong": "Qwen/Qwen2.5-7B-Instruct-GGUF Q4_K_M",
   "serverB": false,
   "requested_gpus": [0, 1, 2, 3],
-  "launched_gpus": [0, 1, 2, 3],
+  "launched_gpus": [],
+  "status": "Full run paused for matched-reference review; sampling/fusion caches preserved",
   "gpu2_status": "Reset succeeded 2026-10-15 18:49 +08; row remap applied, recovery action None, volatile DRAM UCE 0; passed 36 GiB memory-pattern and matrix checks",
   "runtime_schedule": "runtime_schedule.json: W fusion_lanes=1, S fusion_lanes=2; two question lanes and 40 QA candidates unchanged",
   "work_assignment": "Four disjoint physical-rank subsets within each logical shard; reuses all existing caches",
@@ -16,5 +17,6 @@
   "prefix_budgets": "1..40",
   "temperature_sweep": false,
   "live_state": "/data1/zmcheng/cs707_sampling40_instruct_gguf/state.json",
+  "priority_reference_batch": "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12; twelve training questions complete, including isolated evaluation_v2/report.json",
   "documentation": "GGUF_RUN.md"
 }

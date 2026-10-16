@@ -1,0 +1,47 @@
+{
+  "time": "2026-10-16 15:55:16",
+  "matched_extraction_records": {
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf": 1920,
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12/evaluation_v2": 1920
+  },
+  "separate_cache_fingerprints": {
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/runs/extraction_S_0.sqlite": "ea58e1e7d61d14f3a76c5316234f2253dfd42cda97a0d2249fd47ae8662ba678",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/runs/extraction_S_1.sqlite": "ea58e1e7d61d14f3a76c5316234f2253dfd42cda97a0d2249fd47ae8662ba678",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/runs/extraction_S_2.sqlite": "ea58e1e7d61d14f3a76c5316234f2253dfd42cda97a0d2249fd47ae8662ba678",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12/evaluation_v2/runs/extraction_S_0.sqlite": "a267b9e19af9bdd5bc7ffd29f37438be9bce02e4409403a0be8fd20247284fe5",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12/evaluation_v2/runs/extraction_S_1.sqlite": "a267b9e19af9bdd5bc7ffd29f37438be9bce02e4409403a0be8fd20247284fe5",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12/evaluation_v2/runs/extraction_S_2.sqlite": "a267b9e19af9bdd5bc7ffd29f37438be9bce02e4409403a0be8fd20247284fe5"
+  },
+  "cache_counts_after": {
+    "retrieval_W_2.sqlite": 1851,
+    "answers_W_1.sqlite": 151782,
+    "retrieval_W_0.sqlite": 1852,
+    "answers_W_3.sqlite": 173,
+    "answers_W_0.sqlite": 151864,
+    "answers_S_2.sqlite": 246,
+    "retrieval_S_1.sqlite": 1851,
+    "answers_W_2.sqlite": 77657,
+    "extraction_S_1.sqlite": 960,
+    "retrieval_S_2.sqlite": 1851,
+    "extraction_S_0.sqlite": 640,
+    "retrieval_W_1.sqlite": 1851,
+    "retrieval_S_3.sqlite": 1851,
+    "retrieval_W_3.sqlite": 1851,
+    "extraction_S_2.sqlite": 480,
+    "answers_S_0.sqlite": 328,
+    "retrieval_S_0.sqlite": 1852,
+    "answers_S_1.sqlite": 492
+  },
+  "original_cache_counts_preserved": true,
+  "main_state": {
+    "updated": "2026-10-16 15:50:06",
+    "stage": "paused_for_reference_review",
+    "host": "serverA",
+    "uses_serverB": false,
+    "physical_gpus": [],
+    "controller_pid": null,
+    "reason": "User asked to first inspect matched Weak/Strong questions and complete Strong downstream steps. All checkpoints retained.",
+    "reference_report": "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12/report.json"
+  },
+  "gpu_status": "index, memory.used [MiB], ecc.errors.uncorrected.volatile.dram\n0, 0 MiB, 0\n1, 0 MiB, 0\n2, 0 MiB, 0\n3, 0 MiB, 0\n"
+}

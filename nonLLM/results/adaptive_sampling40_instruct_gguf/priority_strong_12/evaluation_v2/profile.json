@@ -1,0 +1,91 @@
+{
+  "backend": "llama.cpp",
+  "build_commit": "d89651a7b205c03c4a0b13cd0646d400dc929f79",
+  "models": [
+    {
+      "file": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "size": 1117320736,
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+    },
+    {
+      "file": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+      "size": 3993201344,
+      "sha256": "dfce12e3862a5283ccfb88221b48480e58745165de856439950d0f22590580db"
+    },
+    {
+      "file": "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf",
+      "size": 689872288,
+      "sha256": "539cf93f78e887edea1c04e2d7d8cdaca9d01dae9c9025bcb8accbe29df3d72a"
+    }
+  ],
+  "model_revisions": {
+    "W": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "S": "bb5d59e06d9551d752d08b292a50eb208b07ab1f"
+  },
+  "upstream_commit": "3f0c2df814c059d0df57a71056c3266ff02c8559",
+  "temperatures": {
+    "retrieval": 0.9,
+    "qa": 0.7,
+    "fusion": 0.3
+  },
+  "max_new_tokens": 512,
+  "candidates": 40,
+  "budgets": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40
+  ],
+  "serverA_only": true,
+  "context_limit": 131072,
+  "kv_pool_tokens": 524288,
+  "slots": 64,
+  "kv_dtype": "f16",
+  "yarn": {
+    "factor": 4,
+    "original_context": 32768
+  },
+  "notes": "Runtime context metadata override for the existing server cap; 1.5B YaRN extension is experimental; all public generation prompts unchanged. No temperature sweep.",
+  "evaluation": {
+    "version": 2,
+    "rule": "Replies over six whitespace-separated words always use the existing gold-independent grounded reader.",
+    "wrapper_sha256": "5727e893a67fc777f4e66375a63490bc7c5e67fadc257402cc26ab8e6d247eaf",
+    "original_profile_sha256": "8e27e474db386610560c57fa13e0591cb903be6f2efad1220c8516c96aff724d"
+  }
+}

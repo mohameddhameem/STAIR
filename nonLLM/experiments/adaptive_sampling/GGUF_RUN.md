@@ -46,6 +46,15 @@ worker lock update and original source/lock are archived under
 `maintenance/20261015_184550` in the run root. No existing results were deleted.
 
 Remote run root: `/data1/zmcheng/cs707_sampling40_instruct_gguf`.
+On 2026-10-16 the user requested an early Strong reference batch before the
+Weak stage finishes. See [STRONG_PILOT.md](STRONG_PILOT.md): twelve training
+questions get matched Strong sampling/fusion and answer extraction, using the
+same full-run caches, followed by automatic full-controller restoration.
+After the reference batch finished, the full run was paused for review at
+2026-10-16 15:50 +08. All generation checkpoints are preserved. A separate
+evaluation_v2 report re-extracts the existing twelve-question replies with the
+same grounded reader for narrative responses; original caches remain unchanged.
+The current root state and CURRENT_RUN.json indicate this pause.
 All runtime files, weights, tokenizers, source snapshots, logs and caches are
 under this folder. Unchanged assets and libraries are hard-linked to avoid extra
 disk allocation; they are never modified in place.

@@ -1,0 +1,29 @@
+{
+  "seed": 20261016,
+  "indices": [
+    829,
+    1102,
+    1436,
+    2414,
+    3385,
+    3698,
+    4561,
+    4969,
+    5109,
+    6405,
+    6612,
+    7188
+  ],
+  "eligible_completed_training_questions": 3055,
+  "selection": "Fixed-seed random sample among training questions with both complete Weak-answer pairs; no correctness used.",
+  "models": "Qwen2.5-1.5B/7B Instruct GGUF Q4_K_M",
+  "uses_serverB": false,
+  "gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "resume_main": true,
+  "created": "2026-10-16 15:31:23"
+}

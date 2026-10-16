@@ -1,0 +1,16 @@
+{
+  "time": "2026-10-16 15:43:23",
+  "counts": {
+    "complete_questions": 10,
+    "qa_batches": 24,
+    "wrong_candidate_count": 0,
+    "nonunique_seed_batches": 0,
+    "qa_outputs": 960,
+    "empty": 0,
+    "replacement_character": 0,
+    "input_truncated": 0,
+    "output_limit_512": 0,
+    "fusions": 894
+  },
+  "mean_distinct_texts": 33.083333333333336
+}
