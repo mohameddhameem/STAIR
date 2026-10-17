@@ -7,6 +7,10 @@ dependencies = ["numpy>=1.26", "pandas>=2.0"]
 
 [project.optional-dependencies]
 test = ["pytest>=8", "pyarrow>=15"]
+plot = ["matplotlib>=3.8"]
+
+[project.scripts]
+stair-plot-history = "stair_common.training:main"
 
 [build-system]
 requires = ["setuptools>=68"]

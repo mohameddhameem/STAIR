@@ -216,7 +216,8 @@ router on `train_extra` (or the train file), pick thresholds on `val`, and re-sc
 ## 5. Training
 
 See [TRAINING.md](TRAINING.md): the LoRA / QLoRA recipe, seeds 0, 1 and 2, and a table where each track records the
-epochs it used. That table is to be reconciled later, as agreed.
+epochs it used (to be reconciled later, as agreed), and how to log and plot loss curves with
+`stair_common.training`.
 
 ## 6. Results layout and metrics
 
