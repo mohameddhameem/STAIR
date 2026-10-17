@@ -88,35 +88,13 @@ After 4 rounds the rulebook is frozen and applied once to the test questions.
 | H7 | A threshold moves ≤ 0.05 per round | Chasing noise |
 | H8 | An accuracy gain may cost ≤ 10% extra compute per point | An unbounded price for accuracy |
 
-## Development results so far (Colab)
+## Earlier results (Colab development)
 
-All rows come from notebook 26's run on the same 400 HotpotQA test questions (20 candidate passages each). Details per
-experiment set: branch [`selfLearnt-colab-dev`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt-colab-dev).
-
-| Retriever → answerer | What it represents | Lenient accuracy² | Exact match | Cost index¹ |
-|---|---|---|---|---|
-| Untrained Qwen 7B (step by step, picks 3 passages, one try) → Qwen 32B | AgentTTS-style fixed pick (stand-in from our scaled-down search, Colab model menu) | 76.8% | 57.5% | 100 |
-| Fine-tuned 3B → Qwen 32B | Fine-tuned retriever, largest answerer in the Colab menu | 84.5%³ | 64.2%³ | 57.6 |
-| Fine-tuned 0.8B → Qwen 32B | Fine-tuned retriever, largest answerer in the Colab menu: best observed balance | 84.0% | 63.5% | 43.5 |
-| Fine-tuned 0.6B → Qwen 32B | Fine-tuned retriever, largest answerer in the Colab menu: cheaper | 83.2%³ | 62.7%³ | 42.2 |
-| Fine-tuned 0.5B → Qwen 32B | Cheapest fine-tuned retriever, largest answerer in the Colab menu | 79.5% | 60.0% | 41.7 |
-| Fine-tuned 0.8B → Llama 8B | Fine-tuned retriever, small answerer | 77.2% | 54.8% | 16.9 |
-| 0.5B; if unsure → 0.6B → 0.8B; Qwen 32B answers | Confidence-triggered retrieval switching (49% escalated; +1.4 points over random escalation of the same share, 95% interval +0.6 to +2.3) | 83.5% | 63.2% | 44.9 |
-| Qwen 72B → Llama 70B | Strongest at both stages (full AgentTTS menu) | Not run in Colab: cluster workstream 2 | – | – |
-| Qwen 72B ×1 → Llama 3B ×40 + fusion | AgentTTS's own HotpotQA pick (their code; 0.742 reported) | Not run in Colab: cluster workstream 1 | – | – |
-
-¹ Estimated inference compute (2 × parameters × tokens, retrieval and answering) relative to the stand-in fixed pick.
-Training is excluded.
-² Our corrected label: exact match, or token F1 ≥ 0.5, or the gold answer contained in the answer. Yes/no answers must match
-exactly.
-³ Re-merged and re-run in notebook 26. The earlier runs gave 84.2% / 64.0% (3B, notebook 23a) and 83.0% / 62.5% (0.6B,
-notebook 25a).
-
-- On 400 questions, differences under about 1.5 points aren't reliable. The 3B, 0.8B and 0.6B rows are statistically tied:
-  the 0.8B is −0.3 points from the 3B (−1.3 to +0.8).
-- Every fine-tuned retriever from the 0.6B upwards beats the stand-in by 6–8 points at 42–58% of its compute.
-- The last two rows will come from the cluster run, scored on AgentTTS's 500 test questions with 100 candidates each.
-  Those numbers won't be directly comparable with the rows above.
+The Colab experiments that led to this design (notebooks 00–28, 400 test questions with 20 candidate passages each) are
+summarised, with the headline results table, on branch
+[`selfLearnt-colab-dev`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt-colab-dev/selfLearnt/colab_dev).
+This branch reports only the full-scale cluster run (status and results on branch
+[`selfLearnt-runs`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt-runs)).
 
 ## Running on the SMU Origami cluster
 
