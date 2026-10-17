@@ -45,6 +45,10 @@ def test_medagentbench_is_stratified():
     assert len(tasks) == 10 and (tasks == 15).all()
 
 
+def test_ruler_is_the_certified_file():
+    assert hashlib.sha256(score.RULER.read_bytes()).hexdigest() == score.RULER_SHA256
+
+
 def test_lenient_is_the_standard_ruler():
     # the examples on the team's ruler slide (13 Oct)
     assert score.lenient("New York City", ["Greenwich Village, New York City"]) == 1

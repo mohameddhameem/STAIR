@@ -57,8 +57,11 @@ router on `train_extra` (or the train file), pick thresholds on `val`, and re-sc
 
 ## 2. Scoring: one ruler, named every time
 
-- **Headline: `lenient`**, the certified standard ruler `jonathan/final/lenient_match_agenttts.py`. It reproduces
-  AgentTTS's published 0.746. `score.py` loads the file as it is; nobody re-implements it.
+- **Headline: `lenient`**, the certified standard ruler `jonathan/final/lenient_match_agenttts.py` on branch
+  [`jonathan`](https://github.com/mohameddhameem/STAIR/blob/jonathan/jonathan/final/lenient_match_agenttts.py). It
+  reproduces AgentTTS's published 0.746. `stair_common/` carries a byte-for-byte copy, which a test pins by sha256, and
+  `score.py` loads that copy as it is. Nobody re-implements it. If the original changes, copy it again and update the
+  hash.
 - **Also reported: `em` and `f1`**, the official HotpotQA scoring, best over the gold aliases.
 - **The standing rule:** never mix rulers in one table, and name the ruler next to every accuracy. A track's own extra
   grader (for example systemOne's LLM grader) is reported beside these, never instead of them.

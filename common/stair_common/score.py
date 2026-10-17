@@ -1,7 +1,9 @@
 """The team's answer scores. Every accuracy is named by its ruler; never mix rulers in one table.
 
-- `lenient`: THE STANDARD (headline). jonathan/final/lenient_match_agenttts.py, loaded from the repo and used
-  unchanged (certified: reproduces AgentTTS's published 0.746). Never re-implement it.
+- `lenient`: THE STANDARD (headline). `lenient_match_agenttts.py` next to this file is a byte-for-byte copy of
+  jonathan/final/lenient_match_agenttts.py on branch `jonathan` (git blob 846e780, sha256 below; a test checks it),
+  used unchanged (certified: reproduces AgentTTS's published 0.746). Never re-implement or edit it; if the original
+  changes, copy it again and update RULER_SHA256.
 - `em`, `f1`: official HotpotQA answer scoring (hotpot_evaluate_v1.py normalisation and yes/no rule). Secondary.
 
 A question has one or more gold answers (aliases); EM and F1 take the best over them, as `lenient` does.
@@ -14,7 +16,8 @@ from collections import Counter
 from functools import cache
 from pathlib import Path
 
-RULER = Path(__file__).resolve().parents[2] / "jonathan" / "final" / "lenient_match_agenttts.py"
+RULER = Path(__file__).resolve().parent / "lenient_match_agenttts.py"
+RULER_SHA256 = "2f184ac252a26df49d402f22f9ba52af3db6ed4812adb42507d3bbb989a0c882"
 _NO_PARTIAL_CREDIT = {"yes", "no", "noanswer"}
 
 
