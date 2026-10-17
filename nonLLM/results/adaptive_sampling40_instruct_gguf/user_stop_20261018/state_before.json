@@ -1,0 +1,30 @@
+{
+  "updated": "2026-10-17 02:40:22",
+  "controller_pid": 2505702,
+  "host": "serverA",
+  "uses_serverB": false,
+  "physical_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "model": "S",
+  "stage": "answers",
+  "reader_root": "/data1/zmcheng/cs707_sampling40_instruct_gguf/evaluation_v2",
+  "weak_generation_paused": true,
+  "reader_expected": 964566,
+  "workers": [
+    2505840,
+    2505841,
+    2505842,
+    2505843
+  ],
+  "servers": [
+    2505709,
+    2505712,
+    2505720,
+    2505733
+  ],
+  "workflow": "strong_first"
+}

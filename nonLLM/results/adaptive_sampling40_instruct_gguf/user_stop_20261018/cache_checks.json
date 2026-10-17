@@ -1,0 +1,9 @@
+{
+  "complete_Strong_questions": 2154,
+  "expected_questions": 7405,
+  "strong_cache_quick_check": {
+    "answers_S_2.sqlite": "ok",
+    "answers_S_0.sqlite": "ok",
+    "answers_S_1.sqlite": "ok"
+  }
+}

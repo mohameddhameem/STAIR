@@ -12,13 +12,8 @@
     2,
     3
   ],
-  "launched_gpus": [
-    0,
-    1,
-    2,
-    3
-  ],
-  "status": "500-question four-pair comparison completed 2026-10-17 02:40 +08; full Strong running; Weak paused",
+  "launched_gpus": [],
+  "status": "Stopped at explicit user request 2026-10-18 01:08 +08; all experiment processes stopped; four GPUs free",
   "controller": "gguf_strong_controller.py",
   "downstream": "Complete full Strong generation, full v2 extraction, then WS/SS held-out analysis",
   "active_cohort": "/data1/zmcheng/cs707_sampling40_instruct_gguf/cohort_500",
@@ -33,5 +28,9 @@
   "priority_reference_batch": "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12; twelve training questions complete, including isolated evaluation_v2/report.json",
   "documentation": "GGUF_RUN.md",
   "cohort_status": "complete",
-  "cohort_results": "nonLLM/results/adaptive_sampling40_instruct_gguf/cohort_500/table.md"
+  "cohort_results": "nonLLM/results/adaptive_sampling40_instruct_gguf/cohort_500/table.md",
+  "automatic_resume": false,
+  "pause_snapshot": "/data1/zmcheng/cs707_sampling40_instruct_gguf/maintenance/user_stop_20261018_010823",
+  "strong_saved_requests": 176837,
+  "weak_saved_requests": 381476
 }

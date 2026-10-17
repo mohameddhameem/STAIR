@@ -1,0 +1,71 @@
+{
+  "state": {
+    "updated": "2026-10-17 02:40:22",
+    "controller_pid": 2505702,
+    "host": "serverA",
+    "uses_serverB": false,
+    "physical_gpus": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "model": "S",
+    "stage": "answers",
+    "reader_root": "/data1/zmcheng/cs707_sampling40_instruct_gguf/evaluation_v2",
+    "weak_generation_paused": true,
+    "reader_expected": 964566,
+    "workers": [
+      2505840,
+      2505841,
+      2505842,
+      2505843
+    ],
+    "servers": [
+      2505709,
+      2505712,
+      2505720,
+      2505733
+    ],
+    "workflow": "strong_first"
+  },
+  "stages": {
+    "retrieval_W": {
+      "saved_requests": 7405,
+      "expected": 7405
+    },
+    "retrieval_S": {
+      "saved_requests": 7405,
+      "expected": 7405
+    },
+    "answers_W": {
+      "saved_requests": 381476,
+      "expected": 607210
+    },
+    "answers_S": {
+      "saved_requests": 176836,
+      "expected": 607210
+    },
+    "extraction_S": {
+      "saved_requests": 2080,
+      "expected": 1184800
+    },
+    "extraction_v2": {
+      "saved_requests": 80000,
+      "expected": 964566,
+      "scope": "All Strong fusions and already available Weak fusions",
+      "reader_root": "/data1/zmcheng/cs707_sampling40_instruct_gguf/evaluation_v2"
+    }
+  },
+  "cohort_500": {
+    "selected_questions": 500,
+    "complete_Weak": 500,
+    "complete_Strong": 500,
+    "Strong_requests": 41000,
+    "Strong_expected_requests": 41000,
+    "extraction_v2_records": 80000,
+    "extraction_expected": 80000,
+    "table_ready": true,
+    "path": "/data1/zmcheng/cs707_sampling40_instruct_gguf/cohort_500"
+  }
+}
