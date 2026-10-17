@@ -1,0 +1,10 @@
+{
+  "pid": 2505702,
+  "command": [
+    "/home/zmcheng/miniconda3/envs/sglang518/bin/python",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf/code/gguf_strong_controller.py",
+    "--root",
+    "/data1/zmcheng/cs707_sampling40_instruct_gguf"
+  ],
+  "time": "2026-10-17 02:40:16"
+}

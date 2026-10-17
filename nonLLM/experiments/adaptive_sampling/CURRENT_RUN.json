@@ -6,11 +6,21 @@
   "weak": "Qwen/Qwen2.5-1.5B-Instruct-GGUF Q4_K_M",
   "strong": "Qwen/Qwen2.5-7B-Instruct-GGUF Q4_K_M",
   "serverB": false,
-  "requested_gpus": [0, 1, 2, 3],
-  "launched_gpus": [0, 1, 2, 3],
-  "status": "Prioritizing 500 comparable training questions; Weak paused; full Strong resumes after cohort tables",
-  "controller": "gguf_cohort_controller.py",
-  "downstream": "500-question four-pair v2 extraction and tables, then resume full Strong workflow",
+  "requested_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "launched_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "status": "500-question four-pair comparison completed 2026-10-17 02:40 +08; full Strong running; Weak paused",
+  "controller": "gguf_strong_controller.py",
+  "downstream": "Complete full Strong generation, full v2 extraction, then WS/SS held-out analysis",
   "active_cohort": "/data1/zmcheng/cs707_sampling40_instruct_gguf/cohort_500",
   "gpu2_status": "Reset succeeded 2026-10-15 18:49 +08; row remap applied, recovery action None, volatile DRAM UCE 0; passed 36 GiB memory-pattern and matrix checks",
   "runtime_schedule": "runtime_schedule.json: W fusion_lanes=1, S fusion_lanes=2; two question lanes and 40 QA candidates unchanged",
@@ -21,5 +31,7 @@
   "temperature_sweep": false,
   "live_state": "/data1/zmcheng/cs707_sampling40_instruct_gguf/state.json",
   "priority_reference_batch": "/data1/zmcheng/cs707_sampling40_instruct_gguf/priority_strong_12; twelve training questions complete, including isolated evaluation_v2/report.json",
-  "documentation": "GGUF_RUN.md"
+  "documentation": "GGUF_RUN.md",
+  "cohort_status": "complete",
+  "cohort_results": "nonLLM/results/adaptive_sampling40_instruct_gguf/cohort_500/table.md"
 }

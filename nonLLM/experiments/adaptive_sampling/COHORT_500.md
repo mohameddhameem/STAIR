@@ -46,3 +46,8 @@ reader target. All files are under
 Launch checks verified unique IDs/texts, all 500 Weak inputs, frozen hashes and
 reader identity. A reference fixture checked table calculations; SQLite fixtures
 checked a non-destructive merge and rollback on conflicting payloads.
+
+Completed 2026-10-17 at 02:40 +08. All 500 questions have every pair and budget,
+and all 80,000 reader records were merged. The full Strong controller resumed
+on all four GPUs. Local results are in
+`nonLLM/results/adaptive_sampling40_instruct_gguf/cohort_500/`.

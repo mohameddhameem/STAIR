@@ -1,0 +1,173 @@
+{
+  "questions": 500,
+  "scope": "500 training questions selected without using correctness. Preliminary matched comparison only; not held-out accuracy, not an AgentTTS reproduction score. Oracle uses gold retrospectively and cannot be used at inference. No model/prompt/temperature changes.",
+  "definition": "Earliest strictly correct extracted answer, gold-assisted. Counts overlap across pairs; not true optimal budgets. Alias and extraction errors can affect EM.",
+  "pairs": {
+    "WW": {
+      "ever_correct_questions": 225,
+      "first_success_k_histogram": {
+        "1": 95,
+        "2": 42,
+        "3": 15,
+        "4": 19,
+        "5": 5,
+        "6": 3,
+        "7": 4,
+        "8": 4,
+        "9": 3,
+        "10": 1,
+        "12": 4,
+        "13": 3,
+        "14": 3,
+        "15": 2,
+        "16": 2,
+        "18": 2,
+        "19": 1,
+        "20": 2,
+        "22": 1,
+        "23": 1,
+        "25": 1,
+        "26": 3,
+        "27": 1,
+        "28": 3,
+        "30": 2,
+        "36": 1,
+        "39": 1,
+        "40": 1
+      },
+      "first_success_bins": {
+        "1": 95,
+        "2-5": 81,
+        "6-10": 15,
+        "11-20": 19,
+        "21-40": 15
+      },
+      "best_fixed_ks": [
+        13
+      ],
+      "best_fixed_hits": 111
+    },
+    "WS": {
+      "ever_correct_questions": 279,
+      "first_success_k_histogram": {
+        "1": 145,
+        "2": 41,
+        "3": 20,
+        "4": 14,
+        "5": 6,
+        "6": 6,
+        "7": 7,
+        "8": 3,
+        "10": 5,
+        "12": 3,
+        "13": 2,
+        "14": 5,
+        "15": 1,
+        "18": 2,
+        "19": 3,
+        "21": 5,
+        "22": 4,
+        "26": 1,
+        "28": 2,
+        "30": 1,
+        "32": 1,
+        "36": 1,
+        "39": 1
+      },
+      "first_success_bins": {
+        "1": 145,
+        "2-5": 81,
+        "6-10": 21,
+        "11-20": 16,
+        "21-40": 16
+      },
+      "best_fixed_ks": [
+        1
+      ],
+      "best_fixed_hits": 145
+    },
+    "SW": {
+      "ever_correct_questions": 257,
+      "first_success_k_histogram": {
+        "1": 121,
+        "2": 38,
+        "3": 29,
+        "4": 9,
+        "5": 7,
+        "6": 5,
+        "7": 8,
+        "8": 4,
+        "9": 2,
+        "10": 1,
+        "11": 3,
+        "12": 4,
+        "13": 5,
+        "14": 2,
+        "15": 2,
+        "16": 2,
+        "17": 1,
+        "18": 3,
+        "20": 1,
+        "21": 2,
+        "22": 1,
+        "24": 1,
+        "26": 1,
+        "27": 1,
+        "29": 1,
+        "31": 1,
+        "38": 1,
+        "40": 1
+      },
+      "first_success_bins": {
+        "1": 121,
+        "2-5": 83,
+        "6-10": 20,
+        "11-20": 23,
+        "21-40": 10
+      },
+      "best_fixed_ks": [
+        3
+      ],
+      "best_fixed_hits": 142
+    },
+    "SS": {
+      "ever_correct_questions": 288,
+      "first_success_k_histogram": {
+        "1": 164,
+        "2": 45,
+        "3": 18,
+        "4": 12,
+        "5": 5,
+        "6": 4,
+        "7": 6,
+        "8": 8,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "13": 1,
+        "16": 1,
+        "20": 2,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "29": 1,
+        "31": 2,
+        "33": 2,
+        "35": 1,
+        "38": 1
+      },
+      "first_success_bins": {
+        "1": 164,
+        "2-5": 80,
+        "6-10": 26,
+        "11-20": 8,
+        "21-40": 10
+      },
+      "best_fixed_ks": [
+        8
+      ],
+      "best_fixed_hits": 168
+    }
+  }
+}
