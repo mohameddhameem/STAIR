@@ -16,6 +16,26 @@ select checkpoints and thresholds on `val`; touch `test` once.
 - MedAgentBench: no fine-tuning (300 tasks).
 - Run seeds 0, 1, 2; report the mean and the range.
 
+## Loss curves: stop at the elbow on val
+
+Each run stops early on the **val** split, never on test, and shares its loss curve. Log one row per epoch in the
+layout of `stair_common/training.py` (track, model, run, seed, epoch, train_loss, val_loss), then plot:
+
+```python
+from stair_common.training import from_records, validate_history, best_epoch, plot_history
+
+rows = [{"epoch": 1, "train_loss": 0.71, "val_loss": 0.64}, {"epoch": 2, "train_loss": 0.52, "val_loss": 0.58}]
+df = from_records(rows, track="selfLearnt", model="Qwen2.5-1.5B retriever", run="lora-r16", seed=0)
+validate_history(df)
+df.to_csv("history-seed0.csv", index=False)
+print(best_epoch(df))                     # the early-stopping epoch of each run
+plot_history(df, "loss-curves.png")       # needs the plot extra: stair-common[plot]
+```
+
+Or from the shell: `stair-plot-history history-*.csv --out loss-curves.png`. Each panel shows train and val loss, a
+thin line per seed and their mean in bold, a dashed line at the best val epoch, and "val rises after" when the run
+overfits past it. Training loss alone isn't a stopping signal: it keeps falling as the model overfits.
+
 ## Epochs: record first, reconcile later
 
 The team agreed (17 Oct) not to force one epoch count across methods yet, but to record what each run used. Router
