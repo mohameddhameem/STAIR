@@ -8,7 +8,7 @@ proposal until the team agrees. Comment on the pull request.
 
 ```bash
 git clone https://github.com/mohameddhameem/STAIR.git && cd STAIR
-pip install -e "common[test]"          # numpy + pandas (+ pytest); Python >= 3.11 for models.toml (tomllib)
+pip install -e "common[test]"          # numpy + pandas (+ pytest); Python >= 3.11
 pytest common/tests                    # the splits, the ruler and the layout check out
 python common/examples/quickstart.py   # the whole flow below on fake answers, no GPU needed
 ```
@@ -20,7 +20,7 @@ The five things a track needs:
 | `from stair_common.splits import load_split` | `load_split("hotpotqa", "test")` gives 500 question IDs. Parts are `train`, `train_extra`, `val`, `calib` and `test`. |
 | `from stair_common.score import score` | `score(answer, golds)` gives `{"lenient": 0/1, "em": 0/1, "f1": 0–1}`. |
 | `from stair_common.cost import units` | `units(params_b, prompt_tokens, generated_tokens)` gives AgentTTS units for one call. |
-| `models.toml` | The pinned copy of each model: `repo`, `revision`, `params_b`, `dtype`, for menus A, B and C. |
+| `from stair_common import load_models` | The pinned copy of each model (`stair_common/models.toml`): `repo`, `revision`, `params_b`, `dtype`, for menus A, B and C. |
 | `from stair_common.schema import validate` | `validate(df)` checks a results table before you share it. |
 
 ### 1. Get the questions of a split
@@ -52,10 +52,9 @@ ID fields per dataset:
 ### 2. Pick models from the menu
 
 ```python
-import tomllib
-from pathlib import Path
+from stair_common import load_models
 
-models = tomllib.loads(Path("common/models.toml").read_text())
+models = load_models()
 m = models["A"]["answerer"]["Llama-3.1-70B"]
 print(m["repo"], m["revision"], m["params_b"], m["dtype"])   # hugging-quants/...AWQ-INT4 2123003... 70.0 awq
 
@@ -147,7 +146,7 @@ module docstring lists the files.
 
 **Test = AgentTTS's own test questions wherever the paper has them.** The headline numbers of every track are then
 directly comparable with the paper, and no track has trained on a test question. The ID lists are committed in
-`splits/` (with `MANIFEST.json`: sizes, sha256, source files) and rebuilt exactly by
+`stair_common/splits/` (with `MANIFEST.json`: sizes, sha256, source files) and rebuilt exactly by
 `python -m stair_common.splits build`.
 
 | Dataset | Source (pinned) | train | val | test | Notes |
@@ -163,7 +162,7 @@ directly comparable with the paper, and no track has trained on a test question.
 - **`train_extra`** is for tracks whose labels exist only on dev questions, such as nonLLM's stored outcome grid. Never
   train on `val` or `test`.
 - **nano-jev** (menu B) saw 1,000 HotpotQA dev questions in its own calibration and test, not in its training. 62 of
-  them are in our test. Report nano-jev rows on all 500 and also without `splits/hotpotqa/nanojev_v1_seen.txt`.
+  them are in our test. Report nano-jev rows on all 500 and also without `stair_common/splits/hotpotqa/nanojev_v1_seen.txt`.
 - **500 test questions** give about ±4 points of interval per policy. Compare policies paired on the same questions,
   for example with a paired bootstrap, which is much tighter.
 
@@ -231,7 +230,7 @@ Share results as one row per (dataset, split, id, track, policy, menu, seed). Th
 
 | Question | Answer |
 |---|---|
-| HotpotQA split code / IDs, plain random? | The 4,814/1,110/1,481 split is not systemOne's and can't be regenerated from its seed (§1). Proposed instead: AgentTTS's test slices, committed in `splits/`. |
+| HotpotQA split code / IDs, plain random? | The 4,814/1,110/1,481 split is not systemOne's and can't be regenerated from its seed (§1). Proposed instead: AgentTTS's test slices, committed in `stair_common/splits/`. |
 | GGUF or full precision? | bf16 from Hugging Face, pinned revisions; AWQ only for 70B/72B (§4, `models.toml`). |
 | nano-jev as the smallest retriever? | Yes: v1.0 (revision `ffee345`), keep its top 5. On AgentTTS's 500 test questions it puts both gold passages in its top 5 for 77% of them, at 2.9 units against 814 for Qwen 72B. It ranks passages only. |
 | One lenient rule and one script? | `lenient_match_agenttts.py`, through `stair_common.score` (§2). |

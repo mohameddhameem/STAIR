@@ -93,3 +93,17 @@ def test_quickstart_example_runs(tmp_path):
     example = Path(__file__).resolve().parents[1] / "examples" / "quickstart.py"
     out = subprocess.run([sys.executable, str(example)], cwd=tmp_path, capture_output=True, text=True, check=True)
     assert "438 of 500" in out.stdout and (tmp_path / "results" / "demo-hotpotqa-test.csv").exists()
+
+
+def test_package_data_ships_every_split_file():
+    import fnmatch
+    import tomllib
+    from pathlib import Path
+
+    from stair_common import load_models
+
+    pkg = Path(splits.__file__).resolve().parent
+    globs = tomllib.loads((pkg.parent / "pyproject.toml").read_text())["tool"]["setuptools"]["package-data"]["stair_common"]
+    data = [p.relative_to(pkg).as_posix() for p in (pkg / "splits").rglob("*") if p.is_file()] + ["models.toml"]
+    assert all(any(fnmatch.fnmatch(f, g) for g in globs) for f in data)
+    assert load_models()["A"]["answerer"]["Llama-3.2-3B"]["params_b"] == 3.0

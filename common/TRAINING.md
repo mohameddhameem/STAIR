@@ -10,9 +10,9 @@ select checkpoints and thresholds on `val`; touch `test` once.
 | 24–72B | QLoRA (4-bit) | 2,000 × 1 |
 
 - LoRA rank 16, alpha 32, learning rate 1e-4. Keep the checkpoint with the best validation loss.
-- HotpotQA: the 12,000 are `splits/hotpotqa/train.txt`, drawn from the official train file with the team's seed; a
+- HotpotQA: the 12,000 are `stair_common/splits/hotpotqa/train.txt`, drawn from the official train file with the team's seed; a
   2,000-question run takes its first 2,000 lines.
-- CWQ / WebQSP: only 350 training questions carry gold triplets (`splits/<dataset>/train.txt`).
+- CWQ / WebQSP: only 350 training questions carry gold triplets (`stair_common/splits/<dataset>/train.txt`).
 - MedAgentBench: no fine-tuning (300 tasks).
 - Run seeds 0, 1, 2; report the mean and the range.
 

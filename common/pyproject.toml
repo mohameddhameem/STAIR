@@ -2,7 +2,7 @@
 name = "stair-common"
 version = "0.1.0"
 description = "STAIR team standard: frozen splits, scoring, AgentTTS-unit cost and the results layout"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = ["numpy>=1.26", "pandas>=2.0"]
 
 [project.optional-dependencies]
@@ -14,3 +14,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = ["stair_common"]
+
+[tool.setuptools.package-data]
+stair_common = ["models.toml", "splits/MANIFEST.json", "splits/*/*.txt"]

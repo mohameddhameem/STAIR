@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 
 SEED = 20260729
-SPLITS_DIR = Path(__file__).resolve().parent.parent / "splits"
+SPLITS_DIR = Path(__file__).resolve().parent / "splits"  # shipped inside the package
 HOTPOTQA_TRAIN_DRAW = 12_000  # fine-tuning / router-training questions drawn from the official train file
 
 
