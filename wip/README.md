@@ -1,1 +1,1 @@
-Work in progress (WIP) — not validated; do not use for reported numbers.
+- **wip/** — work in progress. Not validated; do not use for reported numbers.
