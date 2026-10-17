@@ -1,0 +1,16 @@
+[project]
+name = "stair-common"
+version = "0.1.0"
+description = "STAIR team standard: frozen splits, scoring, AgentTTS-unit cost and the results layout"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "pandas>=2.0"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pyarrow>=15"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["stair_common"]
