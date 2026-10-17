@@ -1,8 +1,8 @@
- Jonathan — Stage-Level Routing (RightRoute)
+# Jonathan — Stage-Level Routing (RightRoute)
 
 - **final/** — validated scripts: each file was reviewed line-by-line before
   running and ties to reported numbers. Safe to reuse.
-- **test/** — work in progress. Not validated; do not use for reported numbers.
+- **wip/** — work in progress. Not validated; do not use for reported numbers.
 
 ## final/lenient_match_agenttts.py
 The standard answer-scoring ruler behind ALL headline numbers (ours and the
