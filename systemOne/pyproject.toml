@@ -1,0 +1,66 @@
+[project]
+name = "stair"
+version = "0.1.0"
+description = "Cost-aware routing between QA models on HotpotQA"
+readme = "README.md"
+authors = [
+    { name = "Mohamed Dhameem" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "datasets>=5.0.1",
+    "pandas>=3.0.6",
+    "pyarrow>=25.0.1",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.14",
+]
+
+[project.scripts]
+prepare-hotpotqa = "stair.prepare_hotpotqa:main"
+make-splits = "stair.make_splits:main"
+nanojev-ids = "stair.nanojev_ids:main"
+run-experts = "stair.run_experts:main"
+train-router = "stair.router:main"
+eval-routing = "stair.evaluate_routing:main"
+prefetch-models = "stair.prefetch_models:main"
+tau-sweep = "stair.tau_sweep:main"
+cascade = "stair.cascade:main"
+judge = "stair.judge:main"
+pools = "stair.pools:main"
+pool-answer = "stair.pool_answer:main"
+rescore = "stair.rescore:main"
+exp8-judge = "stair.exp8_judge:main"
+decider-smoke = "stair.decider:main"
+
+[project.optional-dependencies]
+llm = [
+    "torch>=2.14.0",
+    "transformers>=5.17.0",
+    "bitsandbytes>=0.45; sys_platform == 'linux'",  # 4-bit 70B answerer (experiment 8)
+    "accelerate>=1.0",  # device_map for quantised / multi-GPU loading
+]
+# Experiment 9: Amazon's Strands Decider family as the System One judge (stair.decider). Pinned to a reviewed
+# main commit: Gemma 4 support is not in the PyPI 0.1.0 release. `cuda` brings flash-linear-attention,
+# the Qwen3.5 torso's fast kernels.
+decider = [
+    "strands-decider[cuda] @ git+https://github.com/strands-labs/strands-decider@6039cf8b64c6074e75804000c07ac3d4cce795f7 ; sys_platform == 'linux'",
+    "strands-decider @ git+https://github.com/strands-labs/strands-decider@6039cf8b64c6074e75804000c07ac3d4cce795f7 ; sys_platform != 'linux'",
+]
+
+# omega's GPU node has driver 555 (CUDA 12.5): the default cu130 wheels cannot use it, cu126 can.
+[tool.uv.sources]
+torch = { index = "pytorch-cu126" }
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

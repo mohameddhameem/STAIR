@@ -1,0 +1,17 @@
+# No downloads: lexical scorer and heuristic experts. Checks the pipeline runs end to end;
+# the numbers mean nothing.
+[scorer]
+kind = "lexical"
+
+[[experts]]
+name = "small"
+kind = "heuristic"
+top_k = 1
+params = 1.5  # stand-in size for the FLOPs cost unit
+
+[[experts]]
+name = "large"
+kind = "heuristic"
+top_k = 4
+params = 7
+hops = 1

@@ -1,0 +1,27 @@
+# Experiment 3: gpu.toml with the large expert reading only nano-jev's top-5 paragraphs instead of
+# all 10 (gold pair in top-5 on validation: 95.2%). Only the large stage differs from runs/gpu, so run it
+# with REUSE=runs/gpu (docs/gpu-jobs.md).
+[scorer]
+# nano-jev v1.0 from the Hub (33M MiniLM): relevance per paragraph, sufficiency over the top 2.
+kind = "cross-encoder"
+path = "sdmlai/nano-jev@v1.0"
+sufficiency_top_k = 2
+params = 0.033  # billions; reported as scorer_cost, not added to the curves
+
+[[experts]]
+name = "small"
+kind = "hf"
+model = "Qwen/Qwen2.5-1.5B-Instruct"
+params = 1.54
+top_k = 2
+dtype = "bfloat16"
+batch_size = 32  # runtime-only: lower it on an out-of-memory error and rerun
+
+[[experts]]
+name = "large"
+kind = "hf"
+model = "Qwen/Qwen2.5-7B-Instruct"
+params = 7.62
+top_k = 5
+dtype = "bfloat16"
+batch_size = 8

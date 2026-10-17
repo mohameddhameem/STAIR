@@ -1,0 +1,76 @@
+{
+ "method": "v4: self-commit by the answering model, then grade the committed answer",
+ "thresholds": {
+  "min_agree_em1": 0.95,
+  "min_agree_f10": 0.8,
+  "min_gen_agreement": 0.95,
+  "min_verdict_mass": 0.9,
+  "min_commit_grounded": 0.9,
+  "min_commit_nonempty": 0.98
+ },
+ "commit": {
+  "llama3b-top5": {
+   "n": 200,
+   "grounded": 0.95,
+   "nonempty": 1.0,
+   "mean_commit_units": 0.13149296875000002,
+   "lenient_of_response": 0.58,
+   "commit_em": 0.305,
+   "graded_correct": 0.46,
+   "n_graded_correct": 92,
+   "grounded_when_correct": 0.9782608695652174
+  },
+  "llama3b-s40fuse-top5": {
+   "n": 200,
+   "grounded": 0.995,
+   "nonempty": 1.0,
+   "mean_commit_units": 0.15559583333333332,
+   "lenient_of_response": 0.76,
+   "commit_em": 0.245,
+   "graded_correct": 0.585,
+   "n_graded_correct": 117,
+   "grounded_when_correct": 1.0
+  },
+  "llama70b-top5": {
+   "n": 200,
+   "grounded": 0.95,
+   "nonempty": 1.0,
+   "mean_commit_units": 2.362526041666667,
+   "lenient_of_response": 0.695,
+   "commit_em": 0.565,
+   "graded_correct": 0.735,
+   "n_graded_correct": 147,
+   "grounded_when_correct": 0.9931972789115646
+  }
+ },
+ "grader": "Qwen/Qwen2.5-14B-Instruct",
+ "revision": "cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+ "gate": {
+  "known": "results/gpu/test.parquet rows 1000-1499",
+  "known_n": 500,
+  "known_em1_n": 269,
+  "known_f10_n": 109,
+  "agree_em1_correct": 0.9962825278810409,
+  "agree_f10_incorrect": 0.9174311926605505,
+  "known_graded_correct": 0.714,
+  "known_em": 0.538,
+  "written_parsed": 0.998,
+  "written_agreement": 0.9939879759519038,
+  "verdict_mass_mean": 0.998499545454979
+ },
+ "diagnostic_not_gating": {
+  "known": "rows 500-999",
+  "known_n": 500,
+  "known_em1_n": 267,
+  "known_f10_n": 112,
+  "agree_em1_correct": 0.9925093632958801,
+  "agree_f10_incorrect": 0.875,
+  "known_graded_correct": 0.716,
+  "known_em": 0.534,
+  "written_parsed": 1.0,
+  "written_agreement": 0.996,
+  "verdict_mass_mean": 0.9996368474960328
+ },
+ "seconds": 515.2537009883672,
+ "passed": true
+}

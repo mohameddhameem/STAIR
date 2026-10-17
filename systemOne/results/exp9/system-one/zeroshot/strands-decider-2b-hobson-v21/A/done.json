@@ -1,0 +1,5 @@
+{
+ "judge": "StrandsAgents/strands-decider-2B-hobson-v21",
+ "revision": null,
+ "device": "cuda"
+}

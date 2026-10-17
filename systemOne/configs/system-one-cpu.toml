@@ -1,0 +1,52 @@
+# Experiment 7 on CPU: a reduced preview of configs/system-one.toml (docs/gpu-jobs-system-one.md, "CPU").
+# The full plan needs ~155 h on a 20-thread CPU (36 trainings x ~4.3 h); this one ~4-5 h:
+# the zero-shot judges on all pairs, plus the RQ2 input ablation (q, qp, qpa, qa) with 1 seed,
+# 1 epoch and 3,000 training questions. Use it to check the pipeline and preview RQ1/RQ2; final
+# claims should come from the GPU plan. Run it under a memory cap (8 GB is plenty):
+#   systemd-run --user --scope -p MemoryMax=8G -p MemorySwapMax=0 \
+#     uv run judge all --plan configs/system-one-cpu.toml --out runs/system-one-cpu --device cpu \
+#     --exclude data/hotpotqa/nanojev_validation_ids.txt
+tau = 0.8
+max_drop = 0.01
+seeds = [0]
+zero_shot_judge = "sdmlai/nano-jev@v1.0"
+
+[pairs]
+A = "results/gpu"            # 1.5B (top 2) / 7B (all 10): the main pair
+B = "results/gpu-large-14b"  # 1.5B (top 2) / 14B (all 10)
+C = "results/gpu-small-3b"   # 3B (top 2) / 7B (all 10)
+
+[train]
+epochs = 1
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+micro_batch = 2       # questions per forward/backward pass: ~3.5 GB peak on CPU
+max_length = 512
+dev_fraction = 0.1
+max_questions = 3000  # stratified subsample of the 10,800 training questions
+
+[[judges]]
+inputs = "q"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"

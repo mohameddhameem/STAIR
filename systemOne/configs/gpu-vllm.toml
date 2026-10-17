@@ -1,0 +1,26 @@
+# Minimal first experiment with vLLM: several times faster than gpu.toml. Needs a 24 GB+ GPU with
+# bfloat16 (Ampere or newer). Not yet tested on omega: vLLM is not a project dependency.
+# Run each run-experts stage as its own command (scripts/run_cluster.sh does) so only one model is loaded.
+[scorer]
+# nano-jev v1.0 from the Hub (33M MiniLM): relevance per paragraph, sufficiency over the top 2.
+kind = "cross-encoder"
+path = "sdmlai/nano-jev@v1.0"
+sufficiency_top_k = 2
+params = 0.033  # billions; reported as scorer_cost, not added to the curves
+
+[[experts]]
+name = "small"
+kind = "vllm"
+model = "Qwen/Qwen2.5-1.5B-Instruct"
+params = 1.54
+top_k = 2
+dtype = "bfloat16"
+max_model_len = 4096
+
+[[experts]]
+name = "large"
+kind = "vllm"
+model = "Qwen/Qwen2.5-7B-Instruct"
+params = 7.62
+dtype = "bfloat16"
+max_model_len = 8192

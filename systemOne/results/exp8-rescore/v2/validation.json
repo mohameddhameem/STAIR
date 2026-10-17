@@ -1,0 +1,45 @@
+{
+ "grader": "Qwen/Qwen2.5-14B-Instruct",
+ "revision": "cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+ "gate": {
+  "known": "results/gpu/test.parquet rows 1000-1499",
+  "dumps": "calib pools",
+  "known_n": 500,
+  "known_em1_n": 269,
+  "known_f10_n": 109,
+  "agree_em1_correct": 0.9962825278810409,
+  "agree_f10_incorrect": 0.9174311926605505,
+  "known_graded_correct": 0.714,
+  "known_em": 0.538,
+  "dump_n": 1000,
+  "dump_graded_correct": 0.619,
+  "written_parsed": 0.9993333333333333,
+  "written_agreement": 0.9906604402935291,
+  "verdict_mass_mean": 0.9990057117541631
+ },
+ "thresholds": {
+  "min_agree_em1": 0.95,
+  "min_agree_f10": 0.8,
+  "max_dump_correct": 0.05,
+  "min_gen_agreement": 0.95,
+  "min_verdict_mass": 0.9
+ },
+ "diagnostic_not_gating": {
+  "known": "rows 500-999",
+  "dumps": "test pools",
+  "known_n": 500,
+  "known_em1_n": 267,
+  "known_f10_n": 112,
+  "agree_em1_correct": 0.9925093632958801,
+  "agree_f10_incorrect": 0.875,
+  "known_graded_correct": 0.716,
+  "known_em": 0.534,
+  "dump_n": 500,
+  "dump_graded_correct": 0.666,
+  "written_parsed": 1.0,
+  "written_agreement": 0.995,
+  "verdict_mass_mean": 0.9992935942411423
+ },
+ "seconds": 619.5297142919153,
+ "passed": false
+}

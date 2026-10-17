@@ -1,0 +1,53 @@
+{
+ "grader": "Qwen/Qwen2.5-14B-Instruct",
+ "revision": "cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+ "gate": {
+  "known": "results/gpu/test.parquet rows 1000-1499",
+  "dumps": "calib pools",
+  "known_n": 500,
+  "known_em1_n": 269,
+  "known_f10_n": 109,
+  "extract_faithful": 0.758,
+  "known_extracted_none": 0.238,
+  "agree_em1_correct": 0.8438661710037175,
+  "agree_f10_incorrect": 0.908256880733945,
+  "known_graded_correct": 0.614,
+  "known_em": 0.538,
+  "dump_n": 1000,
+  "dump_extracted_none": 0.522,
+  "dump_graded_correct": 0.414,
+  "written_parsed": 0.9988358556461001,
+  "written_agreement": 0.9941724941724942,
+  "verdict_mass_mean": 0.9989598986017274
+ },
+ "thresholds": {
+  "min_agree_em1": 0.95,
+  "min_agree_f10": 0.8,
+  "max_dump_correct": 0.1,
+  "min_gen_agreement": 0.95,
+  "min_verdict_mass": 0.9,
+  "min_extract_faithful": 0.9
+ },
+ "method": "v3: extract, then grade the extracted answer",
+ "diagnostic_not_gating": {
+  "known": "rows 500-999",
+  "dumps": "test pools",
+  "known_n": 500,
+  "known_em1_n": 267,
+  "known_f10_n": 112,
+  "extract_faithful": 0.748,
+  "known_extracted_none": 0.25,
+  "agree_em1_correct": 0.7940074906367042,
+  "agree_f10_incorrect": 0.8839285714285714,
+  "known_graded_correct": 0.582,
+  "known_em": 0.534,
+  "dump_n": 500,
+  "dump_extracted_none": 0.46,
+  "dump_graded_correct": 0.454,
+  "written_parsed": 1.0,
+  "written_agreement": 0.9953488372093023,
+  "verdict_mass_mean": 0.9997936598090238
+ },
+ "seconds": 620.2998212501407,
+ "passed": false
+}

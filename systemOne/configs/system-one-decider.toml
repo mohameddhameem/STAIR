@@ -1,0 +1,73 @@
+# Experiment 9 (docs/experiment-9-plan.md): Amazon's Strands Decider family as experiment 7's System One judge,
+# on pair A (the report's central RQ). Same out folder as experiment 7 (runs/system-one), so its finished nano-jev
+# judges are reused (skipped) and compared pairwise in the same report; eval_dir keeps experiment 7's reports intact.
+#   uv run judge all --plan configs/system-one-decider.toml
+tau = 0.8
+max_drop = 0.01
+seeds = [0, 1, 2]
+eval_dir = "eval-decider"
+# Every judge's AIQ is also bootstrapped against these (paired over questions): H9a's interval vs nano-jev
+paired_references = ["judge/qp-large-helps-nanojev-A", "judge/qpa-large-helps-nanojev-A"]
+# Zero-shot: nano-jev's grounded question and "is the proposed answer correct?", for each checkpoint
+# (columns zs_<name>_grounded / zs_<name>_correct, in runs/system-one/zeroshot/<name>/A)
+zero_shot_judge = [
+  "sdmlai/nano-jev@v1.0",
+  "StrandsAgents/strands-decider-2B-hobson-v21",
+  "StrandsAgents/strands-decider-E4B-gemma4-v1-2610",
+]
+
+[pairs]
+A = "results/gpu"            # 1.5B (top 2) / 7B (all 10): the main pair
+
+# nano-jev v1.0's own fine-tuning settings (configs/system-one.toml); the decider judges override them below
+[train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+
+# References: experiment 7's nano-jev judges (already trained on the cluster: skipped, scores reused)
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+# Strands Decider 2B (Qwen3.5-2B torso), LoRA + pointer head fine-tuned on the same labels
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 4 }
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 4 }
+
+# Strands Decider E4B (Gemma 4 E4B torso)
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-E4B-gemma4-v1-2610"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 2 }
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-E4B-gemma4-v1-2610"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 2 }

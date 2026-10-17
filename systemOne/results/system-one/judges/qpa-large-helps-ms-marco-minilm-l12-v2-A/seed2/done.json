@@ -1,0 +1,53 @@
+{
+ "judge": "qpa-large-helps-ms-marco-minilm-l12-v2-A",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "cross-encoder/ms-marco-MiniLM-L12-v2",
+ "train_pair": "A",
+ "seed": 2,
+ "tau": 0.8,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1
+ },
+ "n_train": 10800,
+ "n_dev": 1200,
+ "micro_batch": null,
+ "train_label_rate": 0.16708333333333333,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.4903285010324584,
+   "dev_nll": 0.4634646475315094,
+   "seconds": 36.164643097668886
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.44388446389525027,
+   "dev_nll": 0.4405471682548523,
+   "seconds": 36.01474469713867
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.4096397433347172,
+   "dev_nll": 0.46243616938591003,
+   "seconds": 36.01188033632934
+  }
+ ],
+ "train_seconds": 108.30641471222043,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0020272580282762647,
+  "A/test": 0.0021351937755469453,
+  "B/calib": "reused",
+  "B/test": "reused",
+  "C/calib": 0.002031266371719539,
+  "C/test": 0.002114405161037709
+ },
+ "init_revision": "7b0235231ca2674cb8ca8f022859a6eba2b1c968",
+ "device": "cuda"
+}

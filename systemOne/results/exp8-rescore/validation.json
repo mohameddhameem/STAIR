@@ -1,0 +1,21 @@
+{
+ "grader": "Qwen/Qwen2.5-14B-Instruct",
+ "revision": "cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+ "known_n": 500,
+ "known_em1_n": 267,
+ "known_f10_n": 112,
+ "agree_em1_correct": 0.850187265917603,
+ "agree_f10_incorrect": 0.7946428571428571,
+ "known_graded_correct": 0.656,
+ "known_em": 0.534,
+ "known_f1": 0.6785821361644891,
+ "dump_n": 500,
+ "dump_graded_correct": 0.662,
+ "thresholds": {
+  "min_agree_em1": 0.9,
+  "min_agree_f10": 0.9,
+  "max_dump_correct": 0.1
+ },
+ "seconds": 196.55448812432587,
+ "passed": false
+}

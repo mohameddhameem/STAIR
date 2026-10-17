@@ -1,0 +1,46 @@
+{
+ "cost_unit": "flops",
+ "taus": [
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  1.0
+ ],
+ "labels": [
+  "small-fails",
+  "large-helps"
+ ],
+ "baseline_aiq": {
+  "random": 0.6413297203270428,
+  "oracle": 0.7547562409373184,
+  "small-entropy (post)": 0.6618851114715055
+ },
+ "best_by_tau": {
+  "0.5": {
+   "router": "question+evidence+small/large-helps",
+   "aiq": 0.6726989144442869
+  },
+  "0.6": {
+   "router": "question+evidence+small/large-helps",
+   "aiq": 0.6720708758900148
+  },
+  "0.7": {
+   "router": "question+evidence+small/large-helps",
+   "aiq": 0.6722957969341347
+  },
+  "0.8": {
+   "router": "question+evidence+small/large-helps",
+   "aiq": 0.672440252346935
+  },
+  "0.9": {
+   "router": "question+evidence+small/large-helps",
+   "aiq": 0.6721374366965849
+  },
+  "1.0": {
+   "router": "question+evidence+small/large-helps",
+   "aiq": 0.6725158384032687
+  }
+ }
+}

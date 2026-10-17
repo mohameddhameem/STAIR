@@ -1,0 +1,50 @@
+# Experiment 8, phase 2 (docs/experiment-8-plan.md): the System One judge that picks an answer option.
+# This is the five-option plan; the three-option plan of 2026-10-14 is configs/exp8-judge-3opt.toml.
+#   uv run exp8-judge all --plan configs/exp8-judge.toml --exclude runs/exp8/nanojev_validation_ids.txt
+# Needs phase 1's answers for every option below (runs/exp8/answers/<split>/<cell>.parquet).
+out = "runs/exp8"
+judge_dir = "judge-5opt"          # keeps the three-option results in runs/exp8/judge
+seeds = [0, 1, 2]
+inputs = ["qp", "qpa"]            # qp decides before any answer; qpa also reads the cheapest option's answer
+init = "sdmlai/nano-jev@v1.0"
+state_k = 5                       # nano-jev passages in the judge's state (the cells read the top 5)
+strong_units = 929                # AgentTTS's strong-everything cost: 72B retrieval (814) + 70B answering (115)
+budget_fraction = 0.25            # RQ8: at most 25% of strong-everything
+max_drop = 0.01                   # the "near best" operating point: cheapest within this much of the best calib accuracy
+bootstrap = 1000
+# AgentTTS's recipe on its 500 test questions: lenient accuracy as re-scored by the team, and its cost
+# (about 101% of strong-everything on the team's slide; a lower bound, since its fusion reads ~26k tokens).
+agenttts_lenient = 0.746
+agenttts_units = 938
+
+# Options, ordered from cheap to expensive (checked against the mean cost on calib: the 70B, about 88 units, sits
+# between the 10- and the 20-sample cells).
+[[options]]
+cell = "llama3b-top5"
+label = "small model, one answer"
+
+[[options]]
+cell = "llama3b-s10fuse-top5"
+label = "small model, ten samples fused"
+
+[[options]]
+cell = "llama70b-top5"
+label = "large model, one answer"
+
+[[options]]
+cell = "llama3b-s20fuse-top5"
+label = "small model, twenty samples fused"
+
+[[options]]
+cell = "llama3b-s40fuse-top5"
+label = "small model, forty samples fused"
+
+# nano-jev v1.0's own fine-tuning settings, as in configs/system-one.toml
+[train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1

@@ -1,0 +1,102 @@
+# Experiment 7, the System One router (docs/system-one-router.md). Run everything with
+#   uv run judge all --plan configs/system-one.toml
+# (the GPU job: docs/gpu-jobs-system-one.md). Every step skips work that is already finished.
+tau = 0.8
+max_drop = 0.01
+seeds = [0, 1, 2]
+zero_shot_judge = "sdmlai/nano-jev@v1.0"
+
+# Binary routing pairs: cached runs whose `small` and `large` experts are routed between.
+[pairs]
+A = "results/gpu"            # 1.5B (top 2) / 7B (all 10): the main pair
+B = "results/gpu-large-14b"  # 1.5B (top 2) / 14B (all 10)
+C = "results/gpu-small-3b"   # 3B (top 2) / 7B (all 10)
+
+# nano-jev v1.0's own fine-tuning settings (reference/nano-jev model card)
+[train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16      # questions per step; each has 2 option pairs
+max_length = 512
+dev_fraction = 0.1   # of router_train, stratified, for picking the epoch
+
+# 1-4: RQ2 input ablation (and RQ5 transfer: every judge is scored on every pair)
+[[judges]]
+inputs = "q"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+# 5-6: RQ3 label
+[[judges]]
+inputs = "qp"
+label = "small-fails"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "small-fails"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+# 7-8: RQ4 decision pretraining: the same MiniLM-L12-H384 cross-encoder architecture, pretrained only on
+# MS MARCO relevance (no typed decisions). nano-jev's own plain base (microsoft/MiniLM-L12-H384-uncased)
+# cannot start learning here: its two option scores start nearly equal and stay at ln 2
+# (docs/system-one-router.md, RQ4).
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "cross-encoder/ms-marco-MiniLM-L12-v2"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "cross-encoder/ms-marco-MiniLM-L12-v2"
+train_pair = "A"
+
+# 9-12: RQ5 in-pair references for the transfer gap
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "B"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "B"
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "C"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "C"

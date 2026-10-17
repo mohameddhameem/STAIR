@@ -1,0 +1,5 @@
+{
+ "judge": "sdmlai/nano-jev@v1.0",
+ "revision": "ffee345e97797bef0948561461ea54fe558588a0",
+ "device": "cuda"
+}

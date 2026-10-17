@@ -1,0 +1,35 @@
+#!/bin/bash
+# PBS job for CPU-only steps of scripts/run_cluster.sh on OMEGA's `short` queue (no GPU). See
+# docs/omega-cluster.md. Compute does not run on the login node: the login node is for editing, git,
+# downloads and qsub (SMU OMEGA user guide).
+#
+#   qsub -v STEP=exp8-pools scripts/omega-cpu.pbs              # experiment 8 pools (~5 min)
+#   qsub -v STEP=eval,RUN=runs/gpu scripts/omega-cpu.pbs       # routers + reports (~25 min)
+#   qsub -v STEP=exp8-rescore-summary scripts/omega-cpu.pbs    # re-scoring summary table (~1 min)
+#
+# Submit from the repo root. Datasets and models must already be in the Hugging Face cache (the
+# login-node steps download them): the job runs offline.
+#PBS -N router-cpu
+#PBS -q short
+#PBS -l select=1:ncpus=8:mem=32gb
+#PBS -l walltime=02:00:00
+##PBS -P Personal
+#PBS -j oe
+#PBS -r y
+# To get e-mails on abort/begin/end, add: #PBS -m abe and #PBS -M <your address>
+set -euo pipefail
+
+cd "$PBS_O_WORKDIR"
+mkdir -p runs/logs
+exec >> "runs/logs/${PBS_JOBID%%.*}.log" 2>&1
+export PATH="$HOME/.local/bin:$PATH"  # uv
+export HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1
+
+echo "job $PBS_JOBID on $(hostname) (CPU, queue short), step ${STEP:?pass -v STEP=eval|exp8-pools|exp8-rescore-summary}"
+ATTEMPTS=${ATTEMPTS:-1}
+for attempt in $(seq "$ATTEMPTS"); do
+  bash scripts/run_cluster.sh "$STEP" && exit 0
+  echo "attempt $attempt/$ATTEMPTS of $STEP failed at $(date)"
+  [ "$attempt" -lt "$ATTEMPTS" ] && sleep 60
+done
+exit 1
