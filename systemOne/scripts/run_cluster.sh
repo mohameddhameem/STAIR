@@ -35,7 +35,7 @@
 # the large expert changed) instead of recomputing them: see run-experts --reuse-from.
 set -euo pipefail
 
-STEP=${1:?usage: run_cluster.sh prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-judge|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8}
+STEP=${1:?usage: run_cluster.sh prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-judge|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8|save-judges}
 CONFIG=${CONFIG:-configs/gpu.toml}
 RUN=${RUN:-runs/gpu}
 DATA=${DATA:-data/hotpotqa}
@@ -152,13 +152,16 @@ EOF
     $BIN judge "${J7STEP:-all}" --plan configs/system-one-decider.toml --out runs/system-one ${ONLY:-} \
       --exclude data/hotpotqa/nanojev_validation_ids.txt
     ;;
+  save-judges)  # retrain judges and keep their weights (for Hugging Face): PLAN=<config>, ONLY="--only <judge> ..."
+    $BIN judge train --plan "${PLAN:?PLAN=<judge config>}" --data-dir "$DATA" --out "${JUDGE_OUT:-runs/judge-models}" ${ONLY:-} --save-model
+    ;;
   exp9-judge8)
     for plan in ${PLANS:-configs/exp8-judge-decider-2b-zs.toml configs/exp8-judge-decider-2b-ft.toml configs/exp8-judge-decider-e4b-zs.toml configs/exp8-judge-decider-e4b-ft.toml}; do
       $BIN exp8-judge all --plan "$plan" --exclude runs/exp8/nanojev_validation_ids.txt
     done
     ;;
   *)
-    echo "unknown step: $STEP (prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-judge|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8)" >&2
+    echo "unknown step: $STEP (prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-judge|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8|save-judges)" >&2
     exit 2
     ;;
 esac
