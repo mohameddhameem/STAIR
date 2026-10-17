@@ -4,15 +4,144 @@ This is the shared setup every track uses, so that results can be pooled. It set
 the team's proposal "STAIR shared run configuration" (17 Oct) and answers the questions asked in the Teams chat. It is a
 proposal until the team agrees. Comment on the pull request.
 
+## Quick start
+
 ```bash
-pip install -e common            # numpy + pandas; python >= 3.10
+git clone https://github.com/mohameddhameem/STAIR.git && cd STAIR
+pip install -e "common[test]"          # numpy + pandas (+ pytest); Python >= 3.11 for models.toml (tomllib)
+pytest common/tests                    # the splits, the ruler and the layout check out
+python common/examples/quickstart.py   # the whole flow below on fake answers, no GPU needed
 ```
+
+The five things a track needs:
+
+| Import | What it does |
+|---|---|
+| `from stair_common.splits import load_split` | `load_split("hotpotqa", "test")` gives 500 question IDs. Parts are `train`, `train_extra`, `val`, `calib` and `test`. |
+| `from stair_common.score import score` | `score(answer, golds)` gives `{"lenient": 0/1, "em": 0/1, "f1": 0–1}`. |
+| `from stair_common.cost import units` | `units(params_b, prompt_tokens, generated_tokens)` gives AgentTTS units for one call. |
+| `models.toml` | The pinned copy of each model: `repo`, `revision`, `params_b`, `dtype`, for menus A, B and C. |
+| `from stair_common.schema import validate` | `validate(df)` checks a results table before you share it. |
+
+### 1. Get the questions of a split
+
+The splits hold only IDs; join them to your copy of the data. For HotpotQA, the IDs are the dataset's `_id` / `id`.
+
 ```python
-from stair_common.splits import load_split   # load_split("hotpotqa", "test") -> 500 question IDs
-from stair_common.score import score         # score(answer, golds) -> {"lenient", "em", "f1"}
-from stair_common.cost import units          # units(params_b, prompt_tokens, generated_tokens) -> AgentTTS units
-from stair_common.schema import validate     # validate(results_df) before you share a results file
+from datasets import load_dataset                     # pip install datasets
+from stair_common.splits import load_split
+
+dev = load_dataset("hotpotqa/hotpot_qa", "distractor", split="validation").to_pandas().set_index("id")
+test = dev.loc[load_split("hotpotqa", "test")]         # 500 rows, AgentTTS's test questions, in their order
+val = dev.loc[load_split("hotpotqa", "val")]           # tune thresholds / pick checkpoints here
+print(test.iloc[0][["question", "answer"]])
 ```
+
+```python
+import json                                            # or AgentTTS's own files (same IDs, same order)
+dev = {q["_id"]: q for q in json.load(open("hotpotqa-dev.json"))}
+test = [dev[i] for i in load_split("hotpotqa", "test")]
+```
+
+ID fields per dataset:
+- HotpotQA and 2WikiMultiHopQA: `_id`;
+- CWQ: `ID`;
+- WebQSP: `QuestionId`;
+- MedAgentBench: `id`, as in `task3_17`.
+
+### 2. Pick models from the menu
+
+```python
+import tomllib
+from pathlib import Path
+
+models = tomllib.loads(Path("common/models.toml").read_text())
+m = models["A"]["answerer"]["Llama-3.1-70B"]
+print(m["repo"], m["revision"], m["params_b"], m["dtype"])   # hugging-quants/...AWQ-INT4 2123003... 70.0 awq
+
+# vLLM: always load the pinned revision
+from vllm import LLM
+llm = LLM(model=m["repo"], revision=m["revision"], quantization="awq" if m["dtype"] == "awq" else None)
+```
+
+### 3. Score an answer
+
+```python
+from stair_common.score import score, lenient
+
+score("New York City", ["Greenwich Village, New York City"])  # {'lenient': 1, 'em': 0.0, 'f1': 0.75}
+lenient("more than 20", ["20"])                                # 0: the quantity guard
+```
+
+Pass every gold alias you have; each score takes the best match. Name the ruler next to every number: "lenient
+(standard)", "EM", "F1".
+
+### 4. Cost a question: sum every call
+
+```python
+from stair_common.cost import units
+
+calls = [  # (stage, params_b, prompt_tokens, generated_tokens), with the tokens measured from each call
+    ("retrieve", 7.0, 3500, 20),     # Qwen2.5-7B picks passages from the candidates
+    ("answer",   3.0, 600, 16),      # Llama-3.2-3B answers, one sample
+    ("router",   0.033, 512, 0),     # your router / judge, if any
+]
+per_stage = {}
+for stage, p, prompt, gen in calls:
+    per_stage[stage] = per_stage.get(stage, 0.0) + units(p, prompt, gen)
+total = sum(per_stage.values())      # one 3B pass of 128+64 tokens = 1 unit
+```
+
+With vLLM, the tokens come from each output: `len(out.prompt_token_ids)` and `len(out.outputs[0].token_ids)`.
+Every sample and every fusion call counts.
+
+### 5. Write results in the shared layout, validate and save
+
+```python
+import pandas as pd
+from stair_common.schema import COLUMNS, validate
+
+rows.append({
+    "dataset": "hotpotqa", "split": "test", "id": qid, "track": "nonLLM", "policy": "router@0.5", "menu": "A",
+    "seed": 0, "answer": answer, **score(answer, golds),
+    "units": total, "units_retrieve": per_stage.get("retrieve", 0.0), "units_answer": per_stage.get("answer", 0.0),
+    "units_fuse": per_stage.get("fuse", 0.0), "units_router": per_stage.get("router", 0.0),
+    "ms_router": 2.1, "models": "retriever=Qwen/Qwen2.5-7B-Instruct@a09a354...;answerer=...",
+})
+df = pd.DataFrame(rows, columns=COLUMNS)
+validate(df)                                   # raises on a missing column, an ID outside the split, bad units
+df.to_csv("results/nonLLM-hotpotqa-test.csv", index=False)
+```
+
+### 6. Pool the team's results and compare
+
+```python
+import glob
+import numpy as np
+
+pooled = pd.concat(pd.read_csv(p) for p in glob.glob("results/*-test.csv"))
+per_seed = pooled.groupby(["dataset", "track", "policy", "menu", "seed"])[["lenient", "units"]].mean()
+table = per_seed.groupby(["dataset", "track", "policy", "menu"]).agg(
+    lenient_standard=("lenient", "mean"), lenient_min=("lenient", "min"), lenient_max=("lenient", "max"),
+    units_per_question=("units", "mean"))
+
+# Two policies, paired on the same questions: a 95% bootstrap interval of the difference
+a = pooled.query("policy == 'router@0.5' and seed == 0").set_index("id")["lenient"]
+b = pooled.query("policy == 'always-strong' and seed == 0").set_index("id")["lenient"].reindex(a.index)
+boot = np.random.default_rng(0).choice((a - b).to_numpy(), size=(2000, len(a))).mean(axis=1)
+print((a - b).mean(), np.percentile(boot, [2.5, 97.5]))
+```
+
+### 7. Train on train, tune on val, test once
+
+```python
+train_ids = load_split("hotpotqa", "train")            # 12,000 from the official train file (fine-tuning)
+extra_ids = load_split("hotpotqa", "train_extra")      # dev[1000:], only if your labels exist only on dev
+seen = set(load_split("hotpotqa", "nanojev_v1_seen"))  # nano-jev rows: also report on test minus these (438)
+```
+
+To rebuild the split files from the pinned sources, run `python -m stair_common.splits build --sources <dir>`. The
+module docstring lists the files.
 
 ## 1. Splits: AgentTTS's test sets, fixed by position
 

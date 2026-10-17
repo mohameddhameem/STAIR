@@ -83,3 +83,13 @@ def test_schema_accepts_a_good_table_and_rejects_bad_ones():
         schema.validate(pd.DataFrame([_row(units=5.0)]))
     with pytest.raises(ValueError, match="not in splits"):
         schema.validate(pd.DataFrame([_row(id="not-a-test-id")]))
+
+
+def test_quickstart_example_runs(tmp_path):
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    example = Path(__file__).resolve().parents[1] / "examples" / "quickstart.py"
+    out = subprocess.run([sys.executable, str(example)], cwd=tmp_path, capture_output=True, text=True, check=True)
+    assert "438 of 500" in out.stdout and (tmp_path / "results" / "demo-hotpotqa-test.csv").exists()
