@@ -1,0 +1,257 @@
+{
+ "round": 2,
+ "rulebook": {
+  "version": 2,
+  "params": {
+   "votes": 2,
+   "sure_threshold": 0.9,
+   "merge": "union",
+   "max_ret_members": 3
+  },
+  "rules": [
+   {
+    "id": "H1",
+    "stage": "retrieval",
+    "hard": true,
+    "at": [
+     0
+    ],
+    "when": [
+     [
+      "ret_probe_pct",
+      "<",
+      0.1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the first retriever's probe score is in its lowest 10% THEN escalate (locked)"
+   },
+   {
+    "id": "R1",
+    "stage": "retrieval",
+    "when": [
+     [
+      "ret_probe_pct",
+      "<",
+      0.25
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the probe says this shortlist is likely incomplete (lowest 25%) THEN escalate to the next retriever and ensemble"
+   },
+   {
+    "id": "H2",
+    "stage": "answer",
+    "hard": true,
+    "when": [
+     [
+      "is_cannot",
+      "==",
+      1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+   },
+   {
+    "id": "A1",
+    "stage": "answer",
+    "when": [
+     [
+      "ans_probe_pct",
+      "<",
+      0.3
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the probe says the answer is likely wrong (lowest 30%) THEN escalate to the next answerer"
+   }
+  ]
+ },
+ "history": [
+  "  round 1: add [N5] answer: IF ans_probe_pct < 0.15 THEN escalate (skip 1) (why: mock) -> rejected (A +0.0 pt, +0.0% compute, B +0.0 pt, +0.0% compute)",
+  "  round 1: setting votes: 2 -> 3 (why: mock) -> rejected (A +0.0 pt, +0.0% compute, B +0.0 pt, +0.0% compute)",
+  "  round 2: {\"action\": \"amend\", \"id\": \"H1\", \"rule\": {\"stage\": \"retrieval\", \"when\": [[\"ret_probe_pct\", \"<\", 0.5]], \"then\": \"escalate\"}, \"why\": \"mock: must be refused\"} -> REJECTED (H1 is locked (hard rule))",
+  "  round 2: add [N5] retrieval at rung [0]: IF ret_probe_pct < 0.3 THEN escalate (why: mock) -> rejected (A +2.5 pt, +19.5% compute, B -1.2 pt, +2.9% compute)"
+ ],
+ "log": [
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.2",
+   "half A": "+0.0 pt, -11.4% compute",
+   "half B": "-1.2 pt, -10.8% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.225",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "-1.2 pt, -10.8% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.275",
+   "half A": "+1.2 pt, +15.8% compute",
+   "half B": "+0.0 pt, +1.5% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.3",
+   "half A": "+2.5 pt, +29.7% compute",
+   "half B": "-1.2 pt, +2.9% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.25",
+   "half A": "-2.5 pt, -0.5% compute",
+   "half B": "+0.0 pt, -0.4% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.275",
+   "half A": "-2.5 pt, -0.3% compute",
+   "half B": "+0.0 pt, -0.3% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.325",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.1% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.35",
+   "half A": "+0.0 pt, +0.3% compute",
+   "half B": "+0.0 pt, +0.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "planner",
+   "change": "add [N5] answer: IF ans_probe_pct < 0.15 THEN escalate (skip 1) (why: mock)",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 1,
+   "source": "planner",
+   "change": "setting votes: 2 -> 3 (why: mock)",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "planner",
+   "change": "{\"action\": \"amend\", \"id\": \"H1\", \"rule\": {\"stage\": \"retrieval\", \"when\": [[\"ret_probe_pct\", \"<\", 0.5]], \"then\": \"escalate\"}, \"why\": \"mock: must be refused\"}",
+   "decision": "rejected",
+   "reason": "H1 is locked (hard rule)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.2",
+   "half A": "+0.0 pt, -11.4% compute",
+   "half B": "-1.2 pt, -10.8% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.225",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "-1.2 pt, -10.8% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.275",
+   "half A": "+1.2 pt, +15.8% compute",
+   "half B": "+0.0 pt, +1.5% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_probe_pct < 0.25 -> 0.3",
+   "half A": "+2.5 pt, +29.7% compute",
+   "half B": "-1.2 pt, +2.9% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.25",
+   "half A": "-2.5 pt, -0.5% compute",
+   "half B": "+0.0 pt, -0.4% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.275",
+   "half A": "-2.5 pt, -0.3% compute",
+   "half B": "+0.0 pt, -0.3% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.325",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.1% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A1 ans_probe_pct < 0.3 -> 0.35",
+   "half A": "+0.0 pt, +0.3% compute",
+   "half B": "+0.0 pt, +0.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  },
+  {
+   "round": 2,
+   "source": "planner",
+   "change": "add [N5] retrieval at rung [0]: IF ret_probe_pct < 0.3 THEN escalate (why: mock)",
+   "half A": "+2.5 pt, +19.5% compute",
+   "half B": "-1.2 pt, +2.9% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves"
+  }
+ ]
+}

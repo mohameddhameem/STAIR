@@ -1,0 +1,436 @@
+{
+ "round": 2,
+ "rulebook": {
+  "version": 2,
+  "params": {
+   "votes": 2,
+   "sure_threshold": 0.9,
+   "merge": "union",
+   "max_ret_members": 3
+  },
+  "rules": [
+   {
+    "id": "H1",
+    "stage": "retrieval",
+    "hard": true,
+    "at": [
+     0
+    ],
+    "when": [
+     [
+      "ret_conf_pct",
+      "<",
+      0.1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the first retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"
+   },
+   {
+    "id": "R1",
+    "stage": "retrieval",
+    "at": [
+     0
+    ],
+    "when": [
+     [
+      "ret_conf_pct",
+      "<",
+      0.2
+     ]
+    ],
+    "then": "escalate",
+    "skip": 1,
+    "text": "IF the first retriever is unsure (lowest 20%) THEN escalate, skipping one size, and ensemble"
+   },
+   {
+    "id": "R2",
+    "stage": "retrieval",
+    "when": [
+     [
+      "rung",
+      ">=",
+      1
+     ],
+     [
+      "ret_agree",
+      "==",
+      0
+     ],
+     [
+      "ret_conf_pct",
+      "<",
+      0.2
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"
+   },
+   {
+    "id": "H2",
+    "stage": "answer",
+    "hard": true,
+    "when": [
+     [
+      "is_cannot",
+      "==",
+      1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+   },
+   {
+    "id": "A2",
+    "stage": "answer",
+    "when": [
+     [
+      "is_yes_no",
+      "==",
+      1
+     ]
+    ],
+    "then": "keep",
+    "text": "IF the answer is yes/no THEN keep it"
+   },
+   {
+    "id": "A1",
+    "stage": "answer",
+    "when": [
+     [
+      "words_in_passages",
+      "<",
+      0.97
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF some of the answer's words are not in the passages THEN escalate; agree -> accept, else vote"
+   },
+   {
+    "id": "A3",
+    "stage": "answer",
+    "when": [
+     [
+      "ans_conf_pct",
+      "<",
+      0.15
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the answerer's token confidence is in its lowest 15% THEN escalate"
+   }
+  ]
+ },
+ "history": [
+  "  round 1: add [N8] answer: IF ans_conf_pct < 0.15 THEN escalate (skip 1) (why: mock) -> rejected (H6: rule R2 decides on 3 dev questions (min 4); H6: rule A3 decides on 0 dev questions (min 4))",
+  "  round 1: setting votes: 2 -> 3 (why: mock) -> rejected (A +0.0 pt, +0.0% compute, B +0.0 pt, +0.0% compute)",
+  "  round 2: {\"action\": \"amend\", \"id\": \"H1\", \"rule\": {\"stage\": \"retrieval\", \"when\": [[\"ret_conf_pct\", \"<\", 0.5]], \"then\": \"escalate\"}, \"why\": \"mock: must be refused\"} -> REJECTED (H1 is locked (hard rule))",
+  "  round 2: add [N8] retrieval at rung [0]: IF ret_conf_pct < 0.3 THEN escalate (why: mock) -> rejected (H6: rule A3 decides on 0 dev questions (min 4))"
+ ],
+ "log": [
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.15",
+   "half A": "+0.0 pt, -21.5% compute",
+   "half B": "-1.3 pt, -17.8% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.175",
+   "half A": "+0.0 pt, -10.5% compute",
+   "half B": "+1.2 pt, -8.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.225",
+   "half A": "+0.0 pt, +9.3% compute",
+   "half B": "-1.3 pt, +7.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.25",
+   "half A": "+1.3 pt, +25.6% compute",
+   "half B": "-1.3 pt, +10.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.15",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, -4.1% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.175",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, -4.1% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.225",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +4.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.25",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +12.3% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A1 words_in_passages < 0.97 -> 0.92",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A1 words_in_passages < 0.97 -> 0.945",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A1 words_in_passages < 0.97 -> 0.995",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.1",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.125",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.175",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.2",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 1,
+   "source": "planner",
+   "change": "add [N8] answer: IF ans_conf_pct < 0.15 THEN escalate (skip 1) (why: mock)",
+   "half A": "+1.3 pt, +7.1% compute",
+   "half B": "+2.5 pt, +2.3% compute",
+   "decision": "rejected",
+   "reason": "H6: rule R2 decides on 3 dev questions (min 4); H6: rule A3 decides on 0 dev questions (min 4)"
+  },
+  {
+   "round": 1,
+   "source": "planner",
+   "change": "setting votes: 2 -> 3 (why: mock)",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "planner",
+   "change": "{\"action\": \"amend\", \"id\": \"H1\", \"rule\": {\"stage\": \"retrieval\", \"when\": [[\"ret_conf_pct\", \"<\", 0.5]], \"then\": \"escalate\"}, \"why\": \"mock: must be refused\"}",
+   "decision": "rejected",
+   "reason": "H1 is locked (hard rule)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.15",
+   "half A": "+0.0 pt, -21.5% compute",
+   "half B": "-1.3 pt, -17.8% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.175",
+   "half A": "+0.0 pt, -10.5% compute",
+   "half B": "+1.2 pt, -8.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.225",
+   "half A": "+0.0 pt, +9.3% compute",
+   "half B": "-1.3 pt, +7.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R1 ret_conf_pct < 0.2 -> 0.25",
+   "half A": "+1.3 pt, +25.6% compute",
+   "half B": "-1.3 pt, +10.2% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.15",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, -4.1% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.175",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, -4.1% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.225",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +4.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: R2 ret_conf_pct < 0.2 -> 0.25",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +12.3% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A1 words_in_passages < 0.97 -> 0.92",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A1 words_in_passages < 0.97 -> 0.945",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A1 words_in_passages < 0.97 -> 0.995",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.1",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.125",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.175",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "code",
+   "change": "threshold: A3 ans_conf_pct < 0.15 -> 0.2",
+   "half A": "+0.0 pt, +0.0% compute",
+   "half B": "+0.0 pt, +0.0% compute",
+   "decision": "rejected",
+   "reason": "not better on both halves (repair mode)"
+  },
+  {
+   "round": 2,
+   "source": "planner",
+   "change": "add [N8] retrieval at rung [0]: IF ret_conf_pct < 0.3 THEN escalate (why: mock)",
+   "half A": "+2.5 pt, +38.9% compute",
+   "half B": "+1.2 pt, +20.2% compute",
+   "decision": "rejected",
+   "reason": "H6: rule A3 decides on 0 dev questions (min 4)"
+  }
+ ]
+}

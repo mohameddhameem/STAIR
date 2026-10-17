@@ -1,0 +1,749 @@
+{
+ "run_name": "dryrun",
+ "backend": "mock",
+ "paths": {
+  "project_dir": "./dryrun_workspace",
+  "models_dir": "./dryrun_workspace/models",
+  "data_dir": "./dryrun_workspace/runs/dryrun/data",
+  "runs_dir": "./dryrun_workspace/runs",
+  "hf_cache": "./dryrun_workspace/hf_cache"
+ },
+ "download_models": true,
+ "gpu": {
+  "max_model_len": 20480,
+  "gpu_util": 0.9,
+  "chunk": 128
+ },
+ "progress": {
+  "github": false,
+  "repo": "https://github.com/mohameddhameem/STAIR.git",
+  "branch": "selfLearnt-runs",
+  "every_minutes": 20,
+  "author_name": "Andy-TaiHL",
+  "author_email": "taihocklin@gmail.com"
+ },
+ "data": {
+  "hotpot_dev": "./dryrun_workspace/hotpotqa/hotpot_dev_distractor_v1.json",
+  "hotpot_dev_url": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json",
+  "hotpot_train": "./dryrun_workspace/hotpotqa/hotpot_dev_distractor_v1.json",
+  "hotpot_train_url": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json",
+  "n_retrieve": 20,
+  "search_range": [
+   0,
+   12
+  ],
+  "test_range": [
+   500,
+   580
+  ],
+  "level": "hard",
+  "seed": 7,
+  "n_train": 40,
+  "n_val": 6,
+  "n_dev": 160
+ },
+ "models": {
+  "q05": {
+   "hf_id": "Qwen/Qwen2.5-0.5B-Instruct",
+   "params": 490000000.0,
+   "nominal": 500000000.0,
+   "label": "Qwen2.5 0.5B",
+   "key": "q05",
+   "dir": "Qwen2.5-0.5B-Instruct",
+   "path": "./dryrun_workspace/models/Qwen2.5-0.5B-Instruct",
+   "train_path": "./dryrun_workspace/models/Qwen2.5-0.5B-Instruct"
+  },
+  "q06": {
+   "hf_id": "Qwen/Qwen3-0.6B",
+   "params": 600000000.0,
+   "nominal": 600000000.0,
+   "label": "Qwen3 0.6B",
+   "no_thinking": true,
+   "key": "q06",
+   "dir": "Qwen3-0.6B",
+   "path": "./dryrun_workspace/models/Qwen3-0.6B",
+   "train_path": "./dryrun_workspace/models/Qwen3-0.6B"
+  },
+  "q08": {
+   "hf_id": "Qwen/Qwen3.5-0.8B",
+   "params": 800000000.0,
+   "nominal": 800000000.0,
+   "label": "Qwen3.5 0.8B",
+   "no_thinking": true,
+   "key": "q08",
+   "dir": "Qwen3.5-0.8B",
+   "path": "./dryrun_workspace/models/Qwen3.5-0.8B",
+   "train_path": "./dryrun_workspace/models/Qwen3.5-0.8B"
+  },
+  "q3": {
+   "hf_id": "Qwen/Qwen2.5-3B-Instruct",
+   "params": 3090000000.0,
+   "nominal": 3000000000.0,
+   "label": "Qwen2.5 3B",
+   "key": "q3",
+   "dir": "Qwen2.5-3B-Instruct",
+   "path": "./dryrun_workspace/models/Qwen2.5-3B-Instruct",
+   "train_path": "./dryrun_workspace/models/Qwen2.5-3B-Instruct"
+  },
+  "q7": {
+   "hf_id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+   "train_hf_id": "Qwen/Qwen2.5-7B-Instruct",
+   "params": 7620000000.0,
+   "nominal": 7000000000.0,
+   "label": "Qwen2.5 7B",
+   "key": "q7",
+   "dir": "Qwen2.5-7B-Instruct-AWQ",
+   "path": "./dryrun_workspace/models/Qwen2.5-7B-Instruct-AWQ",
+   "train_dir": "Qwen2.5-7B-Instruct",
+   "train_path": "./dryrun_workspace/models/Qwen2.5-7B-Instruct"
+  },
+  "q32": {
+   "hf_id": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+   "train_hf_id": "Qwen/Qwen2.5-32B-Instruct",
+   "params": 32760000000.0,
+   "nominal": 32000000000.0,
+   "label": "Qwen2.5 32B",
+   "key": "q32",
+   "dir": "Qwen2.5-32B-Instruct-AWQ",
+   "path": "./dryrun_workspace/models/Qwen2.5-32B-Instruct-AWQ",
+   "train_dir": "Qwen2.5-32B-Instruct",
+   "train_path": "./dryrun_workspace/models/Qwen2.5-32B-Instruct"
+  },
+  "q72": {
+   "hf_id": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+   "train_hf_id": "Qwen/Qwen2.5-72B-Instruct",
+   "params": 72700000000.0,
+   "nominal": 72000000000.0,
+   "label": "Qwen2.5 72B",
+   "tensor_parallel": 2,
+   "key": "q72",
+   "dir": "Qwen2.5-72B-Instruct-AWQ",
+   "path": "./dryrun_workspace/models/Qwen2.5-72B-Instruct-AWQ",
+   "train_dir": "Qwen2.5-72B-Instruct",
+   "train_path": "./dryrun_workspace/models/Qwen2.5-72B-Instruct"
+  },
+  "l3": {
+   "hf_id": "meta-llama/Llama-3.2-3B-Instruct",
+   "params": 3210000000.0,
+   "nominal": 3000000000.0,
+   "label": "Llama 3.2 3B",
+   "max_model_len": 65536,
+   "key": "l3",
+   "dir": "Llama-3.2-3B-Instruct",
+   "path": "./dryrun_workspace/models/Llama-3.2-3B-Instruct",
+   "train_path": "./dryrun_workspace/models/Llama-3.2-3B-Instruct"
+  },
+  "l8": {
+   "hf_id": "meta-llama/Llama-3.1-8B-Instruct",
+   "params": 8030000000.0,
+   "nominal": 8000000000.0,
+   "label": "Llama 3.1 8B",
+   "max_model_len": 65536,
+   "key": "l8",
+   "dir": "Llama-3.1-8B-Instruct",
+   "path": "./dryrun_workspace/models/Llama-3.1-8B-Instruct",
+   "train_path": "./dryrun_workspace/models/Llama-3.1-8B-Instruct"
+  },
+  "l70": {
+   "hf_id": "hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
+   "train_hf_id": "meta-llama/Llama-3.1-70B-Instruct",
+   "params": 70600000000.0,
+   "nominal": 70000000000.0,
+   "label": "Llama 3.1 70B",
+   "tensor_parallel": 2,
+   "max_model_len": 49152,
+   "key": "l70",
+   "dir": "Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
+   "path": "./dryrun_workspace/models/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
+   "train_dir": "Llama-3.1-70B-Instruct",
+   "train_path": "./dryrun_workspace/models/Llama-3.1-70B-Instruct"
+  }
+ },
+ "finetune": {
+  "defaults": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.05,
+   "lr": 0.0001,
+   "grad_accum": 4,
+   "micro_batch": 2,
+   "epochs": 1,
+   "n_val": 6,
+   "save_every_questions": 20
+  },
+  "retrievers": {
+   "q05": {
+    "method": "lora",
+    "n_train": 40,
+    "epochs": 1,
+    "ckpt_questions": [
+     20,
+     40
+    ],
+    "max_len": 20480
+   },
+   "q06": {
+    "method": "lora",
+    "n_train": 40,
+    "ckpt_questions": [
+     20,
+     40
+    ],
+    "max_len": 20480,
+    "epochs": 1
+   },
+   "q08": {
+    "method": "lora",
+    "n_train": 40,
+    "ckpt_questions": [
+     20,
+     40
+    ],
+    "max_len": 20480,
+    "epochs": 1
+   },
+   "q3": {
+    "method": "lora",
+    "n_train": 40,
+    "ckpt_questions": [
+     20,
+     40
+    ],
+    "max_len": 20480,
+    "epochs": 1
+   },
+   "q7": {
+    "method": "lora",
+    "n_train": 40,
+    "ckpt_questions": [
+     20,
+     40
+    ],
+    "max_len": 20480,
+    "epochs": 1
+   },
+   "q32": {
+    "method": "qlora",
+    "n_train": 20,
+    "ckpt_questions": [
+     20
+    ],
+    "max_len": 12288,
+    "n_val": 150,
+    "gpus": 1,
+    "epochs": 1
+   },
+   "q72": {
+    "method": "qlora",
+    "n_train": 20,
+    "ckpt_questions": [
+     20
+    ],
+    "max_len": 10240,
+    "n_val": 150,
+    "gpus": 2,
+    "epochs": 1
+   }
+  },
+  "answerers": {
+   "l3": {
+    "method": "lora",
+    "n_train": 40,
+    "ckpt_questions": [
+     20,
+     40
+    ],
+    "max_len": 4096,
+    "micro_batch": 4,
+    "epochs": 1
+   },
+   "l8": {
+    "method": "lora",
+    "n_train": 40,
+    "ckpt_questions": [
+     20,
+     40
+    ],
+    "max_len": 4096,
+    "micro_batch": 4,
+    "epochs": 1
+   },
+   "l70": {
+    "method": "qlora",
+    "n_train": 20,
+    "ckpt_questions": [
+     20
+    ],
+    "max_len": 4096,
+    "n_val": 150,
+    "gpus": 2,
+    "epochs": 1
+   }
+  },
+  "answer_inputs": {
+   "distractors": [
+    0,
+    2
+   ],
+   "drop_gold_share": 0.15
+  }
+ },
+ "planner": "q72",
+ "workstreams": {
+  "ws1": {
+   "name": "Baseline 1: AgentTTS (original method)",
+   "kind": "agenttts",
+   "retrievers": [
+    "q7",
+    "q32",
+    "q72"
+   ],
+   "answerers": [
+    "l3",
+    "l8",
+    "l70"
+   ],
+   "budget": 900,
+   "np_nd": {
+    "Retrieval": [
+     2048,
+     128
+    ],
+    "Question Answering": [
+     256,
+     64
+    ]
+   },
+   "iterations": 2,
+   "batch_size": 5,
+   "grid": {
+    "retrieval": {
+     "q7": [
+      1,
+      3,
+      10
+     ],
+     "q32": [
+      1,
+      3
+     ],
+     "q72": [
+      1,
+      2
+     ]
+    },
+    "answer": {
+     "l3": [
+      1,
+      5,
+      20,
+      40
+     ],
+     "l8": [
+      1,
+      5,
+      20
+     ],
+     "l70": [
+      1,
+      3,
+      10
+     ]
+    }
+   },
+   "also_test": [
+    [
+     "q72",
+     1,
+     "l3",
+     40
+    ]
+   ]
+  },
+  "ws2": {
+   "name": "Baseline 2: strongest models on every question",
+   "kind": "strong",
+   "config": [
+    "q72",
+    1,
+    "l70",
+    1
+   ]
+  },
+  "ws3": {
+   "name": "Hidden-state probe + calibrated rules (AgentTTS's models, untrained)",
+   "kind": "rules",
+   "retrievers": [
+    "q7",
+    "q32",
+    "q72"
+   ],
+   "answerers": [
+    "l3",
+    "l8",
+    "l70"
+   ],
+   "signals": [
+    "ret_probe_pct",
+    "ans_probe_pct",
+    "is_cannot",
+    "rung"
+   ],
+   "seed_rules": [
+    {
+     "id": "H1",
+     "stage": "retrieval",
+     "hard": true,
+     "at": [
+      0
+     ],
+     "when": [
+      [
+       "ret_probe_pct",
+       "<",
+       0.1
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the first retriever's probe score is in its lowest 10% THEN escalate (locked)"
+    },
+    {
+     "id": "R1",
+     "stage": "retrieval",
+     "when": [
+      [
+       "ret_probe_pct",
+       "<",
+       0.25
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the probe says this shortlist is likely incomplete (lowest 25%) THEN escalate to the next retriever and ensemble"
+    },
+    {
+     "id": "H2",
+     "stage": "answer",
+     "hard": true,
+     "when": [
+      [
+       "is_cannot",
+       "==",
+       1
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+    },
+    {
+     "id": "A1",
+     "stage": "answer",
+     "when": [
+      [
+       "ans_probe_pct",
+       "<",
+       0.3
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the probe says the answer is likely wrong (lowest 30%) THEN escalate to the next answerer"
+    }
+   ]
+  },
+  "ws4": {
+   "name": "Our fine-tuning + self-learnt rules (AgentTTS's models)",
+   "kind": "rules",
+   "retrievers": [
+    "q7:ft",
+    "q32:ft",
+    "q72:ft"
+   ],
+   "answerers": [
+    "l3:ft",
+    "l8:ft",
+    "l70:ft"
+   ],
+   "signals": "all",
+   "seed_rules": [
+    {
+     "id": "H1",
+     "stage": "retrieval",
+     "hard": true,
+     "at": [
+      0
+     ],
+     "when": [
+      [
+       "ret_conf_pct",
+       "<",
+       0.1
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the first retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"
+    },
+    {
+     "id": "R1",
+     "stage": "retrieval",
+     "at": [
+      0
+     ],
+     "when": [
+      [
+       "ret_conf_pct",
+       "<",
+       0.2
+      ]
+     ],
+     "then": "escalate",
+     "skip": 1,
+     "text": "IF the first retriever is unsure (lowest 20%) THEN escalate, skipping one size, and ensemble"
+    },
+    {
+     "id": "R2",
+     "stage": "retrieval",
+     "when": [
+      [
+       "rung",
+       ">=",
+       1
+      ],
+      [
+       "ret_agree",
+       "==",
+       0
+      ],
+      [
+       "ret_conf_pct",
+       "<",
+       0.2
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"
+    },
+    {
+     "id": "H2",
+     "stage": "answer",
+     "hard": true,
+     "when": [
+      [
+       "is_cannot",
+       "==",
+       1
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+    },
+    {
+     "id": "A2",
+     "stage": "answer",
+     "when": [
+      [
+       "is_yes_no",
+       "==",
+       1
+      ]
+     ],
+     "then": "keep",
+     "text": "IF the answer is yes/no THEN keep it"
+    },
+    {
+     "id": "A1",
+     "stage": "answer",
+     "when": [
+      [
+       "words_in_passages",
+       "<",
+       0.97
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF some of the answer's words are not in the passages THEN escalate; agree -> accept, else vote"
+    },
+    {
+     "id": "A3",
+     "stage": "answer",
+     "when": [
+      [
+       "ans_conf_pct",
+       "<",
+       0.15
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the answerer's token confidence is in its lowest 15% THEN escalate"
+    }
+   ]
+  },
+  "ws5": {
+   "name": "Our fine-tuning + self-learnt rules (full model ladders)",
+   "kind": "rules",
+   "retrievers": [
+    "q05:ft",
+    "q06:ft",
+    "q08:ft",
+    "q3:ft",
+    "q7:ft",
+    "q32:ft",
+    "q72:ft"
+   ],
+   "answerers": [
+    "l3:ft",
+    "l8:ft",
+    "l70:ft"
+   ],
+   "signals": "all",
+   "seed_rules": [
+    {
+     "id": "H1",
+     "stage": "retrieval",
+     "hard": true,
+     "at": [
+      0
+     ],
+     "when": [
+      [
+       "ret_conf_pct",
+       "<",
+       0.1
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the first retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"
+    },
+    {
+     "id": "R1",
+     "stage": "retrieval",
+     "at": [
+      0
+     ],
+     "when": [
+      [
+       "ret_conf_pct",
+       "<",
+       0.2
+      ]
+     ],
+     "then": "escalate",
+     "skip": 1,
+     "text": "IF the first retriever is unsure (lowest 20%) THEN escalate, skipping one size, and ensemble"
+    },
+    {
+     "id": "R2",
+     "stage": "retrieval",
+     "when": [
+      [
+       "rung",
+       ">=",
+       1
+      ],
+      [
+       "ret_agree",
+       "==",
+       0
+      ],
+      [
+       "ret_conf_pct",
+       "<",
+       0.2
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"
+    },
+    {
+     "id": "H2",
+     "stage": "answer",
+     "hard": true,
+     "when": [
+      [
+       "is_cannot",
+       "==",
+       1
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+    },
+    {
+     "id": "A2",
+     "stage": "answer",
+     "when": [
+      [
+       "is_yes_no",
+       "==",
+       1
+      ]
+     ],
+     "then": "keep",
+     "text": "IF the answer is yes/no THEN keep it"
+    },
+    {
+     "id": "A1",
+     "stage": "answer",
+     "when": [
+      [
+       "words_in_passages",
+       "<",
+       0.97
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF some of the answer's words are not in the passages THEN escalate; agree -> accept, else vote"
+    },
+    {
+     "id": "A3",
+     "stage": "answer",
+     "when": [
+      [
+       "ans_conf_pct",
+       "<",
+       0.15
+      ]
+     ],
+     "then": "escalate",
+     "text": "IF the answerer's token confidence is in its lowest 15% THEN escalate"
+    }
+   ]
+  }
+ },
+ "rules": {
+  "rounds": 2,
+  "dev_split_seed": 11,
+  "random_control_draws": 4,
+  "max_ret_members": 3,
+  "answer_samples": 4,
+  "params": {
+   "votes": 2,
+   "sure_threshold": 0.9,
+   "merge": "union"
+  },
+  "hard": {
+   "H3_max_share_top_answerer": 0.6,
+   "H3b_max_share_top_retriever": 0.6,
+   "H4_max_acc_drop_vs_best_fixed": 0.01,
+   "H5_min_sure_score": 0.85,
+   "H6_max_soft_rules": 8.0,
+   "H6_min_support_share": 0.02,
+   "H7_max_step": 0.05,
+   "H8_max_compute_per_point": 0.1
+  }
+ },
+ "estimates_hours": {
+  "setup": 3,
+  "data": 0.5,
+  "train": 55,
+  "ws1_grid": 10,
+  "ws1_search": 2,
+  "ws1_test": 4,
+  "retrieve": 12,
+  "probe": 5,
+  "answer": 12,
+  "sample": 6,
+  "learn": 2,
+  "test": 0.5,
+  "report": 0.2
+ },
+ "run_dir": "./dryrun_workspace/runs/dryrun"
+}

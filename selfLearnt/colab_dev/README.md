@@ -34,15 +34,34 @@ on 400 questions. "AgentTTS's pick" is the fixed setup the AgentTTS planner chos
 | 9 (CPU) | `analysis/` | Diagnosis of Set 9 | One bug (repetition penalty in generation) found but not the cause; with a fixed decision rule the learned start still matches random. Answer checks after Llama answers reach 0.76 and give the first answer switch that beats random |
 | 10 | 28 | A self-learnt rulebook: soft rules tuned by micro-experiments, hard guardrails | Built and tested on saved outputs (starting rulebook +4.6 points over random escalation); not run in Colab (compute units ran out). Moved to the full-scale pipeline on the `selfLearnt` branch |
 
-## Headline numbers (400 test questions, corrected label)
+## Headline results (400 test questions)
 
-| Pipeline | Accuracy | Compute vs AgentTTS's pick |
-|---|---|---|
-| AgentTTS's pick: Qwen 7B retrieves, Qwen 32B answers | 76.8% | 0% |
-| Fine-tuned Qwen 3B retrieves, Qwen 32B answers | 84.2% | −42% |
-| Fine-tuned Qwen3.5 0.8B retrieves, Qwen 32B answers | 84.0% | −57% |
-| Gold passages, Qwen 32B answers (ceiling) | 84.5% | – |
-| Llama-or-Qwen oracle on fine-tuned shortlists (needs the answer key) | 86.8% | −72% to −79% |
+All rows come from notebook 26's run on the same 400 HotpotQA test questions (20 candidate passages each).
+
+| Retriever → answerer | What it represents | Lenient accuracy² | Exact match | Cost index¹ |
+|---|---|---|---|---|
+| Untrained Qwen 7B (step by step, picks 3 passages, one try) → Qwen 32B | AgentTTS-style fixed pick (stand-in from our scaled-down search, Colab model menu) | 76.8% | 57.5% | 100 |
+| Fine-tuned 3B → Qwen 32B | Fine-tuned retriever, largest answerer in the Colab menu | 84.5%³ | 64.2%³ | 57.6 |
+| Fine-tuned 0.8B → Qwen 32B | Fine-tuned retriever, largest answerer in the Colab menu: best observed balance | 84.0% | 63.5% | 43.5 |
+| Fine-tuned 0.6B → Qwen 32B | Fine-tuned retriever, largest answerer in the Colab menu: cheaper | 83.2%³ | 62.7%³ | 42.2 |
+| Fine-tuned 0.5B → Qwen 32B | Cheapest fine-tuned retriever, largest answerer in the Colab menu | 79.5% | 60.0% | 41.7 |
+| Fine-tuned 0.8B → Llama 8B | Fine-tuned retriever, small answerer | 77.2% | 54.8% | 16.9 |
+| 0.5B; if unsure → 0.6B → 0.8B; Qwen 32B answers | Confidence-triggered retrieval switching (49% escalated; +1.4 points over random escalation of the same share, 95% interval +0.6 to +2.3) | 83.5% | 63.2% | 44.9 |
+| Qwen 72B → Llama 70B | Strongest at both stages (full AgentTTS menu) | Not run in Colab: cluster workstream 2 | – | – |
+| Qwen 72B ×1 → Llama 3B ×40 + fusion | AgentTTS's own HotpotQA pick (their code; 0.742 reported) | Not run in Colab: cluster workstream 1 | – | – |
+
+¹ Estimated inference compute (2 × parameters × tokens, retrieval and answering) relative to the stand-in fixed pick.
+Training is excluded.
+² Our corrected label: exact match, or token F1 ≥ 0.5, or the gold answer contained in the answer. Yes/no answers must match
+exactly.
+³ Re-merged and re-run in notebook 26. The earlier runs gave 84.2% / 64.0% (3B, notebook 23a) and 83.0% / 62.5% (0.6B,
+notebook 25a).
+
+- On 400 questions, differences under about 1.5 points aren't reliable. The 3B, 0.8B and 0.6B rows are statistically tied:
+  the 0.8B is −0.3 points from the 3B (−1.3 to +0.8).
+- Every fine-tuned retriever from the 0.6B upwards beats the stand-in by 6–8 points at 42–58% of its compute.
+- The last two rows will come from the cluster run, scored on AgentTTS's 500 test questions with 100 candidates each.
+  Those numbers won't be directly comparable with the rows above.
 
 ## Running a notebook again
 

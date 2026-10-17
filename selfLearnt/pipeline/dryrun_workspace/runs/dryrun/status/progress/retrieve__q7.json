@@ -1,0 +1,12 @@
+{
+ "stage": "retrieve",
+ "part": "q7",
+ "total": 240,
+ "unit": "questions",
+ "done": 240,
+ "state": "done",
+ "started": "2026-10-16 12:47",
+ "job": "",
+ "updated": "2026-10-16 12:47:52",
+ "updated_ts": 1792126072.9855516
+}

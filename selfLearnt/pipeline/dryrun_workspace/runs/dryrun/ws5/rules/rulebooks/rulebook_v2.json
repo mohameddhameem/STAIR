@@ -1,0 +1,121 @@
+{
+ "version": 2,
+ "params": {
+  "votes": 2,
+  "sure_threshold": 0.9,
+  "merge": "union",
+  "max_ret_members": 3
+ },
+ "rules": [
+  {
+   "id": "H1",
+   "stage": "retrieval",
+   "hard": true,
+   "at": [
+    0
+   ],
+   "when": [
+    [
+     "ret_conf_pct",
+     "<",
+     0.1
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF the first retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"
+  },
+  {
+   "id": "R1",
+   "stage": "retrieval",
+   "at": [
+    0
+   ],
+   "when": [
+    [
+     "ret_conf_pct",
+     "<",
+     0.2
+    ]
+   ],
+   "then": "escalate",
+   "skip": 1,
+   "text": "IF the first retriever is unsure (lowest 20%) THEN escalate, skipping one size, and ensemble"
+  },
+  {
+   "id": "R2",
+   "stage": "retrieval",
+   "when": [
+    [
+     "rung",
+     ">=",
+     1
+    ],
+    [
+     "ret_agree",
+     "==",
+     0
+    ],
+    [
+     "ret_conf_pct",
+     "<",
+     0.2
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"
+  },
+  {
+   "id": "H2",
+   "stage": "answer",
+   "hard": true,
+   "when": [
+    [
+     "is_cannot",
+     "==",
+     1
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+  },
+  {
+   "id": "A2",
+   "stage": "answer",
+   "when": [
+    [
+     "is_yes_no",
+     "==",
+     1
+    ]
+   ],
+   "then": "keep",
+   "text": "IF the answer is yes/no THEN keep it"
+  },
+  {
+   "id": "A1",
+   "stage": "answer",
+   "when": [
+    [
+     "words_in_passages",
+     "<",
+     0.97
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF some of the answer's words are not in the passages THEN escalate; agree -> accept, else vote"
+  },
+  {
+   "id": "A3",
+   "stage": "answer",
+   "when": [
+    [
+     "ans_conf_pct",
+     "<",
+     0.15
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF the answerer's token confidence is in its lowest 15% THEN escalate"
+  }
+ ]
+}

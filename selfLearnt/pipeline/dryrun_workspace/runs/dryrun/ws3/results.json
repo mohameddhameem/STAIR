@@ -1,0 +1,218 @@
+{
+ "workstream": "ws3",
+ "name": "Hidden-state probe + calibrated rules (AgentTTS's models, untrained)",
+ "policies": [
+  {
+   "policy": "Fixed: Qwen2.5 7B -> Llama 3.2 3B (cheapest)",
+   "kind": "fixed",
+   "acc": 0.3875,
+   "lenient": 0.3875,
+   "EM": 0.3875,
+   "budget_per_q": 80.33333333333336,
+   "tflops_per_q": 30.805965,
+   "n": 80,
+   "vs_best_fixed_pts": -13.750000000000002,
+   "ci_best_fixed": [
+    -28.749999999999996,
+    0.031250000000113576
+   ]
+  },
+  {
+   "policy": "Fixed: Qwen2.5 72B -> Llama 3.1 70B (largest)",
+   "kind": "fixed",
+   "acc": 0.5875,
+   "lenient": 0.5875,
+   "EM": 0.5875,
+   "budget_per_q": 928.6666666666666,
+   "tflops_per_q": 325.175805,
+   "n": 80,
+   "vs_best_fixed_pts": 6.25,
+   "ci_best_fixed": [
+    -8.749999999999996,
+    21.250000000000004
+   ]
+  },
+  {
+   "policy": "Fixed: Qwen2.5 32B -> Llama 3.1 70B (best fixed pipeline on dev)",
+   "kind": "fixed",
+   "acc": 0.525,
+   "lenient": 0.525,
+   "EM": 0.525,
+   "budget_per_q": 475.33333333333314,
+   "tflops_per_q": 174.382156,
+   "n": 80,
+   "vs_best_fixed_pts": 0.0,
+   "ci_best_fixed": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "policy": "Starting rulebook (before any micro-experiment)",
+   "kind": "rulebook",
+   "acc": 0.375,
+   "lenient": 0.375,
+   "EM": 0.375,
+   "budget_per_q": 236.3916666666667,
+   "tflops_per_q": 85.50685975,
+   "n": 80,
+   "vs_best_fixed_pts": -15.000000000000002,
+   "ci_best_fixed": [
+    -28.750000000000004,
+    -1.250000000000001
+   ],
+   "vs_random_pts": -4.6875,
+   "ci_random": [
+    -11.562500000000004,
+    2.031250000000001
+   ],
+   "ret_escalated": 0.225,
+   "ans_escalated": 0.325,
+   "reach_top_retriever": 0.0875,
+   "reach_top_answerer": 0.0,
+   "sure_share": 0.3375,
+   "right_when_sure": 1.0,
+   "right_when_unsure": 0.05660377358490566
+  },
+  {
+   "policy": "LEARNT rulebook (v2, 2 rounds)",
+   "kind": "rulebook",
+   "acc": 0.375,
+   "lenient": 0.375,
+   "EM": 0.375,
+   "budget_per_q": 236.3916666666667,
+   "tflops_per_q": 85.50685975,
+   "n": 80,
+   "vs_best_fixed_pts": -15.000000000000002,
+   "ci_best_fixed": [
+    -28.750000000000004,
+    -1.250000000000001
+   ],
+   "vs_random_pts": -4.6875,
+   "ci_random": [
+    -11.562500000000004,
+    2.031250000000001
+   ],
+   "ret_escalated": 0.225,
+   "ans_escalated": 0.325,
+   "reach_top_retriever": 0.0875,
+   "reach_top_answerer": 0.0,
+   "sure_share": 0.3375,
+   "right_when_sure": 1.0,
+   "right_when_unsure": 0.05660377358490566
+  },
+  {
+   "policy": "Oracle: Llama 3.2 3B if right, else Llama 3.1 70B (needs the answer key)",
+   "kind": "oracle",
+   "acc": 0.4625,
+   "lenient": 0.4625,
+   "EM": 0.4625,
+   "budget_per_q": 150.56666666666666,
+   "tflops_per_q": 60.74919,
+   "n": 80,
+   "vs_best_fixed_pts": -6.25,
+   "ci_best_fixed": [
+    -21.249999999999996,
+    8.749999999999996
+   ]
+  }
+ ],
+ "rules": [
+  {
+   "rule": "[H1, LOCKED] retrieval at rung [0]: IF ret_probe_pct < 0.1 THEN escalate",
+   "text": "IF the first retriever's probe score is in its lowest 10% THEN escalate (locked)",
+   "decided_on_test": 10,
+   "acc_there": 0.3
+  },
+  {
+   "rule": "[R1] retrieval: IF ret_probe_pct < 0.25 THEN escalate",
+   "text": "IF the probe says this shortlist is likely incomplete (lowest 25%) THEN escalate to the next retriever and ensemble",
+   "decided_on_test": 11,
+   "acc_there": 0.2727272727272727
+  },
+  {
+   "rule": "[H2, LOCKED] answer: IF is_cannot == 1 THEN escalate",
+   "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)",
+   "decided_on_test": 9,
+   "acc_there": 0.0
+  },
+  {
+   "rule": "[A1] answer: IF ans_probe_pct < 0.3 THEN escalate",
+   "text": "IF the probe says the answer is likely wrong (lowest 30%) THEN escalate to the next answerer",
+   "decided_on_test": 17,
+   "acc_there": 0.058823529411764705
+  }
+ ],
+ "accepted": [],
+ "tried": 20,
+ "final_rulebook": {
+  "version": 2,
+  "params": {
+   "votes": 2,
+   "sure_threshold": 0.9,
+   "merge": "union",
+   "max_ret_members": 3
+  },
+  "rules": [
+   {
+    "id": "H1",
+    "stage": "retrieval",
+    "hard": true,
+    "at": [
+     0
+    ],
+    "when": [
+     [
+      "ret_probe_pct",
+      "<",
+      0.1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the first retriever's probe score is in its lowest 10% THEN escalate (locked)"
+   },
+   {
+    "id": "R1",
+    "stage": "retrieval",
+    "when": [
+     [
+      "ret_probe_pct",
+      "<",
+      0.25
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the probe says this shortlist is likely incomplete (lowest 25%) THEN escalate to the next retriever and ensemble"
+   },
+   {
+    "id": "H2",
+    "stage": "answer",
+    "hard": true,
+    "when": [
+     [
+      "is_cannot",
+      "==",
+      1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+   },
+   {
+    "id": "A1",
+    "stage": "answer",
+    "when": [
+     [
+      "ans_probe_pct",
+      "<",
+      0.3
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the probe says the answer is likely wrong (lowest 30%) THEN escalate to the next answerer"
+   }
+  ]
+ },
+ "n_dev": 160,
+ "n_test": 80
+}

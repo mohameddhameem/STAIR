@@ -1,0 +1,14 @@
+{
+ "stage": "ws1_grid",
+ "part": "retrieve-q7",
+ "total": 12,
+ "unit": "questions",
+ "done": 12,
+ "state": "done",
+ "started": "2026-10-16 12:44",
+ "job": "",
+ "updated": "2026-10-16 12:45:32",
+ "updated_ts": 1792125932.6806052,
+ "eta_min": 0.0,
+ "rate_per_min": 17.7
+}

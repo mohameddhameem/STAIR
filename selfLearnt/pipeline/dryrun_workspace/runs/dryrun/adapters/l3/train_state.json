@@ -1,0 +1,30 @@
+{
+ "step": 10,
+ "curve": [
+  {
+   "step": 5,
+   "training questions seen": 20,
+   "training loss (recent)": 8.678318405151368,
+   "score": 0.0,
+   "answer accuracy (corrected label)": 0.0
+  },
+  {
+   "step": 10,
+   "training questions seen": 40,
+   "training loss (recent)": 8.666096305847168,
+   "score": 0.0,
+   "answer accuracy (corrected label)": 0.0
+  }
+ ],
+ "seconds": 2.1600100994110107,
+ "resume_only": null,
+ "chosen": {
+  "step": 10,
+  "training questions seen": 40,
+  "training loss (recent)": 8.666096305847168,
+  "score": 0.0,
+  "answer accuracy (corrected label)": 0.0
+ },
+ "role": "answerer",
+ "method": "lora"
+}

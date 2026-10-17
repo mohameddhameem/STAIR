@@ -1,0 +1,23 @@
+{
+ "step": 5,
+ "curve": [
+  {
+   "step": 5,
+   "training questions seen": 20,
+   "training loss (recent)": 8.709340572357178,
+   "score": 0.0,
+   "answer accuracy (corrected label)": 0.0
+  }
+ ],
+ "seconds": 1.1491241455078125,
+ "resume_only": null,
+ "chosen": {
+  "step": 5,
+  "training questions seen": 20,
+  "training loss (recent)": 8.709340572357178,
+  "score": 0.0,
+  "answer accuracy (corrected label)": 0.0
+ },
+ "role": "answerer",
+ "method": "qlora"
+}

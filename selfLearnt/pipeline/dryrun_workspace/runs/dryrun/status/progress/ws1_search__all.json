@@ -1,0 +1,13 @@
+{
+ "stage": "ws1_search",
+ "part": "all",
+ "total": 5,
+ "unit": "planner calls",
+ "done": 5,
+ "state": "done",
+ "started": "2026-10-16 12:45",
+ "job": "",
+ "updated": "2026-10-16 12:45:33",
+ "updated_ts": 1792125933.6305573,
+ "note": "chosen ['q7', 10, 'l3', 1]"
+}

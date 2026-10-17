@@ -1,0 +1,33 @@
+{
+ "step": 10,
+ "curve": [
+  {
+   "step": 5,
+   "training questions seen": 20,
+   "training loss (recent)": 8.720863819122314,
+   "score": 0.0,
+   "both gold passages found": 0.0,
+   "exactly the gold passages": 0.0
+  },
+  {
+   "step": 10,
+   "training questions seen": 40,
+   "training loss (recent)": 8.688870334625244,
+   "score": 0.0,
+   "both gold passages found": 0.0,
+   "exactly the gold passages": 0.0
+  }
+ ],
+ "seconds": 17.293384552001953,
+ "resume_only": null,
+ "chosen": {
+  "step": 10,
+  "training questions seen": 40,
+  "training loss (recent)": 8.688870334625244,
+  "score": 0.0,
+  "both gold passages found": 0.0,
+  "exactly the gold passages": 0.0
+ },
+ "role": "retriever",
+ "method": "lora"
+}

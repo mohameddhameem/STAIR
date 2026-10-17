@@ -1,0 +1,13 @@
+{
+ "stage": "train",
+ "part": "l70",
+ "total": 5,
+ "unit": "steps",
+ "done": 5,
+ "state": "done",
+ "started": "2026-10-16 12:46",
+ "job": "",
+ "updated": "2026-10-16 12:46:41",
+ "updated_ts": 1792126001.022668,
+ "note": "chosen step 5: validation 0.0%"
+}

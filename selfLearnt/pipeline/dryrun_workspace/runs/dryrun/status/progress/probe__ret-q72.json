@@ -1,0 +1,12 @@
+{
+ "stage": "probe",
+ "part": "ret-q72",
+ "total": 240,
+ "unit": "outputs",
+ "done": 240,
+ "state": "done",
+ "started": "2026-10-16 12:48",
+ "job": "",
+ "updated": "2026-10-16 12:48:00",
+ "updated_ts": 1792126080.6180205
+}

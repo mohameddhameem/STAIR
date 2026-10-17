@@ -1,0 +1,25 @@
+{
+ "step": 5,
+ "curve": [
+  {
+   "step": 5,
+   "training questions seen": 20,
+   "training loss (recent)": 8.637496376037598,
+   "score": 0.0,
+   "both gold passages found": 0.0,
+   "exactly the gold passages": 0.0
+  }
+ ],
+ "seconds": 9.331705570220947,
+ "resume_only": null,
+ "chosen": {
+  "step": 5,
+  "training questions seen": 20,
+  "training loss (recent)": 8.637496376037598,
+  "score": 0.0,
+  "both gold passages found": 0.0,
+  "exactly the gold passages": 0.0
+ },
+ "role": "retriever",
+ "method": "qlora"
+}

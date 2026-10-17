@@ -1,0 +1,160 @@
+{"qid": "5a71443f5542994082a3e727", "skey": [8, 13], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3608, "out_tokens": 12}
+{"qid": "5a71443f5542994082a3e727", "skey": [13], "k": 40, "text": "The best supported answer is It lies two kilometres WSW of Mount Everest..", "prompt_tokens": 4186, "out_tokens": 25}
+{"qid": "5a745e1455429929fddd83fd", "skey": [9], "k": 40, "text": "The best supported answer is Ephedrine.", "prompt_tokens": 4670, "out_tokens": 12}
+{"qid": "5a745e1455429929fddd83fd", "skey": [15, 16, 19], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4201, "out_tokens": 18}
+{"qid": "5a77c74155429967ab105291", "skey": [9], "k": 40, "text": "The best supported answer is Vib Gyor was a band that was formed in Leeds, England..", "prompt_tokens": 3681, "out_tokens": 26}
+{"qid": "5a77c74155429967ab105291", "skey": [15, 20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3096, "out_tokens": 17}
+{"qid": "5a78bc6b554299148911f979", "skey": [5, 15], "k": 1, "text": "The best supported answer is fortnightly women interest magazine.", "prompt_tokens": 3611, "out_tokens": 16}
+{"qid": "5a78bc6b554299148911f979", "skey": [5, 15], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4142, "out_tokens": 16}
+{"qid": "5a798f8c5542994bb9457023", "skey": [10, 12], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4508, "out_tokens": 16}
+{"qid": "5a798f8c5542994bb9457023", "skey": [14], "k": 1, "text": "The best supported answer is Port Moresby, Papua New Guinea.", "prompt_tokens": 3982, "out_tokens": 11}
+{"qid": "5a79be0e5542994f819ef084", "skey": [7, 9, 11], "k": 40, "text": "The best supported answer is March 13, 2013.", "prompt_tokens": 4688, "out_tokens": 14}
+{"qid": "5a79be0e5542994f819ef084", "skey": [11], "k": 1, "text": "The best supported answer is March 13, 2013.", "prompt_tokens": 4208, "out_tokens": 10}
+{"qid": "5a7a27ce5542996c55b2dd28", "skey": [2], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4392, "out_tokens": 16}
+{"qid": "5a7a27ce5542996c55b2dd28", "skey": [2, 8, 21], "k": 40, "text": "The best supported answer is The Western Allied invasion of Germany.", "prompt_tokens": 4933, "out_tokens": 22}
+{"qid": "5a7ad9865542995eb53be8aa", "skey": [7, 10, 16], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4658, "out_tokens": 9}
+{"qid": "5a7ad9865542995eb53be8aa", "skey": [7, 16], "k": 40, "text": "The best supported answer is Honda Ballade.", "prompt_tokens": 5153, "out_tokens": 12}
+{"qid": "5a7b374c5542995eb53be8cc", "skey": [2, 11, 16], "k": 1, "text": "The best supported answer is New York City, New York.", "prompt_tokens": 3650, "out_tokens": 15}
+{"qid": "5a7b374c5542995eb53be8cc", "skey": [2, 20], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4163, "out_tokens": 10}
+{"qid": "5a7c53a855429935c91b515d", "skey": [1, 2, 7, 18], "k": 40, "text": "The best supported answer is The R-8 Human Rhythm Composer.", "prompt_tokens": 4541, "out_tokens": 14}
+{"qid": "5a7c53a855429935c91b515d", "skey": [1, 16, 18], "k": 1, "text": "The best supported answer is The R-8 Human Rhythm Composer.", "prompt_tokens": 3986, "out_tokens": 17}
+{"qid": "5a7cbf93554299452d57b9f5", "skey": [2, 6, 11], "k": 1, "text": "The best supported answer is Magdalen College.", "prompt_tokens": 4097, "out_tokens": 17}
+{"qid": "5a7cbf93554299452d57b9f5", "skey": [2, 9, 18], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4579, "out_tokens": 12}
+{"qid": "5a7e1ad155429965cec5ea66", "skey": [18], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3202, "out_tokens": 17}
+{"qid": "5a7e1ad155429965cec5ea66", "skey": [18], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3747, "out_tokens": 17}
+{"qid": "5a7ec90055429934daa2fc66", "skey": [3, 8], "k": 1, "text": "The best supported answer is Scottish Premiership club Hearts.", "prompt_tokens": 2665, "out_tokens": 19}
+{"qid": "5a7ec90055429934daa2fc66", "skey": [3, 8, 12], "k": 40, "text": "The best supported answer is Scottish Premiership club Hearts.", "prompt_tokens": 3197, "out_tokens": 15}
+{"qid": "5a8026a05542992e7d278df8", "skey": [2, 4, 10], "k": 1, "text": "The best supported answer is 3 December.", "prompt_tokens": 4101, "out_tokens": 8}
+{"qid": "5a8026a05542992e7d278df8", "skey": [4], "k": 40, "text": "The best supported answer is 3 December.", "prompt_tokens": 4590, "out_tokens": 10}
+{"qid": "5a80541d5542996402f6a4d2", "skey": [17, 19, 20], "k": 40, "text": "The best supported answer is 2016.", "prompt_tokens": 3920, "out_tokens": 14}
+{"qid": "5a80541d5542996402f6a4d2", "skey": [19, 20], "k": 1, "text": "The best supported answer is 2016.", "prompt_tokens": 3450, "out_tokens": 12}
+{"qid": "5a82112955429926c1cdae25", "skey": [10, 15, 20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2922, "out_tokens": 12}
+{"qid": "5a82112955429926c1cdae25", "skey": [20], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3408, "out_tokens": 15}
+{"qid": "5a82fe5055429966c78a6ad3", "skey": [3, 5, 9], "k": 40, "text": "The best supported answer is evangelical Christian.", "prompt_tokens": 4879, "out_tokens": 19}
+{"qid": "5a82fe5055429966c78a6ad3", "skey": [3, 14, 16, 18], "k": 1, "text": "The best supported answer is evangelical Christian.", "prompt_tokens": 4393, "out_tokens": 14}
+{"qid": "5a839c8b5542996488c2e479", "skey": [4, 14, 18, 19], "k": 1, "text": "The best supported answer is Lord Chancellor of England.", "prompt_tokens": 3593, "out_tokens": 20}
+{"qid": "5a839c8b5542996488c2e479", "skey": [18, 19], "k": 40, "text": "The best supported answer is Lord Chancellor of England.", "prompt_tokens": 4127, "out_tokens": 15}
+{"qid": "5a85597c5542997175ce1fba", "skey": [8, 13, 15], "k": 40, "text": "The best supported answer is Canadian.", "prompt_tokens": 3973, "out_tokens": 14}
+{"qid": "5a85597c5542997175ce1fba", "skey": [13, 15, 16, 17], "k": 1, "text": "The best supported answer is Canadian.", "prompt_tokens": 3500, "out_tokens": 18}
+{"qid": "5a85a3005542991dd0999e72", "skey": [3, 5, 20], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 5539, "out_tokens": 10}
+{"qid": "5a85a3005542991dd0999e72", "skey": [3, 20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 5029, "out_tokens": 14}
+{"qid": "5a87411d5542994846c1cd37", "skey": [1, 16], "k": 1, "text": "The best supported answer is member of the Executive Council of the General Anthroposophical Society.", "prompt_tokens": 4885, "out_tokens": 22}
+{"qid": "5a87411d5542994846c1cd37", "skey": [16], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 5470, "out_tokens": 13}
+{"qid": "5a88a19a5542997e5c09a64b", "skey": [4, 7], "k": 1, "text": "The best supported answer is moth.", "prompt_tokens": 2898, "out_tokens": 16}
+{"qid": "5a88a19a5542997e5c09a64b", "skey": [7, 18], "k": 40, "text": "The best supported answer is moth.", "prompt_tokens": 3370, "out_tokens": 10}
+{"qid": "5a88fc4255429938390d4019", "skey": [2, 9, 18], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2814, "out_tokens": 9}
+{"qid": "5a88fc4255429938390d4019", "skey": [18], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3310, "out_tokens": 11}
+{"qid": "5a8a495055429930ff3c0d6a", "skey": [4, 6], "k": 40, "text": "The best supported answer is Tumwater, Washington.", "prompt_tokens": 4282, "out_tokens": 9}
+{"qid": "5a8a495055429930ff3c0d6a", "skey": [4, 7, 20], "k": 1, "text": "The best supported answer is Tumwater, Washington.", "prompt_tokens": 3797, "out_tokens": 12}
+{"qid": "5a8a7d2b55429930ff3c0dfc", "skey": [1], "k": 40, "text": "The best supported answer is no.", "prompt_tokens": 3234, "out_tokens": 15}
+{"qid": "5a8a7d2b55429930ff3c0dfc", "skey": [1, 7, 11], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2758, "out_tokens": 7}
+{"qid": "5a8ac4085542992d82986f74", "skey": [2, 3, 4], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2364, "out_tokens": 11}
+{"qid": "5a8ac4085542992d82986f74", "skey": [2, 4], "k": 40, "text": "The best supported answer is a scholar.", "prompt_tokens": 2851, "out_tokens": 8}
+{"qid": "5a8b4a5f55429949d91db531", "skey": [1, 11], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3186, "out_tokens": 14}
+{"qid": "5a8b4a5f55429949d91db531", "skey": [1, 11], "k": 40, "text": "The best supported answer is IK Start.", "prompt_tokens": 3680, "out_tokens": 18}
+{"qid": "5a8ba59a554299240d9c2058", "skey": [3, 10], "k": 40, "text": "The best supported answer is 1999.", "prompt_tokens": 4412, "out_tokens": 13}
+{"qid": "5a8ba59a554299240d9c2058", "skey": [11], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3936, "out_tokens": 18}
+{"qid": "5a8c5c6f554299653c1aa04d", "skey": [12, 16, 20], "k": 40, "text": "The best supported answer is Coyote Ugly.", "prompt_tokens": 4213, "out_tokens": 12}
+{"qid": "5a8c5c6f554299653c1aa04d", "skey": [16, 20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3718, "out_tokens": 12}
+{"qid": "5a8ca7d4554299240d9c21b8", "skey": [5, 18, 20], "k": 1, "text": "The best supported answer is \"Currer Bell\".", "prompt_tokens": 2711, "out_tokens": 12}
+{"qid": "5a8ca7d4554299240d9c21b8", "skey": [18, 20], "k": 40, "text": "The best supported answer is \"Currer Bell\".", "prompt_tokens": 3206, "out_tokens": 18}
+{"qid": "5a8cd381554299653c1aa12b", "skey": [12, 14], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3131, "out_tokens": 17}
+{"qid": "5a8cd381554299653c1aa12b", "skey": [14], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3616, "out_tokens": 14}
+{"qid": "5a901e5c55429933b8a2047c", "skey": [11, 12], "k": 1, "text": "The best supported answer is Euripides.", "prompt_tokens": 3130, "out_tokens": 12}
+{"qid": "5a901e5c55429933b8a2047c", "skey": [11, 12, 21], "k": 40, "text": "The best supported answer is Euripides.", "prompt_tokens": 3599, "out_tokens": 18}
+{"qid": "5a90bd7b55429916514e7547", "skey": [4, 6, 9], "k": 1, "text": "The best supported answer is Polypodium.", "prompt_tokens": 3360, "out_tokens": 8}
+{"qid": "5a90bd7b55429916514e7547", "skey": [4, 9], "k": 40, "text": "The best supported answer is Polypodium.", "prompt_tokens": 3832, "out_tokens": 11}
+{"qid": "5ab2a8b655429929539467ab", "skey": [8, 10, 16], "k": 1, "text": "The best supported answer is Nikhil Banerjee.", "prompt_tokens": 2945, "out_tokens": 18}
+{"qid": "5ab2a8b655429929539467ab", "skey": [10, 16], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3433, "out_tokens": 11}
+{"qid": "5ab4107a554299753aec5a2f", "skey": [9, 15], "k": 40, "text": "The best supported answer is 1961.", "prompt_tokens": 4397, "out_tokens": 17}
+{"qid": "5ab4107a554299753aec5a2f", "skey": [13, 15], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3922, "out_tokens": 14}
+{"qid": "5ab4475c5542996a3a969f6c", "skey": [2, 12, 16], "k": 40, "text": "The best supported answer is Eddie Izzard.", "prompt_tokens": 3681, "out_tokens": 16}
+{"qid": "5ab4475c5542996a3a969f6c", "skey": [6, 12, 16], "k": 1, "text": "The best supported answer is Eddie Izzard.", "prompt_tokens": 3193, "out_tokens": 11}
+{"qid": "5ab4bea15542990594ba9cae", "skey": [5, 13, 19], "k": 1, "text": "The best supported answer is Dublin.", "prompt_tokens": 4602, "out_tokens": 10}
+{"qid": "5ab4bea15542990594ba9cae", "skey": [13, 19], "k": 40, "text": "The best supported answer is Dublin.", "prompt_tokens": 5073, "out_tokens": 11}
+{"qid": "5ab528a3554299637185c4e5", "skey": [4, 16], "k": 1, "text": "The best supported answer is musician, singer, and songwriter.", "prompt_tokens": 3769, "out_tokens": 13}
+{"qid": "5ab528a3554299637185c4e5", "skey": [4, 16], "k": 40, "text": "The best supported answer is musician, singer, and songwriter.", "prompt_tokens": 4307, "out_tokens": 14}
+{"qid": "5ab58f9a554299488d4d99da", "skey": [4], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3460, "out_tokens": 7}
+{"qid": "5ab58f9a554299488d4d99da", "skey": [4, 13], "k": 40, "text": "The best supported answer is 22 November.", "prompt_tokens": 3944, "out_tokens": 19}
+{"qid": "5ab611cc5542992aa134a411", "skey": [4], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2755, "out_tokens": 14}
+{"qid": "5ab611cc5542992aa134a411", "skey": [4, 9], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2262, "out_tokens": 16}
+{"qid": "5ab7c87d55429928e1fe38de", "skey": [2, 7], "k": 1, "text": "The best supported answer is third.", "prompt_tokens": 3878, "out_tokens": 18}
+{"qid": "5ab7c87d55429928e1fe38de", "skey": [7], "k": 40, "text": "The best supported answer is third.", "prompt_tokens": 4350, "out_tokens": 17}
+{"qid": "5ab811e95542995dae37ea22", "skey": [6, 17], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4242, "out_tokens": 11}
+{"qid": "5ab811e95542995dae37ea22", "skey": [6, 17, 20], "k": 40, "text": "The best supported answer is Wiz Khalifa.", "prompt_tokens": 4736, "out_tokens": 9}
+{"qid": "5ab8f3235542991b5579f084", "skey": [12, 15, 18], "k": 1, "text": "The best supported answer is 45th.", "prompt_tokens": 5362, "out_tokens": 10}
+{"qid": "5ab8f3235542991b5579f084", "skey": [15, 18], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 5838, "out_tokens": 16}
+{"qid": "5ab92e02554299753720f775", "skey": [5, 10], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3982, "out_tokens": 15}
+{"qid": "5ab92e02554299753720f775", "skey": [5, 10], "k": 40, "text": "The best supported answer is 219.", "prompt_tokens": 4458, "out_tokens": 18}
+{"qid": "5ab9812d554299753720f821", "skey": [15], "k": 40, "text": "The best supported answer is no.", "prompt_tokens": 3028, "out_tokens": 13}
+{"qid": "5ab9812d554299753720f821", "skey": [15, 18, 19], "k": 1, "text": "The best supported answer is no.", "prompt_tokens": 2552, "out_tokens": 9}
+{"qid": "5ababbe9554299232ef4a38a", "skey": [4, 6, 12], "k": 40, "text": "The best supported answer is Margery Williams.", "prompt_tokens": 4115, "out_tokens": 9}
+{"qid": "5ababbe9554299232ef4a38a", "skey": [6, 12], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3617, "out_tokens": 11}
+{"qid": "5abaf4535542996cc5e49f35", "skey": [8, 9, 13], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 5032, "out_tokens": 9}
+{"qid": "5abaf4535542996cc5e49f35", "skey": [8, 10, 20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4542, "out_tokens": 18}
+{"qid": "5abb1e1b5542992ccd8e7f19", "skey": [6, 9, 11, 14], "k": 1, "text": "The best supported answer is Nobel Prize in Literature.", "prompt_tokens": 3613, "out_tokens": 10}
+{"qid": "5abb1e1b5542992ccd8e7f19", "skey": [11], "k": 40, "text": "The best supported answer is Nobel Prize in Literature.", "prompt_tokens": 4121, "out_tokens": 10}
+{"qid": "5abc039a5542993f40c73c49", "skey": [3, 5, 20], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4753, "out_tokens": 13}
+{"qid": "5abc039a5542993f40c73c49", "skey": [12, 15, 19, 20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4282, "out_tokens": 15}
+{"qid": "5abcf2b4554299700f9d7937", "skey": [2, 4], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4124, "out_tokens": 11}
+{"qid": "5abcf2b4554299700f9d7937", "skey": [2, 20], "k": 40, "text": "The best supported answer is Giotto.", "prompt_tokens": 4601, "out_tokens": 10}
+{"qid": "5abd12bb55429933744ab703", "skey": [4], "k": 40, "text": "The best supported answer is Mount Everest.", "prompt_tokens": 4415, "out_tokens": 8}
+{"qid": "5abd12bb55429933744ab703", "skey": [4, 10], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3932, "out_tokens": 12}
+{"qid": "5abdd08d5542991f6610604c", "skey": [1, 7], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3422, "out_tokens": 13}
+{"qid": "5abdd08d5542991f6610604c", "skey": [4, 7, 12], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3953, "out_tokens": 10}
+{"qid": "5ac19d4c55429963665198bb", "skey": [6, 18], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4658, "out_tokens": 12}
+{"qid": "5ac19d4c55429963665198bb", "skey": [16], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4178, "out_tokens": 16}
+{"qid": "5ac1a04e5542991316484b63", "skey": [7, 8, 17], "k": 40, "text": "The best supported answer is no.", "prompt_tokens": 3157, "out_tokens": 10}
+{"qid": "5ac1a04e5542991316484b63", "skey": [7, 17], "k": 1, "text": "The best supported answer is no.", "prompt_tokens": 2686, "out_tokens": 12}
+{"qid": "5ac1b5de5542994d76dccec6", "skey": [5, 6, 7, 18], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4522, "out_tokens": 17}
+{"qid": "5ac1b5de5542994d76dccec6", "skey": [18, 20], "k": 40, "text": "The best supported answer is My Beautiful Dark Twisted Fantasy.", "prompt_tokens": 5042, "out_tokens": 21}
+{"qid": "5ac2546a554299636651997b", "skey": [1], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3642, "out_tokens": 9}
+{"qid": "5ac2546a554299636651997b", "skey": [1, 11, 12, 19], "k": 40, "text": "The best supported answer is Motion City Soundtrack.", "prompt_tokens": 4159, "out_tokens": 10}
+{"qid": "5ac279345542990b17b153b0", "skey": [5, 6, 10, 11], "k": 40, "text": "The best supported answer is 28 January 1864.", "prompt_tokens": 3500, "out_tokens": 13}
+{"qid": "5ac279345542990b17b153b0", "skey": [10], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2985, "out_tokens": 12}
+{"qid": "5ac31066554299741d48a19d", "skey": [3, 7, 15], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4046, "out_tokens": 9}
+{"qid": "5ac31066554299741d48a19d", "skey": [7, 15], "k": 40, "text": "The best supported answer is Melbourne.", "prompt_tokens": 4519, "out_tokens": 11}
+{"qid": "5ac3b5d3554299741d48a2f3", "skey": [18, 19, 20], "k": 1, "text": "The best supported answer is September 30, 2017.", "prompt_tokens": 4554, "out_tokens": 10}
+{"qid": "5ac3b5d3554299741d48a2f3", "skey": [18, 19, 20], "k": 40, "text": "The best supported answer is September 30, 2017.", "prompt_tokens": 5073, "out_tokens": 19}
+{"qid": "5add63845542992ae4cec541", "skey": [1, 6, 20], "k": 40, "text": "The best supported answer is April 29, 2005 for US$129.95.", "prompt_tokens": 4931, "out_tokens": 16}
+{"qid": "5add63845542992ae4cec541", "skey": [6, 20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4372, "out_tokens": 15}
+{"qid": "5ade190f55429975fa854e40", "skey": [5], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4504, "out_tokens": 18}
+{"qid": "5ade190f55429975fa854e40", "skey": [5, 6, 8, 12], "k": 40, "text": "The best supported answer is The sponsorship scandal.", "prompt_tokens": 5013, "out_tokens": 14}
+{"qid": "5ade9c9c5542997c77adee8c", "skey": [3, 8, 14, 19], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3501, "out_tokens": 11}
+{"qid": "5ade9c9c5542997c77adee8c", "skey": [3, 19, 21], "k": 40, "text": "The best supported answer is Julius Caesar.", "prompt_tokens": 3994, "out_tokens": 13}
+{"qid": "5adeb95d5542992fa25da827", "skey": [8, 12], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2432, "out_tokens": 16}
+{"qid": "5adeb95d5542992fa25da827", "skey": [12], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2905, "out_tokens": 13}
+{"qid": "5adf860e5542993344016cbc", "skey": [6, 19], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3856, "out_tokens": 11}
+{"qid": "5adf860e5542993344016cbc", "skey": [6, 19], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4364, "out_tokens": 16}
+{"qid": "5adf98215542993344016d19", "skey": [3, 6, 7, 14], "k": 40, "text": "The best supported answer is Kew Gardens.", "prompt_tokens": 4341, "out_tokens": 14}
+{"qid": "5adf98215542993344016d19", "skey": [3, 14], "k": 1, "text": "The best supported answer is Kew Gardens.", "prompt_tokens": 3843, "out_tokens": 19}
+{"qid": "5adfc50355429942ec259b43", "skey": [4, 6, 16, 20], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 5458, "out_tokens": 12}
+{"qid": "5adfc50355429942ec259b43", "skey": [20], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4929, "out_tokens": 10}
+{"qid": "5ae0345855429924de1b705f", "skey": [8, 11, 17, 19], "k": 1, "text": "The best supported answer is Las Vegas Sands company..", "prompt_tokens": 3511, "out_tokens": 15}
+{"qid": "5ae0345855429924de1b705f", "skey": [17], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4020, "out_tokens": 9}
+{"qid": "5ae09ce855429924de1b7113", "skey": [2, 6, 7], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3066, "out_tokens": 12}
+{"qid": "5ae09ce855429924de1b7113", "skey": [6, 7, 20, 21], "k": 40, "text": "The best supported answer is 25.", "prompt_tokens": 3534, "out_tokens": 9}
+{"qid": "5ae0d7315542990adbacf678", "skey": [6, 15, 16], "k": 40, "text": "The best supported answer is Toshi Ichiyanagi.", "prompt_tokens": 4005, "out_tokens": 16}
+{"qid": "5ae0d7315542990adbacf678", "skey": [7, 15, 16], "k": 1, "text": "The best supported answer is Toshi Ichiyanagi.", "prompt_tokens": 3511, "out_tokens": 17}
+{"qid": "5ae1ba55554299234fd042d9", "skey": [1, 2, 11], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3762, "out_tokens": 10}
+{"qid": "5ae1ba55554299234fd042d9", "skey": [17], "k": 40, "text": "The best supported answer is Kings Point, New York.", "prompt_tokens": 4257, "out_tokens": 13}
+{"qid": "5ae1fa2b5542997f29b3c1df", "skey": [3, 6], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 4396, "out_tokens": 13}
+{"qid": "5ae1fa2b5542997f29b3c1df", "skey": [3, 6, 13], "k": 40, "text": "The best supported answer is Eminem.", "prompt_tokens": 4869, "out_tokens": 13}
+{"qid": "5ae20e265542994d89d5b325", "skey": [1, 15, 16, 17], "k": 1, "text": "The best supported answer is James G. Kiernan.", "prompt_tokens": 3870, "out_tokens": 18}
+{"qid": "5ae20e265542994d89d5b325", "skey": [11, 16, 17, 18], "k": 40, "text": "The best supported answer is James G. Kiernan.", "prompt_tokens": 4381, "out_tokens": 19}
+{"qid": "5ae3205c55429928c423961e", "skey": [4, 9], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3576, "out_tokens": 8}
+{"qid": "5ae3205c55429928c423961e", "skey": [4, 9], "k": 40, "text": "The best supported answer is Leslie Knope.", "prompt_tokens": 4067, "out_tokens": 13}
+{"qid": "5ae3d8415542992f92d8239a", "skey": [1, 7], "k": 40, "text": "The best supported answer is high school diploma or GED.", "prompt_tokens": 3707, "out_tokens": 18}
+{"qid": "5ae3d8415542992f92d8239a", "skey": [1, 8, 12, 18], "k": 1, "text": "The best supported answer is high school diploma or GED.", "prompt_tokens": 3196, "out_tokens": 19}
+{"qid": "5ae3f2395542995ad6573cc6", "skey": [5, 20], "k": 1, "text": "The best supported answer is yes.", "prompt_tokens": 2338, "out_tokens": 16}
+{"qid": "5ae3f2395542995ad6573cc6", "skey": [5, 20], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2813, "out_tokens": 18}
+{"qid": "5ae48e7e55429913cc20449d", "skey": [7, 14], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3208, "out_tokens": 11}
+{"qid": "5ae48e7e55429913cc20449d", "skey": [7, 14], "k": 40, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3679, "out_tokens": 13}
+{"qid": "5ae54eea5542993aec5ec19d", "skey": [3, 6], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 3864, "out_tokens": 8}
+{"qid": "5ae54eea5542993aec5ec19d", "skey": [3, 6, 8, 19], "k": 40, "text": "The best supported answer is Social Code.", "prompt_tokens": 4358, "out_tokens": 10}
+{"qid": "5ae5e1985542996de7b71a54", "skey": [11, 14], "k": 40, "text": "The best supported answer is Archbishop of Canterbury.", "prompt_tokens": 3220, "out_tokens": 12}
+{"qid": "5ae5e1985542996de7b71a54", "skey": [11, 16], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 2712, "out_tokens": 7}
+{"qid": "5ae650fb55429929b0807b2e", "skey": [14, 19], "k": 1, "text": "The best supported answer is people working in film and the performing arts.", "prompt_tokens": 3731, "out_tokens": 25}
+{"qid": "5ae650fb55429929b0807b2e", "skey": [14, 19], "k": 40, "text": "The best supported answer is people working in film and the performing arts.", "prompt_tokens": 4376, "out_tokens": 25}
+{"qid": "5ae69e3f5542996d980e7c61", "skey": [6, 18], "k": 1, "text": "The responses disagree; most likely unknown.", "prompt_tokens": 5114, "out_tokens": 7}
+{"qid": "5ae69e3f5542996d980e7c61", "skey": [6, 18, 20], "k": 40, "text": "The best supported answer is University of New York Upstate.", "prompt_tokens": 5665, "out_tokens": 19}

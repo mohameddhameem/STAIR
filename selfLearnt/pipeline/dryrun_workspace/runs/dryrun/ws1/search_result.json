@@ -1,0 +1,480 @@
+{
+ "chosen": [
+  "q7",
+  10,
+  "l3",
+  1
+ ],
+ "score_on_search_questions": {
+  "Gen_EM": 0.75,
+  "Ret_F1": 0.8277777777777778
+ },
+ "budget": 122.33333333333334,
+ "trials": 10,
+ "history": [
+  {
+   "trial": 1,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 10
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.75,
+    "Ret_F1": 0.8277777777777778
+   },
+   "cost": 122.33333333333334
+  },
+  {
+   "trial": 2,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   },
+   "cost": 406.3333333333333
+  },
+  {
+   "trial": 3,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.3333333333333333,
+    "Ret_F1": 0.7777777777777777
+   },
+   "cost": 817.0
+  },
+  {
+   "trial": 4,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 40
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5833333333333334,
+    "Ret_F1": 0.5611111111111111
+   },
+   "cost": 119.33333333333334
+  },
+  {
+   "trial": 5,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-8B-Instruct",
+     "samples": 20
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5,
+    "Ret_F1": 0.5611111111111111
+   },
+   "cost": 139.33333333333334
+  },
+  {
+   "trial": 6,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-70B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5,
+    "Ret_F1": 0.5611111111111111
+   },
+   "cost": 192.0
+  },
+  {
+   "trial": 7,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   },
+   "cost": 406.3333333333333
+  },
+  {
+   "trial": 8,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 40
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   },
+   "cost": 445.3333333333333
+  },
+  {
+   "trial": 9,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-8B-Instruct",
+     "samples": 20
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5,
+    "Ret_F1": 0.5611111111111111
+   },
+   "cost": 139.33333333333334
+  },
+  {
+   "trial": 10,
+   "params": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-70B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   },
+   "cost": 518.0
+  }
+ ],
+ "best_so_far": [
+  {
+   "trial": 1,
+   "Gen_EM": 0.75
+  }
+ ],
+ "lookups": [
+  {
+   "asked": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "budget": 814.0,
+     "samples": 60
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1,
+     "budget": 3.0
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 10
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.75,
+    "Ret_F1": 0.8277777777777778
+   }
+  },
+  {
+   "asked": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "budget": 814.0,
+     "samples": 22
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1,
+     "budget": 3.0
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   }
+  },
+  {
+   "asked": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+     "budget": 814.0,
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1,
+     "budget": 3.0
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.3333333333333333,
+    "Ret_F1": 0.7777777777777777
+   }
+  },
+  {
+   "asked": {
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "budget": 114.66666666666666,
+     "samples": 60
+    },
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1,
+     "budget": 77.33333333333334
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 40
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5833333333333334,
+    "Ret_F1": 0.5611111111111111
+   }
+  },
+  {
+   "asked": {
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-8B-Instruct",
+     "budget": 114.66666666666666,
+     "samples": 39
+    },
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1,
+     "budget": 77.33333333333334
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-8B-Instruct",
+     "samples": 20
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5,
+    "Ret_F1": 0.5611111111111111
+   }
+  },
+  {
+   "asked": {
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-70B-Instruct",
+     "budget": 114.66666666666666,
+     "samples": 1
+    },
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1,
+     "budget": 77.33333333333334
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-70B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5,
+    "Ret_F1": 0.5611111111111111
+   }
+  },
+  {
+   "asked": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 5
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   }
+  },
+  {
+   "asked": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 5
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 40
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.2-3B-Instruct",
+     "samples": 40
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   }
+  },
+  {
+   "asked": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-8B-Instruct",
+     "samples": 40
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+     "samples": 1
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-8B-Instruct",
+     "samples": 20
+    }
+   },
+   "score": {
+    "Gen_EM": 0.5,
+    "Ret_F1": 0.5611111111111111
+   }
+  },
+  {
+   "asked": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 10
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-70B-Instruct",
+     "samples": 1
+    }
+   },
+   "looked_up": {
+    "Retrieval": {
+     "model": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+     "samples": 3
+    },
+    "Question Answering": {
+     "model": "meta-llama/Llama-3.1-70B-Instruct",
+     "samples": 1
+    }
+   },
+   "score": {
+    "Gen_EM": 0.6666666666666666,
+    "Ret_F1": 0.7000000000000001
+   }
+  }
+ ],
+ "experience": [
+  "1. Prefer the largest retriever at one sample. 2. Answer samples level off around 20. 3. Balance budget.",
+  "1. Prefer the largest retriever at one sample. 2. Answer samples level off around 20. 3. Balance budget."
+ ]
+}

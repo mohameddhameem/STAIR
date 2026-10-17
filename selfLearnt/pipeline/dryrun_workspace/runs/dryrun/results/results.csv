@@ -1,0 +1,22 @@
+ws,workstream,policy,acc,lenient,budget_per_q,tflops_per_q,vs_b1_acc_pts,vs_b1_compute,n
+ws1,Baseline 1: AgentTTS (original method),Baseline 1: AgentTTS (setting chosen by its search): Qwen2.5 7B x10 -> Llama 3.2 3B x1 (+ fusion),0.4375,,122.33333333333334,56.3596725,0.0,0.0,80
+ws1,Baseline 1: AgentTTS (original method),AgentTTS's reported best setting: Qwen2.5 72B x1 -> Llama 3.2 3B x40 (+ fusion),0.7125,,856.0,305.1789275,27.500000000000004,4.414845650495928,80
+ws2,Baseline 2: strongest models on every question,Baseline 2: strongest models: Qwen2.5 72B x1 -> Llama 3.1 70B x1 (+ fusion),0.5625,,928.6666666666666,831.4288125,12.5,13.75219382263089,80
+ws3,"Hidden-state probe + calibrated rules (AgentTTS's models, untrained)",Fixed: Qwen2.5 7B -> Llama 3.2 3B (cheapest),0.3875,0.3875,80.33333333333336,30.805965,-4.999999999999999,-0.4534041162144794,80
+ws3,"Hidden-state probe + calibrated rules (AgentTTS's models, untrained)",Fixed: Qwen2.5 72B -> Llama 3.1 70B (largest),0.5875,0.5875,928.6666666666666,325.175805,15.000000000000002,4.769653913443163,80
+ws3,"Hidden-state probe + calibrated rules (AgentTTS's models, untrained)",Fixed: Qwen2.5 32B -> Llama 3.1 70B (best fixed pipeline on dev),0.525,0.525,475.33333333333314,174.382156,8.750000000000002,2.0940945584806228,80
+ws3,"Hidden-state probe + calibrated rules (AgentTTS's models, untrained)",Starting rulebook (before any micro-experiment),0.375,0.375,236.3916666666667,85.50685975,-6.25,0.5171638861102326,80
+ws3,"Hidden-state probe + calibrated rules (AgentTTS's models, untrained)","LEARNT rulebook (v2, 2 rounds)",0.375,0.375,236.3916666666667,85.50685975,-6.25,0.5171638861102326,80
+ws3,"Hidden-state probe + calibrated rules (AgentTTS's models, untrained)","Oracle: Llama 3.2 3B if right, else Llama 3.1 70B (needs the answer key)",0.4625,0.4625,150.56666666666666,60.74919,2.500000000000002,0.07788401360919894,80
+ws4,Our fine-tuning + self-learnt rules (AgentTTS's models),Fixed: Qwen2.5 7B (fine-tuned) -> Llama 3.2 3B (fine-tuned) (cheapest),0.5375,0.5375,80.33333333333336,30.12993825,9.999999999999998,-0.46539898275668656,80
+ws4,Our fine-tuning + self-learnt rules (AgentTTS's models),Fixed: Qwen2.5 72B (fine-tuned) -> Llama 3.1 70B (fine-tuned) (largest),0.7,0.7,928.6666666666666,308.88892,26.249999999999996,4.4806727274719345,80
+ws4,Our fine-tuning + self-learnt rules (AgentTTS's models),Fixed: Qwen2.5 72B (fine-tuned) -> Llama 3.1 70B (fine-tuned) (best fixed pipeline on dev),0.7,0.7,928.6666666666666,308.88892,26.249999999999996,4.4806727274719345,80
+ws4,Our fine-tuning + self-learnt rules (AgentTTS's models),Starting rulebook (before any micro-experiment),0.55,0.55,218.48333333333335,78.89583325,11.250000000000004,0.39986323110731337,80
+ws4,Our fine-tuning + self-learnt rules (AgentTTS's models),"LEARNT rulebook (v2, 2 rounds)",0.55,0.55,218.48333333333335,78.89583325,11.250000000000004,0.39986323110731337,80
+ws4,Our fine-tuning + self-learnt rules (AgentTTS's models),"Oracle: Llama 3.2 3B (fine-tuned) if right, else Llama 3.1 70B (fine-tuned) (needs the answer key)",0.6625,0.6625,133.36666666666667,46.30439825,22.499999999999996,-0.1784125741681697,80
+ws5,Our fine-tuning + self-learnt rules (full model ladders),Fixed: Qwen2.5 0.5B (fine-tuned) -> Llama 3.2 3B (fine-tuned) (cheapest),0.525,0.525,6.666666666666666,3.43388025,8.750000000000002,-0.9390720332876313,80
+ws5,Our fine-tuning + self-learnt rules (full model ladders),Fixed: Qwen2.5 72B (fine-tuned) -> Llama 3.1 70B (fine-tuned) (largest),0.7,0.7,928.6666666666666,308.88892,26.249999999999996,4.4806727274719345,80
+ws5,Our fine-tuning + self-learnt rules (full model ladders),Fixed: Qwen3.5 0.8B (fine-tuned) -> Llama 3.1 70B (fine-tuned) (best fixed pipeline on dev),0.525,0.525,121.73333333333332,36.87119,8.750000000000002,-0.3457877172724877,80
+ws5,Our fine-tuning + self-learnt rules (full model ladders),Starting rulebook (before any micro-experiment),0.6,0.6,13.903333333333332,6.27014925,16.249999999999996,-0.8887475925272632,80
+ws5,Our fine-tuning + self-learnt rules (full model ladders),"LEARNT rulebook (v2, 2 rounds)",0.6,0.6,13.903333333333332,6.27014925,16.249999999999996,-0.8887475925272632,80
+ws5,Our fine-tuning + self-learnt rules (full model ladders),"Oracle: Llama 3.2 3B (fine-tuned) if right, else Llama 3.1 70B (fine-tuned) (needs the answer key)",0.6,0.6,61.13333333333334,19.50420525,16.249999999999996,-0.6539333110922532,80

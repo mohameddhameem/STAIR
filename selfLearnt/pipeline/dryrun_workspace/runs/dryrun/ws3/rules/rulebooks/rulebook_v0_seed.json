@@ -1,0 +1,68 @@
+{
+ "version": 0,
+ "params": {
+  "votes": 2,
+  "sure_threshold": 0.9,
+  "merge": "union",
+  "max_ret_members": 3
+ },
+ "rules": [
+  {
+   "id": "H1",
+   "stage": "retrieval",
+   "hard": true,
+   "at": [
+    0
+   ],
+   "when": [
+    [
+     "ret_probe_pct",
+     "<",
+     0.1
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF the first retriever's probe score is in its lowest 10% THEN escalate (locked)"
+  },
+  {
+   "id": "R1",
+   "stage": "retrieval",
+   "when": [
+    [
+     "ret_probe_pct",
+     "<",
+     0.25
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF the probe says this shortlist is likely incomplete (lowest 25%) THEN escalate to the next retriever and ensemble"
+  },
+  {
+   "id": "H2",
+   "stage": "answer",
+   "hard": true,
+   "when": [
+    [
+     "is_cannot",
+     "==",
+     1
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+  },
+  {
+   "id": "A1",
+   "stage": "answer",
+   "when": [
+    [
+     "ans_probe_pct",
+     "<",
+     0.3
+    ]
+   ],
+   "then": "escalate",
+   "text": "IF the probe says the answer is likely wrong (lowest 30%) THEN escalate to the next answerer"
+  }
+ ]
+}

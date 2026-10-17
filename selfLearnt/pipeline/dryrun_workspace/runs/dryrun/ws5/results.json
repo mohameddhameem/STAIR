@@ -1,0 +1,289 @@
+{
+ "workstream": "ws5",
+ "name": "Our fine-tuning + self-learnt rules (full model ladders)",
+ "policies": [
+  {
+   "policy": "Fixed: Qwen2.5 0.5B (fine-tuned) -> Llama 3.2 3B (fine-tuned) (cheapest)",
+   "kind": "fixed",
+   "acc": 0.525,
+   "lenient": 0.525,
+   "EM": 0.525,
+   "budget_per_q": 6.666666666666666,
+   "tflops_per_q": 3.43388025,
+   "n": 80,
+   "vs_best_fixed_pts": 0.0,
+   "ci_best_fixed": [
+    -13.750000000000002,
+    13.750000000000002
+   ]
+  },
+  {
+   "policy": "Fixed: Qwen2.5 72B (fine-tuned) -> Llama 3.1 70B (fine-tuned) (largest)",
+   "kind": "fixed",
+   "acc": 0.7,
+   "lenient": 0.7,
+   "EM": 0.7,
+   "budget_per_q": 928.6666666666666,
+   "tflops_per_q": 308.88892,
+   "n": 80,
+   "vs_best_fixed_pts": 17.499999999999993,
+   "ci_best_fixed": [
+    2.500000000000002,
+    32.49999999999999
+   ]
+  },
+  {
+   "policy": "Fixed: Qwen3.5 0.8B (fine-tuned) -> Llama 3.1 70B (fine-tuned) (best fixed pipeline on dev)",
+   "kind": "fixed",
+   "acc": 0.525,
+   "lenient": 0.525,
+   "EM": 0.525,
+   "budget_per_q": 121.73333333333332,
+   "tflops_per_q": 36.87119,
+   "n": 80,
+   "vs_best_fixed_pts": 0.0,
+   "ci_best_fixed": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "policy": "Starting rulebook (before any micro-experiment)",
+   "kind": "rulebook",
+   "acc": 0.6,
+   "lenient": 0.6,
+   "EM": 0.6,
+   "budget_per_q": 13.903333333333332,
+   "tflops_per_q": 6.27014925,
+   "n": 80,
+   "vs_best_fixed_pts": 7.499999999999996,
+   "ci_best_fixed": [
+    -6.281249999999996,
+    21.250000000000004
+   ],
+   "vs_random_pts": 2.968749999999998,
+   "ci_random": [
+    -3.749999999999998,
+    9.843749999999996
+   ],
+   "ret_escalated": 0.2375,
+   "ans_escalated": 0.375,
+   "reach_top_retriever": 0.0,
+   "reach_top_answerer": 0.0,
+   "sure_share": 0.55,
+   "right_when_sure": 1.0,
+   "right_when_unsure": 0.1111111111111111
+  },
+  {
+   "policy": "LEARNT rulebook (v2, 2 rounds)",
+   "kind": "rulebook",
+   "acc": 0.6,
+   "lenient": 0.6,
+   "EM": 0.6,
+   "budget_per_q": 13.903333333333332,
+   "tflops_per_q": 6.27014925,
+   "n": 80,
+   "vs_best_fixed_pts": 7.499999999999996,
+   "ci_best_fixed": [
+    -6.281249999999996,
+    21.250000000000004
+   ],
+   "vs_random_pts": 2.968749999999998,
+   "ci_random": [
+    -3.749999999999998,
+    9.843749999999996
+   ],
+   "ret_escalated": 0.2375,
+   "ans_escalated": 0.375,
+   "reach_top_retriever": 0.0,
+   "reach_top_answerer": 0.0,
+   "sure_share": 0.55,
+   "right_when_sure": 1.0,
+   "right_when_unsure": 0.1111111111111111
+  },
+  {
+   "policy": "Oracle: Llama 3.2 3B (fine-tuned) if right, else Llama 3.1 70B (fine-tuned) (needs the answer key)",
+   "kind": "oracle",
+   "acc": 0.6,
+   "lenient": 0.6,
+   "EM": 0.6,
+   "budget_per_q": 61.13333333333334,
+   "tflops_per_q": 19.50420525,
+   "n": 80,
+   "vs_best_fixed_pts": 7.499999999999996,
+   "ci_best_fixed": [
+    -5.000000000000004,
+    20.000000000000007
+   ]
+  }
+ ],
+ "rules": [
+  {
+   "rule": "[H1, LOCKED] retrieval at rung [0]: IF ret_conf_pct < 0.1 THEN escalate",
+   "text": "IF the first retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)",
+   "decided_on_test": 11,
+   "acc_there": 0.7272727272727273
+  },
+  {
+   "rule": "[R1] retrieval at rung [0]: IF ret_conf_pct < 0.2 THEN escalate (skip 1)",
+   "text": "IF the first retriever is unsure (lowest 20%) THEN escalate, skipping one size, and ensemble",
+   "decided_on_test": 8,
+   "acc_there": 0.375
+  },
+  {
+   "rule": "[R2] retrieval: IF rung >= 1 AND ret_agree == 0 AND ret_conf_pct < 0.2 THEN escalate",
+   "text": "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble",
+   "decided_on_test": 7,
+   "acc_there": 0.42857142857142855
+  },
+  {
+   "rule": "[H2, LOCKED] answer: IF is_cannot == 1 THEN escalate",
+   "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)",
+   "decided_on_test": 6,
+   "acc_there": 0.16666666666666666
+  },
+  {
+   "rule": "[A2] answer: IF is_yes_no == 1 THEN keep",
+   "text": "IF the answer is yes/no THEN keep it",
+   "decided_on_test": 9,
+   "acc_there": 0.3333333333333333
+  },
+  {
+   "rule": "[A1] answer: IF words_in_passages < 0.97 THEN escalate",
+   "text": "IF some of the answer's words are not in the passages THEN escalate; agree -> accept, else vote",
+   "decided_on_test": 24,
+   "acc_there": 0.125
+  },
+  {
+   "rule": "[A3] answer: IF ans_conf_pct < 0.15 THEN escalate",
+   "text": "IF the answerer's token confidence is in its lowest 15% THEN escalate",
+   "decided_on_test": 0,
+   "acc_there": null
+  }
+ ],
+ "accepted": [],
+ "tried": 34,
+ "final_rulebook": {
+  "version": 2,
+  "params": {
+   "votes": 2,
+   "sure_threshold": 0.9,
+   "merge": "union",
+   "max_ret_members": 3
+  },
+  "rules": [
+   {
+    "id": "H1",
+    "stage": "retrieval",
+    "hard": true,
+    "at": [
+     0
+    ],
+    "when": [
+     [
+      "ret_conf_pct",
+      "<",
+      0.1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the first retriever's confidence is in its lowest 10% THEN escalate retrieval (locked)"
+   },
+   {
+    "id": "R1",
+    "stage": "retrieval",
+    "at": [
+     0
+    ],
+    "when": [
+     [
+      "ret_conf_pct",
+      "<",
+      0.2
+     ]
+    ],
+    "then": "escalate",
+    "skip": 1,
+    "text": "IF the first retriever is unsure (lowest 20%) THEN escalate, skipping one size, and ensemble"
+   },
+   {
+    "id": "R2",
+    "stage": "retrieval",
+    "when": [
+     [
+      "rung",
+      ">=",
+      1
+     ],
+     [
+      "ret_agree",
+      "==",
+      0
+     ],
+     [
+      "ret_conf_pct",
+      "<",
+      0.2
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF after escalating the shortlists disagree AND the bigger retriever is also unsure THEN escalate again and ensemble"
+   },
+   {
+    "id": "H2",
+    "stage": "answer",
+    "hard": true,
+    "when": [
+     [
+      "is_cannot",
+      "==",
+      1
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the answer is empty or says it cannot be determined THEN escalate (locked)"
+   },
+   {
+    "id": "A2",
+    "stage": "answer",
+    "when": [
+     [
+      "is_yes_no",
+      "==",
+      1
+     ]
+    ],
+    "then": "keep",
+    "text": "IF the answer is yes/no THEN keep it"
+   },
+   {
+    "id": "A1",
+    "stage": "answer",
+    "when": [
+     [
+      "words_in_passages",
+      "<",
+      0.97
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF some of the answer's words are not in the passages THEN escalate; agree -> accept, else vote"
+   },
+   {
+    "id": "A3",
+    "stage": "answer",
+    "when": [
+     [
+      "ans_conf_pct",
+      "<",
+      0.15
+     ]
+    ],
+    "then": "escalate",
+    "text": "IF the answerer's token confidence is in its lowest 15% THEN escalate"
+   }
+  ]
+ },
+ "n_dev": 160,
+ "n_test": 80
+}

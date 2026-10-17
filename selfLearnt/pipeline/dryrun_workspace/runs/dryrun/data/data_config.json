@@ -1,0 +1,20 @@
+{
+ "hotpot_dev": "./dryrun_workspace/hotpotqa/hotpot_dev_distractor_v1.json",
+ "hotpot_dev_url": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json",
+ "hotpot_train": "./dryrun_workspace/hotpotqa/hotpot_dev_distractor_v1.json",
+ "hotpot_train_url": "http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json",
+ "n_retrieve": 20,
+ "search_range": [
+  0,
+  12
+ ],
+ "test_range": [
+  500,
+  580
+ ],
+ "level": "hard",
+ "seed": 7,
+ "n_train": 40,
+ "n_val": 6,
+ "n_dev": 160
+}
