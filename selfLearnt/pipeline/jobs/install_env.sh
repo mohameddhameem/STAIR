@@ -4,6 +4,7 @@
 set -e
 cd "$(dirname "$0")/.."
 source jobs/cluster.env
+conda deactivate 2>/dev/null || true   # the login shell starts in Anaconda base: use the module Python instead
 module purge 2>/dev/null || true
 module load "$PY_MODULE"
 module load "${CUDA_MODULE:-CUDA/12.4.0}" 2>/dev/null || true

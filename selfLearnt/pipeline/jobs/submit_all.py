@@ -50,7 +50,7 @@ class Plan:
         self.after = after
         self.seed_arg = ""
 
-    def add(self, name, args, gpus, hours, deps=(), cpu_only=False):
+    def add(self, name, args, gpus, hours, deps=(), cpu_only=False, small=False):
         args += self.seed_arg
         deps = [d for d in deps if d]
         if not deps and self.after:
@@ -66,8 +66,9 @@ class Plan:
             cmd += [f"--mail-user={self.env['MAIL']}", "--mail-type=END,FAIL"]
         if gpus:
             cmd.append(f"--gres=gpu:{gpus}")
-            if self.env.get("CONSTRAINT"):
-                cmd.append(f"--constraint={self.env['CONSTRAINT']}")
+            con = self.env.get("CONSTRAINT_SMALL") if small and self.env.get("CONSTRAINT_SMALL") else self.env.get("CONSTRAINT")
+            if con:
+                cmd.append(f"--constraint={con}")
         if deps:
             cmd.append("--dependency=afterok:" + ":".join(deps))
         cmd += [f"--export=ALL,STAGE_ARGS={args},TIME_LIMIT_MIN={max(30, mins - 120)}", os.path.join("jobs", "job.sbatch")]
@@ -80,7 +81,7 @@ class Plan:
                 sys.exit(f"sbatch failed for {name}: {r.stderr.strip()}")
             jid = r.stdout.strip().split(";")[0]
         self.jobs.append({"id": jid, "name": name, "args": args, "gpus": gpus, "hours": hours, "deps": deps})
-        print(f"{jid:>8}  {name:34s} gpus={gpus}  time={t}  after={','.join(deps) or '-'}")
+        print(f"{jid:>8}  {name:34s} gpus={gpus}{' (24GB ok)' if small and gpus else ''}  time={t}  after={','.join(deps) or '-'}")
         return jid
 
 
@@ -105,8 +106,8 @@ def main():
     if a.smoke:
         cmd = ["sbatch", "--parsable"] + [f"{flag}={env[k]}" for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos"))
                                           if env.get(k) and not env[k].startswith("EDIT")]
-        if env.get("CONSTRAINT"):
-            cmd.append(f"--constraint={env['CONSTRAINT']}")
+        if env.get("CONSTRAINT_SMALL") or env.get("CONSTRAINT"):
+            cmd.append(f"--constraint={env.get('CONSTRAINT_SMALL') or env['CONSTRAINT']}")   # small models only
         cmd.append(os.path.join("jobs", "smoke.sbatch"))
         print(" ".join(cmd))
         if not a.dry:
@@ -118,6 +119,9 @@ def main():
     P.seed_arg = sd
     W = cfg["workstreams"]
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
+    pb = lambda v: float(variant(cfg, v)["params_b"])
+    sm_inf = lambda v: pb(v) <= 7          # vLLM inference fits a 24 GB GPU up to 7B (Llama 8B's 64k-token context does not)
+    sm_tr = lambda k: pb(k) <= 3           # LoRA training with long retrieval prompts: up to 3B on 24 GB
 
     def train_gpus(k):
         _, s = ft_settings(cfg, k)
@@ -127,11 +131,11 @@ def main():
     last = [data]
     # ---------------- phase 1: WS1 + WS2
     if 1 in phases and "ws1" in W:
-        g = [P.add(f"ws1-grid-ret-{m}", f"--stage ws1_grid --part retrieve-{m}", tp(m), 24, [data]) for m in W["ws1"]["retrievers"]]
-        ga = [P.add(f"ws1-grid-ans-{m}", f"--stage ws1_grid --part answer-{m}", tp(m), 48, g) for m in W["ws1"]["answerers"]]
+        g = [P.add(f"ws1-grid-ret-{m}", f"--stage ws1_grid --part retrieve-{m}", tp(m), 24, [data], small=sm_inf(m)) for m in W["ws1"]["retrievers"]]
+        ga = [P.add(f"ws1-grid-ans-{m}", f"--stage ws1_grid --part answer-{m}", tp(m), 48, g, small=sm_inf(m)) for m in W["ws1"]["answerers"]]
         s = P.add("ws1-search", "--stage ws1_search", tp(cfg["planner"]), 12, ga)
-        t = [P.add(f"ws1-test-ret-{m}", f"--stage ws1_test --part retrieve-{m}", tp(m), 24, [s]) for m in W["ws1"]["retrievers"]]
-        ta = [P.add(f"ws1-test-ans-{m}", f"--stage ws1_test --part answer-{m}", tp(m), 48, t) for m in W["ws1"]["answerers"]]
+        t = [P.add(f"ws1-test-ret-{m}", f"--stage ws1_test --part retrieve-{m}", tp(m), 24, [s], small=sm_inf(m)) for m in W["ws1"]["retrievers"]]
+        ta = [P.add(f"ws1-test-ans-{m}", f"--stage ws1_test --part answer-{m}", tp(m), 48, t, small=sm_inf(m)) for m in W["ws1"]["answerers"]]
         last = [P.add("report-phase1", "--stage report", 0, 1, ta, cpu_only=True)]
     # ---------------- phases 2-4: rule-based workstreams
     trained = set()
@@ -145,21 +149,21 @@ def main():
             b, _, tag = v.partition(":")
             if tag == "ft" and b not in trained:
                 trained.add(b)
-                tr[b] = P.add(f"train-{b}", f"--stage train --model {b}", train_gpus(b), 96, after)
+                tr[b] = P.add(f"train-{b}", f"--stage train --model {b}", train_gpus(b), 96, after, small=sm_tr(b))
         own = lambda v: [tr[v.split(":")[0]]] if v.split(":")[0] in tr else list(after)
-        rt = [P.add(f"ret-{v}-{ws}", f"--stage retrieve --model {v}", tp(v) if variant(cfg, v).get("kind") != "ranker" else 1, 36, own(v))
+        rt = [P.add(f"ret-{v}-{ws}", f"--stage retrieve --model {v}", tp(v) if variant(cfg, v).get("kind") != "ranker" else 1, 36, own(v), small=sm_inf(v))
               for v in w["retrievers"] if v not in done_ret]
         done_ret.update(w["retrievers"])
         rt = rt or list(after)
         rc = P.add(f"reach-{ws}", f"--stage reach --ws {ws}", 0, 1, rt, cpu_only=True)
-        an = [P.add(f"ans-{v}-{ws}", f"--stage answer --model {v}", tp(v), 36, [rc] + (own(v) if v.split(":")[0] in tr else [])) for v in w["answerers"]]
+        an = [P.add(f"ans-{v}-{ws}", f"--stage answer --model {v}", tp(v), 36, [rc] + (own(v) if v.split(":")[0] in tr else []), small=sm_inf(v)) for v in w["answerers"]]
         dep = an
         sig = w.get("signals", "all")
         if isinstance(sig, list) and any("probe" in x for x in sig):
-            pr = [P.add(f"probe-ret-{v}", f"--stage probe --part ret-{v}", tp(v), 24, an) for v in w["retrievers"] if "ret_probe_pct" in sig]
-            pr += [P.add(f"probe-ans-{v}", f"--stage probe --part ans-{v}", tp(v), 24, an) for v in w["answerers"] if "ans_probe_pct" in sig]
+            pr = [P.add(f"probe-ret-{v}", f"--stage probe --part ret-{v}", tp(v), 24, an, small=sm_inf(v)) for v in w["retrievers"] if "ret_probe_pct" in sig]
+            pr += [P.add(f"probe-ans-{v}", f"--stage probe --part ans-{v}", tp(v), 24, an, small=sm_inf(v)) for v in w["answerers"] if "ans_probe_pct" in sig]
             dep = [P.add(f"probe-fit-{ws}", "--stage probe --part fit", 0, 2, pr, cpu_only=True)]
-        sm = [P.add(f"smp-{v}-{ws}", f"--stage sample --model {v}", tp(v), 24, an) for v in w["answerers"][1:]]
+        sm = [P.add(f"smp-{v}-{ws}", f"--stage sample --model {v}", tp(v), 24, an, small=sm_inf(v)) for v in w["answerers"][1:]]
         ln = P.add(f"learn-{ws}", f"--stage learn --ws {ws}", tp(cfg["planner"]), 12, dep + sm)
         te = P.add(f"test-{ws}", f"--stage test --ws {ws}", 0, 2, [ln], cpu_only=True)
         jobs.append(P.add(f"report-{ws}", "--stage report", 0, 1, [te], cpu_only=True))
