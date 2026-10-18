@@ -99,6 +99,12 @@ def _my_queue():
     return dict(l.split()[:2] for l in out.splitlines() if l.strip()) if rc == 0 else {}
 
 
+def _never_satisfied():
+    """Your queued jobs whose dependency failed: they would wait forever and hold queue places."""
+    rc, out, _ = _sh(["squeue", "--me", "-h", "-o", "%i %j %r"])
+    return [l.split()[:2] for l in out.splitlines() if "DependencyNeverSatisfied" in l] if rc == 0 else []
+
+
 def _final_state(jid):
     rc, out, _ = _sh(["sacct", "-j", jid, "-X", "-n", "-P", "-o", "State"])
     return out.splitlines()[-1].split()[0] if rc == 0 and out.strip() else "UNKNOWN"
@@ -147,6 +153,15 @@ def submit_loop(P, state_path, max_jobs, poll):
             print(f"{time.strftime('%H:%M')}  submitted {j['id']:>8}  {j['name']}" + (f"  after {','.join(deps)}" if deps else ""), flush=True)
         first = False
         json.dump({"jobs": P.jobs, "after": P.after}, open(state_path, "w"), indent=1)
+        stuck = _never_satisfied()
+        if stuck:
+            failed = [f"{j['name']} ({j['id']}: {st})" for j in P.jobs if j["id"] and j["id"] not in q
+                      for st in [_final_state(j["id"])] if st not in ("COMPLETED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED")]
+            sys.exit("\nstopped: a job failed, so jobs depending on it can never start: "
+                     + ", ".join(n for _, n in stuck)
+                     + (f"\nfailed: {', '.join(failed)}" if failed else "")
+                     + "\nLook at the failed job's log (logs/stair-<name>-<id>.out) and fix the cause; then cancel the stuck jobs"
+                       " (scancel --me) and submit again: python jobs/submit_all.py   (finished work is skipped)")
         left = sum(1 for j in P.jobs if not j["id"])
         if blocked:
             n, d, rid, st = blocked
