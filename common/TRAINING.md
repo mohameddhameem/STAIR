@@ -1,0 +1,48 @@
+# Training recipe (retrievers and answerers)
+
+The proposal's recipe, from the selfLearnt Colab runs. Train only on a dataset's `train` (and `train_extra`) IDs;
+select checkpoints and thresholds on `val`; touch `test` once.
+
+| Model size | Method | Training questions × passes |
+|---|---|---|
+| ≤ 1B | LoRA | 12,000 × 2 |
+| 1.5–14B | LoRA | 12,000 × 1 |
+| 24–72B | QLoRA (4-bit) | 2,000 × 1 |
+
+- LoRA rank 16, alpha 32, learning rate 1e-4. Keep the checkpoint with the best validation loss.
+- HotpotQA: the 12,000 are `stair_common/splits/hotpotqa/train.txt`, drawn from the official train file with the team's seed; a
+  2,000-question run takes its first 2,000 lines.
+- CWQ / WebQSP: only 350 training questions carry gold triplets (`stair_common/splits/<dataset>/train.txt`).
+- MedAgentBench: no fine-tuning (300 tasks).
+- Run seeds 0, 1, 2; report the mean and the range.
+
+## Loss curves: stop at the elbow on val
+
+Each run stops early on the **val** split, never on test, and shares its loss curve. Log one row per epoch in the
+layout of `stair_common/training.py` (track, model, run, seed, epoch, train_loss, val_loss), then plot:
+
+```python
+from stair_common.training import from_records, validate_history, best_epoch, plot_history
+
+rows = [{"epoch": 1, "train_loss": 0.71, "val_loss": 0.64}, {"epoch": 2, "train_loss": 0.52, "val_loss": 0.58}]
+df = from_records(rows, track="selfLearnt", model="Qwen2.5-1.5B retriever", run="lora-r16", seed=0)
+validate_history(df)
+df.to_csv("history-seed0.csv", index=False)
+print(best_epoch(df))                     # the early-stopping epoch of each run
+plot_history(df, "loss-curves.png")       # needs the plot extra: stair-common[plot]
+```
+
+Or from the shell: `stair-plot-history history-*.csv --out loss-curves.png`. Each panel shows train and val loss, a
+thin line per seed and their mean in bold, a dashed line at the best val epoch, and "val rises after" when the run
+overfits past it. Training loss alone isn't a stopping signal: it keeps falling as the model overfits.
+
+## Epochs: record first, reconcile later
+
+The team agreed (17 Oct) not to force one epoch count across methods yet, but to record what each run used. Router
+or judge training has its own schedule and is recorded here too.
+
+| Track | Dataset | Model / router | Method | Train questions | Epochs | Selected by | Seeds |
+|---|---|---|---|---|---|---|---|
+| systemOne | HotpotQA | nano-jev judge (33M) | full fine-tune | 12,000 (HotpotQA train, before this standard) | 3, best dev NLL | 10% dev | 0, 1, 2 |
+| systemOne | HotpotQA | Strands Decider 2B / E4B judge | LoRA + head | 12,000 (same) | 2, best dev NLL | 10% dev | 0, 1, 2 |
+| | | | | | | | |

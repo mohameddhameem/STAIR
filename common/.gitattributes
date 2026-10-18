@@ -1,0 +1,3 @@
+# split files are checksummed in stair_common/splits/MANIFEST.json: keep them byte-identical on every OS
+stair_common/splits/** text eol=lf
+stair_common/lenient_match_agenttts.py -text

@@ -1,0 +1,53 @@
+# The one copy of each model every track uses: Hugging Face repo pinned to a revision (checked 2026-10-17).
+# 16-bit weights (bf16) served with vLLM; AWQ 4-bit only where a 70B/72B model must fit our 2 GPUs.
+# params_b = nominal billions of parameters (as AgentTTS counts them, so 3B = the cost unit), the number cost.units() takes. Record "role=repo@revision" in the results.
+
+# ---- A. AgentTTS menu (all datasets) ----
+[A.retriever]
+"Qwen2.5-7B"  = { repo = "Qwen/Qwen2.5-7B-Instruct",  revision = "a09a35458c702b33eeacc393d103063234e8bc28", params_b = 7.0,  dtype = "bf16" }
+"Qwen2.5-32B" = { repo = "Qwen/Qwen2.5-32B-Instruct", revision = "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd", params_b = 32.0, dtype = "bf16" }
+"Qwen2.5-72B" = { repo = "Qwen/Qwen2.5-72B-Instruct-AWQ", revision = "698703eae6604af048a3d2f509995dc302088217", params_b = 72.0, dtype = "awq" }
+
+[A.answerer]
+"Llama-3.2-3B"  = { repo = "meta-llama/Llama-3.2-3B-Instruct", revision = "0cb88a4f764b7a12671c53f0838cd831a0843b95", params_b = 3.0, dtype = "bf16" }
+"Llama-3.1-8B"  = { repo = "meta-llama/Llama-3.1-8B-Instruct", revision = "0e9e39f249a16976918f6564b8830bc894c89659", params_b = 8.0, dtype = "bf16" }
+"Llama-3.1-70B" = { repo = "hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4", revision = "2123003760781134cfc31124aa6560a45b491fdf", params_b = 70.0, dtype = "awq" }
+
+[A.planner]
+"Qwen2.5-72B" = { repo = "Qwen/Qwen2.5-72B-Instruct-AWQ", revision = "698703eae6604af048a3d2f509995dc302088217", params_b = 72.0, dtype = "awq" }
+
+# ---- B. Full ladder (all datasets): A's models plus the smaller sizes ----
+[B.retriever]
+"nano-jev-33M" = { repo = "sdmlai/nano-jev", revision = "ffee345e97797bef0948561461ea54fe558588a0", params_b = 0.033, dtype = "fp32", note = "v1.0; ranks passages only, keep its top 5; it saw 1,000 HotpotQA dev questions (splits/hotpotqa/nanojev_v1_seen.txt)" }
+"Qwen2.5-0.5B" = { repo = "Qwen/Qwen2.5-0.5B-Instruct", revision = "7ae557604adf67be50417f59c2c2f167def9a775", params_b = 0.5, dtype = "bf16" }
+"Qwen3.5-0.8B" = { repo = "Qwen/Qwen3.5-0.8B", revision = "2fc06364715b967f1860aea9cf38778875588b17", params_b = 0.8, dtype = "bf16" }
+"Qwen2.5-1.5B" = { repo = "Qwen/Qwen2.5-1.5B-Instruct", revision = "989aa7980e4cf806f80c7fef2b1adb7bc71aa306", params_b = 1.5, dtype = "bf16" }
+"Qwen2.5-3B"   = { repo = "Qwen/Qwen2.5-3B-Instruct", revision = "aa8e72537993ba99e69dfaafa59ed015b17504d1", params_b = 3.0, dtype = "bf16" }
+"Qwen2.5-7B"   = { repo = "Qwen/Qwen2.5-7B-Instruct", revision = "a09a35458c702b33eeacc393d103063234e8bc28", params_b = 7.0, dtype = "bf16" }
+"Qwen2.5-32B"  = { repo = "Qwen/Qwen2.5-32B-Instruct", revision = "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd", params_b = 32.0, dtype = "bf16" }
+"Qwen2.5-72B"  = { repo = "Qwen/Qwen2.5-72B-Instruct-AWQ", revision = "698703eae6604af048a3d2f509995dc302088217", params_b = 72.0, dtype = "awq" }
+
+[B.answerer]
+"Llama-3.2-1B"  = { repo = "meta-llama/Llama-3.2-1B-Instruct", revision = "9213176726f574b556790deb65791e0c5aa438b6", params_b = 1.0, dtype = "bf16" }
+"Llama-3.2-3B"  = { repo = "meta-llama/Llama-3.2-3B-Instruct", revision = "0cb88a4f764b7a12671c53f0838cd831a0843b95", params_b = 3.0, dtype = "bf16" }
+"Llama-3.1-8B"  = { repo = "meta-llama/Llama-3.1-8B-Instruct", revision = "0e9e39f249a16976918f6564b8830bc894c89659", params_b = 8.0, dtype = "bf16" }
+"Llama-3.1-70B" = { repo = "hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4", revision = "2123003760781134cfc31124aa6560a45b491fdf", params_b = 70.0, dtype = "awq" }
+
+[B.planner]
+"Qwen2.5-72B" = { repo = "Qwen/Qwen2.5-72B-Instruct-AWQ", revision = "698703eae6604af048a3d2f509995dc302088217", params_b = 72.0, dtype = "awq" }
+
+# ---- C. Swap (HotpotQA only): other families, dense and open ----
+[C.retriever]
+"Gemma-3-270M" = { repo = "google/gemma-3-270m-it", revision = "ac82b4e820549b854eebf28ce6dedaf9fdfa17b3", params_b = 0.27, dtype = "bf16" }
+"Gemma-3-1B"   = { repo = "google/gemma-3-1b-it", revision = "dcc83ea841ab6100d6b47a070329e1ba4cf78752", params_b = 1.0, dtype = "bf16" }
+"Gemma-4-E2B"  = { repo = "google/gemma-4-E2B-it", revision = "3e22461f65e89153144f8adb70e3b8c2cc9845a7", params_b = 2.0, dtype = "bf16", note = "params_b = effective parameters" }
+"Gemma-4-E4B"  = { repo = "google/gemma-4-E4B-it", revision = "ee0ef6023621cff504d758262d4e04895a5af4a2", params_b = 4.0, dtype = "bf16", note = "params_b = effective parameters" }
+"Gemma-4-31B"  = { repo = "google/gemma-4-31B-it", revision = "842da3794eaa0b77d5f08bae87a17459d91ff475", params_b = 31.0, dtype = "bf16" }
+
+[C.answerer]
+"Ministral-3-3B"  = { repo = "mistralai/Ministral-3-3B-Instruct-2512-BF16", revision = "b6d637bef2393152b3da2b2fde72eecdee30557e", params_b = 3.0, dtype = "bf16" }
+"Ministral-3-8B"  = { repo = "mistralai/Ministral-3-8B-Instruct-2512-BF16", revision = "f6fae9795746f63c9be8344932f01275f3c63734", params_b = 8.0, dtype = "bf16" }
+"Ministral-3-14B" = { repo = "mistralai/Ministral-3-14B-Instruct-2512-BF16", revision = "3cea74c1ebaf5ce5f5a2553de470e2ceab825142", params_b = 14.0, dtype = "bf16" }
+
+[C.planner]
+"Gemma-4-31B" = { repo = "google/gemma-4-31B-it", revision = "842da3794eaa0b77d5f08bae87a17459d91ff475", params_b = 31.0, dtype = "bf16" }
