@@ -122,7 +122,7 @@ It is resumable: run it again after a disconnect.
 the small models with few questions; `logs/stair-smoke-<job>.out` ends with `SMOKE TEST PASSED`.
 (Without a GPU: `python run.py --config configs/dryrun.yaml --stage all` checks the code with fake models.)
 
-**6. Submit everything:** `python jobs/submit_all.py` (preview with `--dry`; another seed with `--seed 1`). Jobs with
+**6. Submit everything, inside tmux:** `python jobs/submit_all.py` (preview with `--dry`; another seed with `--seed 1`). The cluster allows ~16 queued jobs per user, so it submits them as earlier ones finish: leave it running until it prints "all ... jobs submitted" (after a disconnect: `--continue logs/plan_<time>.json`). Jobs with
 dependencies, in priority order:
 
 | Phase | Experiments | Rough wall time on 2 GPUs | Results |

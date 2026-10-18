@@ -13,6 +13,9 @@ Usage (from STAIR/selfLearnt/pipeline, after jobs/install_env.sh and jobs/setup_
   python jobs/submit_all.py --after 12345   # make the first jobs wait for job 12345
   python jobs/submit_all.py --seed 1        # another run seed (team standard: 0, 1, 2)
   python jobs/submit_all.py --smoke         # only the 1-GPU smoke test (run this first)
+  python jobs/submit_all.py --continue logs/plan_<time>.json   # resume submitting after a disconnect
+The cluster limits how many jobs one user may have queued (MAX_JOBS in cluster.env, default 15): this script submits
+the jobs in order as earlier ones finish, so leave it running in tmux until it prints "all ... jobs submitted".
 Every job resumes from its saved outputs, so re-submitting a phase after a failure is safe (finished work is skipped)."""
 import argparse
 import json
@@ -45,44 +48,116 @@ def read_env(path):
 
 
 class Plan:
+    """Builds the job list first (placeholder ids J1, J2, ... and dependencies), then submits it in order, keeping at most
+    MAX_JOBS of your jobs in the queue (the cluster limits submitted jobs per user). Later jobs are submitted as earlier
+    ones finish: run it in tmux and leave it. Its state is saved, so `--continue` picks up after a disconnect."""
+
     def __init__(self, env, dry, after):
-        self.env, self.dry, self.jobs, self.n = env, dry, [], 0
+        self.env, self.dry, self.jobs = env, dry, []
         self.after = after
         self.seed_arg = ""
 
     def add(self, name, args, gpus, hours, deps=(), cpu_only=False, small=False):
-        args += self.seed_arg
+        jid = f"J{len(self.jobs) + 1}"
         deps = [d for d in deps if d]
-        if not deps and self.after:
-            deps = [self.after]
+        self.jobs.append({"key": jid, "id": None, "name": name, "args": args + self.seed_arg, "gpus": gpus, "hours": hours,
+                          "deps": deps, "cpu_only": cpu_only, "small": small})
         mins = int(hours * 60)
+        print(f"{jid:>6}  {name:34s} gpus={gpus}{' (24GB ok)' if small and gpus else ''}  "
+              f"time={mins // 1440}-{(mins % 1440) // 60:02d}:{mins % 60:02d}  after={','.join(deps) or '-'}")
+        return jid
+
+    def _cmd(self, j, real_deps):
+        e, mins = self.env, int(j["hours"] * 60)
         t = f"{mins // 1440}-{(mins % 1440) // 60:02d}:{mins % 60:02d}:00"
-        cmd = ["sbatch", "--parsable", f"--job-name=stair-{name}", f"--time={t}", f"--cpus-per-task={self.env.get('CPUS', '8') if not cpu_only else '4'}",
-               f"--mem={self.env.get('MEM', '120G') if not cpu_only else '48G'}"]
+        cmd = ["sbatch", "--parsable", f"--job-name=stair-{j['name']}", f"--time={t}",
+               f"--cpus-per-task={e.get('CPUS', '8') if not j['cpu_only'] else '4'}", f"--mem={e.get('MEM', '120G') if not j['cpu_only'] else '48G'}"]
         for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos")):
-            if self.env.get(k) and not self.env[k].startswith("EDIT"):
-                cmd.append(f"{flag}={self.env[k]}")
-        if self.env.get("MAIL"):
-            cmd += [f"--mail-user={self.env['MAIL']}", "--mail-type=END,FAIL"]
-        if gpus:
-            cmd.append(f"--gres=gpu:{gpus}")
-            con = self.env.get("CONSTRAINT_SMALL") if small and self.env.get("CONSTRAINT_SMALL") else self.env.get("CONSTRAINT")
+            if e.get(k) and not e[k].startswith("EDIT"):
+                cmd.append(f"{flag}={e[k]}")
+        if e.get("MAIL"):
+            cmd += [f"--mail-user={e['MAIL']}", "--mail-type=END,FAIL"]
+        if j["gpus"]:
+            cmd.append(f"--gres=gpu:{j['gpus']}")
+            con = e.get("CONSTRAINT_SMALL") if j["small"] and e.get("CONSTRAINT_SMALL") else e.get("CONSTRAINT")
             if con:
                 cmd.append(f"--constraint={con}")
-        if deps:
-            cmd.append("--dependency=afterok:" + ":".join(deps))
-        cmd += [f"--export=ALL,STAGE_ARGS={args},TIME_LIMIT_MIN={max(30, mins - 120)}", os.path.join("jobs", "job.sbatch")]
-        if self.dry:
-            self.n += 1
-            jid = f"J{self.n}"
-        else:
-            r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
-            if r.returncode:
-                sys.exit(f"sbatch failed for {name}: {r.stderr.strip()}")
-            jid = r.stdout.strip().split(";")[0]
-        self.jobs.append({"id": jid, "name": name, "args": args, "gpus": gpus, "hours": hours, "deps": deps})
-        print(f"{jid:>8}  {name:34s} gpus={gpus}{' (24GB ok)' if small and gpus else ''}  time={t}  after={','.join(deps) or '-'}")
-        return jid
+        if real_deps:
+            cmd.append("--dependency=afterok:" + ":".join(real_deps))
+        cmd += [f"--export=ALL,STAGE_ARGS={j['args']},TIME_LIMIT_MIN={max(30, mins - 120)}", os.path.join("jobs", "job.sbatch")]
+        return cmd
+
+
+def _sh(cmd):
+    r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    return r.returncode, r.stdout.strip(), r.stderr.strip()
+
+
+def _my_queue():
+    """{job id: state} of your jobs still in the queue (pending or running)."""
+    rc, out, _ = _sh(["squeue", "--me", "-h", "-o", "%i %T"])
+    return dict(l.split()[:2] for l in out.splitlines() if l.strip()) if rc == 0 else {}
+
+
+def _final_state(jid):
+    rc, out, _ = _sh(["sacct", "-j", jid, "-X", "-n", "-P", "-o", "State"])
+    return out.splitlines()[-1].split()[0] if rc == 0 and out.strip() else "UNKNOWN"
+
+
+def submit_loop(P, state_path, max_jobs, poll):
+    """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
+    real = {j["key"]: j["id"] for j in P.jobs if j["id"]}
+    first = True
+    while True:
+        q = _my_queue()
+        free = max_jobs - len(q)
+        blocked = None
+        for j in P.jobs:
+            if j["id"]:
+                continue
+            if free <= 0:
+                break
+            if any(d not in real for d in j["deps"]):
+                break                      # an earlier job is not submitted yet: keep the order
+            deps = []
+            for d in j["deps"]:
+                rid = real[d]
+                if rid in q:
+                    deps.append(rid)
+                    continue
+                st = _final_state(rid)
+                if st == "COMPLETED":
+                    continue               # finished fine: nothing to wait for
+                if st in ("UNKNOWN", "PENDING", "RUNNING", "REQUEUED"):
+                    deps.append(rid)
+                    continue
+                blocked = (j["name"], d, rid, st)
+                break
+            if blocked:
+                break
+            if P.after and not deps and first:
+                deps = [P.after]
+            rc, out, err = _sh(P._cmd(j, deps))
+            if rc:
+                if "QOSMaxSubmitJobPerUserLimit" in err or "job submit limit" in err:
+                    break                  # the queue is full after all: try again later
+                sys.exit(f"sbatch failed for {j['name']}: {err}")
+            j["id"] = real[j["key"]] = out.split(";")[0]
+            free -= 1
+            print(f"{time.strftime('%H:%M')}  submitted {j['id']:>8}  {j['name']}" + (f"  after {','.join(deps)}" if deps else ""), flush=True)
+        first = False
+        json.dump({"jobs": P.jobs, "after": P.after}, open(state_path, "w"), indent=1)
+        left = sum(1 for j in P.jobs if not j["id"])
+        if blocked:
+            n, d, rid, st = blocked
+            sys.exit(f"\nstopped: {n} needs job {rid} ({d}), which ended {st}. Look at its log (logs/stair-*-{rid}.out), fix the cause,"
+                     f" then run:  python jobs/submit_all.py --continue {state_path}   (or resubmit the phase: finished work is skipped)")
+        if not left:
+            print(f"\nall {len(P.jobs)} jobs submitted (list in {state_path}). Follow with: squeue --me")
+            return
+        print(f"{time.strftime('%H:%M')}  {left} jobs still to submit; {len(q)} of yours in the queue (limit {max_jobs}); checking again in {poll // 60} min",
+              flush=True)
+        time.sleep(poll)
 
 
 def main():
@@ -92,6 +167,7 @@ def main():
     ap.add_argument("--smoke", action="store_true", help="submit only the 1-GPU smoke test (jobs/smoke.sbatch)")
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--after", default="")
+    ap.add_argument("--continue", dest="cont", default="", help="resume submitting from a saved plan (logs/plan_*.json)")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
     if os.path.exists(os.path.join(HERE, "cluster.local.env")):      # your own settings (account, storage), never committed
@@ -119,6 +195,13 @@ def main():
     phases = {int(x) for x in a.phases.split(",") if x.strip()}
     P = Plan(env, a.dry, a.after)
     P.seed_arg = sd
+    max_jobs, poll = int(env.get("MAX_JOBS", 15)), int(float(env.get("POLL_MIN", 5)) * 60)
+    if a.cont:
+        st = json.load(open(a.cont))
+        P.jobs, P.after = st["jobs"], st.get("after", "")
+        print(f"continuing {a.cont}: {sum(1 for j in P.jobs if not j['id'])} of {len(P.jobs)} jobs still to submit")
+        submit_loop(P, a.cont, max_jobs, poll)
+        return
     W = cfg["workstreams"]
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
     pb = lambda v: float(variant(cfg, v)["params_b"])
@@ -174,12 +257,12 @@ def main():
     for ph, ws in ((2, "ws4"), (3, "ws5"), (4, "ws6"), (5, "ws3")):
         if ph in phases and ws in W:
             last = phase(ws, last)
-    out = os.path.join(ROOT, "logs", f"submitted_{time.strftime('%Y%m%d_%H%M%S')}.json")
-    if not a.dry:
-        json.dump(P.jobs, open(out, "w"), indent=1)
-        print(f"\n{len(P.jobs)} jobs submitted (list in {out}). Follow with: squeue --me ; tail -f logs/stair-*.out")
-    else:
+    if a.dry:
         print(f"\n{len(P.jobs)} jobs (dry run, nothing submitted)")
+        return
+    out = os.path.join(ROOT, "logs", f"plan_{time.strftime('%Y%m%d_%H%M%S')}.json")
+    print(f"\nsubmitting {len(P.jobs)} jobs, at most {max_jobs} of yours queued at a time (keep this running in tmux) ...")
+    submit_loop(P, out, max_jobs, poll)
 
 
 if __name__ == "__main__":
