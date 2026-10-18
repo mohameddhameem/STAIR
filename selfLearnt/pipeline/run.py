@@ -46,7 +46,7 @@ def needed_downloads(cfg, only=None):
         if not m["finetuned"] or m["ft"]["method"] == "qlora":
             out[m["path"]] = (m["hf_id"], m.get("revision"))
         if m["finetuned"]:
-            out[m["train_path"]] = (m.get("train_hf_id", m["hf_id"]), None if m.get("train_hf_id") else m.get("revision"))
+            out[m["train_path"]] = ((m["train_hf_id"], m.get("train_revision")) if m.get("train_hf_id") else (m["hf_id"], m.get("revision")))
     for k, w in W.items():
         if w["kind"] == "agenttts":
             if w.get("skip_search"):        # AL-02 alone: only the strongest pair (added below)

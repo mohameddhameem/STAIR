@@ -104,6 +104,9 @@ def load_config(path, seed=None, exp=None):
         m["params"] = m["nominal"] = m["params_b"] * 1e9      # cost uses the nominal size (AgentTTS units)
         m.setdefault("dir", m["hf_id"].split("/")[-1] + (f"@{m['revision'][:7]}" if m.get("revision") else ""))
         m["path"] = os.path.join(cfg["paths"]["models_dir"], m["dir"])
+        if m.get("train_toml"):          # pinned bf16 copy that QLoRA trains (models.toml [training.qlora])
+            t = _toml_entry(m["train_toml"])
+            m["train_hf_id"], m["train_revision"] = t["repo"], t["revision"]
         if m.get("train_hf_id"):
             m.setdefault("train_dir", m["train_hf_id"].split("/")[-1] + "-train")
             m["train_path"] = os.path.join(cfg["paths"]["models_dir"], m["train_dir"])

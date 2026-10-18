@@ -55,11 +55,11 @@ models:
   q3:  {toml: B.retriever.Qwen2.5-3B, label: Qwen2.5 3B}
   q7:  {toml: A.retriever.Qwen2.5-7B, label: Qwen2.5 7B}
   q32: {toml: A.retriever.Qwen2.5-32B, label: Qwen2.5 32B, tensor_parallel: 2}       # 16-bit, ~65 GB: both GPUs (1 on an 80 GB H100)
-  q72: {toml: A.retriever.Qwen2.5-72B, label: Qwen2.5 72B, tensor_parallel: 2, train_hf_id: Qwen/Qwen2.5-72B-Instruct}
+  q72: {toml: A.retriever.Qwen2.5-72B, label: Qwen2.5 72B, tensor_parallel: 2, train_toml: training.qlora.Qwen2.5-72B}
   l1:  {toml: B.answerer.Llama-3.2-1B, label: Llama 3.2 1B, max_model_len: 65536}
   l3:  {toml: A.answerer.Llama-3.2-3B, label: Llama 3.2 3B, max_model_len: 65536}
   l8:  {toml: A.answerer.Llama-3.1-8B, label: Llama 3.1 8B, max_model_len: 65536}
-  l70: {toml: A.answerer.Llama-3.1-70B, label: Llama 3.1 70B, tensor_parallel: 2, max_model_len: 49152, train_hf_id: meta-llama/Llama-3.1-70B-Instruct}
+  l70: {toml: A.answerer.Llama-3.1-70B, label: Llama 3.1 70B, tensor_parallel: 2, max_model_len: 49152, train_toml: training.qlora.Llama-3.1-70B}
 
 # Fine-tuning (backpropagation). lora = bf16 LoRA, merged afterwards; qlora = 4-bit base + LoRA, served as a LoRA adapter.
 # Early stopping (team standard): validation loss on val every half epoch; stop after `patience` evaluations without
