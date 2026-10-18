@@ -82,7 +82,8 @@ from stair_common.cost import units
 
 calls = [  # (stage, params_b, prompt_tokens, generated_tokens), with the tokens measured from each call
     ("retrieve", 7.0, 3500, 20),     # Qwen2.5-7B picks passages from the candidates
-    ("answer",   3.0, 600, 16),      # Llama-3.2-3B answers, one sample
+    ("answer",   3.0, 600, 40 * 16), # Llama-3.2-3B, 40 samples from one prompt: the prompt counts once
+    ("fuse",     3.0, 1300, 16),     # fusing the samples is a new call with its own prompt
     ("router",   0.033, 512, 0),     # your router / judge, if any
 ]
 per_stage = {}
@@ -91,8 +92,9 @@ for stage, p, prompt, gen in calls:
 total = sum(per_stage.values())      # one 3B pass of 128+64 tokens = 1 unit
 ```
 
-With vLLM, the tokens come from each output: `len(out.prompt_token_ids)` and `len(out.outputs[0].token_ids)`.
-Every sample and every fusion call counts.
+With vLLM, the tokens come from each output: `len(out.prompt_token_ids)` once, and
+`sum(len(o.token_ids) for o in out.outputs)` over the samples. Samples drawn from one prompt pay that prompt once, as
+AgentTTS counts them (App. A.2, Eq. 8); every fusion call pays its own prompt.
 
 ### 5. Write results in the shared layout, validate and save
 
@@ -162,7 +164,9 @@ directly comparable with the paper, and no track has trained on a test question.
 - **`train_extra`** is for tracks whose labels exist only on dev questions, such as nonLLM's stored outcome grid. Never
   train on `val` or `test`.
 - **nano-jev** (menu B) saw 1,000 HotpotQA dev questions in its own calibration and test, not in its training. 62 of
-  them are in our test. Report nano-jev rows on all 500 and also without `stair_common/splits/hotpotqa/nanojev_v1_seen.txt`.
+  them are in our test and 66 in val. Report nano-jev rows on all 500 and also without
+  `stair_common/splits/hotpotqa/nanojev_v1_seen.txt`; a track that tunes on val with nano-jev should know that 66 of
+  those questions are not new to it.
 - **500 test questions** give about ±4 points of interval per policy. Compare policies paired on the same questions,
   for example with a paired bootstrap, which is much tighter.
 
@@ -198,7 +202,11 @@ router on `train_extra` (or the train file), pick thresholds on `val`, and re-sc
 
 `units = 2 × params × (prompt + generated tokens) / 1,152 GFLOPs`
 - One unit is one Llama-3.2-3B pass of 128 + 64 tokens, as in AgentTTS Eq. 2–4.
-- Tokens are measured per call and summed over every call: retrieval, every sample, fusion, and the router or judge.
+- Tokens are measured per call and summed over every call: retrieval, answering, fusion, and the router or judge.
+- **Samples share their prompt:** S samples from one prompt count that prompt once, plus every sample's generated
+  tokens, as in AgentTTS App. A.2, Eq. 8 (FLOPs = prompt + S × decode). Counting the prompt once per sample overstates
+  sampling badly: for 40 fused samples of Llama-3.2-3B on 5 passages it gives 220 units instead of 71, more than a
+  70B answer (94).
 - `params_b` is the nominal size in `models.toml`.
 - **Limitation, stated with the numbers:** like AgentTTS, it counts parameter FLOPs and not attention, so it undercounts
   small models on long prompts. We keep it, because it is the paper's unit.
@@ -207,6 +215,9 @@ router on `train_extra` (or the train file), pick thresholds on `val`, and re-sc
 
 - **Weights:** bf16 weights from Hugging Face, pinned to a revision in `models.toml`, served with vLLM.
 - **AWQ 4-bit only for the 70B and 72B models**, so that they fit our two GPUs.
+- **QLoRA training copies:** an AWQ model can't be fine-tuned, so QLoRA trains on the bf16 weights pinned in
+  `models.toml` under `[training.qlora]`, loaded in 4-bit. Serve the adapter on the menu's AWQ copy; cost uses the
+  menu entry's `params_b`.
 - **Menus:**
   - A, the AgentTTS menu, runs on every dataset;
   - B, the full ladder, runs on every dataset;

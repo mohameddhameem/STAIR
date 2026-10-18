@@ -43,6 +43,11 @@ or judge training has its own schedule and is recorded here too.
 
 | Track | Dataset | Model / router | Method | Train questions | Epochs | Selected by | Seeds |
 |---|---|---|---|---|---|---|---|
-| systemOne | HotpotQA | nano-jev judge (33M) | full fine-tune | 12,000 (HotpotQA train, before this standard) | 3, best dev NLL | 10% dev | 0, 1, 2 |
-| systemOne | HotpotQA | Strands Decider 2B / E4B judge | LoRA + head | 12,000 (same) | 2, best dev NLL | 10% dev | 0, 1, 2 |
+| systemOne | HotpotQA | nano-jev judge (33M) | full fine-tune | 10,107: `train` minus nano-jev's 769 training questions, less the hold-out | 3; best at epoch 1 (the qa judge: 2) | lowest NLL on a 10% hold-out of train (1,124) | 0, 1, 2 |
+| systemOne | HotpotQA | Strands Decider 2B / E4B judge | LoRA + head | 10,107 (same) | 2; best at epoch 1 | the same hold-out | 0, 1, 2 |
 | | | | | | | | |
+
+systemOne's common redo (18 Oct): 9 of its 10 judges have their lowest val loss at epoch 1, and val loss rises after
+it while train loss keeps falling, so the later epochs only cost GPU time. For judge-sized fine-tunes, prefer 1–2
+epochs with early stopping. Its `val_loss` is the hold-out of train above; the team `val` split picks the routing
+threshold.

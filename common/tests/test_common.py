@@ -69,6 +69,13 @@ def test_unit_is_one_3b_pass():
     assert cost.units(72.0, 128, 64) == pytest.approx(24.0)
 
 
+def test_samples_share_their_prompt():
+    # AgentTTS App. A.2, Eq. 8: 40 samples of 64 tokens from one 128-token prompt pay the prompt once, not 40 times
+    forty = cost.units(3.0, 128, 40 * 64)
+    assert forty == pytest.approx((128 + 40 * 64) / 192)
+    assert forty < 40 * cost.units(3.0, 128, 64)
+
+
 def _row(**kw):
     row = {"dataset": "hotpotqa", "split": "test", "id": splits.load_split("hotpotqa", "test")[0], "track": "t",
            "policy": "p", "menu": "A", "seed": 0, "answer": "x", "lenient": 1, "em": 1.0, "f1": 1.0, "units": 3.0,
@@ -83,6 +90,19 @@ def test_schema_accepts_a_good_table_and_rejects_bad_ones():
         schema.validate(pd.DataFrame([_row(units=5.0)]))
     with pytest.raises(ValueError, match="not in splits"):
         schema.validate(pd.DataFrame([_row(id="not-a-test-id")]))
+
+
+@pytest.mark.parametrize("bad, match", [
+    ({"units": float("nan"), "units_retrieve": float("nan")}, "finite"),  # NaN also passes a sum check
+    ({"units": -1.0, "units_retrieve": -2.0}, "finite"),                   # the stages still sum to units
+    ({"f1": 1.5}, r"\[0, 1\]"),
+    ({"em": float("nan")}, r"\[0, 1\]"),
+    ({"seed": 0.5}, "integer"),
+    ({"split": "tset"}, "unknown split"),
+])
+def test_schema_rejects(bad, match):
+    with pytest.raises(ValueError, match=match):
+        schema.validate(pd.DataFrame([_row(**bad)]))
 
 
 def test_quickstart_example_runs(tmp_path):
@@ -107,3 +127,5 @@ def test_package_data_ships_every_split_file():
     data = [p.relative_to(pkg).as_posix() for p in (pkg / "splits").rglob("*") if p.is_file()] + ["models.toml"]
     assert all(any(fnmatch.fnmatch(f, g) for g in globs) for f in data)
     assert load_models()["A"]["answerer"]["Llama-3.2-3B"]["params_b"] == 3.0
+    training = load_models()["training"]["qlora"]
+    assert {m["dtype"] for m in training.values()} == {"bf16"} and all(len(m["revision"]) == 40 for m in training.values())
