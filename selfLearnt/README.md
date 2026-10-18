@@ -105,19 +105,22 @@ This branch reports only the full-scale cluster run (status and results on branc
 
 All commands from `STAIR/selfLearnt/pipeline` on the login node (`ssh <account>@origami.smu.edu.sg`).
 
-**1. Settings.** Put your partition, account and QOS into `jobs/cluster.env`. Set the environment variable
-`STAIR_PROJECT_DIR` to storage with **~700 GB free** (models ~600 GB, runs ~50 GB), and `HF_TOKEN` for the Llama downloads.
+**1. Settings.** In `jobs/cluster.env` set your partition, account and QOS, and `STAIR_PROJECT_DIR` (scratch or project
+storage with **~700 GB free**, not `$HOME`). `STAIR_STATUS_PUSH=1` keeps the status page on branch `selfLearnt-runs` updated.
 
-**2. Environment (once, ~15 min):** `bash jobs/install_env.sh`, then `pip install -e ../../common` (the team package).
+**2. Environment (once, ~15 min, login node):** `bash jobs/install_env.sh` (vLLM, the pipeline's packages, and `common/`).
 
 **3. Models and data (once, login node, needs internet; several hours).** Accept the Llama licences on huggingface.co
-(Llama 3.1 8B, 3.1 70B, 3.2 3B), run `huggingface-cli login`, then inside `tmux`: `bash jobs/setup_login.sh`.
+(Llama 3.2 1B, 3.2 3B, 3.1 8B, 3.1 70B), run `huggingface-cli login`, then inside `tmux`: `bash jobs/setup_login.sh`.
+It is resumable: run it again after a disconnect.
 
 **4. GitHub token for the status page.** On github.com: Settings → Developer settings → Personal access tokens → Tokens
 (classic) → Generate, scope **public_repo** only. On the cluster:
 `echo <token> > ~/.stair_github_token && chmod 600 ~/.stair_github_token`. The token never goes into the repository.
 
-**5. Check on CPU first (~15 min):** `python run.py --config configs/dryrun.yaml --stage all` (fake models, tiny training).
+**5. GPU smoke test (one job, 1 GPU, ~1–2 h):** `sbatch jobs/smoke.sbatch`. Every stage of AL-01, AL-02 and AL-05 runs on
+the small models with few questions; `logs/stair-smoke-<job>.out` ends with `SMOKE TEST PASSED`.
+(Without a GPU: `python run.py --config configs/dryrun.yaml --stage all` checks the code with fake models.)
 
 **6. Submit everything:** `python jobs/submit_all.py` (preview with `--dry`; another seed with `--seed 1`). Jobs with
 dependencies, in priority order:

@@ -1,0 +1,41 @@
+# GPU smoke test: one job, 1 GPU, ~1-2 h. Real models (vLLM, LoRA training), but only the small ones and few questions,
+# so every stage of AL-01 and AL-05 runs once on the real software stack before the full run is submitted.
+#   sbatch jobs/smoke.sbatch        (after jobs/install_env.sh and jobs/setup_login.sh)
+include: default.yaml
+run_name: smoke
+paths:
+  results_dir: ${project_dir}/runs/smoke/results_common   # keep smoke-test tables out of the repo
+data:
+  n_retrieve: 30
+  n_search: 10
+  limit: {val: 60, test: 30, train: 60}
+gpu: {max_model_len: 12288, chunk: 32}
+planner: q3
+finetune:
+  defaults: {max_epochs: 1, evals_per_epoch: 2, n_val_loss: 10, n_val_metric: 10, save_every_questions: 30, max_len: 8192}
+  retrievers:
+    q05: {method: lora, n_train: 60, max_len: 8192}
+    q15: {method: lora, n_train: 60, max_len: 8192}
+  answerers:
+    l1:  {method: lora, n_train: 60, max_len: 4096}
+    l3:  {method: lora, n_train: 60, max_len: 4096}
+workstreams:
+  ws1:
+    retrievers: [q05, q15]
+    answerers: [l1, l3]
+    iterations: 1
+    batch_size: 4
+    grid:
+      retrieval: {q05: [1, 3], q15: [1, 2]}
+      answer: {l1: [1, 5], l3: [1, 3]}
+    also_test: []
+  ws2: {config: [q15, 1, l3, 1]}
+  ws3: null
+  ws4: null
+  ws5:
+    retrievers: [nj, "q05:ft", "q15:ft"]
+    answerers: ["l1:ft", "l3:ft"]
+  ws6: null
+rules:
+  rounds: 1
+  random_control_draws: 2

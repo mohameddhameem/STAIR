@@ -33,6 +33,7 @@ def read_env(path):
         if not line or line.startswith("#") or "=" not in line:
             continue
         k, v = line.split("=", 1)
+        k = k.replace("export ", "", 1)
         v = v.strip()
         if v.startswith('"'):
             v = v[1:v.index('"', 1)]
@@ -90,6 +91,11 @@ def main():
     ap.add_argument("--after", default="")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
+    for k, v in env.items():
+        if k.startswith("STAIR_"):
+            if v.startswith("EDIT"):
+                sys.exit(f"jobs/cluster.env: set {k} first")
+            os.environ.setdefault(k, v)
     from stair.config import ft_settings, load_config, variant
     cfg = load_config(os.path.join(ROOT, env.get("CONFIG", "configs/default.yaml")), seed=a.seed)
     sd = f" --seed {a.seed}" if a.seed is not None else ""

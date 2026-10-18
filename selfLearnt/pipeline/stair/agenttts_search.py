@@ -22,6 +22,10 @@ model_specs = {
     "meta-llama/Llama-3.2-3B-Instruct": {"M": 3_000_000_000, "L": 32, "D": 3_072},
     "meta-llama/Llama-3.1-8B-Instruct": {"M": 8_000_000_000, "L": 32, "D": 4_096},
     "meta-llama/Llama-3.1-70B-Instruct": {"M": 70_000_000_000, "L": 80, "D": 8_192},
+    # added for the GPU smoke test (not in AgentTTS): published layer counts and hidden sizes
+    "Qwen/Qwen2.5-0.5B-Instruct": {"M": 500_000_000, "L": 24, "D": 896},
+    "Qwen/Qwen2.5-1.5B-Instruct": {"M": 1_500_000_000, "L": 28, "D": 1_536},
+    "meta-llama/Llama-3.2-1B-Instruct": {"M": 1_000_000_000, "L": 16, "D": 2_048},
 }
 
 # module-level settings that AgentTTS.py keeps as globals of its __main__

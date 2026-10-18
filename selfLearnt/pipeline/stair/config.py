@@ -60,11 +60,19 @@ def full_run(cfg):
     return dict(cfg, workstreams=cfg.get("_all_workstreams", cfg["workstreams"]))
 
 
-def load_config(path, seed=None, exp=None):
+def _read_raw(path):
+    """A YAML config with its `include:` chain merged in (the including file wins)."""
     raw = yaml.safe_load(open(path, encoding="utf-8"))
     if raw.get("include"):
-        base = yaml.safe_load(open(os.path.join(os.path.dirname(path), raw.pop("include")), encoding="utf-8"))
-        raw = _merge(base, raw)
+        raw = _merge(_read_raw(os.path.join(os.path.dirname(path), raw.pop("include"))), raw)
+    return raw
+
+
+def load_config(path, seed=None, exp=None):
+    raw = _read_raw(path)
+    raw["workstreams"] = {k: w for k, w in raw["workstreams"].items() if w}   # `wsN: null` in a config drops it
+    if os.environ.get("STAIR_STATUS_PUSH") == "1":     # cluster.env switches the status page on for the real run
+        raw.setdefault("progress", {})["github"] = True
     if seed is not None:
         raw["seed"] = int(seed)
     raw.setdefault("seed", 0)

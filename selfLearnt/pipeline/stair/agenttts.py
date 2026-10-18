@@ -21,7 +21,9 @@ from .engines import free_gpu, make_engine
 from .progress import Tracker, mark_done
 
 ATTS_NAMES = {"q7": "Qwen/Qwen2.5-7B-Instruct-AWQ", "q32": "Qwen/Qwen2.5-32B-Instruct-AWQ", "q72": "Qwen/Qwen2.5-72B-Instruct-AWQ",
-              "l3": "meta-llama/Llama-3.2-3B-Instruct", "l8": "meta-llama/Llama-3.1-8B-Instruct", "l70": "meta-llama/Llama-3.1-70B-Instruct"}
+              "l3": "meta-llama/Llama-3.2-3B-Instruct", "l8": "meta-llama/Llama-3.1-8B-Instruct", "l70": "meta-llama/Llama-3.1-70B-Instruct",
+              # small models: only for the GPU smoke test (configs/smoke.yaml); not part of AgentTTS's menu
+              "q05": "Qwen/Qwen2.5-0.5B-Instruct", "q15": "Qwen/Qwen2.5-1.5B-Instruct", "l1": "meta-llama/Llama-3.2-1B-Instruct"}
 FROM_NAME = {v: k for k, v in ATTS_NAMES.items()}
 HOTPOT_DESC = ("This task Retreval-then-generate has two subtasks. The first subtask is retrieval: given a question and a set of 100 text chunks, the model "
                "needs to select the most relevant chunks that can help answer the question. The second subtask is question answering: based on the "
