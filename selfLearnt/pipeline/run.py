@@ -70,7 +70,15 @@ def needed_downloads(cfg, only=None):
 def stage_setup(cfg, only):
     """Downloads every model copy and the HotpotQA files. One failure (e.g. a gated Llama licence not yet approved) does not
     stop the others; the failures are listed at the end. Re-running resumes: finished files are checked, not re-downloaded."""
-    os.environ.setdefault("HF_HOME", cfg["paths"]["hf_cache"])
+    # Only the download cache moves to project storage (HF_HUB_CACHE); HF_HOME stays, so the login token
+    # (~/.cache/huggingface/token, from `hf auth login`) is still found. Moving HF_HOME hid it: gated Llama downloads failed.
+    os.environ.setdefault("HF_HUB_CACHE", cfg["paths"]["hf_cache"])
+    if not os.environ.get("HF_TOKEN"):
+        tok = os.path.join(os.environ.get("HF_HOME") or os.path.expanduser("~/.cache/huggingface"), "token")
+        if os.path.exists(tok):
+            os.environ["HF_TOKEN"] = open(tok).read().strip()
+        else:
+            log("no Hugging Face token found (run `hf auth login`): the gated Llama models will fail")
     todo = needed_downloads(cfg, only)
     failed = []
     for path, (repo, rev) in sorted(todo.items(), key=lambda x: x[1][0]):

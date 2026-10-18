@@ -12,7 +12,7 @@ module purge 2>/dev/null || true
 module load "$PY_MODULE" 2>/dev/null || true
 module load "${CUDA_MODULE:-CUDA/12.4.0}" 2>/dev/null || true
 source "$VENV/bin/activate"
-export HF_HOME="${HF_HOME:-$(python -c "import sys; sys.path.insert(0, '.'); from stair.config import load_config; print(load_config('$CONFIG')['paths']['hf_cache'])")}"
+export HF_HUB_CACHE="${HF_HUB_CACHE:-$(python -c "import sys; sys.path.insert(0, '.'); from stair.config import load_config; print(load_config('$CONFIG')['paths']['hf_cache'])")}"
 export HF_HUB_OFFLINE=${HF_HUB_OFFLINE:-0}
 export TOKENIZERS_PARALLELISM=false
 export VLLM_WORKER_MULTIPROC_METHOD=spawn
