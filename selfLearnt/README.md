@@ -118,7 +118,7 @@ It is resumable: run it again after a disconnect.
 (classic) → Generate, scope **public_repo** only. On the cluster:
 `echo <token> > ~/.stair_github_token && chmod 600 ~/.stair_github_token`. The token never goes into the repository.
 
-**5. GPU smoke test (one job, 1 GPU, ~1–2 h):** `sbatch jobs/smoke.sbatch`. Every stage of AL-01, AL-02 and AL-05 runs on
+**5. GPU smoke test (one job, 1 GPU, ~1–2 h):** `python jobs/submit_all.py --smoke`. Every stage of AL-01, AL-02 and AL-05 runs on
 the small models with few questions; `logs/stair-smoke-<job>.out` ends with `SMOKE TEST PASSED`.
 (Without a GPU: `python run.py --config configs/dryrun.yaml --stage all` checks the code with fake models.)
 

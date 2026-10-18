@@ -12,6 +12,7 @@ Usage (from STAIR/selfLearnt/pipeline, after jobs/install_env.sh and jobs/setup_
   python jobs/submit_all.py --dry           # print the jobs without submitting
   python jobs/submit_all.py --after 12345   # make the first jobs wait for job 12345
   python jobs/submit_all.py --seed 1        # another run seed (team standard: 0, 1, 2)
+  python jobs/submit_all.py --smoke         # only the 1-GPU smoke test (run this first)
 Every job resumes from its saved outputs, so re-submitting a phase after a failure is safe (finished work is skipped)."""
 import argparse
 import json
@@ -87,6 +88,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--phases", default="1,2,3,4,5")
     ap.add_argument("--seed", type=int, default=None)
+    ap.add_argument("--smoke", action="store_true", help="submit only the 1-GPU smoke test (jobs/smoke.sbatch)")
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--after", default="")
     a = ap.parse_args()
@@ -100,6 +102,17 @@ def main():
     cfg = load_config(os.path.join(ROOT, env.get("CONFIG", "configs/default.yaml")), seed=a.seed)
     sd = f" --seed {a.seed}" if a.seed is not None else ""
     os.makedirs(os.path.join(ROOT, "logs"), exist_ok=True)
+    if a.smoke:
+        cmd = ["sbatch", "--parsable"] + [f"{flag}={env[k]}" for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos"))
+                                          if env.get(k) and not env[k].startswith("EDIT")]
+        if env.get("CONSTRAINT"):
+            cmd.append(f"--constraint={env['CONSTRAINT']}")
+        cmd.append(os.path.join("jobs", "smoke.sbatch"))
+        print(" ".join(cmd))
+        if not a.dry:
+            r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+            sys.exit(f"sbatch failed: {r.stderr.strip()}" if r.returncode else f"smoke test submitted: job {r.stdout.strip()} -> logs/stair-smoke-{r.stdout.strip()}.out")
+        return
     phases = {int(x) for x in a.phases.split(",") if x.strip()}
     P = Plan(env, a.dry, a.after)
     P.seed_arg = sd

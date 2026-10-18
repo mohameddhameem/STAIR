@@ -1,9 +1,11 @@
 #!/bin/bash
-# GPU smoke test of the whole pipeline on small models (configs/smoke.yaml): submit with  sbatch jobs/smoke.sbatch
+# GPU smoke test of the whole pipeline on small models (configs/smoke.yaml). Submit with  python jobs/submit_all.py --smoke
+# (adds your partition, account, QOS and GPU types from jobs/cluster.env).
 # Check logs/stair-smoke-<jobid>.out; it ends with the results tables written. Then submit the full run.
 #SBATCH --job-name=stair-smoke
 #SBATCH --output=logs/%x-%j.out
 #SBATCH --gres=gpu:1
+#SBATCH --requeue
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --time=04:00:00
@@ -11,6 +13,7 @@ cd "${SLURM_SUBMIT_DIR:-.}"
 source jobs/cluster.env
 module purge 2>/dev/null || true
 module load "$PY_MODULE" 2>/dev/null || true
+module load "${CUDA_MODULE:-CUDA/12.4.0}" 2>/dev/null || true
 source "$VENV/bin/activate"
 export HF_HOME="$STAIR_PROJECT_DIR/hf_cache" TOKENIZERS_PARALLELISM=false VLLM_WORKER_MULTIPROC_METHOD=spawn PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 export STAIR_STATUS_PUSH=0

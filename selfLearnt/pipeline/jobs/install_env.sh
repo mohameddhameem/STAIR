@@ -6,6 +6,7 @@ cd "$(dirname "$0")/.."
 source jobs/cluster.env
 module purge 2>/dev/null || true
 module load "$PY_MODULE"
+module load "${CUDA_MODULE:-CUDA/12.4.0}" 2>/dev/null || true
 python3 -m venv "$VENV"
 source "$VENV/bin/activate"
 pip install --upgrade pip wheel

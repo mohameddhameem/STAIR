@@ -9,6 +9,7 @@ cd "$(dirname "$0")/.."
 source jobs/cluster.env
 module purge 2>/dev/null || true
 module load "$PY_MODULE" 2>/dev/null || true
+module load "${CUDA_MODULE:-CUDA/12.4.0}" 2>/dev/null || true
 source "$VENV/bin/activate"
 export HF_HUB_ENABLE_HF_TRANSFER=1
 python run.py --config "$CONFIG" --stage setup
