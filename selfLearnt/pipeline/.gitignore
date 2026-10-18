@@ -1,2 +1,5 @@
-jobs/cluster.local.env
+dryrun_workspace/
 logs/
+__pycache__/
+*.pyc
+jobs/cluster.local.env
