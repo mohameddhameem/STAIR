@@ -68,26 +68,43 @@ def needed_downloads(cfg, only=None):
 
 
 def stage_setup(cfg, only):
+    """Downloads every model copy and the HotpotQA files. One failure (e.g. a gated Llama licence not yet approved) does not
+    stop the others; the failures are listed at the end. Re-running resumes: finished files are checked, not re-downloaded."""
     os.environ.setdefault("HF_HOME", cfg["paths"]["hf_cache"])
     todo = needed_downloads(cfg, only)
+    failed = []
     for path, (repo, rev) in sorted(todo.items(), key=lambda x: x[1][0]):
-        if os.path.exists(os.path.join(path, "config.json")):
-            log(f"present: {repo}@{rev}")
-        elif cfg["backend"] == "mock":
+        if cfg["backend"] == "mock":
             log(f"(mock run) would download {repo}@{rev}")
         elif cfg["download_models"]:
             from huggingface_hub import snapshot_download
-            log(f"downloading {repo}@{rev} -> {path} ...")
-            snapshot_download(repo_id=repo, revision=rev, local_dir=path,
-                              allow_patterns=["*.json", "*.safetensors", "*.bin", "*.jinja", "*.txt", "*.model", "*.py", "tokenizer*"])
-        else:
+            log(f"downloading (or checking) {repo}@{rev} -> {path} ...")
+            try:
+                snapshot_download(repo_id=repo, revision=rev, local_dir=path,
+                                  allow_patterns=["*.json", "*.safetensors", "*.bin", "*.jinja", "*.txt", "*.model", "*.py", "tokenizer*"])
+                log(f"ok: {repo}")
+            except Exception as e:  # noqa: BLE001
+                msg = str(e).splitlines()[0][:200]
+                hint = " -> accept the licence on huggingface.co and wait for approval" if any(x in str(e) for x in ("403", "gated", "401", "restricted")) else ""
+                log(f"FAILED: {repo}: {type(e).__name__}: {msg}{hint}")
+                failed.append(f"{repo}{hint}")
+        elif not os.path.exists(os.path.join(path, "config.json")):
             log(f"MISSING: {repo} -> copy it into {path}")
+            failed.append(repo)
     files = [(cfg["data"]["hotpot_dev"], cfg["data"].get("hotpot_dev_url"))]
     if cfg["data"].get("train_source", "train") != "dev":
         files.append((cfg["data"]["hotpot_train"], cfg["data"].get("hotpot_train_url")))
     for split_file, url in files:
         if not os.path.exists(split_file):
-            D._load_hotpot(split_file, url)
+            try:
+                D._load_hotpot(split_file, url)
+            except Exception as e:  # noqa: BLE001
+                log(f"FAILED: {url}: {e}")
+                failed.append(url)
+    if failed:
+        log("NOT DONE - run setup again after fixing these:\n  " + "\n  ".join(failed))
+        sys.exit(1)
+    log("all models and data present")
     if not only:
         mark_done(cfg, "setup")
 
