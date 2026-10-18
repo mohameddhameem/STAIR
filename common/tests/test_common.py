@@ -76,6 +76,17 @@ def test_samples_share_their_prompt():
     assert forty < 40 * cost.units(3.0, 128, 64)
 
 
+def test_table5_is_agenttts_budget_not_units():
+    # Table 5 counts the 3B samples, sharing one 128-token prompt, of equal FLOPs (Eq. 3-4): 3 x units - 2 for one call
+    params = {"Qwen2.5-72B": 72, "Qwen2.5-32B": 32, "Qwen2.5-7B": 7, "Llama-3.1-70B": 70, "Llama-3.1-8B": 8,
+              "Llama-3.2-3B": 3}
+    lengths = {"retrieve": (2048, 128), "answer": (256, 64)}  # AgentTTS Table 4, HotpotQA
+    for task, prices in cost.AGENTTTS_TABLE5_HOTPOTQA.items():
+        for model, price in prices.items():
+            assert round(3 * cost.units(params[model], *lengths[task]) - 2) == price
+    assert cost.units(72.0, 2048, 128) == pytest.approx(272.0)
+
+
 def _row(**kw):
     row = {"dataset": "hotpotqa", "split": "test", "id": splits.load_split("hotpotqa", "test")[0], "track": "t",
            "policy": "p", "menu": "A", "seed": 0, "answer": "x", "lenient": 1, "em": 1.0, "f1": 1.0, "units": 3.0,
