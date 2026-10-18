@@ -310,17 +310,17 @@ def append_jsonl(path, rows):
 
 def write_jsonl(path, rows):
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-    with open(path + ".tmp", "w", encoding="utf-8") as f:
+    with open(path + f".{os.getpid()}.tmp", "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r, ensure_ascii=False, default=float) + "\n")
-    os.replace(path + ".tmp", path)
+    os.replace(path + f".{os.getpid()}.tmp", path)
 
 
 def write_json(path, obj):
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-    with open(path + ".tmp", "w", encoding="utf-8") as f:
+    with open(path + f".{os.getpid()}.tmp", "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=1, ensure_ascii=False, default=float)
-    os.replace(path + ".tmp", path)
+    os.replace(path + f".{os.getpid()}.tmp", path)
 
 
 def read_json(path, default=None):
