@@ -27,7 +27,10 @@ def units(params_b: float, prompt_tokens: int, generated_tokens: int) -> float:
     return 2 * params_b * (prompt_tokens + generated_tokens) / UNIT_GFLOPS
 
 
-# AgentTTS's Table 5 (S = 1 sample), HotpotQA: per-call units with their prompts, for checking a reproduction.
+# AgentTTS's Table 5 (S = 1 sample), HotpotQA. Not units: these are AgentTTS's normalised budget (Eq. 3-4), the number
+# of 3B samples sharing one 128-token prompt with the same FLOPs, which is 3 x units - 2 for one call. At the paper's
+# Table 4 lengths (retrieve 2,048 + 128 tokens, answer 256 + 64), round(3 * units(params_b, prompt, generated) - 2)
+# gives every entry: Qwen2.5-72B retrieval is 272 units and 814 here. Convert before comparing a reproduction.
 AGENTTTS_TABLE5_HOTPOTQA = {
     "retrieve": {"Qwen2.5-72B": 814, "Qwen2.5-32B": 361, "Qwen2.5-7B": 77, "Llama-3.1-70B": 791, "Llama-3.1-8B": 89,
                  "Llama-3.2-3B": 32},

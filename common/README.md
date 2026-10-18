@@ -208,6 +208,14 @@ router on `train_extra` (or the train file), pick thresholds on `val`, and re-sc
   sampling badly: for 40 fused samples of Llama-3.2-3B on 5 passages it gives 220 units instead of 71, more than a
   70B answer (94).
 - `params_b` is the nominal size in `models.toml`.
+- **AgentTTS's own tables are on another scale.** Its Tables 5–9 give a normalised budget (Eq. 3–4): the number of 3B
+  samples, sharing one 128-token prompt, with the same FLOPs. For a call of u units that is 3u − 2.
+  - Example: Qwen2.5-72B retrieval at the paper's Table 4 lengths (2,048 + 128 tokens) is 272 units here, and 814 in
+    Table 5.
+  - Convert with 3u − 2 before comparing with the paper's tables, or with the team slide's AgentTTS ladder
+    (strong-everything 929).
+  - The slide's AgentTTS recipe (937) also predates Eq. 8. Under Eq. 8 it is 302 units: 72B retrieval 272, plus 40 3B
+    samples from one prompt 15, plus a fusion call reading them 15. That is 97% of strong-everything (311).
 - **Limitation, stated with the numbers:** like AgentTTS, it counts parameter FLOPs and not attention, so it undercounts
   small models on long prompts. We keep it, because it is the paper's unit.
 
@@ -244,6 +252,6 @@ Share results as one row per (dataset, split, id, track, policy, menu, seed). Th
 |---|---|
 | HotpotQA split code / IDs, plain random? | The 4,814/1,110/1,481 split is not systemOne's and can't be regenerated from its seed (§1). Proposed instead: AgentTTS's test slices, committed in `stair_common/splits/`. |
 | GGUF or full precision? | bf16 from Hugging Face, pinned revisions; AWQ only for 70B/72B (§4, `models.toml`). |
-| nano-jev as the smallest retriever? | Yes: v1.0 (revision `ffee345`), keep its top 5. On AgentTTS's 500 test questions it puts both gold passages in its top 5 for 77% of them, at 2.9 units against 814 for Qwen 72B. It ranks passages only. |
+| nano-jev as the smallest retriever? | Yes: v1.0 (revision `ffee345`), keep its top 5. On AgentTTS's 500 test questions it puts both gold passages in its top 5 for 77% of them, at 2.9 units against 272 for Qwen 72B at the paper's token lengths (814 on AgentTTS's Table 5 scale, §3). It ranks passages only. |
 | One lenient rule and one script? | `lenient_match_agenttts.py`, through `stair_common.score` (§2). |
 | Correct the 2 × size × tokens formula? | No. Keep AgentTTS units and state the limitation (§3). |
