@@ -202,7 +202,22 @@ def make_engine(cfg, model, max_model_len=None, lora_path=None, pooling=False):
         return MockEngine(params=model.get("params", 1e9), finetuned=bool(lora_path) or model.get("finetuned", False))
     mml = max_model_len or model.get("max_model_len") or cfg["gpu"]["max_model_len"]
     log(f"loading {model.get('label', model['path'])} (vLLM{', LoRA ' + lora_path if lora_path else ''}{', hidden states' if pooling else ''}; context {mml})")
-    return VLLMEngine(model, mml, gpu_util=cfg["gpu"]["gpu_util"], lora_path=lora_path, pooling=pooling)
+    return VLLMEngine(model, mml, gpu_util=_gpu_util(cfg["gpu"]["gpu_util"]), lora_path=lora_path, pooling=pooling)
+
+
+def _gpu_util(want):
+    """vLLM refuses to start when less than `want` x GPU memory is free. When this process already used the GPU (training
+    earlier in the same run, e.g. `--stage all`), PyTorch keeps some memory: ask for what is actually free, minus a margin."""
+    import sys
+    torch = sys.modules.get("torch")
+    if torch is None or not torch.cuda.is_available() or not torch.cuda.is_initialized():
+        return want
+    free_gpu()
+    free, total = torch.cuda.mem_get_info()
+    got = min(want, free / total - 0.03)
+    if got < want:
+        log(f"GPU memory already in use by this process: vLLM gets {got:.2f} of the GPU instead of {want:.2f}")
+    return max(got, 0.3)
 
 
 def free_gpu(*objs):
