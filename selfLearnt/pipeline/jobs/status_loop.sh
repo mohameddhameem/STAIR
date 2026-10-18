@@ -4,6 +4,7 @@
 #   tmux new -s status  ->  bash jobs/status_loop.sh  ->  Ctrl-b d
 cd "$(dirname "$0")/.."
 source jobs/cluster.env
+[ -f jobs/cluster.local.env ] && source jobs/cluster.local.env   # your own settings, never committed
 conda deactivate 2>/dev/null || true   # the login shell starts in Anaconda base: use the module Python instead
 module purge 2>/dev/null || true
 module load "$PY_MODULE" 2>/dev/null || true

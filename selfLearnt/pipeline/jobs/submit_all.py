@@ -94,6 +94,8 @@ def main():
     ap.add_argument("--after", default="")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
+    if os.path.exists(os.path.join(HERE, "cluster.local.env")):      # your own settings (account, storage), never committed
+        env.update(read_env(os.path.join(HERE, "cluster.local.env")))
     for k, v in env.items():
         if k.startswith("STAIR_"):
             if v.startswith("EDIT"):
