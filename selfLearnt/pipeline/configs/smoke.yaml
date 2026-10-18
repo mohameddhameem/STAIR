@@ -1,5 +1,5 @@
 # GPU smoke test: one job, 1 GPU, ~1-2 h. Real models (vLLM, LoRA training), but only the small ones and few questions,
-# so every stage of AL-01 and AL-05 runs once on the real software stack before the full run is submitted.
+# so every stage of AL-01, AL-02, AL-03 and AL-05 runs once on the real software stack before the full run is submitted.
 #   sbatch jobs/smoke.sbatch        (after jobs/install_env.sh and jobs/setup_login.sh)
 include: default.yaml
 run_name: smoke
@@ -15,6 +15,7 @@ finetune:
   defaults: {max_epochs: 1, evals_per_epoch: 2, n_val_loss: 10, n_val_metric: 10, save_every_questions: 30, max_len: 8192}
   retrievers:
     q05: {method: lora, n_train: 60, max_len: 8192}
+    q08: {method: lora, n_train: 60, max_len: 8192}
     q15: {method: lora, n_train: 60, max_len: 8192}
   answerers:
     l1:  {method: lora, n_train: 60, max_len: 4096}
@@ -30,10 +31,12 @@ workstreams:
       answer: {l1: [1, 5], l3: [1, 3]}
     also_test: []
   ws2: {config: [q15, 1, l3, 1]}
-  ws3: null
+  ws3:                          # hidden-state probes (vLLM pooling runner)
+    retrievers: [q05, q15]
+    answerers: [l1, l3]
   ws4: null
   ws5:
-    retrievers: [nj, "q05:ft", "q15:ft"]
+    retrievers: [nj, "q05:ft", "q08:ft", "q15:ft"]       # q08 = Qwen3.5 0.8B: the newest architecture in the ladder
     answerers: ["l1:ft", "l3:ft"]
   ws6: null
 rules:

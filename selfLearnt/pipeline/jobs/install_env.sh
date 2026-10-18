@@ -33,9 +33,11 @@ pip install --upgrade pip wheel
 pip install "vllm>=0.10.2"
 pip install -r requirements.txt
 pip install -e ../../common          # stair_common: team splits, scoring, cost units, results schema
+pip install "kernels>=0.11.1" || true   # bitsandbytes 4-bit kernels (silences a warning)
 pip install flash-linear-attention || echo "flash-linear-attention not installed (only speeds up Qwen3.5 0.8B training)"
 python - <<'EOF'
 import torch, vllm, transformers, peft
 print("torch", torch.__version__, "| CUDA build", torch.version.cuda, "| vLLM", vllm.__version__, "| transformers", transformers.__version__, "| peft", peft.__version__)
 EOF
+mkdir -p logs && pip freeze > logs/pip_freeze.txt   # exact versions, for the experiment notes
 echo "Environment ready: $VENV"
