@@ -17,7 +17,7 @@ module purge 2>/dev/null || true
 module load "$PY_MODULE" 2>/dev/null || true
 module load "${CUDA_MODULE:-CUDA/12.4.0}" 2>/dev/null || true
 source "$VENV/bin/activate"
-export HF_HUB_CACHE="$STAIR_PROJECT_DIR/hf_cache" TOKENIZERS_PARALLELISM=false VLLM_WORKER_MULTIPROC_METHOD=spawn PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export HF_HUB_CACHE="$STAIR_PROJECT_DIR/hf_cache" VLLM_USE_FLASHINFER_SAMPLER=0 TOKENIZERS_PARALLELISM=false VLLM_WORKER_MULTIPROC_METHOD=spawn PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 export STAIR_STATUS_PUSH=0
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 set -e

@@ -1,6 +1,7 @@
 """Model engines: vLLM for generation (tensor parallel, LoRA adapters, token log-probabilities, n samples per prompt) and for
 last-token hidden states (pooling runner, used by the probes of workstream 3); a mock engine for CPU dry runs."""
 import json
+import os
 
 import random
 import re
@@ -11,6 +12,11 @@ from .common import log
 
 def _chat_kwargs(thinking):
     return {"enable_thinking": thinking} if thinking is not None else {}
+
+
+# FlashInfer compiles its sampling kernels on first use (needs a CUDA toolkit matching PyTorch's); on the cluster that
+# compile fails (CUDA 12.4 module vs PyTorch built for CUDA 13). vLLM's own PyTorch sampler needs no compiling.
+os.environ.setdefault("VLLM_USE_FLASHINFER_SAMPLER", "0")
 
 
 class VLLMEngine:

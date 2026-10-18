@@ -15,6 +15,7 @@ source "$VENV/bin/activate"
 export HF_HUB_CACHE="${HF_HUB_CACHE:-$(python -c "import sys; sys.path.insert(0, '.'); from stair.config import load_config; print(load_config('$CONFIG')['paths']['hf_cache'])")}"
 export HF_HUB_OFFLINE=${HF_HUB_OFFLINE:-0}
 export TOKENIZERS_PARALLELISM=false
+export VLLM_USE_FLASHINFER_SAMPLER=0   # no FlashInfer JIT compile (CUDA toolkit mismatch on the cluster)
 export VLLM_WORKER_MULTIPROC_METHOD=spawn
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 echo "job $SLURM_JOB_ID on $(hostname): $STAGE_ARGS"
