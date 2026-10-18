@@ -51,3 +51,10 @@
 
 [C.planner]
 "Gemma-4-31B" = { repo = "google/gemma-4-31B-it", revision = "842da3794eaa0b77d5f08bae87a17459d91ff475", params_b = 31.0, dtype = "bf16" }
+
+# ---- Training copies (checked 2026-10-18) ----
+# QLoRA can't train an AWQ model: it trains these bf16 weights loaded in 4-bit (bitsandbytes), and the adapter is served
+# on the menu's AWQ copy of the same model. Cost uses the menu entry's params_b.
+[training.qlora]
+"Qwen2.5-72B"   = { repo = "Qwen/Qwen2.5-72B-Instruct", revision = "495f39366efef23836d0cfae4fbe635880d2be31", params_b = 72.0, dtype = "bf16", note = "served as A/B Qwen2.5-72B (AWQ)" }
+"Llama-3.1-70B" = { repo = "meta-llama/Llama-3.1-70B-Instruct", revision = "1605565b47bb9346c5515c34102e054115b4f98b", params_b = 70.0, dtype = "bf16", note = "gated; served as A/B Llama-3.1-70B (AWQ)" }

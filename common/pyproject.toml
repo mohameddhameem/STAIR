@@ -1,6 +1,6 @@
 [project]
 name = "stair-common"
-version = "0.1.0"
+version = "0.2.0"
 description = "STAIR team standard: frozen splits, scoring, AgentTTS-unit cost and the results layout"
 requires-python = ">=3.11"
 dependencies = ["numpy>=1.26", "pandas>=2.0"]

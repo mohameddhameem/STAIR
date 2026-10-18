@@ -28,10 +28,13 @@ Steps:
    - The splits are named as in `stair_common.splits`, and the test sets are the team's standard ones.
    - The outputs are written in the `stair_common.schema` layout, and training curves in the `stair_common.training`
      layout. If my code doesn't produce that yet, say so in `open_questions`.
+   - Cost follows `stair_common.cost`: several samples from one prompt pay that prompt once (AgentTTS Eq. 8). If my
+     code counts the prompt once per sample, say so in `open_questions`.
    - `compute.walltime_h` is filled in, and `gpus` is at most 2.
    - Training stops early on validation loss (keeps the best epoch) instead of running a fixed number of epochs.
    - Only `open_questions` may say TBD.
-5. Show me each file, with a one-line summary per experiment. Once I approve, commit them as `experiments/<id>.md` on my branch and push it.
+5. Run `python experiments/check.py` (needs `pip install pyyaml`) and fix everything it reports.
+6. Show me each file, with a one-line summary per experiment. Once I approve, commit them as `experiments/<id>.md` on my branch and push it.
 
 Hard rules:
 - No personal data in the files: no emails, phone numbers, student IDs, credentials, tokens or private datasets,

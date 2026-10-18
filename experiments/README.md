@@ -8,6 +8,8 @@ the common standard** (STAIR `common/`: team splits, lenient accuracy, AgentTTS 
 - Commit them with your code on **your own branch** of STAIR, as `experiments/<id>.md`, and push the branch.
   Dhameem fetches your branch, checks the entries, runs them on OMEGA and sends you the results CSVs. Nobody else
   pushes to your branch.
+- Check your entries first with `python experiments/check.py` (needs `pip install pyyaml`). It runs on every push that
+  changes `experiments/` too.
 
 ## Template (copy it exactly: keep the keys, fill in the values)
 
