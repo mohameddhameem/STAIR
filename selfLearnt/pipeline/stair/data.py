@@ -16,16 +16,49 @@ import random
 from .common import BM25, log, write_json
 
 
+HF_REPO = "hotpotqa/hotpot_qa"          # the same questions and IDs (distractor setting), as parquet on Hugging Face
+
+
 def _load_hotpot(path, url):
+    """The HotpotQA file in its original JSON layout: from disk, else the official URL, else Hugging Face (converted)."""
     if path and os.path.exists(path):
         return json.load(open(path, encoding="utf-8"))
-    assert url, f"{path} not found and no download URL given"
-    import urllib.request
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    log(f"downloading {url} ...")
-    urllib.request.urlretrieve(url, path + ".part")
+    if url:
+        import urllib.request
+        try:
+            log(f"downloading {url} ...")
+            urllib.request.urlretrieve(url, path + ".part")
+            os.rename(path + ".part", path)
+            return json.load(open(path, encoding="utf-8"))
+        except Exception as e:  # noqa: BLE001
+            log(f"official download failed ({type(e).__name__}: {str(e)[:120]}); using Hugging Face {HF_REPO} instead")
+            if os.path.exists(path + ".part"):
+                os.remove(path + ".part")
+    split = "train" if "train" in os.path.basename(path) else "validation"
+    data = _from_hf(split)
+    json.dump(data, open(path + ".part", "w", encoding="utf-8"), ensure_ascii=False)
     os.rename(path + ".part", path)
-    return json.load(open(path, encoding="utf-8"))
+    log(f"{path}: {len(data)} questions (from Hugging Face, {split})")
+    return data
+
+
+def _from_hf(split):
+    """HF `hotpot_qa` distractor parquet -> the official JSON layout (_id, context [[title, sentences]], supporting_facts)."""
+    import pandas as pd
+    from huggingface_hub import hf_hub_download, list_repo_files
+    files = sorted(f for f in list_repo_files(HF_REPO, repo_type="dataset")
+                   if f.startswith("distractor/") and f.endswith(".parquet") and os.path.basename(f).startswith(split))
+    assert files, f"no distractor/{split} parquet files in {HF_REPO}"
+    out = []
+    for f in files:
+        df = pd.read_parquet(hf_hub_download(HF_REPO, f, repo_type="dataset"))
+        for r in df.to_dict("records"):
+            ctx, sf = r["context"], r["supporting_facts"]
+            out.append({"_id": r["id"], "question": r["question"], "answer": r["answer"], "type": r.get("type"), "level": r.get("level"),
+                        "supporting_facts": [[t, int(i)] for t, i in zip(list(sf["title"]), list(sf["sent_id"]))],
+                        "context": [[t, [str(x) for x in sents]] for t, sents in zip(list(ctx["title"]), list(ctx["sentences"]))]})
+    return out
 
 
 def _corpus(data):
