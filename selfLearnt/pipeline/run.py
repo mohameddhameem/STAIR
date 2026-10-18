@@ -16,7 +16,8 @@ Stages, in the order the job chain runs them (WS1-2 first, then the fine-tuning 
   sample      WS3-5: sampled answers for votes (--model ...)
   learn       WS3-5: micro-experiments on the dev questions (--ws ws4, or all)
   test        WS3-5: the learnt rulebook once on the test questions (--ws ..., or all)
-  report      comparison of all workstreams, charts, status page
+  report      comparison of all experiments, charts, status page, and the team results tables (results/common/)
+  export      only the team results tables: one CSV per experiment and seed, checked by stair_common.schema
   status      rebuild the status page and push it to GitHub now
   all         everything above in order (the CPU dry run)
 """
@@ -43,11 +44,13 @@ def needed_downloads(cfg, only=None):
     def add_inf(v):
         m = variant(cfg, v)
         if not m["finetuned"] or m["ft"]["method"] == "qlora":
-            out[m["path"]] = m["hf_id"]
+            out[m["path"]] = (m["hf_id"], m.get("revision"))
         if m["finetuned"]:
-            out[m["train_path"]] = m.get("train_hf_id", m["hf_id"])
+            out[m["train_path"]] = (m.get("train_hf_id", m["hf_id"]), None if m.get("train_hf_id") else m.get("revision"))
     for k, w in W.items():
         if w["kind"] == "agenttts":
+            if w.get("skip_search"):        # AL-02 alone: only the strongest pair (added below)
+                continue
             for v in w["retrievers"] + w["answerers"]:
                 add_inf(v)
         elif w["kind"] == "strong":
@@ -56,7 +59,8 @@ def needed_downloads(cfg, only=None):
         else:
             for v in w["retrievers"] + w["answerers"]:
                 add_inf(v)
-    add_inf(cfg["planner"])
+    if any(w["kind"] != "strong" and not w.get("skip_search") for w in W.values()):
+        add_inf(cfg["planner"])          # AgentTTS's search and the rule proposals
     if only:
         keep = {variant(cfg, only)["path"], variant(cfg, only)["train_path"]}
         out = {p: r for p, r in out.items() if p in keep}
@@ -66,18 +70,22 @@ def needed_downloads(cfg, only=None):
 def stage_setup(cfg, only):
     os.environ.setdefault("HF_HOME", cfg["paths"]["hf_cache"])
     todo = needed_downloads(cfg, only)
-    for path, repo in sorted(todo.items(), key=lambda x: x[1]):
+    for path, (repo, rev) in sorted(todo.items(), key=lambda x: x[1][0]):
         if os.path.exists(os.path.join(path, "config.json")):
-            log(f"present: {repo}")
+            log(f"present: {repo}@{rev}")
         elif cfg["backend"] == "mock":
-            log(f"(mock run) would download {repo}")
+            log(f"(mock run) would download {repo}@{rev}")
         elif cfg["download_models"]:
             from huggingface_hub import snapshot_download
-            log(f"downloading {repo} -> {path} ...")
-            snapshot_download(repo_id=repo, local_dir=path, allow_patterns=["*.json", "*.safetensors", "*.jinja", "*.txt", "*.model", "*.py", "tokenizer*"])
+            log(f"downloading {repo}@{rev} -> {path} ...")
+            snapshot_download(repo_id=repo, revision=rev, local_dir=path,
+                              allow_patterns=["*.json", "*.safetensors", "*.bin", "*.jinja", "*.txt", "*.model", "*.py", "tokenizer*"])
         else:
             log(f"MISSING: {repo} -> copy it into {path}")
-    for split_file, url in ((cfg["data"]["hotpot_dev"], cfg["data"].get("hotpot_dev_url")), (cfg["data"]["hotpot_train"], cfg["data"].get("hotpot_train_url"))):
+    files = [(cfg["data"]["hotpot_dev"], cfg["data"].get("hotpot_dev_url"))]
+    if cfg["data"].get("train_source", "train") != "dev":
+        files.append((cfg["data"]["hotpot_train"], cfg["data"].get("hotpot_train_url")))
+    for split_file, url in files:
         if not os.path.exists(split_file):
             D._load_hotpot(split_file, url)
     if not only:
@@ -91,13 +99,15 @@ def _parts_or(arg, parts):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
-    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "all"])
+    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "export", "all"])
     ap.add_argument("--part", default="")
     ap.add_argument("--model", default="")
     ap.add_argument("--ws", default="")
+    ap.add_argument("--exp", default=None, help="run only one experiment's workstream (AL-01 .. AL-06); outputs are shared")
+    ap.add_argument("--seed", type=int, default=None, help="run seed (team standard: 0, 1, 2); default: the config's")
     ap.add_argument("--force", action="store_true", help="re-run a stage part even if marked done")
     a = ap.parse_args()
-    cfg = load_config(a.config)
+    cfg = load_config(a.config, seed=a.seed, exp=a.exp)
     os.makedirs(cfg["run_dir"], exist_ok=True)
     write_json(os.path.join(cfg["run_dir"], "config_resolved.json"), cfg)
     t0 = time.time()
@@ -123,8 +133,8 @@ def main():
                 if "ws2" not in has:
                     continue
             parts = _parts_or(a.part, AT.all_parts(cfg, st))
-            for p in parts:
-                if a.force or not is_done(cfg, st, p):
+            for p in parts:   # test parts always re-check: another experiment may add a setting (saved work is skipped)
+                if a.force or st == "ws1_test" or not is_done(cfg, st, p):
                     AT.run_part(cfg, st, p)
             if st == "ws1_grid":
                 AT.grid_table(cfg)
@@ -172,6 +182,9 @@ def main():
                 RB.test(cfg, ws)
         elif st == "report":
             final_report(cfg)
+        elif st == "export":
+            from stair.export import export
+            export(cfg)
         elif st == "status":
             maybe_push(cfg, force=True)
         maybe_push(cfg, force=st not in ("status",))

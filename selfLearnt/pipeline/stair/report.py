@@ -16,8 +16,8 @@ from .config import ft_keys, workstreams
 from .progress import STAGE_NAMES, stage_state
 
 # reference categorical palette (validated order); workstreams keep their slot whatever subset is shown
-WS_COLORS = {"ws1": "#2a78d6", "ws2": "#eb6834", "ws3": "#1baf7a", "ws4": "#6250d6", "ws5": "#e34948"}
-WS_MARKERS = {"ws1": "o", "ws2": "s", "ws3": "^", "ws4": "D", "ws5": "P"}
+WS_COLORS = {"ws1": "#2a78d6", "ws2": "#eb6834", "ws3": "#1baf7a", "ws4": "#6250d6", "ws5": "#e34948", "ws6": "#e87ba4"}
+WS_MARKERS = {"ws1": "o", "ws2": "s", "ws3": "^", "ws4": "D", "ws5": "P", "ws6": "X"}
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
 ORDER = ["setup", "data", "ws1_grid", "ws1_search", "ws1_test", "train", "retrieve", "reach", "answer", "probe", "sample", "learn", "test", "report"]
 
@@ -94,24 +94,23 @@ def collect_results(cfg):
         for tag in (r["policy"] or "AgentTTS setting").split(" = "):
             ws = "ws2" if tag.startswith("Baseline 2") else "ws1"
             out.append({"ws": ws, "workstream": cfg["workstreams"].get(ws, {}).get("name", ws), "policy": f"{tag}: {r['setting']}",
-                        "main": tag.startswith("Baseline"), "acc": r["acc"], "lenient": None, "budget_per_q": r["budget_per_q"],
-                        "tflops_per_q": r["tflops_per_q"], "n": r["n"]})
+                        "main": tag.startswith("Baseline"), "acc": r["acc"], "em": float(sum(x["EM"] for x in r["per_question"]) / max(1, r["n"])),
+                        "units_per_q": r["units_per_q"], "n": r["n"]})
     for ws in workstreams(cfg, "rules"):
         R = read_json(os.path.join(cfg["run_dir"], ws, "results.json"))
         if not R:
             continue
         for p in R["policies"]:
             out.append({"ws": ws, "workstream": R["name"], "policy": p["policy"], "main": p["policy"].startswith("LEARNT"), "acc": p["acc"],
-                        "lenient": p["lenient"], "budget_per_q": p["budget_per_q"], "tflops_per_q": p["tflops_per_q"], "n": p["n"],
+                        "em": p["EM"], "units_per_q": p["units_per_q"], "n": p["n"],
                         "sure_share": p.get("sure_share"), "right_when_sure": p.get("right_when_sure"), "vs_random_pts": p.get("vs_random_pts"),
                         "kind": p["kind"]})
     b1 = [r for r in out if r["policy"].startswith("Baseline 1")]
     if b1:
-        a0, c0, u0 = b1[0]["acc"], b1[0]["tflops_per_q"], b1[0]["budget_per_q"]
+        a0, c0 = b1[0]["acc"], b1[0]["units_per_q"]
         for r in out:
             r["vs_b1_acc_pts"] = 100 * (r["acc"] - a0)
-            r["vs_b1_compute"] = r["tflops_per_q"] / c0 - 1 if c0 else None
-            r["vs_b1_budget"] = r["budget_per_q"] / u0 - 1 if u0 else None
+            r["vs_b1_compute"] = r["units_per_q"] / c0 - 1 if c0 else None
     return out
 
 
@@ -131,6 +130,8 @@ def _fmt(v, kind):
 
 # ==================================================================================
 def build_status(cfg):
+    from .config import full_run
+    cfg = full_run(cfg)
     page = os.path.join(cfg["run_dir"], "status", "page")
     os.makedirs(os.path.join(page, "charts"), exist_ok=True)
     rows, frac, rem_h = overview(cfg)
@@ -147,16 +148,15 @@ def build_status(cfg):
     res = collect_results(cfg)
     L += ["", f"## Results so far ({max([r['n'] for r in res], default=0) or 'the'} AgentTTS test questions)", ""]
     if res:
-        L += ["Accuracy = AgentTTS's metric (gold answer contained in the final response). Corrected label = our development label on the "
-              "short answer (workstreams 3-5 only). Budget = AgentTTS's normalised compute units per question; TFLOPs = 2 x parameters x tokens "
-              "actually processed. Baseline 1 = AgentTTS with the setting its own search chose.", "",
-              "| Workstream | Policy | Accuracy | Corrected label | Budget / question | TFLOPs / question | vs Baseline 1: accuracy (points) | compute |",
-              "|---|---|---|---|---|---|---|---|"]
+        L += ["Accuracy = lenient (the team's standard ruler, stair_common.score). EM = official exact match. Cost = AgentTTS units per "
+              "question, measured tokens (stair_common.cost). Baseline 1 = AgentTTS with the setting its own search chose.", "",
+              "| Experiment | Policy | Lenient | EM | AgentTTS units / question | vs Baseline 1: accuracy (points) | compute |",
+              "|---|---|---|---|---|---|---|"]
         for r in res:
             if r["ws"] in ("ws1", "ws2") or r.get("kind") in ("rulebook", "fixed"):
                 b = "**" if r["main"] else ""
-                L.append(f"| {r['ws'].upper()} | {b}{r['policy']}{b} | {b}{_fmt(r['acc'], 'pct')}{b} | {_fmt(r['lenient'], 'pct')} | {_fmt(r['budget_per_q'], 'f1')} | "
-                         f"{_fmt(r['tflops_per_q'], 'f')} | {_fmt(r.get('vs_b1_acc_pts'), 'pts')} | {_fmt(r.get('vs_b1_compute'), 'rel')} |")
+                L.append(f"| {cfg['workstreams'][r['ws']].get('exp_id', r['ws'])} | {b}{r['policy']}{b} | {b}{_fmt(r['acc'], 'pct')}{b} | {_fmt(r['em'], 'pct')} | "
+                         f"{_fmt(r['units_per_q'], 'f1')} | {_fmt(r.get('vs_b1_acc_pts'), 'pts')} | {_fmt(r.get('vs_b1_compute'), 'rel')} |")
         L.append("")
         for ws in workstreams(cfg, "rules"):
             R = read_json(os.path.join(cfg["run_dir"], ws, "results.json"))
@@ -171,27 +171,27 @@ def build_status(cfg):
     sr = read_json(os.path.join(cfg["run_dir"], "ws1", "search_result.json"))
     if sr:
         c = sr["chosen"]
-        L += ["", "## AgentTTS search (workstream 1)", "",
-              f"{sr['trials']} trials within budget {cfg['workstreams']['ws1']['budget']}. Chosen: **{cfg['models'][c[0]]['label']} x{c[1]} retrieval samples, "
+        L += ["", "## AgentTTS search (AL-01)", "",
+              f"{sr['trials']} trials within budget {sr['budget_limit'] if 'budget_limit' in sr else cfg['workstreams'].get('ws1', {}).get('budget', 900)}. Chosen: **{cfg['models'][c[0]]['label']} x{c[1]} retrieval samples, "
               f"{cfg['models'][c[2]]['label']} x{c[3]} answer samples** (Gen_EM {sr['score_on_search_questions']['Gen_EM']:.3f} on the 50 search questions, "
               f"budget {sr['budget']:.0f})."]
     # training
     tl = []
     for k in ft_keys(cfg):
-        s = read_json(os.path.join(cfg["run_dir"], "adapters", k, "train_state.json"))
-        if s and s.get("curve"):
-            b = s.get("chosen") or max(s["curve"], key=lambda x: x["score"])
-            tl.append(f"| {cfg['models'][k]['label']} | {s['curve'][-1]['training questions seen']:,} | {100 * b['score']:.1f}% (step {b['step']}) | "
-                      f"{'chosen' if s.get('chosen') else 'training'} |")
+        st = read_json(os.path.join(cfg["run_dir"], "adapters", k, "train_state.json"))
+        if st and st.get("curve"):
+            b = st.get("chosen") or st.get("best") or st["curve"][-1]
+            tl.append(f"| {cfg['models'][k]['label']} | {st['curve'][-1]['epoch']:.2f} | {b['epoch']:.2f} | {b['val_loss']:.4f} | "
+                      f"{'chosen' + (' (stopped early)' if b.get('stopped_early') else '') if st.get('chosen') else 'training'} |")
     if tl:
-        L += ["", "## Fine-tuning", "", "Validation: retrievers = both gold passages in the shortlist; answerers = corrected-label accuracy.", "",
-              "| Model | Questions seen | Best validation | State |", "|---|---|---|---|"] + tl
+        L += ["", "## Fine-tuning (early stopping on validation loss)", "",
+              "| Model | Epochs run | Best epoch | Best validation loss | State |", "|---|---|---|---|---|"] + tl
     charts = make_charts(cfg, res, rows, os.path.join(page, "charts"))
     if charts:
         L += ["", "## Charts", ""] + [f"![{t}](charts/{f})" for f, t in charts]
     open(os.path.join(page, "README.md"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     with open(os.path.join(page, "results.csv"), "w", newline="", encoding="utf-8") as f:
-        cols = ["ws", "workstream", "policy", "acc", "lenient", "budget_per_q", "tflops_per_q", "vs_b1_acc_pts", "vs_b1_compute", "n"]
+        cols = ["ws", "workstream", "policy", "acc", "em", "units_per_q", "vs_b1_acc_pts", "vs_b1_compute", "n"]
         w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
         for r in res:
@@ -218,8 +218,7 @@ def make_charts(cfg, res, stages, out):
             ax.spines[s].set_visible(False)
 
     pts = [r for r in res if r["ws"] in ("ws1", "ws2") or r.get("kind") in ("rulebook",) or (r.get("kind") == "fixed" and "largest" in r["policy"])]
-    for xk, xl, fn in (("tflops_per_q", "TFLOPs per question (log scale)", "accuracy_vs_compute.png"),
-                       ("budget_per_q", "AgentTTS budget units per question (log scale)", "accuracy_vs_budget.png")):
+    for xk, xl, fn in (("units_per_q", "AgentTTS units per question, measured tokens (log scale)", "accuracy_vs_compute.png"),):
         if not pts:
             break
         fig, ax = plt.subplots(figsize=(7.5, 5.4), dpi=110)
@@ -237,8 +236,8 @@ def make_charts(cfg, res, stages, out):
                 ax.annotate(ws.upper(), (r[xk], 100 * r["acc"]), xytext=(6, 4), textcoords="offset points", color=INK, fontsize=8, fontweight="bold")
         ax.set_xscale("log")
         ax.set_xlabel(xl)
-        ax.set_ylabel("Accuracy on test questions (%)")
-        ax.set_title("Accuracy against compute, all workstreams" + (" (AgentTTS units)" if xk == "budget_per_q" else ""), loc="left")
+        ax.set_ylabel("Lenient accuracy on the test questions (%)")
+        ax.set_title("Lenient accuracy against compute, all experiments", loc="left")
         ax.legend(frameon=False, fontsize=7.5, loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=2)
         fig.tight_layout()
         fig.savefig(os.path.join(out, fn))
@@ -251,21 +250,16 @@ def make_charts(cfg, res, stages, out):
         if s and s.get("curve"):
             curves.append((k, s["curve"]))
     if curves:
-        ret = [(k, c) for k, c in curves if "both gold passages found" in c[0]]
-        ans = [(k, c) for k, c in curves if "both gold passages found" not in c[0]]
-        fig, axes = plt.subplots(1, 2, figsize=(9, 3.6), dpi=110)
-        greys = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6", "#e34948", "#e87ba4", "#008300"]
-        for ax, group, title in ((axes[0], ret, "Retrievers: both gold passages found"), (axes[1], ans, "Answerers: answer accuracy")):
-            style(ax)
-            for i, (k, c) in enumerate(group):
-                x = [p["training questions seen"] for p in c]
-                y = [100 * p["score"] for p in c]
-                ax.plot(x, y, color=greys[i % len(greys)], linewidth=2, marker="o", markersize=4, label=cfg["models"][k]["label"])
-            ax.set_title(title, loc="left", fontsize=10)
-            ax.set_xlabel("Training questions seen")
-            ax.set_ylabel("Validation (%)")
-            if group:
-                ax.legend(frameon=False, fontsize=7)
+        fig, ax = plt.subplots(figsize=(8, 3.8), dpi=110)
+        style(ax)
+        pal = ["#2a78d6", "#eb6834", "#1baf7a", "#6250d6", "#e34948", "#e87ba4", "#008300", "#eda100"]
+        for i, (k, c) in enumerate(curves):
+            ax.plot([p["epoch"] for p in c], [p["val_loss"] for p in c], color=pal[i % len(pal)], linewidth=2, marker="o", markersize=3,
+                    label=cfg["models"][k]["label"])
+        ax.set_xlabel("Epoch")
+        ax.set_ylabel("Validation loss")
+        ax.set_title("Fine-tuning: validation loss (early stopping keeps the minimum)", loc="left", fontsize=10)
+        ax.legend(frameon=False, fontsize=7, ncol=2)
         fig.tight_layout()
         fig.savefig(os.path.join(out, "training_curves.png"))
         plt.close(fig)
@@ -310,6 +304,8 @@ def make_charts(cfg, res, stages, out):
 # ==================================================================================
 def final_report(cfg):
     """Stage 'report': the comparison table in results/ (and the status page)."""
+    from .config import full_run
+    cfg = full_run(cfg)
     from .progress import mark_done, maybe_push
     page = build_status(cfg)
     res_dir = os.path.join(cfg["run_dir"], "results")
@@ -320,5 +316,7 @@ def final_report(cfg):
         shutil.rmtree(os.path.join(res_dir, "charts"))
     shutil.copytree(os.path.join(page, "charts"), os.path.join(res_dir, "charts"))
     json.dump({"finished": time.strftime("%Y-%m-%d %H:%M")}, open(os.path.join(res_dir, "report_done.json"), "w"))
+    from .export import export
+    export(cfg)
     mark_done(cfg, "report")
     maybe_push(cfg, force=True)

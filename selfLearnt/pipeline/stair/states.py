@@ -12,13 +12,13 @@ import itertools
 import os
 
 from . import data as D
-from .common import (QA_SYSTEM, RET_SYSTEM, answer_of, append_jsonl, atts_merge, atts_ret_prompt, cot_qa_prompt, direct_qa_prompt, direct_ret_prompt, ensemble, key,
+from .common import (QA_SYSTEM, RET_SYSTEM, units, answer_of, append_jsonl, atts_merge, atts_ret_prompt, cot_qa_prompt, direct_qa_prompt, direct_ret_prompt, ensemble, key,
                      log, picks_of, read_jsonl, scores, seed_of, selected_refs, selection_text, stated_conf, write_jsonl)
 from .config import serve_entry, variant, workstreams
 from .engines import free_gpu, make_engine
 from .progress import Tracker, mark_done
 
-SPLITS = ("dev", "test")
+SPLITS = ("val", "test")
 
 
 def step_dir(cfg):
@@ -77,6 +77,8 @@ def ans_variants(cfg):
 # ==================================================================================
 def retrieve(cfg, v):
     m = variant(cfg, v)
+    if m.get("kind") == "ranker":
+        return retrieve_ranker(cfg, v, m)
     todo_all = []
     for sp in SPLITS:
         have = {r["qid"] for r in read_jsonl(f_ret(cfg, sp, v))}
@@ -86,7 +88,6 @@ def retrieve(cfg, v):
     tr.tick(total - len(todo_all))
     if todo_all:
         eng = make_engine(cfg, serve_entry(m), lora_path=m["lora_path"])
-        P = m["params"]
         chunk = cfg["gpu"]["chunk"]
         for c in range(0, len(todo_all), chunk):
             part = todo_all[c:c + chunk]
@@ -101,7 +102,7 @@ def retrieve(cfg, v):
                 else:                   # untrained: AgentTTS's own reading of a retrieval output (their Merge on one sample)
                     sel = key(i for i in atts_merge([text]) if 1 <= i <= len(q["ctxs_candidate"])) or (1,)
                 by.setdefault(sp, []).append({"qid": q["qid"], "variant": v, "sel": list(sel), "text": text[:6000], "prompt_tokens": len(p), "out_tokens": k,
-                                              "flops": 2 * P * (len(p) + k), "found_both": float({i + 1 for i in q["ret_answers"]} <= set(sel)),
+                                              "units": units(m["params_b"], len(p), k), "found_both": float({i + 1 for i in q["ret_answers"]} <= set(sel)),
                                               "mean_logprob": lp})
             for sp, rows in by.items():
                 append_jsonl(f_ret(cfg, sp, v), rows)
@@ -109,6 +110,61 @@ def retrieve(cfg, v):
         free_gpu(eng)
     tr.finish()
     mark_done(cfg, "retrieve", v)
+
+
+def retrieve_ranker(cfg, v, m):
+    """nano-jev (33M cross-encoder; STAIR systemOne's scorer, evidence.CrossEncoderScorer): relevance of every candidate
+    passage, keep the top k (team standard: 5). Its confidence in the shortlist is its own 'sufficient' decision
+    (P(yes) that the top k together answer the question), stored as mean_logprob = log P so the rulebook reads it like
+    the other retrievers' token probability. Cost: AgentTTS units of every (question, passage) pair it reads."""
+    import numpy as np
+    k = int(m.get("top_k", 5))
+    todo_all = []
+    for sp in SPLITS:
+        have = {r["qid"] for r in read_jsonl(f_ret(cfg, sp, v))}
+        todo_all += [(sp, q) for q in D.load(cfg, sp) if q["qid"] not in have]
+    total = sum(len(D.load(cfg, sp)) for sp in SPLITS)
+    tr = Tracker(cfg, "retrieve", v, total, "questions")
+    tr.tick(total - len(todo_all))
+    if todo_all:
+        scorer = _ranker(cfg, m)
+        for c, (sp, q) in enumerate(todo_all):
+            t0 = scorer.tokens_seen
+            rel = scorer.score(q["question"], q["ctxs_candidate"])
+            top = [int(i) + 1 for i in np.argsort(-rel)[:k]]
+            suff = scorer.sufficiency(q["question"], [q["ctxs_candidate"][i - 1] for i in top])
+            toks = scorer.tokens_seen - t0
+            sel = key(top)
+            append_jsonl(f_ret(cfg, sp, v), [{"qid": q["qid"], "variant": v, "sel": list(sel), "text": "", "prompt_tokens": toks, "out_tokens": 0,
+                                               "units": units(m["params_b"], toks, 0), "found_both": float({i + 1 for i in q["ret_answers"]} <= set(sel)),
+                                               "mean_logprob": float(np.log(max(suff, 1e-6))), "sufficiency": float(suff)}])
+            if c % 20 == 0:
+                tr.tick(total - len(todo_all) + c + 1)
+        free_gpu(scorer)
+    tr.finish()
+    mark_done(cfg, "retrieve", v)
+
+
+class _MockRanker:
+    def __init__(self, seed=0):
+        import random
+        self.rng, self.tokens_seen = random.Random(seed), 0
+
+    def score(self, question, paragraphs):
+        import numpy as np
+        self.tokens_seen += 150 * 3 * len(paragraphs)
+        return np.array([self.rng.random() for _ in paragraphs])
+
+    def sufficiency(self, question, paragraphs):
+        self.tokens_seen += 600
+        return self.rng.uniform(0.2, 0.99)
+
+
+def _ranker(cfg, m):
+    if cfg["backend"] == "mock":
+        return _MockRanker()
+    from .ranker import CrossEncoderScorer
+    return CrossEncoderScorer(m["path"])
 
 
 # ==================================================================================
@@ -171,7 +227,6 @@ def answer(cfg, v):
     log(f"{v}: {len(todo)} answers to generate ({len(have)} done)")
     if todo:
         eng = make_engine(cfg, serve_entry(m), lora_path=m["lora_path"])
-        P = m["params"]
         chunk = cfg["gpu"]["chunk"]
         mx = 24 if m["finetuned"] else 512
         for c in range(0, len(todo), chunk):
@@ -184,8 +239,8 @@ def answer(cfg, v):
             for (q, s), p, o in zip(part, prompts, outs):
                 text, k, lp = o[0]
                 pred = answer_of(text)
-                rows.append({"qid": q, "sel": list(s), "variant": v, "prompt_tokens": len(p), "out_tokens": k, "flops": 2 * P * (len(p) + k),
-                             "text": text[:6000], "prediction": pred, **scores(pred, pred, qm[q]["answer"]), "stated_conf": stated_conf(text),
+                rows.append({"qid": q, "sel": list(s), "variant": v, "prompt_tokens": len(p), "out_tokens": k, "units": units(m["params_b"], len(p), k),
+                             "text": text[:6000], "prediction": pred, **scores(pred, qm[q]["answer"]), "stated_conf": stated_conf(text),
                              "hit_cap": k >= mx, "mean_logprob": lp})
             append_jsonl(f_ans(cfg, v), rows)
             tr.tick(len(jobs) - len(todo) + c + len(part))
@@ -206,7 +261,6 @@ def sample(cfg, v):
         tr.tick(len(jobs) - len(todo))
         if todo:
             eng = make_engine(cfg, serve_entry(m), lora_path=m["lora_path"])
-            P = m["params"]
             chunk = cfg["gpu"]["chunk"]
             mx = 24 if m["finetuned"] else 512
             for c in range(0, len(todo), chunk):
@@ -220,7 +274,7 @@ def sample(cfg, v):
                     ss = []
                     for t, k, lp in o:
                         pred = answer_of(t)
-                        ss.append({"prediction": pred, **scores(pred, pred, qm[q]["answer"]), "out_tokens": k, "mean_logprob": lp})
+                        ss.append({"prediction": pred, **scores(pred, qm[q]["answer"]), "out_tokens": k, "mean_logprob": lp})
                     rows.append({"qid": q, "sel": list(s), "variant": v, "prompt_tokens": len(p), "samples": ss})
                 append_jsonl(f_smp(cfg, v), rows)
                 tr.tick(len(jobs) - len(todo) + c + len(part))

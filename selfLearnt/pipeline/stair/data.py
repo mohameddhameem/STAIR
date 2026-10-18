@@ -1,15 +1,13 @@
-"""Question sets, all in AgentTTS's format: {qid, question, answer, type, level, ret_answers, ctxs_candidate}.
+"""Question sets on the team standard (STAIR common/, stair_common.splits, seed 20260729), all in AgentTTS's format:
+{qid, question, answer, type, level, ret_answers, ctxs_candidate}.
 
-From HotpotQA's dev file (as AgentTTS: data/retrieval_QA_data_generator.py):
-  search : dev[0:50]     AgentTTS's search set (its 'train' = dev[0:100], of which the search uses the first 50)
-  test   : dev[500:1000] AgentTTS's 500 test questions - every workstream is scored on these, once
-  Candidates: the gold paragraphs + the top-100 BM25 paragraphs of the whole dev-file corpus (title + text indexed,
-  as their Elasticsearch multi_match), duplicates dropped, shuffled.
-From HotpotQA's training file (hard level, never overlapping the above):
-  train  : fine-tuning (retrievers: shortlist targets; answerers: answer targets)
-  val    : checkpoint choice
-  dev    : calibration, probes and the rule-learning micro-experiments of workstreams 3-5
-  Candidates built the same way from the training-file corpus.
+  test   : AgentTTS's 500 test questions, dev file [500:1000] (stair_common split `test`) - scored once
+  val    : dev file [0:500] (split `val`) - checkpoint choice (validation loss), probes, rule learning
+  search : the first 50 of val = dev file [0:50], AgentTTS's own search questions (workstream AL-01)
+  train  : split `train`, 12,000 questions drawn from the official training file - fine-tuning only
+
+Candidates (as AgentTTS: data/retrieval_QA_data_generator.py): the gold paragraphs + the top-100 BM25 paragraphs of the
+same file's corpus (title + text indexed, as their Elasticsearch multi_match), duplicates dropped, shuffled.
 """
 import json
 import os
@@ -30,10 +28,10 @@ def _load_hotpot(path, url):
     return json.load(open(path, encoding="utf-8"))
 
 
-def _corpus(data, idxs):
+def _corpus(data):
     seen, titles, texts = set(), [], []
-    for i in idxs:
-        for title, sents in data[i]["context"]:
+    for ex in data:
+        for title, sents in ex["context"]:
             t = " ".join(sents)
             if t not in seen:
                 seen.add(t)
@@ -42,17 +40,14 @@ def _corpus(data, idxs):
     return titles, texts
 
 
-def _build(items, data, texts, bm25, rng, n_retrieve):
+def _build(exs, texts, bm25, rng, n_retrieve):
     out = []
-    for i in items:
-        ex = data[i]
+    for ex in exs:
         ctx = {t: " ".join(s) for t, s in ex["context"]}
         gold = []
         for title, _ in ex["supporting_facts"]:
             if title in ctx and ctx[title] not in gold:
                 gold.append(ctx[title])
-        if len(gold) < 2:
-            continue
         cands = gold.copy()
         for j in bm25.search(ex["question"], n_retrieve):
             if texts[j] not in cands:
@@ -63,7 +58,12 @@ def _build(items, data, texts, bm25, rng, n_retrieve):
     return out
 
 
-SPLITS = ("search", "test", "train", "val", "dev")
+SPLITS = ("search", "val", "test", "train")
+
+
+def _ids(dataset, part):
+    from stair_common.splits import load_split
+    return load_split(dataset, part)
 
 
 def build(cfg):
@@ -74,34 +74,40 @@ def build(cfg):
         return
     os.makedirs(out, exist_ok=True)
     nr = int(d["n_retrieve"])
-    # --- AgentTTS sets from the dev file
+    ds = d.get("dataset", "hotpotqa")
     dv = _load_hotpot(d["hotpot_dev"], d.get("hotpot_dev_url"))
-    titles, texts = _corpus(dv, range(len(dv)))
+    by_id = {x["_id"]: x for x in dv}
+    titles, texts = _corpus(dv)
     log(f"dev file: {len(dv)} questions, {len(texts)} paragraphs; BM25 over title + text ...")
     bm = BM25([a + " " + b for a, b in zip(titles, texts)])
     rng = random.Random(d["seed"])
-    s0, s1 = d["search_range"]
-    t0, t1 = d["test_range"]
-    for name, idxs in (("search", range(s0, min(s1, len(dv)))), ("test", range(t0, min(t1, len(dv))))):
-        rows = _build(idxs, dv, texts, bm, rng, nr)
-        json.dump(rows, open(os.path.join(out, f"{name}.json"), "w", encoding="utf-8"), ensure_ascii=False)
-        log(f"{name}: {len(rows)} questions (dev file [{idxs.start}:{idxs.stop}])")
-    # --- our sets from the training file
-    tr = _load_hotpot(d["hotpot_train"], d.get("hotpot_train_url"))
-    if d.get("level"):
-        tr = [x for x in tr if x.get("level") == d["level"]]
-    rng = random.Random(d["seed"] + 1)
-    pool = rng.sample(range(len(tr)), len(tr))          # the training and dev files share no questions
-    n_tr, n_va, n_de = int(d["n_train"]), int(d["n_val"]), int(d["n_dev"])
-    assert n_tr + n_va + n_de <= len(pool), f"only {len(pool)} training-file questions at level {d.get('level')}"
-    titles, texts = _corpus(tr, range(len(tr)))
-    log(f"training file: {len(tr)} questions, {len(texts)} paragraphs; BM25 ...")
-    bm = BM25([a + " " + b for a, b in zip(titles, texts)])
-    for name, idxs in (("train", pool[:n_tr]), ("val", pool[n_tr:n_tr + n_va]), ("dev", pool[n_tr + n_va:n_tr + n_va + n_de])):
-        rows = _build(idxs, tr, texts, bm, rng, nr)
-        json.dump(rows, open(os.path.join(out, f"{name}.json"), "w", encoding="utf-8"), ensure_ascii=False)
-        log(f"{name}: {len(rows)} questions")
-    write_json(os.path.join(out, "data_config.json"), d)
+    val_ids, test_ids = _ids(ds, "val"), _ids(ds, "test")
+    sets = {"val": _build([by_id[i] for i in val_ids], texts, bm, rng, nr),
+            "test": _build([by_id[i] for i in test_ids], texts, bm, rng, nr)}
+    lim = d.get("limit") or {}  # dry runs only: keep the first n of a part
+    for k in ("val", "test"):
+        if lim.get(k):
+            sets[k] = sets[k][:int(lim[k])]
+    sets["search"] = sets["val"][:int(d.get("n_search", 50))]
+    # training questions: the split part named in the config, from the official train file (or the dev file in a dry run)
+    tr_ids = _ids(ds, d.get("train_part", "train"))
+    if lim.get("train"):
+        tr_ids = tr_ids[:int(lim["train"])]
+    if d.get("train_source", "train") == "dev":
+        src, tb, ttexts = by_id, bm, texts
+    else:
+        tr = _load_hotpot(d["hotpot_train"], d.get("hotpot_train_url"))
+        src = {x["_id"]: x for x in tr}
+        t2, ttexts = _corpus(tr)
+        log(f"training file: {len(tr)} questions, {len(ttexts)} paragraphs; BM25 ...")
+        tb = BM25([a + " " + b for a, b in zip(t2, ttexts)])
+    missing = [i for i in tr_ids if i not in src]
+    assert not missing, f"{len(missing)} training IDs of split '{d.get('train_part', 'train')}' are not in the training source"
+    sets["train"] = _build([src[i] for i in tr_ids], ttexts, tb, rng, nr)
+    for name in SPLITS:
+        json.dump(sets[name], open(os.path.join(out, f"{name}.json"), "w", encoding="utf-8"), ensure_ascii=False)
+        log(f"{name}: {len(sets[name])} questions")
+    write_json(os.path.join(out, "data_config.json"), dict(d, splits={k: len(v) for k, v in sets.items()}))
 
 
 _CACHE = {}

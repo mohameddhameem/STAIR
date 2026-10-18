@@ -105,7 +105,7 @@ def fit(cfg):
         keep = [i for i, x in enumerate(ids) if x in lab]
         ids, X = [ids[i] for i in keep], X[keep]
         y = np.array([lab[x] for x in ids], float)
-        dev = np.array([x.startswith("dev|") for x in ids])
+        dev = np.array([x.startswith("val|") for x in ids])
         mk = lambda: make_pipeline(StandardScaler(), LogisticRegression(C=0.05, max_iter=3000))
         score = np.zeros(len(ids))
         Xd, yd, di = X[dev], y[dev], np.where(dev)[0]

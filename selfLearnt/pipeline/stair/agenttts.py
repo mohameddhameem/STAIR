@@ -15,8 +15,8 @@ import numpy as np
 
 from . import data as D
 from .common import (ATTS_FUSE_SYSTEM, ATTS_QA_SYSTEM, ATTS_RET_SYSTEM, append_jsonl, atts_budget, atts_fuse_prompt, atts_merge, atts_qa_prompt,
-                     atts_ret_prompt, atts_selected_refs, cover_em, em_f1, key, log, read_json, read_jsonl, seed_of, write_json)
-from .config import serve_entry, variant
+                     atts_ret_prompt, atts_selected_refs, key, log, scores, units, read_json, read_jsonl, seed_of, write_json)
+from .config import model_tag, serve_entry, variant
 from .engines import free_gpu, make_engine
 from .progress import Tracker, mark_done
 
@@ -57,7 +57,7 @@ def grid_plan(cfg):
 
 def test_plan(cfg):
     out = []
-    ch = read_json(os.path.join(wdir(cfg), "search_result.json"))
+    ch = None if cfg["workstreams"]["ws1"].get("skip_search") else read_json(os.path.join(wdir(cfg), "search_result.json"))
     if ch:
         out.append(tuple(ch["chosen"]))
     for c in cfg["workstreams"]["ws1"].get("also_test", []):
@@ -198,7 +198,8 @@ def prf(gt, pred):
 
 
 def evaluate(cfg, split, plan=None):
-    """Per setting: AgentTTS's metrics (Gen_EM = gold contained in the fused response, Gen_F1, Ret_*), budget and FLOPs.
+    """Per setting: AgentTTS's metrics (Gen_EM = the team's lenient ruler, which reproduces AgentTTS's published score, on
+    the fused response; Gen_F1; Ret_*), AgentTTS's fixed-length budget (for its search) and measured AgentTTS units.
     Returns (table rows, {setting: per-question rows})."""
     plan = plan or plan_for(cfg, split)
     qs = D.load(cfg, split)
@@ -208,7 +209,8 @@ def evaluate(cfg, split, plan=None):
     F = {am: {(r["qid"], tuple(r["skey"]), r["k"]): r for r in read_jsonl(f_fuse(cfg, split, am))} for am in {c[2] for c in plan}}
     table, per = [], {}
     for rm, rk, am, ak in plan:
-        Pr, Pa = cfg["models"][rm]["params"], cfg["models"][am]["params"]
+        Pr, Pa = cfg["models"][rm]["params_b"], cfg["models"][am]["params_b"]
+        tag = f"retriever={model_tag(variant(cfg, rm))};answerer={model_tag(variant(cfg, am))}"
         rows = []
         for q in qs:
             r = R[rm].get(q["qid"])
@@ -221,12 +223,12 @@ def evaluate(cfg, split, plan=None):
                 continue
             gt = [i + 1 for i in q["ret_answers"]]
             p, rc, f1r = prf(gt, ids)
-            em, f1 = em_f1(f["text"], q["answer"])
-            fl = (2 * Pr * (r["prompt_tokens"] + sum(s["out_tokens"] for s in r["samples"][:rk]))
-                  + 2 * Pa * (a["prompt_tokens"] + sum(s["out_tokens"] for s in a["samples"][:ak]))
-                  + 2 * Pa * (f["prompt_tokens"] + f["out_tokens"]))
-            rows.append({"qid": q["qid"], "acc": cover_em(f["text"], q["answer"]), "F1": f1, "ret_f1": f1r, "ret_p": p, "ret_r": rc,
-                         "ret_acc": float(rc == 1.0), "flops": fl, "answer": f["text"][:300]})
+            sc = scores(f["text"], q["answer"])
+            ur = units(Pr, r["prompt_tokens"], sum(s["out_tokens"] for s in r["samples"][:rk]))     # shared prompt counted once
+            ua = units(Pa, a["prompt_tokens"], sum(s["out_tokens"] for s in a["samples"][:ak]))
+            uf = units(Pa, f["prompt_tokens"], f["out_tokens"])
+            rows.append({"qid": q["qid"], **sc, "ret_f1": f1r, "ret_p": p, "ret_r": rc, "ret_acc": float(rc == 1.0),
+                         "units": ur + ua + uf, "units_retrieve": ur, "units_answer": ua, "units_fuse": uf, "answer": f["text"], "models": tag})
         if not rows:
             continue
         b = (atts_budget(rk, cfg["models"][rm]["nominal"], *nd["Retrieval"]) + atts_budget(ak, cfg["models"][am]["nominal"], *nd["Question Answering"]))
@@ -234,7 +236,7 @@ def evaluate(cfg, split, plan=None):
                       "examples": len(rows), "Gen_EM": float(np.mean([x["acc"] for x in rows])), "Gen_F1": float(np.mean([x["F1"] for x in rows])),
                       "Gen_Precision": np.nan, "Gen_Recall": np.nan, "Ret_ACC": float(np.mean([x["ret_acc"] for x in rows])),
                       "Ret_F1": float(np.mean([x["ret_f1"] for x in rows])), "Ret_Precision": float(np.mean([x["ret_p"] for x in rows])),
-                      "Ret_Recall": float(np.mean([x["ret_r"] for x in rows])), "budget": b, "tflops_per_q": float(np.mean([x["flops"] for x in rows])) / 1e12,
+                      "Ret_Recall": float(np.mean([x["ret_r"] for x in rows])), "budget": b, "units_per_q": float(np.mean([x["units"] for x in rows])),
                       "setting": [rm, rk, am, ak]})
         per[(rm, rk, am, ak)] = rows
     return table, per
@@ -255,6 +257,9 @@ def search(cfg):
     from . import agenttts_search as S
     W = cfg["workstreams"]["ws1"]
     out = wdir(cfg)
+    if W.get("skip_search"):
+        log("AL-02 only: no AgentTTS search")
+        return
     if os.path.exists(os.path.join(out, "search_result.json")):
         log("AgentTTS search already done")
         mark_done(cfg, "ws1_search")
@@ -320,7 +325,7 @@ def test_results(cfg):
     """Scores of the fixed settings on the test questions -> ws1/test_results.json (used by the report)."""
     plan = test_plan(cfg)
     table, per = evaluate(cfg, "test", plan)
-    ch = (read_json(os.path.join(wdir(cfg), "search_result.json")) or {}).get("chosen")
+    ch = None if cfg["workstreams"]["ws1"].get("skip_search") else (read_json(os.path.join(wdir(cfg), "search_result.json")) or {}).get("chosen")
     names = {}
     for c in plan:
         tags = []
@@ -336,7 +341,7 @@ def test_results(cfg):
         c = tuple(t["setting"])
         rows.append({"policy": names[c], "setting": f"{cfg['models'][c[0]]['label']} x{c[1]} -> {cfg['models'][c[2]]['label']} x{c[3]} (+ fusion)",
                      "config": list(c), "acc": t["Gen_EM"], "F1": t["Gen_F1"], "ret_found_both": t["Ret_ACC"], "budget_per_q": t["budget"],
-                     "tflops_per_q": t["tflops_per_q"], "n": t["examples"], "per_question": per[c]})
+                     "units_per_q": t["units_per_q"], "n": t["examples"], "per_question": per[c]})
     write_json(os.path.join(wdir(cfg), "test_results.json"), rows)
     return rows
 

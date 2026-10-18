@@ -11,8 +11,8 @@ source "$VENV/bin/activate"
 pip install --upgrade pip wheel
 # vLLM brings its matching PyTorch/CUDA build: install it first so later packages do not replace torch.
 pip install "vllm>=0.10.2"
-pip install "transformers>=4.56" peft accelerate bitsandbytes huggingface_hub hf_transfer \
-            scikit-learn scipy numpy pandas openpyxl matplotlib pyyaml
+pip install -r requirements.txt
+pip install -e ../../common          # stair_common: team splits, scoring, cost units, results schema
 pip install flash-linear-attention || echo "flash-linear-attention not installed (only speeds up Qwen3.5 0.8B training)"
 python - <<'EOF'
 import torch, vllm, transformers, peft

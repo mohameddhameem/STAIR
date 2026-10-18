@@ -13,7 +13,7 @@ import time
 
 import numpy as np
 
-from .common import (QA_SYSTEM, RET_SYSTEM, ans_target, answer_of, direct_qa_prompt, direct_ret_prompt, lenient, log, picks_of, ret_target,
+from .common import (QA_SYSTEM, RET_SYSTEM, ans_target, answer_of, direct_qa_prompt, direct_ret_prompt, scores, log, picks_of, ret_target,
                      selection_text)
 from .config import ft_settings
 from .engines import free_gpu
@@ -106,7 +106,7 @@ def val_score(model, tok, role, qs, cfg, max_new=24):
                 good += g <= sel
                 exact += g == sel
             else:
-                good += lenient(answer_of(text), q["answer"])
+                good += scores(answer_of(text), q["answer"])["acc"]
     model.train()
     if role == "retriever":
         return {"score": good / len(qs), "both gold passages found": good / len(qs), "exactly the gold passages": exact / len(qs)}
@@ -190,7 +190,7 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
     os.makedirs(out, exist_ok=True)
     mock = cfg["backend"] == "mock"
     tr = train_qs[:T["n_train"]]
-    va = val_qs[:T.get("n_val", 300)]
+    va = val_qs
     if mock:
         texts = [direct_ret_prompt(q) + " " + ret_target(q) for q in tr[:100]] + [direct_qa_prompt(q["question"], q["ctxs_candidate"][:3]) + " "
                                                                                   + ans_target(q) for q in tr[:100] + va]
@@ -211,14 +211,19 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
             model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
             model.enable_input_require_grads()
     model.config.use_cache = False
-    ex = examples(cfg, role, tok, tr, T, seed=T.get("seed", 0))
-    random.Random(T.get("seed", 0)).shuffle(ex)
+    run_seed = int(cfg.get("seed", 0))
+    ex = examples(cfg, role, tok, tr, T, seed=run_seed)
+    random.Random(run_seed).shuffle(ex)
+    vex = examples(cfg, role, tok, va[:T.get("n_val_loss", 300)], T, seed=12345)      # fixed validation-loss examples
+    vmet = va[:T.get("n_val_metric", 100)]
     ga, mb = T["grad_accum"], T["micro_batch"]
-    steps_total = max(1, (len(ex) * T["epochs"]) // ga)
-    marks = sorted({min(steps_total, max(1, q // ga)) for q in T["ckpt_questions"]})
+    steps_epoch = max(1, len(ex) // ga)
+    max_epochs = int(T.get("max_epochs", 2))
+    steps_total = steps_epoch * max_epochs
+    eval_every = max(1, steps_epoch // int(T.get("evals_per_epoch", 2)))
     save_every = max(1, T.get("save_every_questions", 500) // ga)
     state_p = state_path(cfg, key)
-    st = json.load(open(state_p)) if os.path.exists(state_p) else {"step": 0, "curve": [], "seconds": 0.0}
+    st = json.load(open(state_p)) if os.path.exists(state_p) else {"step": 0, "curve": [], "seconds": 0.0, "best": None, "bad": 0}
     last = os.path.join(out, f"ckpt_step{st['step']}") if st["step"] else None
     if last and os.path.isdir(last):
         model = PeftModel.from_pretrained(model, last, is_trainable=True)
@@ -229,13 +234,14 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
     for p in model.parameters():
         if p.requires_grad:
             p.data = p.data.float()
-    log(f"{key} ({role}, {T['method']}): {len(ex)} examples x {T['epochs']} passes = {steps_total} optimizer steps; validation at steps {marks}")
+    log(f"{key} ({role}, {T['method']}, seed {run_seed}): {len(ex)} examples, up to {max_epochs} epochs = {steps_total} steps; "
+        f"validation loss every {eval_every} steps on {len(vex)} val questions; stop after {T.get('patience', 2)} evaluations without improvement")
     opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=T["lr"], weight_decay=0.0)
     if st["step"] and last and os.path.exists(os.path.join(last, "optimizer.pt")):
         opt.load_state_dict(torch.load(os.path.join(last, "optimizer.pt"), map_location="cpu"))
     warm = max(1, int(0.03 * steps_total))
     lr_at = lambda s: T["lr"] * min(1.0, (s + 1) / warm) * max(0.0, 1 - max(0, s - warm) / max(1, steps_total - warm))
-    order = [i for _ in range(T["epochs"]) for i in range(len(ex))]
+    order = [i for _ in range(max_epochs) for i in range(len(ex))]
     body, head = lm_parts(model.get_base_model())
     pad = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
     ce = torch.nn.CrossEntropyLoss()
@@ -259,17 +265,27 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
         sel = lab[:, 1:] != -100
         return ce(head(h[:, :-1][sel]).float(), lab[:, 1:][sel])
 
-    def save(step_, keep):
-        d = os.path.join(out, f"ckpt_step{step_}")
-        model.save_pretrained(d)
-        torch.save(opt.state_dict(), os.path.join(d, "optimizer.pt"))
-        old = st.get("resume_only")
-        if old and old != step_ and old not in marks:
-            shutil.rmtree(os.path.join(out, f"ckpt_step{old}"), ignore_errors=True)
-        st["resume_only"] = None if keep else step_
-        st["step"] = step_
+    def val_loss():
+        model.eval()
+        with torch.no_grad():
+            vals = [float(batch_loss([e])) for e in vex]
+        model.train()
+        return float(np.mean(vals)) if vals else float("nan")
 
-    while step < steps_total:
+    def save(step_, name=None):
+        d = os.path.join(out, name or f"ckpt_step{step_}")
+        if os.path.exists(d):
+            shutil.rmtree(d)
+        model.save_pretrained(d)
+        if name is None:
+            torch.save(opt.state_dict(), os.path.join(d, "optimizer.pt"))
+            old = st.get("resume_at")
+            if old and old != step_:
+                shutil.rmtree(os.path.join(out, f"ckpt_step{old}"), ignore_errors=True)
+            st["resume_at"] = st["step"] = step_
+
+    stopped = False
+    while step < steps_total and not stopped:
         for g in opt.param_groups:
             g["lr"] = lr_at(step)
         idx = order[pos:pos + ga]
@@ -286,33 +302,58 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
         tracker.tick(step, note=f"loss {np.mean(losses[-50:]):.3f}")
         if step % 25 == 0:
             log(f"  step {step}/{steps_total} | loss {np.mean(losses[-50:]):.3f}")
-        if step in marks:
-            save(step, keep=True)
-            v = val_score(model, tok, role, va, cfg)
-            st["curve"].append({"step": step, "training questions seen": step * ga, "training loss (recent)": float(np.mean(losses[-50:])), **v})
-            log(f"checkpoint {step}: validation score {100 * v['score']:.1f}%")
-        elif step % save_every == 0:
-            save(step, keep=False)
-        if step in marks or step % save_every == 0:
+        if step % eval_every == 0 or step == steps_total:
+            vl = val_loss()
+            vm = val_score(model, tok, role, vmet, cfg)["score"] if vmet else None
+            rec = {"step": step, "epoch": round(step / steps_epoch, 3), "train_loss": float(np.mean(losses)) if losses else float("nan"),
+                   "val_loss": vl, "val_metric": vm, "training questions seen": step * ga}
+            st["curve"].append(rec)
+            losses = []
+            if st["best"] is None or vl < st["best"]["val_loss"] - 1e-6:
+                st["best"], st["bad"] = rec, 0
+                save(step, name="best")
+            else:
+                st["bad"] += 1
+            log(f"evaluation at epoch {rec['epoch']}: val loss {vl:.4f}" + (f", val score {100 * vm:.1f}%" if vm is not None else "")
+                + (" (best)" if st["bad"] == 0 else f" (no improvement x{st['bad']})"))
+            if st["bad"] >= int(T.get("patience", 2)):
+                log(f"early stop: validation loss has not improved for {st['bad']} evaluations")
+                stopped = True
+        if step % save_every == 0 or step % eval_every == 0:
+            save(step)
             st["seconds"] += time.time() - t1
             t1 = time.time()
             json.dump(st, open(state_p, "w"), indent=1)
-            if time_limit_min and (time.time() - t0) / 60 > time_limit_min and step < steps_total:
+            if time_limit_min and (time.time() - t0) / 60 > time_limit_min and step < steps_total and not stopped:
                 log("time limit reached - submit the job again to continue")
                 return False
-    best = max(st["curve"], key=lambda x: (x["score"], x["step"]))
-    st["chosen"] = best
+    best = st["best"]
+    st["chosen"] = dict(best, score=best.get("val_metric") or 0.0, stopped_early=stopped)
     st["role"], st["method"] = role, T["method"]
     chosen = os.path.join(out, "chosen")
     if os.path.exists(chosen):
         shutil.rmtree(chosen)
-    shutil.copytree(os.path.join(out, f"ckpt_step{best['step']}"), chosen, ignore=shutil.ignore_patterns("optimizer.pt"))
+    shutil.copytree(os.path.join(out, "best"), chosen)
     json.dump(st, open(state_p, "w"), indent=1)
-    tracker.finish(note=f"chosen step {best['step']}: validation {100 * best['score']:.1f}%")
-    log(f"{key}: chosen checkpoint step {best['step']} (validation {100 * best['score']:.1f}%)")
+    write_history(cfg, key, role, T, st)
+    tracker.finish(note=f"best epoch {best['epoch']}: val loss {best['val_loss']:.4f}")
+    log(f"{key}: best epoch {best['epoch']} (val loss {best['val_loss']:.4f}){', stopped early' if stopped else ''}")
     del model, opt
     free_gpu()
     return True
+
+
+def write_history(cfg, key, role, T, st):
+    """The training curve in the team layout (stair_common.training), one CSV per model and seed."""
+    from stair_common.training import from_records, validate_history
+    m = cfg["models"][key]
+    recs = [{"epoch": r["epoch"], "train_loss": r["train_loss"], "val_loss": r["val_loss"], "step": r["step"],
+             **({"val_metric": r["val_metric"]} if r.get("val_metric") is not None else {})} for r in st["curve"]]
+    df = from_records(recs, track="selfLearnt", model=f"{m['label']} {role}", run=f"{T['method']}-r{T['r']}", seed=int(cfg.get("seed", 0)))
+    validate_history(df)
+    d = os.path.join(cfg["paths"]["results_dir"], "history")
+    os.makedirs(d, exist_ok=True)
+    df.to_csv(os.path.join(d, f"selfLearnt-{key}-{role}-seed{cfg.get('seed', 0)}.csv"), index=False)
 
 
 def merge(cfg, key):

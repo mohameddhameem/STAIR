@@ -1,8 +1,9 @@
 """Submit the whole run as SLURM jobs with dependencies, in priority order:
   phase 1  WS1 + WS2 (AgentTTS baselines)           -> first results in about a day
   phase 2  WS4 (fine-tuning on AgentTTS's models + self-learnt rules)
-  phase 3  WS5 (full model ladders; reuses WS4's fine-tuned models, adds the small retrievers)
-  phase 4  WS3 (hidden-state probes on the untrained models)
+  phase 3  WS5 (full model ladders from nano-jev 33M; reuses WS4's fine-tuned models, adds the small models)
+  phase 4  WS6 (control: the same ladders from the fine-tuned Qwen 0.5B; reuses everything, no new training)
+  phase 5  WS3 (hidden-state probes on the untrained models)
   report   comparison of everything (also rebuilt after every phase)
 
 Usage (from STAIR/selfLearnt/pipeline, after jobs/install_env.sh and jobs/setup_login.sh):
@@ -10,6 +11,7 @@ Usage (from STAIR/selfLearnt/pipeline, after jobs/install_env.sh and jobs/setup_
   python jobs/submit_all.py --phases 1      # only WS1-2;  --phases 2,3 etc.
   python jobs/submit_all.py --dry           # print the jobs without submitting
   python jobs/submit_all.py --after 12345   # make the first jobs wait for job 12345
+  python jobs/submit_all.py --seed 1        # another run seed (team standard: 0, 1, 2)
 Every job resumes from its saved outputs, so re-submitting a phase after a failure is safe (finished work is skipped)."""
 import argparse
 import json
@@ -44,8 +46,10 @@ class Plan:
     def __init__(self, env, dry, after):
         self.env, self.dry, self.jobs, self.n = env, dry, [], 0
         self.after = after
+        self.seed_arg = ""
 
     def add(self, name, args, gpus, hours, deps=(), cpu_only=False):
+        args += self.seed_arg
         deps = [d for d in deps if d]
         if not deps and self.after:
             deps = [self.after]
@@ -80,16 +84,19 @@ class Plan:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--phases", default="1,2,3,4")
+    ap.add_argument("--phases", default="1,2,3,4,5")
+    ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--after", default="")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
     from stair.config import ft_settings, load_config, variant
-    cfg = load_config(os.path.join(ROOT, env.get("CONFIG", "configs/default.yaml")))
+    cfg = load_config(os.path.join(ROOT, env.get("CONFIG", "configs/default.yaml")), seed=a.seed)
+    sd = f" --seed {a.seed}" if a.seed is not None else ""
     os.makedirs(os.path.join(ROOT, "logs"), exist_ok=True)
     phases = {int(x) for x in a.phases.split(",") if x.strip()}
     P = Plan(env, a.dry, a.after)
+    P.seed_arg = sd
     W = cfg["workstreams"]
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
 
@@ -109,6 +116,7 @@ def main():
         last = [P.add("report-phase1", "--stage report", 0, 1, ta, cpu_only=True)]
     # ---------------- phases 2-4: rule-based workstreams
     trained = set()
+    done_ret = set()   # a model's outputs are shared between experiments: run each once
 
     def phase(ws, after):
         w = W[ws]
@@ -120,7 +128,10 @@ def main():
                 trained.add(b)
                 tr[b] = P.add(f"train-{b}", f"--stage train --model {b}", train_gpus(b), 96, after)
         own = lambda v: [tr[v.split(":")[0]]] if v.split(":")[0] in tr else list(after)
-        rt = [P.add(f"ret-{v}-{ws}", f"--stage retrieve --model {v}", tp(v), 36, own(v)) for v in w["retrievers"]]
+        rt = [P.add(f"ret-{v}-{ws}", f"--stage retrieve --model {v}", tp(v) if variant(cfg, v).get("kind") != "ranker" else 1, 36, own(v))
+              for v in w["retrievers"] if v not in done_ret]
+        done_ret.update(w["retrievers"])
+        rt = rt or list(after)
         rc = P.add(f"reach-{ws}", f"--stage reach --ws {ws}", 0, 1, rt, cpu_only=True)
         an = [P.add(f"ans-{v}-{ws}", f"--stage answer --model {v}", tp(v), 36, [rc] + (own(v) if v.split(":")[0] in tr else [])) for v in w["answerers"]]
         dep = an
@@ -135,7 +146,7 @@ def main():
         jobs.append(P.add(f"report-{ws}", "--stage report", 0, 1, [te], cpu_only=True))
         return jobs
 
-    for ph, ws in ((2, "ws4"), (3, "ws5"), (4, "ws3")):
+    for ph, ws in ((2, "ws4"), (3, "ws5"), (4, "ws6"), (5, "ws3")):
         if ph in phases and ws in W:
             last = phase(ws, last)
     out = os.path.join(ROOT, "logs", f"submitted_{time.strftime('%Y%m%d_%H%M%S')}.json")

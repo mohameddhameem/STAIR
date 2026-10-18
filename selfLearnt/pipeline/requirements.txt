@@ -1,0 +1,15 @@
+# selfLearnt pipeline (install vLLM first: it brings its matching PyTorch/CUDA build), then: pip install -e ../../common
+vllm>=0.10.2
+transformers>=4.56
+peft
+accelerate
+bitsandbytes
+huggingface_hub
+hf_transfer
+scikit-learn
+scipy
+numpy
+pandas
+openpyxl
+matplotlib
+pyyaml

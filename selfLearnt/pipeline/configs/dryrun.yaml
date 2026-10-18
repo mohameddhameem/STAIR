@@ -1,36 +1,34 @@
-# CPU dry run: fake models (backend: mock), a tiny model for fine-tuning, small question sets, all five workstreams.
-#   python run.py --config configs/dryrun.yaml --stage all          (about 10-20 minutes)
-# Uses the HotpotQA dev file for every set (downloaded once, ~45 MB). Only checks that every stage runs end to end.
+# CPU dry run: fake models (backend: mock), a tiny model for fine-tuning, small question sets, all six experiments.
+#   STAIR_PROJECT_DIR=./dryrun_workspace python run.py --config configs/dryrun.yaml --stage all
+# Uses the HotpotQA dev file for every set (downloaded once, ~45 MB): val and test as the team splits (cut short),
+# training questions from the split part `train_extra` (dev [1000:]). Only checks that every stage runs end to end.
 include: default.yaml
 run_name: dryrun
 backend: mock
 paths:
-  project_dir: ./dryrun_workspace
-  data_dir: ${project_dir}/runs/${run_name}/data
+  results_dir: ${project_dir}/runs/dryrun/results_common   # keep dry-run tables out of the repo
 progress: {github: false}
 data:
-  hotpot_train: ${project_dir}/hotpotqa/hotpot_dev_distractor_v1.json
-  hotpot_train_url: http://curtis.ml.cmu.edu/datasets/hotpot/hotpot_dev_distractor_v1.json
+  train_source: dev
+  train_part: train_extra
   n_retrieve: 20
-  search_range: [0, 12]
-  test_range: [500, 580]
-  n_train: 40
-  n_val: 6
-  n_dev: 160
+  n_search: 12
+  limit: {val: 120, test: 60, train: 40}
 finetune:
-  defaults: {grad_accum: 4, micro_batch: 2, save_every_questions: 20, n_val: 6}
+  defaults: {grad_accum: 4, micro_batch: 2, save_every_questions: 20, max_epochs: 2, evals_per_epoch: 2, patience: 2, n_val_loss: 6, n_val_metric: 6}
   retrievers:
-    q05: {method: lora, n_train: 40, epochs: 1, ckpt_questions: [20, 40]}
-    q06: {method: lora, n_train: 40, epochs: 1, ckpt_questions: [20, 40]}
-    q08: {method: lora, n_train: 40, epochs: 1, ckpt_questions: [20, 40]}
-    q3:  {method: lora, n_train: 40, epochs: 1, ckpt_questions: [20, 40]}
-    q7:  {method: lora, n_train: 40, epochs: 1, ckpt_questions: [20, 40]}
-    q32: {method: qlora, n_train: 20, epochs: 1, ckpt_questions: [20]}
-    q72: {method: qlora, n_train: 20, epochs: 1, ckpt_questions: [20]}
+    q05: {method: lora, n_train: 40}
+    q08: {method: lora, n_train: 40}
+    q15: {method: lora, n_train: 40}
+    q3:  {method: lora, n_train: 40}
+    q7:  {method: lora, n_train: 40}
+    q32: {method: qlora, n_train: 20, gpus: 1, n_val_loss: 6, n_val_metric: 6}
+    q72: {method: qlora, n_train: 20, gpus: 2, n_val_loss: 6, n_val_metric: 6}
   answerers:
-    l3:  {method: lora, n_train: 40, epochs: 1, ckpt_questions: [20, 40]}
-    l8:  {method: lora, n_train: 40, epochs: 1, ckpt_questions: [20, 40]}
-    l70: {method: qlora, n_train: 20, epochs: 1, ckpt_questions: [20]}
+    l1:  {method: lora, n_train: 40}
+    l3:  {method: lora, n_train: 40}
+    l8:  {method: lora, n_train: 40}
+    l70: {method: qlora, n_train: 20, gpus: 2, n_val_loss: 6, n_val_metric: 6}
 workstreams:
   ws1:
     iterations: 2

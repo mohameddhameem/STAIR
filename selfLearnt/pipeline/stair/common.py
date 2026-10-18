@@ -206,10 +206,12 @@ def lenient(pred, gold):
     return float(f1 >= 0.5 or (" " + g + " ") in (" " + p + " "))
 
 
-def scores(text, short, gold):
-    """All labels for one final output. text = full response; short = extracted short answer (or the text itself)."""
-    em, f1 = em_f1(short, gold)
-    return {"acc": cover_em(text, gold), "lenient": lenient(short, gold), "EM": em, "F1": f1}
+def scores(answer, gold):
+    """The team's scores of one final answer (stair_common.score: the standard lenient ruler, official EM / F1).
+    acc = lenient, the headline. Gold may be one answer or a list of aliases."""
+    from stair_common.score import score
+    s = score(answer or "", gold)
+    return {"acc": float(s["lenient"]), "lenient": float(s["lenient"]), "EM": float(s["em"]), "F1": float(s["f1"])}
 
 
 _CONF = re.compile(r"\(?\bconfidence\b\s*(?:level|score)?\s*[:=]?\s*(\d{1,3})(?:\.\d+)?\s*%?\)?\.?", flags=re.I)
@@ -265,6 +267,12 @@ def atts_budget(S, M, Np, Nd, M_small=3e9, Np2=128, Nd2=64):
     """AgentTTS's normalised budget of S samples from a model with M parameters (unit = one 3B pass on a 128/64-token task)."""
     alpha, beta1, beta2, beta3 = M / M_small, Np / Nd, Np2 / Nd2, Np / Np2
     return max(0.0, beta2 * ((alpha * beta3 / beta1) * (beta1 + S) - 1))
+
+
+def units(params_b, prompt_tokens, out_tokens):
+    """AgentTTS units of one call (stair_common.cost.units): 2 x params x tokens / 1,152 GFLOPs, nominal size in billions."""
+    from stair_common.cost import units as _u
+    return _u(float(params_b), int(prompt_tokens), int(out_tokens))
 
 
 def flops(params, prompt_tokens, out_tokens, n=1, shared_prompt=True):

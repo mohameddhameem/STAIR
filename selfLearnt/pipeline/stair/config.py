@@ -32,26 +32,72 @@ def _merge(a, b):
     return out
 
 
-def load_config(path):
+def _toml_entry(ref):
+    """'B.retriever.Qwen2.5-0.5B' -> the pinned entry of stair_common/models.toml."""
+    from stair_common import load_models
+    menu, role, name = ref.split(".", 2)
+    return load_models()[menu][role][name]
+
+
+EXPERIMENTS = ("AL-01", "AL-02", "AL-03", "AL-04", "AL-05", "AL-06")
+
+
+def _only_experiment(raw, exp):
+    """Keep only the workstream(s) one experiment needs. All experiments share run_dir, so saved outputs (shortlists,
+    answers, fine-tuned models) are reused between them; each stage resumes from what is already there."""
+    W = raw["workstreams"]
+    keep = {k: w for k, w in W.items() if w.get("exp_id") == exp}
+    if not keep:
+        raise SystemExit(f"--exp {exp}: no workstream with that exp_id (have {sorted(w.get('exp_id') for w in W.values())})")
+    if exp == "AL-02":          # AL-02 runs inside AgentTTS's test stage: keep ws1's models, but test only ws2's setting
+        keep = {"ws1": dict(W["ws1"], also_test=[], skip_search=True), **keep}
+    raw["_all_workstreams"] = W
+    raw["workstreams"] = keep
+
+
+def full_run(cfg):
+    """The config with every workstream (reports and the status page always cover the whole run)."""
+    return dict(cfg, workstreams=cfg.get("_all_workstreams", cfg["workstreams"]))
+
+
+def load_config(path, seed=None, exp=None):
     raw = yaml.safe_load(open(path, encoding="utf-8"))
     if raw.get("include"):
         base = yaml.safe_load(open(os.path.join(os.path.dirname(path), raw.pop("include")), encoding="utf-8"))
         raw = _merge(base, raw)
-    env = {"run_name": raw["run_name"]}
+    if seed is not None:
+        raw["seed"] = int(seed)
+    raw.setdefault("seed", 0)
+    if exp:
+        _only_experiment(raw, exp)
+    env = {k: v for k, v in os.environ.items() if k.startswith("STAIR_")}
+    env["run_name"] = raw["run_name"]
     env.update({k: v for k, v in raw["paths"].items() if isinstance(v, str)})
     for _ in range(4):
         raw["paths"] = _interp(raw["paths"], env)
         env.update(raw["paths"])
     cfg = _interp(raw, env)
-    cfg["run_dir"] = os.path.join(cfg["paths"]["runs_dir"], cfg["run_name"])
+    if "${" in cfg["paths"]["project_dir"]:
+        raise SystemExit("set STAIR_PROJECT_DIR (storage for models, data and runs) before running")
+    rd = cfg["paths"].get("results_dir", "results/common")
+    if not os.path.isabs(rd):   # relative to the STAIR repo root, wherever the command is run from
+        cfg["paths"]["results_dir"] = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", rd)
+    cfg["paths"]["results_dir"] = os.path.normpath(cfg["paths"]["results_dir"])
+    cfg["run_dir"] = os.path.join(cfg["paths"]["runs_dir"], cfg["run_name"], f"seed{cfg['seed']}")
     for k, m in cfg["models"].items():
         m["key"] = k
-        m["params"] = float(m["params"])
-        m["nominal"] = float(m.get("nominal", m["params"]))
-        m.setdefault("dir", m["hf_id"].split("/")[-1])
+        if m.get("toml"):
+            t = _toml_entry(m["toml"])
+            m["hf_id"], m["revision"], m["dtype"] = t["repo"], t["revision"], t.get("dtype", "bf16")
+            m["params_b"] = float(t["params_b"])
+            if m["dtype"] == "awq":
+                m["quantization"] = "awq"
+        m["params_b"] = float(m.get("params_b", float(m.get("params", 1e9)) / 1e9))
+        m["params"] = m["nominal"] = m["params_b"] * 1e9      # cost uses the nominal size (AgentTTS units)
+        m.setdefault("dir", m["hf_id"].split("/")[-1] + (f"@{m['revision'][:7]}" if m.get("revision") else ""))
         m["path"] = os.path.join(cfg["paths"]["models_dir"], m["dir"])
         if m.get("train_hf_id"):
-            m.setdefault("train_dir", m["train_hf_id"].split("/")[-1])
+            m.setdefault("train_dir", m["train_hf_id"].split("/")[-1] + "-train")
             m["train_path"] = os.path.join(cfg["paths"]["models_dir"], m["train_dir"])
         else:
             m["train_path"] = m["path"]
@@ -90,6 +136,11 @@ def variant(cfg, name):
     else:
         m["serve_path"], m["lora_path"] = m["path"], None
     return m
+
+
+def model_tag(m):
+    """'role=repo@revision' piece of the results' models column."""
+    return f"{m['hf_id']}@{m.get('revision', 'main')}" + (" +LoRA" if m.get("finetuned") else "")
 
 
 def serve_entry(m):

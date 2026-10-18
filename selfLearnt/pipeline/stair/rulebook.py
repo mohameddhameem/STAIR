@@ -1,4 +1,4 @@
-"""The rulebook (workstreams 3-5): soft rules learnt by micro-experiments on the dev questions; locked rules and guardrails that
+"""The rulebook (AL-03 .. AL-06): soft rules learnt by micro-experiments on the val questions; locked rules and guardrails that
 no experiment may change.
 
 Per question:
@@ -9,10 +9,10 @@ Per question:
              larger answerer answers; if it agrees with an earlier answer, that answer is accepted; if not, the rules are
              checked again (escalate further), and when they stop, the answers so far plus `votes` sampled answers of the last
              answerer go to a majority vote (ties -> the larger model).
-  FLAG       a calibrated score (fitted on dev) gives Sure / Unsure, also for the largest model's answers.
+  FLAG       a calibrated score (fitted on val) gives Sure / Unsure, also for the largest model's answers.
 Rules are checked in order (locked first); the first rule whose conditions all hold decides; default = keep.
 
-learn: rounds of micro-experiments on dev halves A and B. Code tries fine threshold steps for every soft rule; the planner LLM
+learn: rounds of micro-experiments on val halves A and B. Code tries fine threshold steps for every soft rule; the planner LLM
 proposes up to 3 changes from evidence tables. A change is kept only if, on BOTH halves, it is cheaper at no accuracy loss or
 more accurate at <= H8 compute per point; it beats a random-escalation control of the same size; it breaks no guardrail.
 test: the frozen rulebook once on the test questions, next to fixed pipelines, random escalation and the starting rulebook."""
@@ -24,8 +24,8 @@ import re
 import numpy as np
 
 from . import data as D
-from .common import agree, atts_budget, ensemble, key, log, lp_, normalize_answer, read_jsonl, seed_of, vote, write_json, write_jsonl
-from .config import serve_entry, variant
+from .common import agree, ensemble, units, key, log, lp_, normalize_answer, read_jsonl, seed_of, vote, write_json, write_jsonl
+from .config import model_tag, serve_entry, variant
 from .engines import free_gpu, make_engine
 from .progress import Tracker, mark_done
 from .states import SPLITS, f_ans, f_ret, f_smp
@@ -34,12 +34,12 @@ _CANNOT = re.compile(r"(unknown|cannot|can't|not (provided|mentioned|specified|a
 OPS = {"<": np.less, "<=": np.less_equal, ">": np.greater, ">=": np.greater_equal, "==": np.equal}
 SIGNALS = {
     "rung": ("both", "position of the current model in its ladder (0 = the smallest)"),
-    "ret_conf_pct": ("retrieval", "current retriever's confidence in its shortlist (token probability), percentile among dev questions for that retriever"),
-    "ret_probe_pct": ("retrieval", "hidden-state probe: how likely the current shortlist holds both gold passages, percentile among dev questions"),
+    "ret_conf_pct": ("retrieval", "current retriever's confidence in its shortlist (token probability), percentile among val questions for that retriever"),
+    "ret_probe_pct": ("retrieval", "hidden-state probe: how likely the current shortlist holds both gold passages, percentile among val questions"),
     "ret_agree": ("retrieval", "1 if the current retriever picked the same passages as the previous one (1 for the first retriever)"),
     "sel_size": ("retrieval", "number of passages in the current (ensembled) shortlist"),
-    "ans_conf_pct": ("answer", "current answerer's token probability for its answer, percentile among dev questions for that answerer"),
-    "ans_probe_pct": ("answer", "hidden-state probe: how likely the current answer is right, percentile among dev questions"),
+    "ans_conf_pct": ("answer", "current answerer's token probability for its answer, percentile among val questions for that answerer"),
+    "ans_probe_pct": ("answer", "hidden-state probe: how likely the current answer is right, percentile among val questions"),
     "answer_stated": ("answer", "current answerer's stated confidence (0-1; 0.5 when it states none)"),
     "words_in_passages": ("answer", "share of the answer's words found in the shortlisted passages (0-1)"),
     "is_yes_no": ("answer", "1 if the answer is yes/no"),
@@ -62,7 +62,7 @@ def rule_text(r):
 
 # ==================================================================================
 class Env:
-    """Saved outputs of one workstream (dev and test), signals and their dev distributions."""
+    """Saved outputs of one workstream (val and test), signals and their val distributions."""
 
     def __init__(self, cfg, ws):
         self.cfg, self.ws = cfg, ws
@@ -71,6 +71,7 @@ class Env:
         self.RL, self.AL = list(W["retrievers"]), list(W["answerers"])
         self.H = cfg["rules"]["hard"]
         self.names = {v: variant(cfg, v)["label_full"] for v in self.RL + self.AL}
+        self.tags = {v: model_tag(variant(cfg, v)) for v in self.RL + self.AL}
         self.nominal = {v: cfg["models"][v.split(":")[0]]["nominal"] for v in self.RL + self.AL}
         self.nd = cfg["workstreams"]["ws1"]["np_nd"] if "ws1" in cfg["workstreams"] else {"Retrieval": [2048, 128], "Question Answering": [256, 64]}
         sig = W.get("signals", "all")
@@ -84,17 +85,17 @@ class Env:
         self.PR = {v: {(r["split"], r["qid"]): r["probe"] for r in read_jsonl(f_probe(cfg, v, "ret"))} for v in self.RL}
         self.PA = {v: {(r["split"], r["qid"], key(r["sel"])): r["probe"] for r in read_jsonl(f_probe(cfg, v, "ans"))} for v in self.AL}
         self.qids = {sp: [q["qid"] for q in self.Q[sp] if all(q["qid"] in self.R[sp][v] for v in self.RL)] for sp in SPLITS}
-        dq = self.qids["dev"]
-        base_sel = {q: key(self.R["dev"][self.RL[0]][q]["sel"]) for q in dq}
+        dq = self.qids["val"]
+        base_sel = {q: key(self.R["val"][self.RL[0]][q]["sel"]) for q in dq}
         self.dist = {}
         for v in self.RL:
-            self.dist[("ret_conf", v)] = np.sort([np.exp(lp_(self.R["dev"][v][q].get("mean_logprob"))) for q in dq])
-            self.dist[("ret_probe", v)] = np.sort([self.PR[v].get(("dev", q), 0.5) for q in dq])
+            self.dist[("ret_conf", v)] = np.sort([np.exp(lp_(self.R["val"][v][q].get("mean_logprob"))) for q in dq])
+            self.dist[("ret_probe", v)] = np.sort([self.PR[v].get(("val", q), 0.5) for q in dq])
         for v in self.AL:
             rows = [self.A[v].get((q, base_sel[q])) for q in dq]
             self.dist[("ans_conf", v)] = np.sort([np.exp(lp_(r.get("mean_logprob"))) for r in rows if r])
-            self.dist[("ans_probe", v)] = np.sort([self.PA[v].get(("dev", q, base_sel[q]), 0.5) for q in dq])
-        rng = np.random.default_rng(cfg["rules"].get("dev_split_seed", 11))
+            self.dist[("ans_probe", v)] = np.sort([self.PA[v].get(("val", q, base_sel[q]), 0.5) for q in dq])
+        rng = np.random.default_rng(20260729 + int(cfg.get("seed", 0)))   # val halves A / B; the team seed, shifted by the run seed
         perm = rng.permutation(len(dq))
         self.halfA = sorted(dq[i] for i in perm[: len(perm) // 2])
         self.halfB = sorted(dq[i] for i in perm[len(perm) // 2:])
@@ -168,8 +169,8 @@ class Env:
                 break
             members.append(nxt)
             sel = self.ens(sp, q, members)
-        flops = sum(self.R[sp][self.RL[i]][q]["flops"] for i in members)
-        budget = sum(atts_budget(1, self.nominal[self.RL[i]], *self.nd["Retrieval"]) for i in members)
+        u_ret = sum(self.R[sp][self.RL[i]][q]["units"] for i in members)
+        u_ans = 0.0
         ret_esc = len(members) > 1
         # ---- answers
         j, hist, used = 0, [], {}
@@ -179,7 +180,7 @@ class Env:
         while True:
             v = self.AL[j]
             a = dict(self.A[v][(q, sel)], model=v)
-            flops += a["flops"]
+            u_ans += a["units"]
             used[v] = used.get(v, 0) + 1
             hist.append(a)
             if prev_pred is not None and any(agree(a["prediction"], h["prediction"]) for h in hist[:-1]):
@@ -209,18 +210,18 @@ class Env:
                 sm = self.SM.get(self.AL[j], {}).get((q, sel))
                 if sm and nv > 0:
                     ss = [dict(s, model=self.AL[j] + "_sample") for s in sm["samples"][:nv]]
-                    flops += 2 * variant_params(self, self.AL[j]) * sum(s["out_tokens"] for s in ss)
+                    u_ans += units(self.nominal[self.AL[j]] / 1e9, 0, sum(s["out_tokens"] for s in ss))   # shared prompt counted once
                     used[self.AL[j]] += len(ss)
                     pool += ss
                 final, sup = vote(pool)
                 support = sup / len(pool)
-        for v, n in used.items():
-            budget += atts_budget(n, self.nominal[v], *self.nd["Question Answering"])
         fs = self.ans_sig(sp, q, self.AL.index(final["model"].replace("_sample", "")), sel, None, ret_esc) if final["model"] in self.AL else {}
-        return {"qid": q, "acc": float(final["acc"]), "lenient": float(final["lenient"]), "EM": float(final["EM"]), "flops": float(flops), "budget": float(budget),
+        return {"qid": q, "acc": float(final["acc"]), "lenient": float(final["lenient"]), "EM": float(final["EM"]), "F1": float(final.get("F1", 0.0)),
+                "units": float(u_ret + u_ans), "units_retrieve": float(u_ret), "units_answer": float(u_ans),
                 "ret_path": members, "ans_path": [self.AL.index(h["model"]) for h in hist], "ret_esc": float(ret_esc), "ans_esc": float(len(hist) > 1),
                 "top_ret": float(members[-1] == len(self.RL) - 1), "top_ans": float(self.AL[-1] in used), "fired": fired, "answer": final.get("prediction"),
                 "final_model": final["model"], "consensus": float(consensus),
+                "models": ";".join([f"retriever={self.tags[self.RL[i]]}" for i in members] + [f"answerer={self.tags[v]}" for v in used]),
                 "sure_feats": [float(len(members)), float(len(hist)), float(consensus), float(support), rsig0["ret_conf_pct"], rsig0.get("ret_probe_pct", 0.5),
                                fs.get("ans_conf_pct", 0.5), fs.get("answer_stated", 0.5), fs.get("words_in_passages", 0.0), fs.get("is_yes_no", 0.0),
                                fs.get("is_cannot", 0.0), fs.get("ans_probe_pct", 0.5)]}
@@ -242,8 +243,9 @@ class Env:
             a = self.A[self.AL[j]].get((q, key(r["sel"])))
             if a is None:
                 continue
-            out.append({"qid": q, "acc": a["acc"], "lenient": a["lenient"], "EM": a["EM"], "flops": r["flops"] + a["flops"],
-                        "budget": atts_budget(1, self.nominal[self.RL[i]], *self.nd["Retrieval"]) + atts_budget(1, self.nominal[self.AL[j]], *self.nd["Question Answering"])})
+            out.append({"qid": q, "acc": a["acc"], "lenient": a["lenient"], "EM": a["EM"], "F1": a.get("F1", 0.0), "answer": a.get("prediction"),
+                        "units": r["units"] + a["units"], "units_retrieve": r["units"], "units_answer": a["units"],
+                        "models": f"retriever={self.tags[self.RL[i]]};answerer={self.tags[self.AL[j]]}"})
         return out
 
 
@@ -273,7 +275,7 @@ def decide(rules, stage, sig, rung):
 
 def summ(rows):
     m = lambda k: float(np.mean([r.get(k, 0.0) for r in rows])) if rows else 0.0
-    return {"acc": m("acc"), "lenient": m("lenient"), "em": m("EM"), "flops": float(np.sum([r["flops"] for r in rows])), "budget": m("budget"),
+    return {"acc": m("acc"), "lenient": m("lenient"), "em": m("EM"), "units": float(np.sum([r["units"] for r in rows])),
             "ret_esc": m("ret_esc"), "ans_esc": m("ans_esc"), "top_ret": m("top_ret"), "top_ans": m("top_ans")}
 
 
@@ -281,7 +283,7 @@ def summ(rows):
 # acceptance
 # ==================================================================================
 def ok_half(E, c, b, repair=False):
-    dA, dC = c["acc"] - b["acc"], c["flops"] / max(b["flops"], 1.0) - 1
+    dA, dC = c["acc"] - b["acc"], c["units"] / max(b["units"], 1e-9) - 1
     if repair:
         return dA > 0, dA, dC
     cheaper = dA >= 0 and dC <= -0.005
@@ -289,15 +291,15 @@ def ok_half(E, c, b, repair=False):
     return cheaper or better, dA, dC
 
 
-def floor_of(fx, flops_per_q):
+def floor_of(fx, units_per_q):
     """H4 floor: the best fixed pipeline costing no more than this per question (no switching at the same price)."""
-    ok = [a for a, f in fx.values() if f <= flops_per_q * 1.0001]
+    ok = [a for a, f in fx.values() if f <= units_per_q * 1.0001]
     return max(ok) if ok else min(a for a, _ in fx.values())
 
 
 def guardrails(E, rb, rows, fx, cur_acc):
     s = summ(rows)
-    best_fixed = floor_of(fx, s["flops"] / max(1, len(rows)))
+    best_fixed = floor_of(fx, s["units"] / max(1, len(rows)))
     soft = [r for r in rb["rules"] if not r.get("hard")]
     why = []
     if s["top_ans"] > E.H["H3_max_share_top_answerer"] + 1e-9:
@@ -305,7 +307,7 @@ def guardrails(E, rb, rows, fx, cur_acc):
     if s["top_ret"] > E.H["H3b_max_share_top_retriever"] + 1e-9:
         why.append(f"H3b: {100*s['top_ret']:.0f}% reach the largest retriever (max {100*E.H['H3b_max_share_top_retriever']:.0f}%)")
     if s["acc"] < best_fixed - E.H["H4_max_acc_drop_vs_best_fixed"] and s["acc"] < cur_acc:
-        why.append(f"H4: dev accuracy {100*s['acc']:.1f}% below the best fixed pipeline at no higher cost ({100*best_fixed:.1f}%) minus {100*E.H['H4_max_acc_drop_vs_best_fixed']:.0f} point")
+        why.append(f"H4: val accuracy {100*s['acc']:.1f}% below the best fixed pipeline at no higher cost ({100*best_fixed:.1f}%) minus {100*E.H['H4_max_acc_drop_vs_best_fixed']:.0f} point")
     if len(soft) > E.H["H6_max_soft_rules"]:
         why.append(f"H6: {len(soft)} soft rules (max {E.H['H6_max_soft_rules']:.0f})")
     cnt = {}
@@ -315,7 +317,7 @@ def guardrails(E, rb, rows, fx, cur_acc):
     need = int(np.ceil(E.H["H6_min_support_share"] * len(rows)))
     for r in soft:
         if r["then"] == "escalate" and cnt.get(r["id"], 0) < need:
-            why.append(f"H6: rule {r['id']} decides on {cnt.get(r['id'], 0)} dev questions (min {need})")
+            why.append(f"H6: rule {r['id']} decides on {cnt.get(r['id'], 0)} val questions (min {need})")
     return why
 
 
@@ -343,7 +345,7 @@ def random_control(E, qids, cur_rows, cand_rows, rb, draws, seed):
             pool_m = [q for q in qids if len(forces[q][kind]) > 1]
             for q, dec in zip(rng.permutation(pool_m)[:len(minus)], minus):
                 forces[q][kind] = forces[q][kind][:max(1, len(forces[q][kind]) + dec)]
-        out.append(summ(E.evaluate("dev", qids, rb, forces))["acc"])
+        out.append(summ(E.evaluate("val", qids, rb, forces))["acc"])
     return float(np.mean(out))
 
 
@@ -484,7 +486,7 @@ def _bands(vals, ys, n=5):
 
 def evidence(E, rb, rows):
     s = summ(rows)
-    L = ["CURRENT RESULTS on dev half A: " + json.dumps({k: round(v, 4) for k, v in s.items() if k != "flops"})]
+    L = ["CURRENT RESULTS on val half A: " + json.dumps({k: round(v, 4) for k, v in s.items() if k != "units"})]
     cnt = {}
     for r in rows:
         for f in r["fired"]:
@@ -494,9 +496,9 @@ def evidence(E, rb, rows):
         rr = cnt.get(r["id"], [])
         L.append(f"  {rule_text(r)} -> decided {len(rr)}, accuracy {100*np.mean([x['acc'] for x in rr]) if rr else 0:.0f}%")
     qs = [r["qid"] for r in rows]
-    sel = {q: key(E.R["dev"][E.RL[0]][q]["sel"]) for q in qs}
+    sel = {q: key(E.R["val"][E.RL[0]][q]["sel"]) for q in qs}
     ys = [(E.names[v], [E.A[v][(q, sel[q])]["acc"] if (q, sel[q]) in E.A[v] else 0.0 for q in qs]) for v in E.AL]
-    sig = {q: E.visible(E.ans_sig("dev", q, 0, sel[q], None, False)) for q in qs}
+    sig = {q: E.visible(E.ans_sig("val", q, 0, sel[q], None, False)) for q in qs}
     L.append(f"ANSWER STAGE on the first retriever's shortlist (n={len(qs)}): " + ", ".join(f"{nm} right {100*np.mean(y):.0f}%" for nm, y in ys) + ". By band of the FIRST answerer's signals:")
     for k in sorted(set().union(*[set(x) for x in sig.values()])):
         if k in BINARY or k == "rung":
@@ -506,7 +508,7 @@ def evidence(E, rb, rows):
                     L.append(f"  {k}={int(val)}: n={len(msk)}, " + ", ".join(f"{nm} right {100*np.mean([y[i] for i in msk]):.0f}%" for nm, y in ys))
         else:
             L.append(f"  {k}: " + " | ".join(_bands([sig[q][k] for q in qs], ys)))
-    rs = {q: E.visible(E.ret_sig("dev", q, [0], sel[q])) for q in qs}
+    rs = {q: E.visible(E.ret_sig("val", q, [0], sel[q])) for q in qs}
     for k in ("ret_conf_pct", "ret_probe_pct"):
         if all(k in rs[q] for q in qs):
             vv = np.array([rs[q][k] for q in qs])
@@ -515,11 +517,11 @@ def evidence(E, rb, rows):
                 msk = [q for q, x in zip(qs, vv) if lo <= x < hi]
                 if msk:
                     L.append(f"  {lo:.1f}-{min(hi, 1):.1f} (n={len(msk)}): " + "; ".join(
-                        f"{E.names[v]} {100*np.mean([E.R['dev'][v][q]['found_both'] for q in msk]):.0f}%" for v in E.RL))
-    tf = {E.names[v]: np.mean([E.R["dev"][v][q]["flops"] for q in E.qids["dev"]]) / 1e12 for v in E.RL}
+                        f"{E.names[v]} {100*np.mean([E.R['val'][v][q]['found_both'] for q in msk]):.0f}%" for v in E.RL))
+    tf = {E.names[v]: np.mean([E.R["val"][v][q]["units"] for q in E.qids["val"]]) for v in E.RL}
     for v in E.AL:
-        tf[E.names[v]] = np.mean([E.A[v][(q, sel[q])]["flops"] for q in qs if (q, sel[q]) in E.A[v]]) / 1e12
-    L.append("COMPUTE per question (TFLOPs per call): " + ", ".join(f"{k} {v:.2f}" for k, v in tf.items()))
+        tf[E.names[v]] = np.mean([E.A[v][(q, sel[q])]["units"] for q in qs if (q, sel[q]) in E.A[v]])
+    L.append("COMPUTE per question (AgentTTS units per call): " + ", ".join(f"{k} {v:.2f}" for k, v in tf.items()))
     return "\n".join(L)
 
 
@@ -543,8 +545,8 @@ SIGNALS (name (stage): meaning):
 CURRENT RULEBOOK (settings: {json.dumps(rb['params'])}):
 """ + "\n".join("  " + rule_text(r) for r in rb["rules"]) + f"""
 
-HOW CHANGES ARE JUDGED: on two separate halves of the dev questions, a change must be no less accurate and cheaper, or more accurate at no more than {int(100*H['H8_max_compute_per_point'])}% extra compute per accuracy point; it must also beat escalating the same number of random questions. While the rulebook is below the accuracy floor (the best fixed pipeline costing no more than it, minus {100*H['H4_max_acc_drop_vs_best_fixed']:.0f} point), any accuracy gain counts.
-LOCKED LIMITS: at most {int(100*H['H3_max_share_top_answerer'])}% of questions may reach the largest answerer and {int(100*H['H3b_max_share_top_retriever'])}% the largest retriever; at most {H['H6_max_soft_rules']:.0f} soft rules; each escalate rule must decide on at least {100*H['H6_min_support_share']:.0f}% of dev questions; LOCKED rules cannot be changed or removed; thresholds move at most {H['H7_max_step']} per round (percentile for *_pct signals, raw units for 0-1 signals, 1 for whole-number signals).
+HOW CHANGES ARE JUDGED: on two separate halves of the val questions, a change must be no less accurate and cheaper, or more accurate at no more than {int(100*H['H8_max_compute_per_point'])}% extra compute per accuracy point; it must also beat escalating the same number of random questions. While the rulebook is below the accuracy floor (the best fixed pipeline costing no more than it, minus {100*H['H4_max_acc_drop_vs_best_fixed']:.0f} point), any accuracy gain counts.
+LOCKED LIMITS: at most {int(100*H['H3_max_share_top_answerer'])}% of questions may reach the largest answerer and {int(100*H['H3b_max_share_top_retriever'])}% the largest retriever; at most {H['H6_max_soft_rules']:.0f} soft rules; each escalate rule must decide on at least {100*H['H6_min_support_share']:.0f}% of val questions; LOCKED rules cannot be changed or removed; thresholds move at most {H['H7_max_step']} per round (percentile for *_pct signals, raw units for 0-1 signals, 1 for whole-number signals).
 
 EVIDENCE:
 {evidence(E, rb, rows)}
@@ -592,13 +594,13 @@ def seed_rulebook(cfg, ws):
 
 
 def fixed_dev(E):
-    """{(retriever rung, answerer rung): (dev accuracy, mean FLOPs per question)} of every fixed pipeline."""
+    """{(retriever rung, answerer rung): (val accuracy, mean units per question)} of every fixed pipeline."""
     out = {}
     for i in range(len(E.RL)):
         for j in range(len(E.AL)):
-            rows = E.fixed("dev", i, j)
+            rows = E.fixed("val", i, j)
             s = summ(rows)
-            out[(i, j)] = (s["acc"], s["flops"] / max(1, len(rows)))
+            out[(i, j)] = (s["acc"], s["units"] / max(1, len(rows)))
     return out
 
 
@@ -614,7 +616,7 @@ def learn(cfg, ws, planner=None):
     os.makedirs(os.path.join(out, "rulebooks"), exist_ok=True)
     fx = fixed_dev(E)
     bi, bj = max(fx, key=lambda k: fx[k][0])
-    log(f"{ws}: most accurate fixed pipeline on dev {100*fx[(bi, bj)][0]:.1f}% ({E.names[E.RL[bi]]} -> {E.names[E.AL[bj]]}); "
+    log(f"{ws}: most accurate fixed pipeline on val {100*fx[(bi, bj)][0]:.1f}% ({E.names[E.RL[bi]]} -> {E.names[E.AL[bj]]}); "
         "H4 compares the rulebook with the best fixed pipeline at no higher cost")
     state_p = os.path.join(out, "learn_state.json")
     st = json.load(open(state_p)) if os.path.exists(state_p) else {"round": 0, "rulebook": seed_rulebook(cfg, ws), "history": [], "log": []}
@@ -627,12 +629,14 @@ def learn(cfg, ws, planner=None):
     while st["round"] < R["rounds"]:
         rnd = st["round"] + 1
         base_rb = copy.deepcopy(rb)
-        cur = {h: E.evaluate("dev", qs, rb) for h, qs in (("A", E.halfA), ("B", E.halfB))}
+        cur = {h: E.evaluate("val", qs, rb) for h, qs in (("A", E.halfA), ("B", E.halfB))}
         cur_dev = cur["A"] + cur["B"]
         s = summ(cur_dev)
-        log(f"{ws} round {rnd}: dev accuracy {100*s['acc']:.1f}%, retrieval escalated {100*s['ret_esc']:.0f}%, answer escalated {100*s['ans_esc']:.0f}%")
+        log(f"{ws} round {rnd}: val accuracy {100*s['acc']:.1f}%, retrieval escalated {100*s['ret_esc']:.0f}%, answer escalated {100*s['ans_esc']:.0f}%")
         cands = [("code", d, c) for d, c in threshold_steps(rb)]
         if cfg["backend"] == "mock":
+            ptxt = planner_prompt(E, rb, cur["A"], st["history"])      # built anyway, so the dry run checks it
+            open(os.path.join(out, f"planner_round{rnd}.txt"), "w", encoding="utf-8").write(ptxt)
             props = mock_proposals(E, rnd)
         else:
             if planner is None:
@@ -661,9 +665,9 @@ def learn(cfg, ws, planner=None):
                     tried.add(d)
                     st["log"].append({"round": rnd, "source": src, "change": d, "decision": "rejected", "reason": why7})
                     continue
-                res = {h: E.evaluate("dev", qs, c) for h, qs in (("A", E.halfA), ("B", E.halfB))}
+                res = {h: E.evaluate("val", qs, c) for h, qs in (("A", E.halfA), ("B", E.halfB))}
                 sc = summ(cur_dev)
-                repair = sc["acc"] < floor_of(fx, sc["flops"] / len(cur_dev)) - E.H["H4_max_acc_drop_vs_best_fixed"]
+                repair = sc["acc"] < floor_of(fx, sc["units"] / len(cur_dev)) - E.H["H4_max_acc_drop_vs_best_fixed"]
                 okA, dAa, dCa = ok_half(E, summ(res["A"]), summ(cur["A"]), repair)
                 okB, dAb, dCb = ok_half(E, summ(res["B"]), summ(cur["B"]), repair)
                 rec = {"round": rnd, "source": src, "change": d, "half A": f"{100*dAa:+.1f} pt, {100*dCa:+.1f}% compute", "half B": f"{100*dAb:+.1f} pt, {100*dCb:+.1f}% compute"}
@@ -706,7 +710,7 @@ def learn(cfg, ws, planner=None):
         write_json(os.path.join(out, "rulebooks", f"rulebook_v{rnd}.json"), rb)
         write_json(state_p, st)
         tr.tick(rnd)
-        log(f"{ws} round {rnd} done: dev accuracy {100*summ(cur_dev)['acc']:.1f}%")
+        log(f"{ws} round {rnd} done: val accuracy {100*summ(cur_dev)['acc']:.1f}%")
     write_json(os.path.join(out, "rulebooks", "rulebook_final.json"), rb)
     tr.finish()
     if own:
@@ -752,10 +756,10 @@ def test(cfg, ws):
 
     add(f"Fixed: {nm[E.RL[0]]} -> {nm[E.AL[0]]} (cheapest)", E.fixed("test", 0, 0, T), "fixed")
     add(f"Fixed: {nm[E.RL[-1]]} -> {nm[E.AL[-1]]} (largest)", E.fixed("test", len(E.RL) - 1, len(E.AL) - 1, T), "fixed")
-    add(f"Fixed: {nm[E.RL[bi]]} -> {nm[E.AL[bj]]} (best fixed pipeline on dev)", E.fixed("test", bi, bj, T), "fixed")
+    add(f"Fixed: {nm[E.RL[bi]]} -> {nm[E.AL[bj]]} (best fixed pipeline on val)", E.fixed("test", bi, bj, T), "fixed")
     for name, rb in (("Starting rulebook (before any micro-experiment)", seed), (f"LEARNT rulebook (v{final['version']}, {st['round']} rounds)", final)):
         rows = E.evaluate("test", T, rb)
-        dev_rows = E.evaluate("dev", E.qids["dev"], rb)
+        dev_rows = E.evaluate("val", E.qids["val"], rb)
         sure = _fit_lr([r["sure_feats"] for r in dev_rows], [r["acc"] for r in dev_rows])
         thr = max(E.H["H5_min_sure_score"], rb["params"]["sure_threshold"])
         for r, sc in zip(rows, sure([r["sure_feats"] for r in rows])):
@@ -774,17 +778,16 @@ def test(cfg, ws):
         s = key(r["sel"])
         a1, a2 = E.A[E.AL[0]][(q, s)], E.A[E.AL[-1]][(q, s)]
         orc.append({"qid": q, "acc": max(a1["acc"], a2["acc"]), "lenient": max(a1["lenient"], a2["lenient"]), "EM": max(a1["EM"], a2["EM"]),
-                    "flops": r["flops"] + a1["flops"] + (0 if a1["acc"] else a2["flops"]),
-                    "budget": atts_budget(1, E.nominal[E.RL[0]], *E.nd["Retrieval"]) + atts_budget(1, E.nominal[E.AL[0]], *E.nd["Question Answering"])
-                    + (0 if a1["acc"] else atts_budget(1, E.nominal[E.AL[-1]], *E.nd["Question Answering"]))})
+                    "F1": max(a1.get("F1", 0), a2.get("F1", 0)), "answer": (a1 if a1["acc"] else a2).get("prediction"),
+                    "units": r["units"] + a1["units"] + (0 if a1["acc"] else a2["units"]), "units_retrieve": r["units"],
+                    "units_answer": a1["units"] + (0 if a1["acc"] else a2["units"]), "models": ""})
     add(f"Oracle: {nm[E.AL[0]]} if right, else {nm[E.AL[-1]]} (needs the answer key)", orc, "oracle")
     res = []
     ref = np.array([r["acc"] for r in pols[2]["rows"]])
     for p in pols:
         a = np.array([r["acc"] for r in p["rows"]])
         row = {"policy": p["policy"], "kind": p["kind"], "acc": float(a.mean()), "lenient": float(np.mean([r["lenient"] for r in p["rows"]])),
-               "EM": float(np.mean([r["EM"] for r in p["rows"]])), "budget_per_q": float(np.mean([r["budget"] for r in p["rows"]])),
-               "tflops_per_q": float(np.mean([r["flops"] for r in p["rows"]])) / 1e12, "n": len(a)}
+               "EM": float(np.mean([r["EM"] for r in p["rows"]])), "units_per_q": float(np.mean([r["units"] for r in p["rows"]])), "n": len(a)}
         if len(a) == len(ref):
             row["vs_best_fixed_pts"], row["ci_best_fixed"] = 100 * float(a.mean() - ref.mean()), _boot(a, ref)
         if p["detail"]:
@@ -803,11 +806,23 @@ def test(cfg, ws):
     per_q = [{"qid": x["qid"], "question": E.qd[x["qid"]]["question"], "gold": E.qd[x["qid"]]["answer"], "rules (in order)": " | ".join(x["fired"]),
               "retrievers": "+".join(E.RL[i] for i in x["ret_path"]), "answerers": "+".join(E.AL[i] for i in x["ans_path"]),
               "final from": x["final_model"], "answer": x["answer"], "sure score": round(x["sure_score"], 3), "flag": x["flag"], "right": x["acc"],
-              "TFLOPs": round(x["flops"] / 1e12, 3)} for x in lrows]
+              "AgentTTS units": round(x["units"], 3)} for x in lrows]
     R = rdir(cfg, ws)
+    # every policy's per-question rows, for the team results table (export stage): all fixed pairs, both rulebooks, the oracle
+    slug = {"fixed": None, "rulebook": None, "oracle": "oracle-answer-key"}
+    per_policy = {}
+    for i in range(len(E.RL)):
+        for j in range(len(E.AL)):
+            per_policy[f"fixed:{E.RL[i]}->{E.AL[j]}"] = E.fixed("test", i, j, T)
+    for p in pols:
+        if p["kind"] == "rulebook":
+            per_policy["rulebook-learnt" if p["policy"].startswith("LEARNT") else "rulebook-seed"] = p["rows"]
+        elif p["kind"] == "oracle":
+            per_policy[slug["oracle"]] = p["rows"]
+    write_json(os.path.join(R, "policy_rows.json"), per_policy)
     write_json(os.path.join(R, "results.json"), {"workstream": ws, "name": cfg["workstreams"][ws]["name"], "policies": res, "rules": rules_t,
                                                   "accepted": [x for x in st["log"] if x["decision"] == "ACCEPTED"], "tried": len(st["log"]),
-                                                  "final_rulebook": final, "n_dev": len(E.qids["dev"]), "n_test": len(T)})
+                                                  "final_rulebook": final, "n_dev": len(E.qids["val"]), "n_test": len(T)})
     write_jsonl(os.path.join(R, "per_question.jsonl"), per_q)
     write_jsonl(os.path.join(R, "micro_experiments.jsonl"), st["log"])
     _xlsx(R, res, rules_t, st["log"], per_q)
