@@ -23,8 +23,17 @@ class VLLMEngine:
     def __init__(self, model, max_model_len, gpu_util=0.88, seed=0, lora_path=None, pooling=False):
         """model: a resolved model entry (path, tensor_parallel, quantization, no_thinking)."""
         from vllm import LLM
-        kw = dict(model=model["path"], max_model_len=int(max_model_len), gpu_memory_utilization=gpu_util, seed=seed,
-                  tensor_parallel_size=int(model.get("tensor_parallel", 1)), enable_prefix_caching=not pooling)
+        tp = int(model.get("tensor_parallel", 1))
+        # PyTorch's expandable segments (set in the job scripts for training) clash with vLLM's own memory pool: on two
+        # GPUs the CUDA-graph capture ran out of memory. vLLM's worker processes inherit this variable, so drop it here.
+        if "expandable_segments" in os.environ.get("PYTORCH_CUDA_ALLOC_CONF", ""):
+            os.environ.pop("PYTORCH_CUDA_ALLOC_CONF")
+        kw = dict(model=model["path"], max_model_len=int(max_model_len), gpu_memory_utilization=gpu_util if tp == 1 else min(gpu_util, 0.85),
+                  seed=seed, tensor_parallel_size=tp, enable_prefix_caching=not pooling)
+        if tp > 1:
+            # vLLM's custom all-reduce needs direct GPU-to-GPU access, which these PCIe nodes do not give ("custom_all_reduce
+            # ... invalid argument"); NCCL's all-reduce works everywhere.
+            kw["disable_custom_all_reduce"] = True
         if model.get("quantization") or "awq" in model["path"].lower():
             kw["quantization"] = model.get("quantization") or "awq"
         if lora_path:
