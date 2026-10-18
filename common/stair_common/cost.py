@@ -5,9 +5,15 @@ AgentTTS (Sec. 4.1, Eq. 2-4) normalises inference FLOPs so that one pass of the 
 
     units = 2 x params x (prompt_tokens + generated_tokens) / (2 x 3e9 x 192)
 
-with the tokens actually measured for that call. Sum it over every model call a question makes: retrieval, every
-sample, fusion, and the router or judge. Limit, stated with every number: like AgentTTS, it counts parameter FLOPs only,
+with the tokens actually measured for that call. Sum it over every model call a question makes: retrieval, answering,
+fusion, and the router or judge. Limit, stated with every number: like AgentTTS, it counts parameter FLOPs only,
 not attention, so small models on long prompts are undercounted (about 60% for a 0.5B on a 100-passage prompt).
+
+Samples share their prompt. S samples drawn from one prompt are one call: the prompt counts once and every sample's
+generated tokens count, units(params_b, prompt_tokens, sum of the samples' generated tokens). This is AgentTTS's own
+accounting (App. A.2, Eq. 8: FLOPs = prompt + S x decode, because "Transformer models can exploit batching to share
+the cost of prompt encoding across multiple decoding passes"). A call with a new prompt, such as fusing the samples,
+counts its own prompt.
 """
 
 UNIT_PARAMS_B = 3.0
@@ -16,7 +22,8 @@ UNIT_GFLOPS = 2 * UNIT_PARAMS_B * UNIT_TOKENS  # 1,152 GFLOPs
 
 
 def units(params_b: float, prompt_tokens: int, generated_tokens: int) -> float:
-    """AgentTTS units of one call of a model with `params_b` billion parameters."""
+    """AgentTTS units of one call of a model with `params_b` billion parameters. For several samples from one prompt,
+    pass the prompt once and the samples' generated tokens summed (AgentTTS App. A.2, Eq. 8)."""
     return 2 * params_b * (prompt_tokens + generated_tokens) / UNIT_GFLOPS
 
 

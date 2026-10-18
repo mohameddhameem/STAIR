@@ -1,0 +1,40 @@
+# The team standard's checks: the common/ package on Linux and Windows, and the experiment entries against their
+# template (experiments/check.py). Runs on every branch that changes either.
+name: common
+
+on:
+  push:
+    paths: ["common/**", "experiments/**", ".github/workflows/common.yml"]
+  pull_request:
+    paths: ["common/**", "experiments/**", ".github/workflows/common.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e "common[test,plot]"
+      - run: pytest common/tests
+
+  experiments:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # every commit, so an entry's code.commit can be found
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python experiments/check.py
