@@ -1,0 +1,43 @@
+{
+  "agreement_covW": 0.9943281566509116,
+  "M1_gold_visibility": {
+    "300": 0.8478735005452562,
+    "400": 0.9173936750272628,
+    "600": 0.9770992366412213,
+    "900": 0.9953653217011995,
+    "1200": 0.9970010905125409,
+    "uncapped": 0.9972737186477645
+  },
+  "M2": {
+    "n_selected_passages": 42559,
+    "fit_600": 0.7015437392795884,
+    "median_survival": 1.0
+  },
+  "M3": {
+    "RET-router call": {
+      "n": 7405,
+      "median": 325,
+      "p99": 12355,
+      "max": 15261,
+      "over_maxlen": 278,
+      "over_frac": 0.037542201215395005
+    },
+    "QA-gate call": {
+      "n": 7405,
+      "median": 338,
+      "p99": 12364,
+      "max": 15274,
+      "over_maxlen": 278,
+      "over_frac": 0.037542201215395005
+    }
+  },
+  "caps_tested": [
+    300,
+    400,
+    600,
+    900,
+    1200,
+    "uncapped"
+  ],
+  "decision_rule": "keep 600/8192 if M1@600>=~90% and M3 overflow <1%; else raise cap to the ~90% crossing, re-check M3, re-run probe"
+}

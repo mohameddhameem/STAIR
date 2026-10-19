@@ -1,0 +1,31 @@
+{
+  "dtype": "fp16",
+  "pool_k": 100,
+  "maxlen": 32768,
+  "retr_weak": "Qwen/Qwen2.5-1.5B-Instruct",
+  "retr_strong": "Qwen/Qwen2.5-7B-Instruct",
+  "qa_weak": "Qwen/Qwen2.5-1.5B-Instruct",
+  "qa_strong": "Qwen/Qwen2.5-7B-Instruct",
+  "weak_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "strong_model": "Qwen/Qwen2.5-7B-Instruct",
+  "shuffle_scheme": "as-given/no-shuffle",
+  "data": "/mnt/hdd/jonathan/data/tts_test.json",
+  "git_sha": "bb76e1d",
+  "git_dirty": true,
+  "created": "2026-09-01T16:33:15",
+  "torch": "2.11.0+cu128",
+  "transformers": "5.14.1",
+  "gpu": "NVIDIA RTX 6000 Ada Generation",
+  "python": "3.10.12",
+  "argv": [
+    "--data",
+    "/mnt/hdd/jonathan/data/tts_test.json",
+    "--out",
+    "/mnt/hdd/jonathan/runs/full_run_p100",
+    "--dtype",
+    "fp16",
+    "--phase",
+    "retr_weak"
+  ],
+  "forced": false
+}

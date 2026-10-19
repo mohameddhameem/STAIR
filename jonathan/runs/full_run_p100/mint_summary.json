@@ -1,0 +1,27 @@
+{
+  "instances_scored": 7405,
+  "config_em": {
+    "weak-weak": 2194,
+    "weak-strong": 2814,
+    "strong-weak": 2825,
+    "strong-strong": 3498
+  },
+  "config_em_pct": {
+    "weak-weak": 29.6,
+    "weak-strong": 38.0,
+    "strong-weak": 38.1,
+    "strong-strong": 47.2
+  },
+  "best_fixed": "strong-strong",
+  "solved": 4144,
+  "solved_pct": 56.0,
+  "labels_minted": 4144,
+  "clean": 3899,
+  "label_distribution": {
+    "weak-weak": 2194,
+    "strong-weak": 723,
+    "weak-strong": 903,
+    "strong-strong": 324
+  },
+  "alpha": 0.6
+}

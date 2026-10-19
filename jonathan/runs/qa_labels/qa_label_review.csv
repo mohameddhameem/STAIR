@@ -1,0 +1,151 @@
+﻿idx,split,ret_choice,qa_label,qa_target,question,weak_answer,strong_answer,gold_answers
+5324,train,W,X,W,"What is the name of the company which acquired, in 2008, the world's largest beer producer that broke a distribution aggreement with Shangy's?",InBev,InBev,Anheuser-Busch
+4220,train,S,X,W,Blues to the Bush is an album by The Who that can still be found on what e-commerce platform that was founded in 1995?,ebay,eBay,eBay Inc.
+3078,train,S,S,S,Which hip hop act that collaborated in the Red Hot AIDS Benefit Series was also a trio that was formed in New York?,Mobb Deep,De La Soul,De La Soul
+3716,train,W,W,W," Which singer, who released his debut solo album in 2012, served as producer for the EP Live at the Third Man by White Denim in 2011?",Jack White,Jack White,Jack White
+2930,train,S,S,S,"Tolex and General Tire manufacture very different products, but both make accessories for what type of transportation vehicle?",automobile,automobiles,automobiles
+1769,train,W,X,W,"Near which town did the family of author of the ""Adventures of Huckleberry Finn"" own several tracts of land?",Independence,St. Louis,Santa Fe
+7219,train,S,X,W,Bill Nelson flew as a Payload Specialist on a Space Shuttle launched for the first time in what year?,1986,1986,1981
+7207,train,S,X,W,"Who had a longer film career, Harry Sweet or John Biddle?",John Biddle,John Biddle,John Scott Biddle
+5512,train,W,X,W,What Metropolitan City was Massimo Giordano born in?,New York,There is insufficient information to determine the birthplace of Massimo Giordano.,Naples
+6765,train,W,S,S,The King who opened Newcastle Civic Center in 1968 was born in what year?,1906,1903,1903
+2820,train,S,X,W,The organization that Nicolae Titulescu served two terms as president was founded on what date?,"March 4, 1882","December 16, 1920",10 January 1920
+1118,train,W,W,W,"which actress was a notable practitioner at the white bear theatre and is also known for playing the role of melanie owen in the BBC one soap opera ""eatenders""?",Tamzin Outhwaite,Tamzin Outhwaite,Tamzin Outhwaite
+286,train,S,X,W,"Other than racing, what sport does the 1998 champion of the Toyota GRand Prix practice?",motocross,paracycling,paracyclist
+2519,train,W,X,W,Who is the author of the series in which Rupert Grint plays one of the three main characters?,J.K. Rowling,J.K. Rowling,J. K. Rowling
+3912,train,W,W,W,"What time did the show, in which Gordon Burns was the host, usually air on Monday?",7pm,7pm,7pm
+4275,train,W,S,S,The  Actaea genus is native to what continent that the Onoclea genus is not?,Eastern North America,Europe,Europe
+2557,train,S,S,S,"The album that contains the song ""Get Together"" by Madonna was mainly recorded in whose home studio?",Price's home-studio,Stuart Price,Stuart Price
+5113,train,W,W,W,"What boy band formed in Orlando, Florida in 1993 performed at the 2001 Kids Choice Awards?",Backstreet Boys,Backstreet Boys,Backstreet Boys
+3215,train,W,S,S,Who is the chairman of the company that operates Suncoast Hotel and Casino?,Sheldon Adelson,Bill Boyd,Bill Boyd
+6565,train,W,X,W,What party does the person that represents Stoke Newington Central belong to?,Labour,Labour,British Labour Party
+6991,train,S,X,W,The city Charles Prince Airport is approximately 16 km northwest of was called Salisbury until what year?,Salisbury,1979,1982
+4092,train,S,S,S,"Which musician was born first, Constantine Orbelian or Lili Chookasian?",Constantine Orbelian,Lili Chookasian,Lili Chookasian
+1399,train,S,S,S,Was Pocahontas made before Born in China?,no,yes,yes
+5629,train,W,X,W,What year was the 2nd wife of the leader of the hussites born?,1951,1951,1430
+635,val,W,W,W,The Panel with striding lion  was one of many that lined the way north of the gate to the inner city of what location?,Babylon,Babylon,Babylon
+1421,train,S,W,W,What is the name of the album released by a British heavy metal band in February of 1981 that contains a reference to a highway?,Point of Entry,Point of Entry,Point of Entry
+1980,train,W,X,W,"Which car brand was one step above the brand started on November 3, 1911?",Chevrolet,General Motors,Oakland
+1530,train,W,X,W,When did the author of the book One More River is based on win the Nobel Prize?,"The reference does not provide information about when the author of the book ""One More River"" won the Nobel Prize.","The information provided does not specify when the author of ""One More River"" won the Nobel Prize.",1932
+7224,train,W,X,W,"In the Library with the Lead Pipe, an academic journal on topics about libraries, is abstracted and indexed by this third largest private company in Birmingham, Alabama? ",EBSCO databases,EBSCO databases,EBSCO Information Services
+5435,train,W,X,W,"Who died first, Chester Erskine or Sam Taylor?",Chester Erskine,Chester Erskine,Sam Taylor
+5719,train,W,X,W,Which Victorian poet was born in a 15th-century castle home to the Earl of Southesk?,Robert Louis Stevenson,Robert Burns,Charlotte Carnegie
+7006,train,W,W,W,A Wind in the Door is part of a series written by who?,Madeleine L'Engle,Madeleine L'Engle,Madeleine L'Engle
+2131,train,W,S,S,What occupation have Carly Gullickson and Francesca Schiavone both held?,tennis player,professional tennis player,professional tennis player.
+3352,train,S,S,S,"Which genus of flowering plant is found in an environment further south, Crocosmia or Cimicifuga?",Cimicifuga,Crocosmia,Crocosmia
+5510,train,W,W,W,"""She's a Woman"" is a song on the B-side of a single whose A-side has one of the first uses of what in popular music?",guitar feedback,guitar feedback,guitar feedback
+1262,val,S,X,W,Leonard Stogel managed which rock singer known for his robe-and-turban outfit?,Sam the Sham,Sam the Sham,"Domingo ""Sam"" Samudio"
+7328,val,W,X,W,When was the producer of  Michel'le born? ,"December 5, 1970",Information not provided in references.,"February 18, 1965"
+6544,val,S,X,W,Who was born first Edward Keonjian or Aram Saroyan?,Edward Keonjian,Edward Keonjian,Dr. Edward Keonjian
+709,train,S,W,W,Roden Brothers were taken over in 1953 by a group headquartered in which Canadian city ?,Montreal,Montreal,Montreal
+3136,train,S,X,W,Which racecar driver who performed in the 1971 Canadian Grand Prix was born in 1937?,Mark Donohue,Mark Donohue,Mark Neary Donohue Jr.
+4177,train,W,W,W,"Where was the Danish colony, in which the Scandinavian Collectors Club claims as part of their region and includes the islands of Saint Thomas, located?","The Danish colony, in which the Scandinavian Collectors Club claims as part of their region and includes the islands of Saint Thomas, was located in the Caribbean. Specifically, it consisted of the is",Caribbean,Caribbean
+842,train,S,W,W,"Which town has a greater population as of the 2010 census, Minden, Nevada or Gardnerville, Nevada?",Gardnerville,"Gardnerville, Nevada",Gardnerville
+5176,val,S,S,S,The Huskies football team were invited to the Alamo Bowl where they were defeated by a team coached by Art Briles and who played their home games at what statium?,CenturyLink Field,Floyd Casey Stadium,Floyd Casey Stadium
+4832,train,S,S,S,"What guitarist played with both Device and the American industrial rock group whose debut album was named ""Short Bus""?",Richard Patrick,Geno Lenardo,Geno Lenardo
+6561,val,W,X,W,What is the name of the director from a country which has only one-tenth of its historical boundaries?,Akira Kurosawa,This reference does not provide information about a director from a country with only one-tenth of its historical boundaries.,Serhiy Paradzhanov
+6136,train,S,W,W,Santa Bring My Baby Back was released on which fourth Elvis studio album in 1957?,Elvis' Christmas Album,Elvis' Christmas Album,Elvis' Christmas Album
+1437,train,W,S,S,Name the actor who has acted in the film Arrival and who has been nominated for the Academy Award for Best Supporting Actor for the film `The Town' ?,Billy Crudup,Jeremy Renner,Jeremy Renner
+6970,train,S,W,W,Where is the  highest level of baseball which Koichi Sekikawa is a former outfielder in located ,"Chōfu, Tokyo, Japan",Japan,Japan
+4166,train,S,W,W,Who directed the second film in a British series of action comedy film parodying the James Bond secret agent genre with comedy similar to Rowan Atkinson's Mr. Bean character?,Oliver Parker,Oliver Parker,Oliver Parker
+5161,train,S,X,W,Where were the Olympics held when the 1993 World Champion figure skater's home country won it's second Winter Games gold medal?,"Lillehammer, Norway",Lillehammer,"Sochi, Russia"
+3408,val,S,X,W,Brent Hodge and Harley Knoles are both know for being a what?,documentary filmmaker,documentary filmmaker,director
+183,train,W,X,W,"Which professional ice hockey position does the Captain of the National Hockey League All-Star Game ""Away Team"" play?",centre,centre,Canadian professional ice hockey centre
+4422,train,W,S,S," ""Coming Over"" is the second Japanese single album by a boy group that debuted in what year?",2016,2012,2012
+3786,val,W,W,W,What 1876 battle featured the Other Magpie?,Battle of the Rosebud,Battle of the Rosebud,Battle of the Rosebud
+5847,train,W,X,W,Where were the presenters of the 2016 Brit Awards from?,London,Ant & Dec,"Newcastle upon Tyne, England"
+532,train,W,X,W,Luke Null is an actor who was on the program that premiered its 43rd season on which date?,"September 23, 2016","Friday September 23, 2016","September 30, 2017"
+3598,train,W,X,W,Kyle York is the Chief Strategy Officer of a company that was aqured by what corporation in 2016?,Oracle,Oracle,Oracle Corporation
+518,train,W,S,S,"Where is the academy, for which Joseph D. Stewart was appointed Superintendent, located?",New Mexico Military Institute,"Kings Point, New York","Kings Point, New York"
+4859,train,S,X,W,What where Mark Chamberlain and Alex Oxlade-Chamberlain being?,brothers,footballers,an English professional footballer
+3813,train,S,X,W,The Sanders-Brown Center on Aging was funded by a grant from a businessman known for what restaurant chain?,Wendy's,KFC,Kentucky Fried Chicken (KFC)
+5926,train,S,X,W,What band did Gator Country guitarist that co-wrote Bloody Reunion come from?,Gator Country,Gator Country,Molly Hatchet
+48,val,W,W,W,Are Ferocactus and Silene both types of plant?,Yes,Yes,yes
+4134,train,S,W,W,What is the name of the hotel on the Upper West Side of New York City that housed a gay bathhouse?,The Ansonia Hotel,Ansonia Hotel,The Ansonia Hotel
+2416,train,W,W,W,"What was the air date of ""The Simpsons"" episode written by Matt Selman which parodied the VH1 series ""Behind the Music""?","May 21, 2000","May 21, 2000","May 21, 2000"
+1196,train,W,S,S,"What is the name of the black belt in Brizilian Jiu Jitsu who trains extensively under striking coach Ray Bronx Longo in Garden City, New York?",Pete Sell,Peter 'Drago' Sell,Peter 'Drago' Sell
+5698,train,W,W,W,Are both Arizona v. United States and Reynolds v. United States Supreme Court cases?,yes,Yes,yes
+2167,train,S,X,W,What chef is the owner of a Japanese restaurant in the Tribeca neighborhood and also owns two Bar Masas in New York and Nevada?,Masa Takayama,Masa Takayama,"Masayoshi ""Masa"" Takayama"
+2513,train,W,W,W,"The title track of Carla Bruni discography was used in a  film directed by James Ivory, and was also used in what other film?",(500) Days of Summer,(500) Days of Summer,(500) Days of Summer
+5377,val,S,X,W,How was Tiger Pataudi related to Iftikhar Ali Khan Pataudi?,father,son,His son
+3659,train,S,W,W,Near what ocean does the highway carried by the Long-Allen bridge terminate near?,Atlantic Ocean,Atlantic Ocean,the Atlantic Ocean
+596,train,W,X,W,Where was the movement that August Brancart published literature from centerd?,Belgium,Belgium,Western Europe
+2703,train,S,X,W,In what part of England is John Folwes' country house located?,Lyme Regis,West Dorset,"West Dorset, South West England."
+657,train,W,W,W,Which of the following stars Jeff Bridges as a computer programmer: Tron or The Million Dollar Duck?,Tron,Tron,Tron
+2791,train,S,S,S,Are Brooklyn and Tower 49 both part of New York City?,Brooklyn and Tower 49 are not both part of New York City.,Yes,yes
+1942,val,S,X,W,What sports club based in Hamburg Germany had a Persian born football player who played for eight seasons?,Hamburger SV,Hamburger SV,Mehdi Mahdavikia
+6186,train,W,S,S,"Who was born first, Bobby Keys or Joe Cocker?",Joe Cocker,Bobby Keys,"""Bobby"" Keys"
+5684,train,W,W,W,"Who is older, Lucy Gichuhi or Bob Day?",Bob Day,Lucy Gichuhi,Bob Day
+5437,train,W,X,W,Where was the set for the winner of the WD Weatherford Award in 1998?  ,Temple University,Clemson University,Coalwood
+5655,val,W,S,S,"Which university has more campuses, Dalhousie University or California State Polytechnic University, Pomona?","California State Polytechnic University, Pomona",Dalhousie University,Dalhousie University
+1320,train,S,S,S,"Who was older, Andrew Preston or James Taylor?",Andrew Preston,James Taylor,James Taylor
+2535,train,W,X,W,What Swedish songwriter worked with Taylor Swift?,Nathan Chapman,Nathan Chapman,Shellback
+6736,train,S,X,W,What award did both Victor Heerman and Lloyd Corrigan win?,Academy Award,Academy Award,won an Academy Award
+3120,train,S,X,W,The Genesis Flood is a book by John C. Whitcomb and what founder of the Creation Research Society and the Institute for Creation Research?,Henry M. Morris,Henry M. Morris,Henry Madison Morris
+3527,val,W,X,W,The title of this Swedish-French crime television series in English refers to a natural phenomenon where the sun remains visible for what?,Midnight sun,24 hours,the full 24 hours
+3229,train,W,S,S,"An American physicist coined the term ""soft energy path"" in 1976.  Today he is chairman and chief scientist of what?",World Resources Institute,Rocky Mountain Institute,Rocky Mountain Institute
+1732,train,S,S,S,Which documentary film was released first Tar Creek or Volcanic Sprint?,Tar Creek,Volcanic Sprint,Volcanic Sprint
+3365,train,W,S,S,The Curaçao Centre for Correction and Detention changed its name to Sentro di Detenshon i Korekshon Kòrsou at this event which saw the dissolution of a Caribbean country on what date?,"October 10, 2010",10 October 2010,10 October 2010
+964,train,S,W,W,"Who was the brother of the architect of Hook and Ladder No. 4 located in Albany, NY?",Cuyler Reynolds,Cuyler Reynolds,Cuyler Reynolds
+5877,train,S,X,W,"Which musician obtained fame first, Terry Kath or Róisín Murphy?",Terry Kath,Terry Kath,Terry Alan Kath
+5910,train,S,W,W,"Egremont Castle is located in what market town, civil parish, and two electoral wards in the Borough of Copeland in Cumbria, England?","Egremont, North, South","Egremont, Cumbria, North and South",Egremont
+2762,train,S,X,W,What was Mike Coffman's title after being replaced as secretary of state by Bernie Buescher?,Colorado Secretary of State,U.S. Representative,U.S. Representative for Colorado 's 6 congressional district
+3393,val,W,S,S,What kind of musician does Robert Plant discography and John Bonham have in common?,rock,drummer,drummer
+94,train,S,W,W,"In what month is the annual documentary film festival, that is presented by the fortnightly published British journal of literary essays, held? ",March and April,March and April,March and April
+520,train,S,W,W,"Which movie directed by James Gunn portrayed the fictional character, Ego the Living Planet?",Guardians of the Galaxy Vol.  2,Guardians of the Galaxy Vol. 2,Guardians of the Galaxy Vol. 2
+3528,train,S,X,W,When was Ben McNiece played his debut  in the Anzac Day clash  against Collingwood at the Melbourne Cricket Ground?,November 2016,round five of the 2017 season,25 April
+198,val,W,X,W,What amount was the settlement that the character from the Son of al Quada got in 2017?,$15.00,The reference does not provide information about a character from the Son of al Quada or any settlement related to that character in 2017.,$10.5 million
+4755,train,S,X,W,The British longhair is defined by what registries?,Governing Council of the Cat Fancy,Governing Council of the Cat Fancy,domestic cat
+2762,train,W,X,W,What was Mike Coffman's title after being replaced as secretary of state by Bernie Buescher?,Colorado Secretary of State,U.S. Representative,U.S. Representative for Colorado 's 6 congressional district
+4829,train,W,X,W,Who was the probably maternal grandfather of Edmund II?,Maurice Roche,"Maurice Roche, 4th Baron Fermoy",Thored
+6487,train,W,W,W,Are the magazines American Heritage and Bon Appétit both published in America?,Yes,Yes,yes
+558,train,W,X,W,"Which has more species, Aichryson or Polypodium?",Aichryson,Aichryson,Polypodium
+1998,train,W,X,W,What is the alcohol content of the drink normally consumed alongside Rippchen?,Apfelwein,Apfelwein,4.8%–7.0%
+3142,train,S,W,W,What is the capitol of the district that also includes the village of Shienga?,Gambaga,Gambaga,Gambaga
+2618,train,W,X,W,Charlie Rowe plays Billy Costa in a film based on what novel?,Billy Costa,The Golden Compass,"""Northern Lights"""
+765,train,S,W,W,Altnahinch is located in a county that has a population density of how many per square mile? ,526 people per square mile,526,526
+7325,train,S,S,S,What division are the 2013 Valdosta State Blazers football team and the Gulf South Conference a part of? ,Gulf South Conference,NCAA Division II,NCAA Division II
+4943,train,W,W,W,What stagecoach robber did Frederick John Fulton prosecute?,Bill Miner,Bill Miner,Bill Miner
+212,train,W,X,W,"Which tower is taller, 712 Fifth Avenue or Manhattan Life Insurance Building?",712 Fifth Avenue,712 Fifth Avenue,712 5th Avenue
+6363,val,S,W,W,Pedro Duque and Mark Shuttleworth both went where in their life times?,space,space,space
+5771,val,S,X,W,Who wrote the lyrics for Linda Eder's Broadway debut?,Frank Wildhorn,Steve Cuden,"Wildhorn, Bricusse and Cuden"
+5358,train,S,W,W,The film Navakoti Narayana was based on the life of Purandara Dasa who was born in what year?,1484,1484,1484
+7007,val,S,W,W,Are both Miltoniopsis and Strobilanthes examples of a genus?,Yes,yes,yes
+1408,train,S,W,W,Where is the historic meeting venue built in a style taught at the Ecole des Beaux-Arts?,"First Street in downtown Dayton, Ohio","Dayton, Ohio",First Street
+4110,train,W,W,W,Which NFL team did both Don Looney and DeSean Jackson play for?,Philadelphia Eagles,Philadelphia Eagles,Philadelphia Eagles
+6031,val,W,S,S,"Tedrow, Ohio lies close to which 241. 26 mi highway? ",Arkansas Highway 241,Ohio Turnpike,Ohio Turnpike
+3985,train,S,W,W,"Who was born first, Sarah Jacobson or Arthur Hiller?",Arthur Hiller,Arthur Hiller,Arthur Hiller
+1852,train,W,X,W,What did Felix Salten originally title his most famous work?,"""Bambi, a Life in the Woods""","Bambi, a Life in the Woods",Bambi: Eine Lebensgeschichte aus dem Walde
+1970,train,S,X,W,Rafael de Souza Pereira is a defensive midfielder for what organization that is the top level of the Mexican football league system?,Tigres UANL,Tigres UANL,Liga MX
+2545,train,S,X,W,"Which of the songs that outperformed ""Drive"" was most successful in the United States?",It Was a Good Day,"""It Was a Good Day""","""Losing My Religion"""
+1529,train,W,X,W,What month did the an online adult website whose last print magazine was published in the summer of 2007 recognize Nikita Gross?,July,The references do not provide the specific month when Perfect 10 recognized Nikita Gross.,January
+6911,val,W,X,W,Are both Dodgy and Massive Attack based in the same country?,UK,No,yes
+1120,train,W,X,W,How many rooms does that largest single hotel within the United States that is owned by MGM Resorts International?,"5,124",2002,"5,124 rooms"
+2153,train,S,W,W,Rebecca M. Bergman is the President of a college affliated with what church?,Evangelical Lutheran Church in America,Evangelical Lutheran Church in America,Evangelical Lutheran Church
+517,train,W,W,W,Which avant-garde Japanese composer studied with John Cage and wrote Music for Electric Metronomes?,Toshi Ichiyanagi,Toshi Ichiyanagi,Toshi Ichiyanagi
+5477,train,S,X,W,Fash Mosque is 4.5 km away from which mosque originally built by Muhammad?,Al-Masjid an-Nabawi,Al-Masjid an-Nabawi,Al-Masjid an-Nabawī
+3096,train,S,X,W,What 4-D film attraction at Walt Disney World is based off a 2004 computer-animated Christmas movie? ,Mickey's Christmas Carol,Mickey's Christmas Carol,Mickey's PhilharMagic
+3197,train,S,W,W,In what state is the manufacturer of Bisquick headquartered?,Minnesota,Minnesota,Minnesota
+3203,train,S,X,W,"Which filmmaker is considered a pioneer, Herschell Gordon Lewis or Leah Meyerhoff?",Herschell Gordon Lewis,Herschell Gordon Lewis,Herschell Gordon Lewis was a pioneer
+511,train,W,W,W,"What was the nationality of the actor playing a Russian hostage taker in ""Hostage for a Day""?",Canadian,Canadian,Canadian
+1637,train,S,X,W,which sultan of the Ottoman Empire was  Gevherhan Sultan her granddaughter ,Selim II,Suleiman the Magnificent,Suleiman I
+4269,train,W,X,W,When did an IndyCar race driver drive a Formula 1 car designed by Peter McCool?,2007,2007,2007 Formula One season
+952,train,W,S,S,What organization does Rosyth Dockyard and Queen Elizabeth-class aircraft carrier have in common?,Aircraft Carrier Alliance,Royal Navy,Navy
+7062,train,W,X,W,What nationality was the lover of Lord Alfred Douglas ? ,British,British,Irish
+3161,train,S,S,S,"Bob Edwards was the host of what show, that later was hosted by Renee Montagne?",The Bob Edwards Show,Morning Edition,Morning Edition
+2538,train,W,S,S,Who was the gunman of the hostage crisis which Chris Reason was awarded the Graham Perkin Australian Journalist of the Year Award for his coverage of?,Lindt Cafe siege,Man Haron Monis,Man Haron
+6725,train,S,X,W,"What event in 1920 was established by the director of the play ""The Miracle?""",Fame and Philanthropy,Insufficient information,Salzburg Festival
+4117,train,S,X,W,Which character in The Hunt for Red October was played by the actor who made his film debut in The Revolutionary,Ron Carver,Mark Ramius,Skip Tyler
+4894,train,W,W,W,Which American actors and comedian played a New York City tailor in The Angel Levine?,Zero Mostel,"Zero Mostel, Harry Belafonte",Zero Mostel
+5536,val,W,X,W,"Alexandra Park in Greater Manchester, England was created in response to an event that ook place during what years?",1861-1865,1861–1865,1861–65
+876,train,S,S,S,"Russia Soviet pianist, composer and teacher, Tatiana Nikolayeva taught what Polish pianist and music educator?",Bolesław Woytowicz,Tatiana Nikolayeva taught Maria Szraiber,Maria Szraiber
+5545,train,S,X,W,Romans stars which Tamil and Telugu actress?,Geetanjali,Geetanjali,Nivetha Thomas
+6523,train,W,W,W,Who is a guest in the final two episodes of season eighteen of South Park?,PewDiePie,PewDiePie,PewDiePie
+2443,train,W,W,W,Are Jonathan Demme and Chris Renaud both American filmmakers?,Yes,Yes,yes
+2280,train,S,W,W,"What American horror film directed by Sidney J. Furie was based off an alleged haunting which occurred in 1974 at Culver City, California?",The Entity,The Entity,The Entity
+5428,train,W,X,W,"How many episodes were in the 23rd season of a Fox network show which, in it's twenty-second season, aired it's twenty-first episode which was written by John Frink and directed by Bob Anderson.",5,500,22 episodes.
+2683,train,S,X,W,Which direction do both the M1 and the M6 Motorways travel?,south-north,south-north,heads north
+5887,train,W,X,W,Mark Newhouse finished 9th in a 2013 series of poker tournaments sponsored by what corporation?,World Series of Poker,WSOP,Caesars Entertainment Corporation
+1661,val,S,W,W,Kevin Alejandro was part of the cast of the 2015 American drama film written and directed by whom?,Tony Aloupis,Tony Aloupis,Tony Aloupis
+2989,val,S,S,S,When did the British philosopher whose works inspired Kate Horsley's interest in Zen die?,1973,16 November 1973,16 November 1973
+508,val,W,W,W,"In what London botanical garden can you find the fungus described by Elise Maud Wakefield as ""Lepiota""?",Kew Gardens,Kew Gardens,Kew Gardens

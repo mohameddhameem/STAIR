@@ -1,0 +1,74 @@
+{
+  "params_B": {
+    "weak": 1.5,
+    "strong": 7.0
+  },
+  "convention": "AgentTTS token-aware: params x (n_in + n_out), measured at generation time; QA price conditional on the retrieval choice (GIVEN_W / GIVEN_S)",
+  "measured": {
+    "retr_weak": {
+      "n_calls": 7405,
+      "mean_tokens": 14262.649020931804,
+      "median_tokens": 14226.0,
+      "oom_skipped": 0,
+      "truncated": 0
+    },
+    "retr_strong": {
+      "n_calls": 7405,
+      "mean_tokens": 14282.933018230926,
+      "median_tokens": 14262.0,
+      "oom_skipped": 0,
+      "truncated": 0
+    },
+    "qa_weak_given_W": {
+      "n_calls": 7405,
+      "mean_tokens": 854.508440243079,
+      "median_tokens": 269.0,
+      "oom_skipped": 0,
+      "truncated": 0
+    },
+    "qa_weak_given_S": {
+      "n_calls": 7405,
+      "mean_tokens": 331.0931802835922,
+      "median_tokens": 284.0,
+      "oom_skipped": 0,
+      "truncated": 0
+    },
+    "qa_strong_given_W": {
+      "n_calls": 7405,
+      "mean_tokens": 855.0860229574612,
+      "median_tokens": 269.0,
+      "oom_skipped": 0,
+      "truncated": 0
+    },
+    "qa_strong_given_S": {
+      "n_calls": 7405,
+      "mean_tokens": 331.4795408507765,
+      "median_tokens": 285.0,
+      "oom_skipped": 0,
+      "truncated": 0
+    }
+  },
+  "normalized_costs": {
+    "retr_weak": 43.077,
+    "retr_strong": 201.314,
+    "qa_weak_given_W": 2.581,
+    "qa_weak_given_S": 1.0,
+    "qa_strong_given_W": 12.052,
+    "qa_strong_given_S": 4.672
+  },
+  "gate_eval_constants": {
+    "COST_RET_W": 43.077,
+    "COST_RET_S": 201.314,
+    "COST_QA_W_GIVEN_W": 2.581,
+    "COST_QA_W_GIVEN_S": 1.0,
+    "COST_QA_S_GIVEN_W": 12.052,
+    "COST_QA_S_GIVEN_S": 4.672
+  },
+  "flat_family_for_comparison": {
+    "COST_RET_W": 1.0,
+    "COST_RET_S": 4.7,
+    "COST_QA_W": 1.0,
+    "COST_QA_S": 4.7,
+    "note": "params ratio only; kept for the Ruler slide's simple story"
+  }
+}

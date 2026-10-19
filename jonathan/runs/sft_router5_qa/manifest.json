@@ -1,0 +1,19 @@
+{
+  "stage": "qa",
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "labels_file": "/mnt/hdd/jonathan/runs/qa_labels/qa_labels.jsonl",
+  "labels_sha256": "fe7c469ad4d205e3acd38b38ae4c3be6b71de03207c38e10e621dbd5375fe5b1",
+  "char_cap": 600,
+  "maxlen": 16384,
+  "lr": 0.0001,
+  "epochs": 3,
+  "accum": 8,
+  "seed": 17,
+  "class_weights": {
+    "W": 0.5792,
+    "S": 3.6553
+  },
+  "curve_eval_rows": 1110,
+  "best_val_auc_fullval": 0.7074,
+  "fullval_match_at_0.5": 0.7486
+}

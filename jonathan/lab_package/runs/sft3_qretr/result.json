@@ -1,0 +1,54 @@
+{
+  "manifest": {
+    "script": "sft_router3.py (v3.1 memory-safe)",
+    "mode": "qretr",
+    "n_actions": 2,
+    "epochs": 2,
+    "batch": 8,
+    "accum": 8,
+    "eff_batch": 64,
+    "lr": 2e-05,
+    "warmup_steps": 7,
+    "total_opt_steps": 152,
+    "eval_every": 25,
+    "val_probe_n": 400,
+    "lora_r": 8,
+    "maxlen": 1024,
+    "retr_chars": 3500,
+    "keep_ties": false,
+    "seed": 20260817,
+    "router_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "train_usable": 4814,
+    "train_after_tie_drop": 4814,
+    "val": 1110,
+    "test": 1481,
+    "currency": "our FLOP units (ww2.0/ws5.7/sw5.7/ss9.4)"
+  },
+  "best_probe": {
+    "auc": 0.5959079283887468,
+    "step": 25
+  },
+  "test_last": {
+    "em": 0.37542201215395005,
+    "cost": 0.6063829787233933,
+    "R": 0.36478401215396555,
+    "headroom_pct": 0.0,
+    "picks": {
+      "strong-weak": 1481
+    },
+    "auc_disagree": 0.5632792207792208,
+    "n_disagree": 277
+  },
+  "test_best": {
+    "em": 0.37542201215395005,
+    "cost": 0.6079776459264047,
+    "R": 0.36212623092506596,
+    "headroom_pct": -5.721665489242446,
+    "picks": {
+      "strong-weak": 1475,
+      "strong-strong": 6
+    },
+    "auc_disagree": 0.478961038961039,
+    "n_disagree": 277
+  }
+}

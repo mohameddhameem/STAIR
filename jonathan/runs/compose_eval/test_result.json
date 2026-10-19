@@ -1,0 +1,21 @@
+{
+  "test_accuracy": 50.1,
+  "test_cost": 106.95,
+  "n": 1481,
+  "theta_used": {
+    "cost": 106.7294,
+    "val_accuracy": 50.18,
+    "theta_ret": 0.476562,
+    "theta_qa": 0.874023
+  },
+  "primary": "theta_bar",
+  "ruler_test_rungs": {
+    "WW": 31.8,
+    "WS": 43.55,
+    "SW": 41.73,
+    "SS": 53.54,
+    "oracle_any": 61.24
+  },
+  "cost_family": "flat (Ruler slide); re-express via 13 for AgentTTS comparison",
+  "read_discipline": "single read; this file's existence blocks any re-read"
+}

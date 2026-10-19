@@ -1,0 +1,45 @@
+{
+  "source": "/mnt/hdd/jonathan/runs/full_run_p100/router_data_lenient.jsonl",
+  "lane": "teacher-1 / outcome-only",
+  "teacher2_status": "retired by chooser_ceiling gate, 7 Oct",
+  "rule": "W if weak answer right; S if weak wrong and strong right; X if both wrong",
+  "mapping": "X -> W (do not pay for strong when neither works)",
+  "rows": 14810,
+  "shares": {
+    "train|W": {
+      "X": 2598,
+      "W": 1582,
+      "S": 634
+    },
+    "train|S": {
+      "X": 2102,
+      "W": 2029,
+      "S": 683
+    },
+    "val|W": {
+      "X": 592,
+      "S": 146,
+      "W": 372
+    },
+    "val|S": {
+      "X": 485,
+      "W": 471,
+      "S": 154
+    },
+    "test|W": {
+      "W": 471,
+      "S": 213,
+      "X": 797
+    },
+    "test|S": {
+      "S": 230,
+      "W": 618,
+      "X": 633
+    }
+  },
+  "class_weights_post_mapping": {
+    "W": 0.5792,
+    "S": 3.6553
+  },
+  "audit_mismatches": {}
+}

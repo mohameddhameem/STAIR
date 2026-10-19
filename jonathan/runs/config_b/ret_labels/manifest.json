@@ -1,0 +1,27 @@
+{
+ "version": "configb_build_ret_labels v1.0 2026-10-14 (Config B: paths, em_standard, model names)",
+ "retr_weak": "Qwen/Qwen2.5-7B-Instruct",
+ "retr_strong": "Qwen/Qwen2.5-72B-Instruct",
+ "inputs": {
+  "grid": "/mnt/hdd/jonathan/runs/config_b/router_data_standard.jsonl",
+  "retr_weak": "/mnt/hdd/jonathan/runs/config_b/retr_weak.jsonl",
+  "retr_strong": "/mnt/hdd/jonathan/runs/config_b/retr_strong.jsonl",
+  "data": "/mnt/hdd/jonathan/data/tts_test.json"
+ },
+ "metric": "lenient whole-word containment (make_label_review-compatible)",
+ "n": 7405,
+ "shares": {
+  "W": 4819,
+  "S": 1763,
+  "X": 823
+ },
+ "train_post_mapping": {
+  "W": 3642,
+  "S": 1172
+ },
+ "class_weights_post_mapping": {
+  "W": 0.661,
+  "S": 2.054
+ },
+ "created": "2026-10-14T23:45:37"
+}

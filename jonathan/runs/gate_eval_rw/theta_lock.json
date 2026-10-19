@@ -1,0 +1,53 @@
+{
+  "rule": "primary=cheapest >= 95% of SS val accuracy (CPT-95); secondary=Kneedle knee; fallback=knee if bar unreachable; sealed test reads PRIMARY only, once",
+  "ss_val_accuracy": 52.79,
+  "bar": 50.15,
+  "costs_units": {
+    "ret_W": 43.077,
+    "ret_S": 201.314,
+    "qa_W_given_W": 2.581,
+    "qa_W_given_S": 1.0,
+    "qa_S_given_W": 12.052,
+    "qa_S_given_S": 4.672,
+    "status": "measured token-aware family (13 token_costs.py)"
+  },
+  "primary": "theta_bar",
+  "theta_bar": {
+    "cost": 110.6568,
+    "val_accuracy": 50.18,
+    "theta_ret": 0.492188,
+    "theta_qa": 0.303955
+  },
+  "theta_knee": {
+    "cost": 68.0315,
+    "val_accuracy": 45.32,
+    "theta_ret": 0.214722,
+    "theta_qa": 0.303955
+  },
+  "context_90": {
+    "cost": 84.4941,
+    "val_accuracy": 47.57,
+    "theta_ret": 0.310791,
+    "theta_qa": 0.303955
+  },
+  "context_98": {
+    "cost": 132.3249,
+    "val_accuracy": 51.8,
+    "theta_ret": 0.629883,
+    "theta_qa": 0.303955
+  },
+  "max_accuracy_row": {
+    "cost": 184.8586,
+    "val_accuracy": 53.87,
+    "theta_ret": 0.835449,
+    "theta_qa": 0.303955
+  },
+  "beats_SS": {
+    "cost": 163.1972,
+    "val_accuracy": 52.79,
+    "theta_ret": 0.763672,
+    "theta_qa": 0.303955
+  },
+  "n_val": 1110,
+  "frontier_points": 113
+}

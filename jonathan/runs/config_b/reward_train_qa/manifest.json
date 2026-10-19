@@ -1,0 +1,19 @@
+{
+  "stage": "qa_reward_optimized_entropy_warmstart",
+  "objective": "maximize E[R'] + 0.03*entropy, R' = tokenF1 - 0.1*C/C_SS (B=C_SS, hinge silent at K=1)",
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "warm_start": "/mnt/hdd/jonathan/runs/config_b/sft_router5_qa/best_adapter",
+  "labels_file": "/mnt/hdd/jonathan/runs/config_b/qa_labels/qa_labels.jsonl",
+  "labels_sha256": "f30a1fe005b20d8ad14e11e667be2747f8bda4bb4341afbd5ceb7b7f18a5fd43",
+  "char_cap": 600,
+  "maxlen": 16384,
+  "lr": 1e-05,
+  "epochs": 3,
+  "accum": 8,
+  "seed": 17,
+  "lambda": 0.1,
+  "c_ss": 929,
+  "curve_eval_rows": 1110,
+  "best_val_meanR_fullval": 0.633,
+  "fullval_auc_vs_labels": 0.7861
+}

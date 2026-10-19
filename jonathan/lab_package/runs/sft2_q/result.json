@@ -1,0 +1,32 @@
+{
+  "manifest": {
+    "script": "sft_router2.py",
+    "mode": "q",
+    "n_actions": 4,
+    "epochs": 2,
+    "lr": 0.0001,
+    "batch": 16,
+    "lora_r": 16,
+    "maxlen": 1024,
+    "retr_chars": 1500,
+    "keep_ties": false,
+    "seed": 20260817,
+    "router_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "train_usable": 4814,
+    "train_after_tie_drop": 4643,
+    "val": 1110,
+    "test": 1481,
+    "currency": "our FLOP units (ww2.0/ws5.7/sw5.7/ss9.4)"
+  },
+  "test": {
+    "em": 0.23362592842673868,
+    "cost": 0.2127659574468085,
+    "R": 0.23362592842673868,
+    "headroom_pct": -91.45235581254178,
+    "picks": {
+      "weak-weak": 1481
+    },
+    "auc_disagree": 0.5776873167384117,
+    "n_disagree": 489
+  }
+}

@@ -1,0 +1,22 @@
+{
+ "W_but_WW_wrong": 1579,
+ "S_but_WW_right": 214,
+ "X_rescued": 495,
+ "X_cells": {
+  "WW": 325,
+  "WS": 459,
+  "SW": 343,
+  "SS": 473
+ },
+ "X_yesno": 440,
+ "X_n": 823,
+ "agree": {
+  "X|W": 474,
+  "W|W": 4075,
+  "S|S": 898,
+  "S|W": 533,
+  "W|S": 95,
+  "X|S": 21
+ },
+ "winnable_committed": 5601
+}

@@ -1,0 +1,36 @@
+{
+  "n_test": 1481,
+  "best_fixed": "strong-weak",
+  "arms": {
+    "always weak-weak": {
+      "em": 0.23362592842673868,
+      "cost": 0.2127659574468085,
+      "R": 0.23362592842673868,
+      "picks": {
+        "weak-weak": 1481
+      },
+      "headroom_pct": -91.45235581254178
+    },
+    "always strong-weak (best-fixed)": {
+      "em": 0.37542201215395005,
+      "cost": 0.6063829787234043,
+      "R": 0.36478401215396555,
+      "picks": {
+        "strong-weak": 1481
+      },
+      "headroom_pct": 0.0
+    },
+    "oracle": {
+      "em": 0.5550303848750844,
+      "cost": 0.36532245320155093,
+      "R": 0.508200857528702,
+      "picks": {
+        "weak-weak": 1005,
+        "weak-strong": 137,
+        "strong-strong": 98,
+        "strong-weak": 241
+      },
+      "headroom_pct": 100.0
+    }
+  }
+}

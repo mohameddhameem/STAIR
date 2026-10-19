@@ -1,0 +1,104 @@
+{
+  "version": "build_router_data v1.2 2026-09-08 (label_metric + unicode fold + yes/no guard)",
+  "label_metric": "lenient",
+  "run": "/mnt/hdd/jonathan/runs/full_run_p100",
+  "grid_manifest": {
+    "dtype": "fp16",
+    "pool_k": 100,
+    "maxlen": 32768,
+    "retr_weak": "Qwen/Qwen2.5-1.5B-Instruct",
+    "retr_strong": "Qwen/Qwen2.5-7B-Instruct",
+    "qa_weak": "Qwen/Qwen2.5-1.5B-Instruct",
+    "qa_strong": "Qwen/Qwen2.5-7B-Instruct",
+    "weak_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "strong_model": "Qwen/Qwen2.5-7B-Instruct",
+    "shuffle_scheme": "as-given/no-shuffle",
+    "data": "/mnt/hdd/jonathan/data/tts_test.json",
+    "git_sha": "bb76e1d",
+    "git_dirty": true,
+    "created": "2026-09-01T16:33:15",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.14.1",
+    "gpu": "NVIDIA RTX 6000 Ada Generation",
+    "python": "3.10.12",
+    "argv": [
+      "--data",
+      "/mnt/hdd/jonathan/data/tts_test.json",
+      "--out",
+      "/mnt/hdd/jonathan/runs/full_run_p100",
+      "--dtype",
+      "fp16",
+      "--phase",
+      "retr_weak"
+    ],
+    "forced": false
+  },
+  "pool_k": 100,
+  "tie_break": "SW",
+  "instances_written": 7405,
+  "unresolved": 2884,
+  "unresolved_pct": 38.9,
+  "joint_label_dist": {
+    "weak-weak": 2425,
+    "strong-weak": 1057,
+    "weak-strong": 702,
+    "strong-strong": 337
+  },
+  "tie_break_applied": 291,
+  "ret_label_dist_all": {
+    "W": 3127,
+    "S": 1394
+  },
+  "qa_label_dist_all": {
+    "W": {
+      "W": 2425,
+      "S": 993
+    },
+    "S": {
+      "S": 1067,
+      "W": 3118
+    }
+  },
+  "train": {
+    "ret_examples": 2941,
+    "ret_dist": {
+      "W": 2024,
+      "S": 917
+    },
+    "ret_class_weights": {
+      "W": 0.727,
+      "S": 1.604
+    },
+    "qa_examples_both_choices": 4928,
+    "qa_dist": {
+      "W": 3611,
+      "S": 1317
+    },
+    "qa_class_weights": {
+      "W": 0.682,
+      "S": 1.871
+    },
+    "qa_dist_by_choice": {
+      "W": {
+        "W": 1582,
+        "S": 634
+      },
+      "S": {
+        "W": 2029,
+        "S": 683
+      }
+    }
+  },
+  "val": {
+    "ret_examples": 673,
+    "qa_examples_both_choices": 1143
+  },
+  "test": {
+    "instances": 1481,
+    "ret_labeled": 907
+  },
+  "self_checks": {
+    "em_mismatches": 7,
+    "missing_evidence": 0
+  }
+}

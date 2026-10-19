@@ -1,0 +1,22 @@
+{
+  "experiment": "J_joint_exact",
+  "objective": "maximize joint E[R'] over 4 cached paths + 0.03*entropy(all 3 dists); R' = tokenF1 - 0.1*C_path/C_SS",
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "warm_ret": "/mnt/hdd/jonathan/runs/sft_router5_ret/best_adapter",
+  "warm_qa": "/mnt/hdd/jonathan/runs/sft_router5_qa/best_adapter",
+  "lr": 1e-05,
+  "epochs": 3,
+  "accum": 8,
+  "seed": 23,
+  "beta": 0.03,
+  "lambda": 0.1,
+  "c_ss": 250.063,
+  "kill_bar_stabilized_pair": 0.5166,
+  "val_anchors": {
+    "always_WW": 0.3864,
+    "always_SS": 0.4955,
+    "best_path": 0.65
+  },
+  "skipped_nonfinite": 2,
+  "best_val_joint_meanR_fullval": 0.5093
+}

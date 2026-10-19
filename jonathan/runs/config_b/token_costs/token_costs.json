@@ -1,0 +1,11 @@
+{
+  "note": "Config B cost family, pre-registered 15 Oct 2026: AgentTTS Table 5 per-pass prices, weak-first (count everything that ran). Units match Table 5.",
+  "gate_eval_constants": {
+    "COST_RET_W": 77,
+    "COST_RET_S": 814,
+    "COST_QA_W_GIVEN_W": 3,
+    "COST_QA_S_GIVEN_W": 115,
+    "COST_QA_W_GIVEN_S": 3,
+    "COST_QA_S_GIVEN_S": 115
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "stage": "ret",
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "labels_file": "/mnt/hdd/jonathan/runs/ret_labels/ret_labels.jsonl",
+  "labels_sha256": "29612e0a9caecf4bb66ad8af801a118eec5c8ec10d9b078d9fcf2ea8c1b00e6d",
+  "char_cap": 600,
+  "maxlen": 16384,
+  "lr": 0.0001,
+  "epochs": 3,
+  "accum": 8,
+  "seed": 17,
+  "class_weights": {
+    "W": 0.642,
+    "S": 2.264
+  },
+  "curve_eval_rows": 1110,
+  "best_val_auc_fullval": 0.7709,
+  "fullval_match_at_0.5": 0.7541
+}

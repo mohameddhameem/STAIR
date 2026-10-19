@@ -1,0 +1,20 @@
+{
+  "stage": "ret_reward_optimized_entropy_warmstart_clipped",
+  "objective": "maximize E[R'] + 0.03*entropy at the retrieval stage; R'(branch) = max over answering choice of tokenF1 - 0.1*C_path/C_SS (downstream A2: reward-greedy answering)",
+  "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "warm_start": "/mnt/hdd/jonathan/runs/config_b/sft_router5_ret/best_adapter",
+  "labels_file": "/mnt/hdd/jonathan/runs/config_b/ret_labels/ret_labels.jsonl",
+  "labels_sha256": "6bbff27ed87cdd66ea085441709c300bcab559509cd09b9a9b4571e6086b925d",
+  "char_cap": 600,
+  "maxlen": 16384,
+  "lr": 1e-05,
+  "epochs": 3,
+  "accum": 8,
+  "seed": 17,
+  "lambda": 0.1,
+  "beta": 0.03,
+  "c_ss": 929,
+  "curve_eval_rows": 1110,
+  "best_val_meanR_fullval": 0.7301,
+  "fullval_auc_vs_labels": 0.8674
+}

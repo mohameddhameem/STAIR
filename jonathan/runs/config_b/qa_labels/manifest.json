@@ -1,0 +1,45 @@
+{
+  "source": "/mnt/hdd/jonathan/runs/config_b/router_data_standard.jsonl",
+  "lane": "teacher-1 / outcome-only",
+  "teacher2_status": "retired by chooser_ceiling gate, 7 Oct",
+  "rule": "W if weak answer right; S if weak wrong and strong right; X if both wrong",
+  "mapping": "X -> W (do not pay for strong when neither works)",
+  "rows": 14810,
+  "shares": {
+    "train|W": {
+      "W": 2454,
+      "X": 1496,
+      "S": 864
+    },
+    "train|S": {
+      "W": 3055,
+      "X": 897,
+      "S": 862
+    },
+    "val|W": {
+      "W": 580,
+      "X": 351,
+      "S": 179
+    },
+    "val|S": {
+      "W": 701,
+      "S": 188,
+      "X": 221
+    },
+    "test|W": {
+      "S": 260,
+      "W": 745,
+      "X": 476
+    },
+    "test|S": {
+      "W": 915,
+      "S": 270,
+      "X": 296
+    }
+  },
+  "class_weights_post_mapping": {
+    "W": 0.6092,
+    "S": 2.7891
+  },
+  "audit_mismatches": {}
+}
