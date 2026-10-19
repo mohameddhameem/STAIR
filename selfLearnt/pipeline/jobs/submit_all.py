@@ -77,9 +77,13 @@ class Plan:
                 cmd.append(f"{flag}={e[k]}")
         if e.get("MAIL"):
             cmd += [f"--mail-user={e['MAIL']}", "--mail-type=END,FAIL"]
-        if j["gpus"]:
-            cmd.append(f"--gres=gpu:{j['gpus']}")
-            con = e.get("CONSTRAINT_SMALL") if j["small"] and e.get("CONSTRAINT_SMALL") else e.get("CONSTRAINT")
+        gpus, con = j["gpus"], (e.get("CONSTRAINT_SMALL") if j["small"] and e.get("CONSTRAINT_SMALL") else e.get("CONSTRAINT"))
+        if gpus >= 2 and not j["name"].startswith("train-") and e.get("BIG_GPUS"):
+            # models split over several GPUs (32B / 70B / 72B inference): the model is spread over however many GPUs the job
+            # gets (vLLM tensor parallel = visible GPUs), so 4 smaller cards work as well as 2 large ones
+            gpus, con = int(e["BIG_GPUS"]), e.get("CONSTRAINT_BIG") or con
+        if gpus:
+            cmd.append(f"--gres=gpu:{gpus}")
             if con:
                 cmd.append(f"--constraint={con}")
         if real_deps:

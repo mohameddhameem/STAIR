@@ -24,6 +24,9 @@ class VLLMEngine:
         """model: a resolved model entry (path, tensor_parallel, quantization, no_thinking)."""
         from vllm import LLM
         tp = int(model.get("tensor_parallel", 1))
+        vis = [d for d in os.environ.get("CUDA_VISIBLE_DEVICES", "").split(",") if d.strip()]
+        if tp > 1 and len(vis) > 1:
+            tp = len(vis)        # a split model uses every GPU the job got (2 large or 4 smaller cards)
         # PyTorch's expandable segments (set in the job scripts for training) clash with vLLM's own memory pool: on two
         # GPUs the CUDA-graph capture ran out of memory. vLLM's worker processes inherit this variable, so drop it here.
         if "expandable_segments" in os.environ.get("PYTORCH_CUDA_ALLOC_CONF", ""):
