@@ -122,26 +122,35 @@ def submit_loop(P, state_path, max_jobs, poll):
         q = _my_queue()
         free = max_jobs - len(q)
         blocked = None
-        for j in P.jobs:
-            if j["id"]:
+        # candidates: unsubmitted jobs whose dependencies are all submitted; those that can start now go first, so that
+        # jobs waiting on long chains do not fill the queue while ready ones (e.g. training) wait outside it
+        states = {}
+
+        def st(rid):
+            if rid in q:
+                return "QUEUED"
+            if rid not in states:
+                states[rid] = _final_state(rid)
+            return states[rid]
+
+        cands = []
+        for k, j in enumerate(P.jobs):
+            if j["id"] or any(d not in real for d in j["deps"]):
                 continue
+            waiting = sum(1 for d in j["deps"] if st(real[d]) != "COMPLETED")
+            cands.append((waiting, k, j))
+        for _, _, j in sorted(cands, key=lambda c: (c[0], c[1])):
             if free <= 0:
                 break
-            if any(d not in real for d in j["deps"]):
-                break                      # an earlier job is not submitted yet: keep the order
             deps = []
             for d in j["deps"]:
-                rid = real[d]
-                if rid in q:
-                    deps.append(rid)
-                    continue
-                st = _final_state(rid)
-                if st == "COMPLETED":
+                rid, s_ = real[d], st(real[d])
+                if s_ == "COMPLETED":
                     continue               # finished fine: nothing to wait for
-                if st in ("UNKNOWN", "PENDING", "RUNNING", "REQUEUED"):
+                if s_ in ("QUEUED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED"):
                     deps.append(rid)
                     continue
-                blocked = (j["name"], d, rid, st)
+                blocked = (j["name"], d, rid, s_)
                 break
             if blocked:
                 break
@@ -241,41 +250,48 @@ def main():
         t = [P.add(f"ws1-test-ret-{m}", f"--stage ws1_test --part retrieve-{m}", tp(m), 24, [s], small=sm_inf(m)) for m in W["ws1"]["retrievers"]]
         ta = [P.add(f"ws1-test-ans-{m}", f"--stage ws1_test --part answer-{m}", tp(m), 48, t, small=sm_inf(m)) for m in W["ws1"]["answerers"]]
         last = [P.add("report-phase1", "--stage report", 0, 1, ta, cpu_only=True)]
-    # ---------------- phases 2-4: rule-based workstreams
-    trained = set()
-    done_ret = set()   # a model's outputs are shared between experiments: run each once
+    # ---------------- phases 2-5: rule-based experiments, run side by side (the cluster runs up to 8 of your jobs at once).
+    # Each job waits only for what it reads: a model's training, its shortlists, the experiment's earlier steps. Jobs that
+    # write the same model's files (answers, samples) and the reports are chained, so two never write at once.
+    train_job, ret_job, last_ans, last_smp = {}, {}, {}, {}
+    rep = list(last)
 
-    def phase(ws, after):
+    def phase(ws):
+        nonlocal rep
         w = W[ws]
-        jobs = []
-        tr = {}
+        base = lambda v: v.split(":")[0]
         for v in w["retrievers"] + w["answerers"]:
             b, _, tag = v.partition(":")
-            if tag == "ft" and b not in trained:
-                trained.add(b)
-                tr[b] = P.add(f"train-{b}", f"--stage train --model {b}", train_gpus(b), 96, after, small=sm_tr(b))
-        own = lambda v: [tr[v.split(":")[0]]] if v.split(":")[0] in tr else list(after)
-        rt = [P.add(f"ret-{v}-{ws}", f"--stage retrieve --model {v}", tp(v) if variant(cfg, v).get("kind") != "ranker" else 1, 36, own(v), small=sm_inf(v))
-              for v in w["retrievers"] if v not in done_ret]
-        done_ret.update(w["retrievers"])
-        rt = rt or list(after)
-        rc = P.add(f"reach-{ws}", f"--stage reach --ws {ws}", 0, 1, rt, cpu_only=True)
-        an = [P.add(f"ans-{v}-{ws}", f"--stage answer --model {v}", tp(v), 36, [rc] + (own(v) if v.split(":")[0] in tr else []), small=sm_inf(v)) for v in w["answerers"]]
+            if tag == "ft" and b not in train_job:
+                train_job[b] = P.add(f"train-{b}", f"--stage train --model {b}", train_gpus(b), 96, [data], small=sm_tr(b))
+        own = lambda v: [train_job[base(v)]] if v.endswith(":ft") else [data]
+        for v in w["retrievers"]:
+            if v not in ret_job:
+                ret_job[v] = P.add(f"ret-{v}-{ws}", f"--stage retrieve --model {v}", tp(v) if variant(cfg, v).get("kind") != "ranker" else 1, 36,
+                                   own(v), small=sm_inf(v))
+        rc = P.add(f"reach-{ws}", f"--stage reach --ws {ws}", 0, 1, [ret_job[v] for v in w["retrievers"]], cpu_only=True)
+        an = []
+        for v in w["answerers"]:
+            last_ans[v] = P.add(f"ans-{v}-{ws}", f"--stage answer --model {v}", tp(v), 36, [rc] + own(v) + ([last_ans[v]] if v in last_ans else []),
+                                small=sm_inf(v))
+            an.append(last_ans[v])
         dep = an
         sig = w.get("signals", "all")
         if isinstance(sig, list) and any("probe" in x for x in sig):
             pr = [P.add(f"probe-ret-{v}", f"--stage probe --part ret-{v}", tp(v), 24, an, small=sm_inf(v)) for v in w["retrievers"] if "ret_probe_pct" in sig]
             pr += [P.add(f"probe-ans-{v}", f"--stage probe --part ans-{v}", tp(v), 24, an, small=sm_inf(v)) for v in w["answerers"] if "ans_probe_pct" in sig]
             dep = [P.add(f"probe-fit-{ws}", "--stage probe --part fit", 0, 2, pr, cpu_only=True)]
-        sm = [P.add(f"smp-{v}-{ws}", f"--stage sample --model {v}", tp(v), 24, an, small=sm_inf(v)) for v in w["answerers"][1:]]
+        sm = []
+        for v in w["answerers"][1:]:
+            last_smp[v] = P.add(f"smp-{v}-{ws}", f"--stage sample --model {v}", tp(v), 24, an + ([last_smp[v]] if v in last_smp else []), small=sm_inf(v))
+            sm.append(last_smp[v])
         ln = P.add(f"learn-{ws}", f"--stage learn --ws {ws}", tp(cfg["planner"]), 12, dep + sm)
         te = P.add(f"test-{ws}", f"--stage test --ws {ws}", 0, 2, [ln], cpu_only=True)
-        jobs.append(P.add(f"report-{ws}", "--stage report", 0, 1, [te], cpu_only=True))
-        return jobs
+        rep = [P.add(f"report-{ws}", "--stage report", 0, 1, [te] + rep, cpu_only=True)]
 
     for ph, ws in ((2, "ws4"), (3, "ws5"), (4, "ws6"), (5, "ws3")):
         if ph in phases and ws in W:
-            last = phase(ws, last)
+            phase(ws)
     if a.dry:
         print(f"\n{len(P.jobs)} jobs (dry run, nothing submitted)")
         return
