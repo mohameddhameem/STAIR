@@ -161,8 +161,8 @@ def main():
             for p in parts:   # test parts always re-check: another experiment may add a setting (saved work is skipped)
                 if a.force or st == "ws1_test" or not is_done(cfg, st, p):
                     AT.run_part(cfg, st, p)
-            if st == "ws1_grid":
-                AT.grid_table(cfg)
+            if st == "ws1_grid" and all(is_done(cfg, st, p) for p in AT.all_parts(cfg, st)):
+                AT.grid_table(cfg)       # only once every model's part is done (the parts run as separate jobs)
         elif st == "ws1_search":
             if "ws1" in has:
                 AT.search(cfg)

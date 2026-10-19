@@ -248,6 +248,8 @@ def grid_table(cfg):
     import pandas as pd
     table, _ = evaluate(cfg, "search")
     df = pd.DataFrame(table)
+    if df.empty:                     # answers not run yet (each grid part is its own job): nothing to tabulate
+        return df
     df.drop(columns=["setting"]).to_csv(os.path.join(wdir(cfg), "search_table.csv"), index=False)
     return df
 
