@@ -146,7 +146,7 @@ def submit_loop(P, state_path, max_jobs, poll):
             if blocked:
                 break
             if P.after and not deps and first:
-                deps = [P.after]
+                deps = [x for x in str(P.after).split(",") if x.strip()]     # --after 123,456: wait for these jobs
             rc, out, err = _sh(P._cmd(j, deps))
             if rc:
                 if "QOSMaxSubmitJobPerUserLimit" in err or "job submit limit" in err:
@@ -185,7 +185,7 @@ def main():
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--smoke", action="store_true", help="submit only the 1-GPU smoke test (jobs/smoke.sbatch)")
     ap.add_argument("--dry", action="store_true")
-    ap.add_argument("--after", default="")
+    ap.add_argument("--after", default="", help="job id(s), comma-separated, the first jobs wait for")
     ap.add_argument("--continue", dest="cont", default="", help="resume submitting from a saved plan (logs/plan_*.json)")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
