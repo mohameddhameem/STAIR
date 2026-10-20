@@ -57,6 +57,7 @@ class Plan:
         self.env, self.dry, self.jobs = env, dry, []
         self.after = after
         self.seed_arg = ""
+        self.prefix = ""            # job-name prefix of a non-default config (e.g. "pf-"), so its jobs never mix with the real run's
 
     def add(self, name, args, gpus, hours, deps=(), cpu_only=False, small=False):
         jid = f"J{len(self.jobs) + 1}"
@@ -71,13 +72,13 @@ class Plan:
     def _cmd(self, j, real_deps):
         e, mins = self.env, int(j["hours"] * 60)
         t = f"{mins // 1440}-{(mins % 1440) // 60:02d}:{mins % 60:02d}:00"
-        cmd = ["sbatch", "--parsable", f"--job-name=stair-{j['name']}", f"--time={t}",
+        cmd = ["sbatch", "--parsable", f"--job-name=stair-{self.prefix}{j['name']}", f"--time={t}",
                f"--cpus-per-task={e.get('CPUS', '8') if not j['cpu_only'] else '4'}", f"--mem={e.get('MEM', '120G') if not j['cpu_only'] else '48G'}"]
         for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos")):
             if e.get(k) and not e[k].startswith("EDIT"):
                 cmd.append(f"{flag}={e[k]}")
         if e.get("MAIL"):
-            cmd += [f"--mail-user={e['MAIL']}", "--mail-type=END,FAIL"]
+            cmd += [f"--mail-user={e['MAIL']}", "--mail-type=FAIL"]      # an e-mail only when a job fails
         gpus, con = j["gpus"], (e.get("CONSTRAINT_SMALL") if j["small"] and e.get("CONSTRAINT_SMALL") else e.get("CONSTRAINT"))
         if gpus >= 2 and not j["name"].startswith("train-") and e.get("BIG_GPUS"):
             # models split over several GPUs (32B / 70B / 72B inference): the model is spread over however many GPUs the job
@@ -89,7 +90,8 @@ class Plan:
                 cmd.append(f"--constraint={con}")
         if real_deps:
             cmd.append("--dependency=afterok:" + ":".join(real_deps))
-        cmd += [f"--export=ALL,STAGE_ARGS={j['args']},TIME_LIMIT_MIN={max(30, mins - 120)}", os.path.join("jobs", "job.sbatch")]
+        cmd += [f"--export=ALL,STAGE_ARGS={j['args']},TIME_LIMIT_MIN={max(30, mins - 120)},STAIR_CONFIG={e.get('CONFIG', 'configs/default.yaml')}",
+                os.path.join("jobs", "job.sbatch")]
         return cmd
 
 
@@ -137,7 +139,8 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None):
     """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
     # jobs of this plan already in the queue (from an earlier submitter): adopt them instead of submitting twice
     rc, out, _ = _sh(["squeue", "--me", "-h", "-o", "%i %j"])
-    queued = {n[len("stair-"):]: i for i, n in (l.split()[:2] for l in out.splitlines() if l.strip()) if n.startswith("stair-")} if rc == 0 else {}
+    pre = "stair-" + P.prefix
+    queued = {n[len(pre):]: i for i, n in (l.split()[:2] for l in out.splitlines() if l.strip()) if n.startswith(pre)} if rc == 0 else {}
     for j in P.jobs:
         if not j["id"] and j["name"] in queued:
             j["id"] = queued.pop(j["name"])
@@ -238,6 +241,7 @@ def main():
     ap.add_argument("--phases", default="1,2,3,4,5")
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--smoke", action="store_true", help="submit only the 1-GPU smoke test (jobs/smoke.sbatch)")
+    ap.add_argument("--config", default="", help="another config, e.g. configs/preflight.yaml (default: CONFIG in cluster.env)")
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--after", default="", help="job id(s), comma-separated, the first jobs wait for")
     ap.add_argument("--continue", dest="cont", default="", help="resume submitting from a saved plan (logs/plan_*.json)")
@@ -246,6 +250,8 @@ def main():
     env = read_env(os.path.join(HERE, "cluster.env"))
     if os.path.exists(os.path.join(HERE, "cluster.local.env")):      # your own settings (account, storage), never committed
         env.update(read_env(os.path.join(HERE, "cluster.local.env")))
+    if a.config:
+        env["CONFIG"] = a.config
     if a.as_job:
         args = [x for x in sys.argv[1:] if x != "--as-job"]
         cmd = ["sbatch", "--parsable"] + [f"{flag}={env[k]}" for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos"))
@@ -277,6 +283,8 @@ def main():
     phases = {int(x) for x in a.phases.split(",") if x.strip()}
     P = Plan(env, a.dry, a.after)
     P.seed_arg = sd
+    if os.path.basename(env.get("CONFIG", "configs/default.yaml")) != "default.yaml":
+        P.prefix = os.path.splitext(os.path.basename(env["CONFIG"]))[0][:2] + "-"     # preflight.yaml -> "pr-"
     max_jobs, poll = int(env.get("MAX_JOBS", 15)), int(float(env.get("POLL_MIN", 5)) * 60)
     if a.cont:
         st = json.load(open(a.cont))

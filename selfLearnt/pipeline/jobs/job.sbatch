@@ -21,6 +21,7 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 echo "job $SLURM_JOB_ID on $(hostname): $STAGE_ARGS"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader 2>/dev/null || true
 
+CONFIG="${STAIR_CONFIG:-$CONFIG}"     # the submitter passes the config each job belongs to
 python run.py --config "$CONFIG" $STAGE_ARGS
 code=$?
 if [ "$code" = "3" ]; then

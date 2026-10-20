@@ -225,6 +225,8 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
     run_seed = int(cfg.get("seed", 0))
     ex = examples(cfg, role, tok, tr, T, seed=run_seed)
     random.Random(run_seed).shuffle(ex)
+    if cfg.get("preflight"):         # preflight: the longest examples first, so memory limits show up in the first steps
+        ex.sort(key=lambda e: -len(e[0]))
     vex = examples(cfg, role, tok, va[:T.get("n_val_loss", 300)], T, seed=12345)      # fixed validation-loss examples
     vmet = va[:T.get("n_val_metric", 100)]
     ga, mb = T["grad_accum"], T["micro_batch"]
@@ -303,13 +305,23 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
         for g in opt.param_groups:
             g["lr"] = lr_at(step)
         idx = order[pos:pos + ga]
-        for c in range(0, len(idx), mb):
-            part = [ex[i] for i in idx[c:c + mb]]
-            loss = batch_loss(part) * len(part) / len(idx)
-            loss.backward()
-            losses.append(float(loss) * len(idx) / len(part))
-        torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
-        opt.step()
+        try:
+            for c in range(0, len(idx), mb):
+                part = [ex[i] for i in idx[c:c + mb]]
+                loss = batch_loss(part) * len(part) / len(idx)
+                loss.backward()
+                losses.append(float(loss) * len(idx) / len(part))
+            torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
+            opt.step()
+        except torch.OutOfMemoryError:
+            # a rare over-long batch: skip this step instead of losing the job; too many skips means the settings are wrong
+            loss = None
+            opt.zero_grad(set_to_none=True)
+            torch.cuda.empty_cache()
+            st["oom_skipped"] = st.get("oom_skipped", 0) + 1
+            log(f"  step {step}: out of GPU memory on {max(len(ex[i][0]) for i in idx)} tokens; step skipped ({st['oom_skipped']} so far)")
+            if st["oom_skipped"] > max(3, steps_total // 50):
+                raise RuntimeError(f"{key}: {st['oom_skipped']} training steps ran out of GPU memory: lower max_len or use more GPUs")
         opt.zero_grad(set_to_none=True)
         step += 1
         pos += ga
