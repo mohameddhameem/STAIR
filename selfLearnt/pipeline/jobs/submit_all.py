@@ -14,6 +14,7 @@ Usage (from STAIR/selfLearnt/pipeline, after jobs/install_env.sh and jobs/setup_
   python jobs/submit_all.py --seed 1        # another run seed (team standard: 0, 1, 2)
   python jobs/submit_all.py --smoke         # only the 1-GPU smoke test (run this first)
   python jobs/submit_all.py --continue logs/plan_<time>.json   # resume submitting after a disconnect
+  python jobs/submit_all.py --as-job        # run the submitter itself as a small CPU job (no tmux needed)
 The cluster limits how many jobs one user may have queued (MAX_JOBS in cluster.env, default 15): this script submits
 the jobs in order as earlier ones finish, so leave it running in tmux until it prints "all ... jobs submitted".
 Every job resumes from its saved outputs, so re-submitting a phase after a failure is safe (finished work is skipped)."""
@@ -196,10 +197,19 @@ def main():
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--after", default="", help="job id(s), comma-separated, the first jobs wait for")
     ap.add_argument("--continue", dest="cont", default="", help="resume submitting from a saved plan (logs/plan_*.json)")
+    ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
     if os.path.exists(os.path.join(HERE, "cluster.local.env")):      # your own settings (account, storage), never committed
         env.update(read_env(os.path.join(HERE, "cluster.local.env")))
+    if a.as_job:
+        args = [x for x in sys.argv[1:] if x != "--as-job"]
+        cmd = ["sbatch", "--parsable"] + [f"{flag}={env[k]}" for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos"))
+                                          if env.get(k) and not env[k].startswith("EDIT")]
+        cmd += [f"--export=ALL,SUBMIT_ARGS={' '.join(args)}", os.path.join("jobs", "submitter.sbatch")]
+        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+        sys.exit(f"sbatch failed: {r.stderr.strip()}" if r.returncode else
+                 f"submitter running as job {r.stdout.strip()}; follow it with:  tail -f logs/stair-submitter-{r.stdout.strip()}.out")
     for k, v in env.items():
         if k.startswith("STAIR_"):
             if v.startswith("EDIT"):
