@@ -114,6 +114,17 @@ def val_score(model, tok, role, qs, cfg, max_new=24):
 
 
 # ----------------------------------------------------------------------------------
+def _no_math_attention():
+    """Only PyTorch's memory-saving attention kernels (flash, memory-efficient). The fallback 'math' kernel builds the full
+    attention matrix: Qwen 32B at ~12k tokens asked for 10.6 GB more and ran out of memory on a 48 GB card."""
+    import contextlib
+    try:
+        from torch.nn.attention import SDPBackend, sdpa_kernel
+        return sdpa_kernel([SDPBackend.FLASH_ATTENTION, SDPBackend.EFFICIENT_ATTENTION])
+    except Exception:  # noqa: BLE001
+        return contextlib.nullcontext()
+
+
 def load_lm(path, qlora=False):
     import torch
     import transformers as T
@@ -262,7 +273,8 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
         x, am = x.to(dev), am.to(dev)
         # one unpadded example: no mask, so PyTorch can use its memory-saving causal attention kernel. With an explicit mask it
         # may fall back to building the full attention matrix (32B at 12k tokens: ~12 GB, out of memory on a 48 GB card)
-        h = body(input_ids=x, attention_mask=None if len(items) == 1 else am).last_hidden_state
+        with _no_math_attention():
+            h = body(input_ids=x, attention_mask=None if len(items) == 1 else am).last_hidden_state
         lab = lab.to(h.device)
         sel = lab[:, 1:] != -100
         return ce(head(h[:, :-1][sel]).float(), lab[:, 1:][sel])
