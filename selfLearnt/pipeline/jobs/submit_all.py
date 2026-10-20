@@ -135,6 +135,13 @@ def _already_done(cfg, args):
 
 def submit_loop(P, state_path, max_jobs, poll, cfg=None):
     """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
+    # jobs of this plan already in the queue (from an earlier submitter): adopt them instead of submitting twice
+    rc, out, _ = _sh(["squeue", "--me", "-h", "-o", "%i %j"])
+    queued = {n[len("stair-"):]: i for i, n in (l.split()[:2] for l in out.splitlines() if l.strip()) if n.startswith("stair-")} if rc == 0 else {}
+    for j in P.jobs:
+        if not j["id"] and j["name"] in queued:
+            j["id"] = queued.pop(j["name"])
+            print(f"{time.strftime('%H:%M')}  already queued: {j['name']} ({j['id']})", flush=True)
     real = {j["key"]: j["id"] for j in P.jobs if j["id"]}
     names = {j["key"]: j["name"] for j in P.jobs}
     first = True

@@ -73,13 +73,13 @@ finetune:
     q15: {method: lora, n_train: 12000, max_len: 20480}
     q3:  {method: lora, n_train: 12000, max_len: 20480}
     q7:  {method: lora, n_train: 12000, max_len: 20480}
-    q32: {method: qlora, n_train: 2000, max_len: 12288, n_val_loss: 150, n_val_metric: 50, gpus: 1}
-    q72: {method: qlora, n_train: 2000, max_len: 10240, n_val_loss: 150, n_val_metric: 50, gpus: 2}
+    q32: {method: qlora, n_train: 2000, max_len: 12288, n_val_loss: 150, n_val_metric: 50, gpus: 2}
+    q72: {method: qlora, n_train: 2000, max_len: 10240, n_val_loss: 150, n_val_metric: 50, gpus: 4}
   answerers:
     l1:  {method: lora, n_train: 12000, max_epochs: 3, max_len: 4096, micro_batch: 4}
     l3:  {method: lora, n_train: 12000, max_len: 4096, micro_batch: 4}
     l8:  {method: lora, n_train: 12000, max_len: 4096, micro_batch: 4}
-    l70: {method: qlora, n_train: 2000, max_len: 4096, n_val_loss: 150, n_val_metric: 50, gpus: 2}
+    l70: {method: qlora, n_train: 2000, max_len: 4096, n_val_loss: 150, n_val_metric: 50, gpus: 4}
   answer_inputs: {distractors: [0, 2], drop_gold_share: 0.15}   # answerer training: gold passages + 0-2 distractors; sometimes one gold missing
 
 planner: q72                    # LLM for AgentTTS's search (replaces o3-mini) and for proposing rule changes
