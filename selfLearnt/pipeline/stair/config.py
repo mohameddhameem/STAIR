@@ -78,6 +78,9 @@ def load_config(path, seed=None, exp=None):
     raw.setdefault("seed", 0)
     if exp:
         _only_experiment(raw, exp)
+    if os.environ.get("STAIR_RUNS_DIR"):     # runs (training outputs, merged models) on another disk than the downloaded models
+        raw["paths"]["runs_dir"] = "${STAIR_RUNS_DIR}"
+        raw["paths"]["data_dir"] = "${STAIR_RUNS_DIR}/${run_name}/data"
     env = {k: v for k, v in os.environ.items() if k.startswith("STAIR_")}
     env["run_name"] = raw["run_name"]
     env.update({k: v for k, v in raw["paths"].items() if isinstance(v, str)})
