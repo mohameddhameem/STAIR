@@ -136,11 +136,11 @@ def _already_done(cfg, args):
 def submit_loop(P, state_path, max_jobs, poll, cfg=None):
     """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
     real = {j["key"]: j["id"] for j in P.jobs if j["id"]}
+    names = {j["key"]: j["name"] for j in P.jobs}
     first = True
     while True:
         q = _my_queue()
         free = max_jobs - len(q)
-        blocked = None
         # candidates: unsubmitted jobs whose dependencies are all submitted; those that can start now go first, so that
         # jobs waiting on long chains do not fill the queue while ready ones (e.g. training) wait outside it
         states = {}
@@ -148,6 +148,8 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None):
         def st(rid):
             if rid == "done":
                 return "COMPLETED"
+            if rid == "blocked":
+                return "BLOCKED"
             if rid in q:
                 return "QUEUED"
             if rid not in states:
@@ -168,23 +170,21 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None):
         for k, j in enumerate(P.jobs):
             if j["id"] or any(d not in real for d in j["deps"]):
                 continue
+            ok_states = ("COMPLETED", "QUEUED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED")
+            # reports are chained only so two never write at once: a report still runs when an earlier one was set aside
+            soft = {d for d in j["deps"] if j["name"].startswith("report-") and names[d].startswith("report-")}
+            bad = [(d, real[d], st(real[d])) for d in j["deps"] if d not in soft and st(real[d]) not in ok_states]
+            if bad:                        # a job it needs failed: set it aside, keep going with everything else
+                d, rid, s_ = bad[0]
+                j["id"] = real[j["key"]] = "blocked"
+                print(f"{time.strftime('%H:%M')}  set aside {j['name']}: it needs {d} ({rid}), which ended {s_}", flush=True)
+                continue
             waiting = sum(1 for d in j["deps"] if st(real[d]) != "COMPLETED")
             cands.append((waiting, k, j))
         for _, _, j in sorted(cands, key=lambda c: (c[0], c[1])):
             if free <= 0:
                 break
-            deps = []
-            for d in j["deps"]:
-                rid, s_ = real[d], st(real[d])
-                if s_ == "COMPLETED":
-                    continue               # finished fine: nothing to wait for
-                if s_ in ("QUEUED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED"):
-                    deps.append(rid)
-                    continue
-                blocked = (j["name"], d, rid, s_)
-                break
-            if blocked:
-                break
+            deps = [real[d] for d in j["deps"] if st(real[d]) not in ("COMPLETED", "BLOCKED", "FAILED", "CANCELLED", "TIMEOUT", "OUT_OF_MEMORY", "NODE_FAIL")]
             if P.after and not deps and first:
                 deps = [x for x in str(P.after).split(",") if x.strip()]     # --after 123,456: wait for these jobs
             rc, out, err = _sh(P._cmd(j, deps))
@@ -196,26 +196,33 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None):
             free -= 1
             print(f"{time.strftime('%H:%M')}  submitted {j['id']:>8}  {j['name']}" + (f"  after {','.join(deps)}" if deps else ""), flush=True)
         first = False
+        for jid, name in _never_satisfied():   # queued jobs whose dependency failed: cancel, set aside
+            for j in P.jobs:
+                if j["id"] == jid:
+                    _sh(["scancel", jid])
+                    j["id"] = real[j["key"]] = "blocked"
+                    print(f"{time.strftime('%H:%M')}  set aside {j['name']} ({jid}): a job it needs failed", flush=True)
         json.dump({"jobs": P.jobs, "after": P.after}, open(state_path, "w"), indent=1)
-        stuck = _never_satisfied()
-        if stuck:
-            failed = [f"{j['name']} ({j['id']}: {st})" for j in P.jobs if j["id"] and j["id"] not in q
-                      for st in [_final_state(j["id"])] if st not in ("COMPLETED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED")]
-            sys.exit("\nstopped: a job failed, so jobs depending on it can never start: "
-                     + ", ".join(n for _, n in stuck)
-                     + (f"\nfailed: {', '.join(failed)}" if failed else "")
-                     + "\nLook at the failed job's log (logs/stair-<name>-<id>.out) and fix the cause; then cancel the stuck jobs"
-                       " (scancel --me) and submit again: python jobs/submit_all.py   (finished work is skipped)")
         left = sum(1 for j in P.jobs if not j["id"])
-        if blocked:
-            n, d, rid, st = blocked
-            sys.exit(f"\nstopped: {n} needs job {rid} ({d}), which ended {st}. Look at its log (logs/stair-*-{rid}.out), fix the cause,"
-                     f" then run:  python jobs/submit_all.py --continue {state_path}   (or resubmit the phase: finished work is skipped)")
+        aside = [j["name"] for j in P.jobs if j["id"] == "blocked"]
+        if not left and any(j["id"] in q for j in P.jobs):
+            print(f"{time.strftime('%H:%M')}  all jobs submitted; watching the {sum(1 for j in P.jobs if j['id'] in q)} still queued or running"
+                  f" (checking again in {poll // 60} min)", flush=True)
+            time.sleep(poll)
+            continue
         if not left:
+            failed = [f"{j['name']} ({j['id']})" for j in P.jobs if j["id"] not in (None, "done", "blocked") and j["id"] not in _my_queue()
+                      and _final_state(j["id"]) not in ("COMPLETED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED")]
+            if aside:
+                print(f"\nall runnable jobs submitted; {len(aside)} set aside because a job they need failed: {', '.join(aside)}"
+                      + (f"\nfailed: {', '.join(failed)}" if failed else "")
+                      + f"\nAfter fixing the cause:  python jobs/submit_all.py --as-job --continue {state_path}"
+                        "   (failed and set-aside jobs are submitted again; finished work is skipped)")
+                sys.exit(1)
             print(f"\nall {len(P.jobs)} jobs submitted (list in {state_path}). Follow with: squeue --me")
             return
-        print(f"{time.strftime('%H:%M')}  {left} jobs still to submit; {len(q)} of yours in the queue (limit {max_jobs}); checking again in {poll // 60} min",
-              flush=True)
+        print(f"{time.strftime('%H:%M')}  {left} jobs still to submit" + (f" ({len(aside)} set aside after a failure)" if aside else "")
+              + f"; {len(q)} of yours in the queue (limit {max_jobs}); checking again in {poll // 60} min", flush=True)
         time.sleep(poll)
 
 
@@ -267,7 +274,12 @@ def main():
     if a.cont:
         st = json.load(open(a.cont))
         P.jobs, P.after = st["jobs"], st.get("after", "")
-        print(f"continuing {a.cont}: {sum(1 for j in P.jobs if not j['id'])} of {len(P.jobs)} jobs still to submit")
+        retry = 0
+        for j in P.jobs:                   # set-aside jobs, and submitted jobs that failed, are tried again
+            if j["id"] == "blocked" or (j["id"] not in (None, "done") and j["id"] not in _my_queue()
+                                        and _final_state(j["id"]) not in ("COMPLETED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED")):
+                j["id"], retry = None, retry + 1
+        print(f"continuing {a.cont}: {sum(1 for j in P.jobs if not j['id'])} of {len(P.jobs)} jobs still to submit ({retry} to try again)")
         submit_loop(P, a.cont, max_jobs, poll, cfg)
         return
     W = cfg["workstreams"]
