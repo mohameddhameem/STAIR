@@ -275,8 +275,19 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
         x, am = x.to(dev), am.to(dev)
         # one unpadded example: no mask, so PyTorch can use its memory-saving causal attention kernel. With an explicit mask it
         # may fall back to building the full attention matrix (32B at 12k tokens: ~12 GB, out of memory on a 48 GB card)
-        with _no_math_attention():
-            h = body(input_ids=x, attention_mask=None if len(items) == 1 else am).last_hidden_state
+        if len(items) == 1 and str(dev).startswith("cuda"):
+            # one unpadded example: bf16 compute (QLoRA preparation leaves some layers in fp32, which rules out the flash kernel)
+            # and only the memory-saving kernels; if PyTorch has none for this case, fall back to its default attention
+            try:
+                with torch.autocast("cuda", dtype=torch.bfloat16), _no_math_attention():
+                    h = body(input_ids=x, attention_mask=None).last_hidden_state
+            except RuntimeError as e:
+                if "No available kernel" not in str(e):
+                    raise
+                with torch.autocast("cuda", dtype=torch.bfloat16):
+                    h = body(input_ids=x, attention_mask=None).last_hidden_state
+        else:
+            h = body(input_ids=x, attention_mask=am).last_hidden_state
         lab = lab.to(h.device)
         sel = lab[:, 1:] != -100
         return ce(head(h[:, :-1][sel]).float(), lab[:, 1:][sel])
