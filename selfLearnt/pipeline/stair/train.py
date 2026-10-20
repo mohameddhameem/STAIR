@@ -128,7 +128,7 @@ def load_lm(path, qlora=False):
             continue
         for dt in ({"dtype": torch.bfloat16}, {"torch_dtype": torch.bfloat16}):
             try:
-                return getattr(T, cls).from_pretrained(path, **dt, **kw)
+                return getattr(T, cls).from_pretrained(path, attn_implementation="sdpa", **dt, **kw)
             except TypeError:
                 continue
             except (ValueError, KeyError, OSError) as e:
@@ -260,7 +260,9 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
             am[b, :len(ids)] = 1
             lab[b, n_prompt:len(ids)] = torch.tensor(ids[n_prompt:])
         x, am = x.to(dev), am.to(dev)
-        h = body(input_ids=x, attention_mask=am).last_hidden_state
+        # one unpadded example: no mask, so PyTorch can use its memory-saving causal attention kernel. With an explicit mask it
+        # may fall back to building the full attention matrix (32B at 12k tokens: ~12 GB, out of memory on a 48 GB card)
+        h = body(input_ids=x, attention_mask=None if len(items) == 1 else am).last_hidden_state
         lab = lab.to(h.device)
         sel = lab[:, 1:] != -100
         return ce(head(h[:, :-1][sel]).float(), lab[:, 1:][sel])
