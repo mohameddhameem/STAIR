@@ -1,7 +1,9 @@
-# PREFLIGHT: every job of the full run, with the real models on the real GPUs, but on a handful of questions.
+# PREFLIGHT: the job types the full run has NOT yet completed on this cluster, with the real models on the real GPUs,
+# on a handful of questions: QLoRA training of Qwen 32B / 72B and Llama 70B, serving those adapters, hidden-state probes
+# of the big models (AL-03), rule learning with the 72B planner (AL-04). AL-01/02/05/06's job types already ran fine.
 # Training uses the LONGEST examples first and real context lengths, so memory and disk limits show up within minutes.
 # One submission, ~3-6 h depending on free GPUs:   python jobs/submit_all.py --as-job --config configs/preflight.yaml
-# Afterwards delete its folder (fine-tuned copies, ~60 GB):   rm -rf $STAIR_RUNS_DIR/preflight
+# Afterwards delete its folder (fine-tuned copies, ~40 GB):   rm -rf $STAIR_RUNS_DIR/preflight
 include: default.yaml
 run_name: preflight
 preflight: true
@@ -26,12 +28,10 @@ finetune:
     l8:  {method: lora, n_train: 16}
     l70: {method: qlora, n_train: 16, n_val_loss: 4, n_val_metric: 4}
 workstreams:
-  ws1:
-    iterations: 1
-    batch_size: 4
-    grid:
-      retrieval: {q7: [1, 2], q32: [1], q72: [1]}
-      answer: {l3: [1, 3], l8: [1], l70: [1]}
+  ws1: null
+  ws2: null
+  ws5: null
+  ws6: null
 rules:
   rounds: 1
   random_control_draws: 2
