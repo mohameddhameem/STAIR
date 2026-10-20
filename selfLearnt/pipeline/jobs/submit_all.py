@@ -115,7 +115,25 @@ def _final_state(jid):
     return out.splitlines()[-1].split()[0] if rc == 0 and out.strip() else "UNKNOWN"
 
 
-def submit_loop(P, state_path, max_jobs, poll):
+def _already_done(cfg, args):
+    """True when the work of a job with these run.py arguments is finished and saved (so it needs no GPU allocation).
+    Stages that always re-check for new inputs (answer, sample, reach, test, report) are never skipped."""
+    from stair.progress import is_done
+    t = args.split()
+    get = lambda f: t[t.index(f) + 1] if f in t else None
+    st, part, model, ws = get("--stage"), get("--part"), get("--model"), get("--ws")
+    if st in ("ws1_grid", "ws1_test", "probe") and part:
+        return is_done(cfg, st, part)
+    if st in ("ws1_search", "data"):
+        return is_done(cfg, st)
+    if st in ("train", "retrieve") and model:
+        return is_done(cfg, st, model)
+    if st == "learn" and ws:
+        return is_done(cfg, st, ws)
+    return False
+
+
+def submit_loop(P, state_path, max_jobs, poll, cfg=None):
     """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
     real = {j["key"]: j["id"] for j in P.jobs if j["id"]}
     first = True
@@ -128,12 +146,24 @@ def submit_loop(P, state_path, max_jobs, poll):
         states = {}
 
         def st(rid):
+            if rid == "done":
+                return "COMPLETED"
             if rid in q:
                 return "QUEUED"
             if rid not in states:
                 states[rid] = _final_state(rid)
             return states[rid]
 
+        if cfg is not None:
+            for j in P.jobs:               # finished work: no job needed (also clears a queued or cancelled job that would only skip)
+                if j["id"] == "done" or not _already_done(cfg, j["args"]):
+                    continue
+                if j["id"] and j["id"] in q:
+                    if q[j["id"]] != "PENDING":
+                        continue
+                    _sh(["scancel", j["id"]])
+                print(f"{time.strftime('%H:%M')}  already done, not submitted: {j['name']}", flush=True)
+                j["id"] = real[j["key"]] = "done"
         cands = []
         for k, j in enumerate(P.jobs):
             if j["id"] or any(d not in real for d in j["deps"]):
@@ -238,7 +268,7 @@ def main():
         st = json.load(open(a.cont))
         P.jobs, P.after = st["jobs"], st.get("after", "")
         print(f"continuing {a.cont}: {sum(1 for j in P.jobs if not j['id'])} of {len(P.jobs)} jobs still to submit")
-        submit_loop(P, a.cont, max_jobs, poll)
+        submit_loop(P, a.cont, max_jobs, poll, cfg)
         return
     W = cfg["workstreams"]
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
@@ -307,7 +337,7 @@ def main():
         return
     out = os.path.join(ROOT, "logs", f"plan_{time.strftime('%Y%m%d_%H%M%S')}.json")
     print(f"\nsubmitting {len(P.jobs)} jobs, at most {max_jobs} of yours queued at a time (keep this running in tmux) ...")
-    submit_loop(P, out, max_jobs, poll)
+    submit_loop(P, out, max_jobs, poll, cfg)
 
 
 if __name__ == "__main__":
