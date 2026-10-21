@@ -57,17 +57,29 @@ class Plan:
         self.env, self.dry, self.jobs = env, dry, []
         self.after = after
         self.seed_arg = ""
+        self.big_bf16 = lambda m: False   # set in main(): is this model uncompressed and over 20B?
         self.prefix = ""            # job-name prefix of a non-default config (e.g. "pf-"), so its jobs never mix with the real run's
 
     def add(self, name, args, gpus, hours, deps=(), cpu_only=False, small=False):
         jid = f"J{len(self.jobs) + 1}"
         deps = [d for d in deps if d]
         self.jobs.append({"key": jid, "id": None, "name": name, "args": args + self.seed_arg, "gpus": gpus, "hours": hours,
-                          "deps": deps, "cpu_only": cpu_only, "small": small})
+                          "deps": deps, "cpu_only": cpu_only, "small": small, "no24": self.no24(args)})
         mins = int(hours * 60)
         print(f"{jid:>6}  {name:34s} gpus={gpus}{' (24GB ok)' if small and gpus else ''}  "
               f"time={mins // 1440}-{(mins % 1440) // 60:02d}:{mins % 60:02d}  after={','.join(deps) or '-'}")
         return jid
+
+    def no24(self, args):
+        """Uncompressed (bf16) models over 20B (Qwen 32B, ~61 GB) leave no working memory on 24 GB cards even split four ways."""
+        t = args.split()
+        m = t[t.index("--model") + 1] if "--model" in t else None
+        if m is None and "--part" in t and "-" in t[t.index("--part") + 1]:
+            m = t[t.index("--part") + 1].split("-", 1)[1]
+        try:
+            return bool(m and self.big_bf16(m))
+        except Exception:  # noqa: BLE001
+            return False
 
     def _cmd(self, j, real_deps):
         e, mins = self.env, int(j["hours"] * 60)
@@ -84,6 +96,8 @@ class Plan:
             # models split over several GPUs (32B / 70B / 72B inference): the model is spread over however many GPUs the job
             # gets (vLLM tensor parallel = visible GPUs), so 4 smaller cards work as well as 2 large ones
             gpus, con = int(e["BIG_GPUS"]), e.get("CONSTRAINT_BIG") or con
+            if j.get("no24") and con:
+                con = "|".join(c for c in con.split("|") if c not in ("a5000", "3090"))
         if gpus:
             cmd.append(f"--gres=gpu:{gpus}")
             if con:
@@ -283,12 +297,16 @@ def main():
     phases = {int(x) for x in a.phases.split(",") if x.strip()}
     P = Plan(env, a.dry, a.after)
     P.seed_arg = sd
+    P.big_bf16 = lambda v: (v in cfg["models"] or v.split(":")[0] in cfg["models"]) and \
+        variant(cfg, v).get("dtype", "bf16") != "awq" and float(variant(cfg, v)["params_b"]) > 20
     if os.path.basename(env.get("CONFIG", "configs/default.yaml")) != "default.yaml":
         P.prefix = os.path.splitext(os.path.basename(env["CONFIG"]))[0][:2] + "-"     # preflight.yaml -> "pr-"
     max_jobs, poll = int(env.get("MAX_JOBS", 15)), int(float(env.get("POLL_MIN", 5)) * 60)
     if a.cont:
         st = json.load(open(a.cont))
         P.jobs, P.after = st["jobs"], st.get("after", "")
+        for j in P.jobs:                   # plans saved by an older version: recompute the GPU-type rule
+            j["no24"] = P.no24(j["args"])
         retry = 0
         for j in P.jobs:                   # set-aside jobs, and submitted jobs that failed, are tried again
             if j["id"] == "blocked" or (j["id"] not in (None, "done") and j["id"] not in _my_queue()
