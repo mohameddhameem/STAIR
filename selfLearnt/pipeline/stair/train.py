@@ -45,6 +45,12 @@ def chat_ids(tok, system, user, answer=None):
 # ----------------------------------------------------------------------------------
 def fit_retrieval(tok, ex, max_len, rng):
     """Retrieval example within max_len tokens: drop random distractors (never a gold passage) until it fits."""
+    ids, n, _ = fit_retrieval_ex(tok, ex, max_len, rng)
+    return ids, n
+
+
+def fit_retrieval_ex(tok, ex, max_len, rng):
+    """fit_retrieval, also returning the shortened question (its candidates and gold indices)."""
     e = dict(ex)
     ids, n = chat_ids(tok, RET_SYSTEM, direct_ret_prompt(e), ret_target(e))
     while len(ids) > max_len and len(e["ctxs_candidate"]) > len(e["ret_answers"]) + 2:
@@ -57,7 +63,7 @@ def fit_retrieval(tok, ex, max_len, rng):
         rng.shuffle(cands)
         e = dict(e, ctxs_candidate=cands, ret_answers=[cands.index(g) for g in gold])
         ids, n = chat_ids(tok, RET_SYSTEM, direct_ret_prompt(e), ret_target(e))
-    return ids, n
+    return ids, n, e
 
 
 def answer_refs(ex, rng, settings):
@@ -85,7 +91,7 @@ def examples(cfg, role, tok, qs, T, seed=0):
     return out
 
 
-def val_score(model, tok, role, qs, cfg, max_new=24):
+def val_score(model, tok, role, qs, cfg, max_new=24, max_len=None):
     import torch
     model.eval()
     dev = next(model.parameters()).device
@@ -94,11 +100,18 @@ def val_score(model, tok, role, qs, cfg, max_new=24):
     with torch.no_grad():
         for q in qs:
             if role == "retriever":
+                if max_len:     # same length cap as the training examples: the full 100-passage prompt (~16k tokens) of a
+                    _, _, q = fit_retrieval_ex(tok, q, max_len, rng)       # 72B ran out of memory during validation
                 pid, _ = chat_ids(tok, RET_SYSTEM, direct_ret_prompt(q))
             else:
                 pid, _ = chat_ids(tok, QA_SYSTEM, direct_qa_prompt(q["question"], answer_refs(q, rng, cfg["finetune"]["answer_inputs"])))
-            out = model.generate(torch.tensor([pid], device=dev), max_new_tokens=max_new, do_sample=False, repetition_penalty=1.0, use_cache=True,
-                                 pad_token_id=tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id)
+            gen = dict(max_new_tokens=max_new, do_sample=False, repetition_penalty=1.0, use_cache=True,
+                       pad_token_id=tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id)
+            if str(dev).startswith("cuda"):
+                with torch.autocast("cuda", dtype=torch.bfloat16):
+                    out = model.generate(torch.tensor([pid], device=dev), **gen)
+            else:
+                out = model.generate(torch.tensor([pid], device=dev), **gen)
             text = tok.decode(out[0, len(pid):], skip_special_tokens=True)
             if role == "retriever":
                 sel = {i - 1 for i in picks_of(selection_text(text), len(q["ctxs_candidate"]))}
@@ -341,7 +354,7 @@ def train(cfg, key, train_qs, val_qs, time_limit_min=0):
             log(f"  step {step}/{steps_total} | loss {np.mean(losses[-50:]):.3f}")
         if step % eval_every == 0 or step == steps_total:
             vl = val_loss()
-            vm = val_score(model, tok, role, vmet, cfg)["score"] if vmet else None
+            vm = val_score(model, tok, role, vmet, cfg, max_len=T["max_len"])["score"] if vmet else None
             rec = {"step": step, "epoch": round(step / steps_epoch, 3), "train_loss": float(np.mean(losses)) if losses else float("nan"),
                    "val_loss": vl, "val_metric": vm, "training questions seen": step * ga}
             st["curve"].append(rec)
