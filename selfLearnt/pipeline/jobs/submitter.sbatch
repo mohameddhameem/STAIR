@@ -6,6 +6,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4G
 #SBATCH --time=5-00:00:00
+#SBATCH --requeue
 cd "${SLURM_SUBMIT_DIR:-.}"
 source jobs/cluster.env
 [ -f jobs/cluster.local.env ] && source jobs/cluster.local.env
