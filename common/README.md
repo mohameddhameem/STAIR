@@ -4,6 +4,28 @@ This is the shared setup every track uses, so that results can be pooled. It set
 the team's proposal "STAIR shared run configuration" (17 Oct) and answers the questions asked in the Teams chat. It is a
 proposal until the team agrees. Comment on the pull request.
 
+## HotpotQA golden set: Jonathan's Stage-Level Routing setup (from 21 Oct)
+
+On HotpotQA the team follows Jonathan's SLR setup (branch `jonathan` at `5b69cce`). Its certified sealed-test numbers
+are the reference every HotpotQA track reports against.
+
+| | Golden set (HotpotQA headline) |
+|---|---|
+| Split | `slr-train` / `slr-val` / `slr-test`: 4,814 / 1,110 / 1,481 of the 7,405 dev questions (§1) |
+| Ruler | `lenient`, unchanged (§2) |
+| Cost | AgentTTS Table 5 prices, weak-first, every call that ran counted; the router is not charged; strong-everything = 929 (§3) |
+| Reference rows (`slr-test`) | always-strong 76.77 at 929; SLR SFT (label) 76.70 at 834.8; SLR SFT + reward 75.96 at 664.7 |
+
+- Pick thresholds and checkpoints on `slr-val`, report once on `slr-test`.
+- nano-jev saw 178 of the `slr-test` questions. Report nano-jev rows on all 1,481 and also without
+  `nanojev_v1_seen.txt`.
+- **What stays:**
+  - AgentTTS's 500 (`test` = dev[500:1000]) is for comparing with the paper only;
+  - the other datasets keep their splits and AgentTTS units.
+- **Moving existing results:** a track with outcomes on all 7,405 dev questions needs no new model calls. Retrain the
+  router on `slr-train`, pick thresholds on `slr-val`, and re-score on `slr-test` at the Table 5 prices.
+  - systemOne and selfLearnt entries made against the dev slices move this way.
+
 ## Quick start
 
 ```bash
@@ -17,9 +39,9 @@ The five things a track needs:
 
 | Import | What it does |
 |---|---|
-| `from stair_common.splits import load_split` | `load_split("hotpotqa", "test")` gives 500 question IDs. Parts are `train`, `train_extra`, `val`, `calib` and `test`. |
+| `from stair_common.splits import load_split` | `load_split("hotpotqa", "slr-test")` gives the golden set's 1,481 question IDs. Parts are `train`, `train_extra`, `val`, `calib` and `test`, and on HotpotQA also `slr-train`, `slr-val` and `slr-test`. |
 | `from stair_common.score import score` | `score(answer, golds)` gives `{"lenient": 0/1, "em": 0/1, "f1": 0–1}`. |
-| `from stair_common.cost import units` | `units(params_b, prompt_tokens, generated_tokens)` gives AgentTTS units for one call. |
+| `from stair_common.cost import units, budget, TABLE5_HOTPOTQA, SLR_PATH_PRICES` | `units(params_b, prompt_tokens, generated_tokens)` gives AgentTTS units for one call. The golden set prices calls at Table 5 (`budget()` for a call it doesn't list). |
 | `from stair_common import load_models` | The pinned copy of each model (`stair_common/models.toml`): `repo`, `revision`, `params_b`, `dtype`, for menus A, B and C. |
 | `from stair_common.schema import validate` | `validate(df)` checks a results table before you share it. |
 
@@ -170,22 +192,15 @@ directly comparable with the paper, and no track has trained on a test question.
 - **500 test questions** give about ±4 points of interval per policy. Compare policies paired on the same questions,
   for example with a paired bootstrap, which is much tighter.
 
-### Why not the 4,814 / 1,110 / 1,481 split (seed 20260729)
+### The golden set's split (`slr-*`, HotpotQA)
 
-That split comes from the Config A archive (`Dataset/splits.json`), not from systemOne. systemOne trained on the
-official train file with its own seed and tested on all 7,405. I checked whether the seed regenerates it:
-
-- I tried numpy `default_rng`, `RandomState`, `random.shuffle` and sklearn, each with three part orders.
-- None reproduces it. Every rule matches only about 300 of nonLLM's committed 1,481 test indices, which is chance.
-
-Two more problems:
-- Only about 100 of AgentTTS's 500 fall in that test split. The slide says 105; I count 94 against nonLLM's indices.
-  The other 400 were training or validation data for the routers, so a fair comparison with the paper used about 100
-  questions.
-- It has no rule that would extend it to the other datasets.
-
-**Moving existing results:** tracks with outcomes on all 7,405 dev questions don't need new model calls. Retrain the
-router on `train_extra` (or the train file), pick thresholds on `val`, and re-score on `test`.
+Jonathan's 4,814 / 1,110 / 1,481 split of the 7,405 dev questions (65 / 15 / 20, seed 20260729).
+- **How it was made:** his `make_splits.py` stratified it on question type, level and the Config A label. It can't
+  be regenerated from the seed alone. So `stair_common` takes it by position from his committed
+  `lab_package/splits.json` (branch `jonathan` at `5b69cce`), and the `MANIFEST.json` pins that file's sha256.
+- **Overlap with AgentTTS's 500:** 94 of them are in `slr-test`; 335 are in `slr-train` and 71 in `slr-val`. That's
+  why the paper comparison keeps its own slice (`test` = dev[500:1000]).
+- **No rule for other datasets:** it covers HotpotQA only. The other datasets keep the splits above.
 
 ## 2. Scoring: one ruler, named every time
 
@@ -198,7 +213,25 @@ router on `train_extra` (or the train file), pick thresholds on `val`, and re-sc
 - **The standing rule:** never mix rulers in one table, and name the ruler next to every accuracy. A track's own extra
   grader (for example systemOne's LLM grader) is reported beside these, never instead of them.
 
-## 3. Cost: AgentTTS units only
+## 3. Cost: Table 5 prices for the HotpotQA golden set, AgentTTS units for the rest
+
+**Golden set (HotpotQA `slr-*`):** price every call at AgentTTS's Table 5, as Jonathan's `configb_test_readout.py`
+does.
+- **Prices:** `cost.TABLE5_HOTPOTQA`, per call, on AgentTTS's normalised budget scale (not units). For example,
+  Qwen2.5-72B retrieval is 814 and Llama-3.1-70B answering is 115.
+- **Weak-first:** every call that ran is counted. Menu A's paths cost `cost.SLR_PATH_PRICES`: WW 80, WS 195, SW 894,
+  SS 1,009. Strong-everything (`cost.STRONG_EVERYTHING`) is 929.
+- **Samples:** S samples from one prompt are one call (Eq. 8). For example, 40 Llama-3.2-3B answers cost
+  `budget(3, 256, 40 × 64)` = 42.
+- **Calls Table 5 doesn't list:**
+  - another model's retrieval or answering call is priced with `cost.budget()` at Table 4's lengths: retrieve
+    2,048 + 128 tokens, answer 256 + 64;
+  - a router or judge call is priced with `cost.budget()` at its measured tokens.
+- **The router is not charged** in the golden set's rows. A track whose question needs it adds a second column
+  "with router cost".
+- **In the results:** prices go in the `price` column (§6).
+
+**Everything else** (other datasets, AgentTTS's 500 slice, measured comparisons): AgentTTS units.
 
 `units = 2 × params × (prompt + generated tokens) / 1,152 GFLOPs`
 - One unit is one Llama-3.2-3B pass of 128 + 64 tokens, as in AgentTTS Eq. 2–4.
@@ -243,14 +276,17 @@ epochs it used (to be reconciled later, as agreed), and how to log and plot loss
 Share results as one row per (dataset, split, id, track, policy, menu, seed). The columns are listed in
 `stair_common/schema.py`: answer, lenient, em, f1, units with a split by stage, ms_router and the models.
 
-- **Mandatory:** lenient accuracy and AgentTTS units, both on `test`.
+- **Mandatory:**
+  - HotpotQA: lenient accuracy and `price` on `slr-test`, plus the subset without nano-jev's seen questions;
+  - other datasets: lenient accuracy and AgentTTS units on `test`.
+  - Keep the `units` columns on HotpotQA too (measured), so that magnitudes can be compared.
 - **Optional, per track:** EM, F1, ms per routing decision, AUC / APGR. These are to be finalised at the next meeting.
 
 ## Answers to the Teams questions
 
 | Question | Answer |
 |---|---|
-| HotpotQA split code / IDs, plain random? | The 4,814/1,110/1,481 split is not systemOne's and can't be regenerated from its seed (§1). Proposed instead: AgentTTS's test slices, committed in `stair_common/splits/`. |
+| HotpotQA split code / IDs, plain random? | Since 21 Oct the team follows Jonathan's 4,814 / 1,110 / 1,481 split as the golden set: `slr-train` / `slr-val` / `slr-test`, taken by position from his committed `splits.json` (§1). AgentTTS's test slice stays for comparing with the paper. |
 | GGUF or full precision? | bf16 from Hugging Face, pinned revisions; AWQ only for 70B/72B (§4, `models.toml`). |
 | nano-jev as the smallest retriever? | Yes: v1.0 (revision `ffee345`), keep its top 5. On AgentTTS's 500 test questions it puts both gold passages in its top 5 for 77% of them, at 2.9 units against 272 for Qwen 72B at the paper's token lengths (814 on AgentTTS's Table 5 scale, §3). It ranks passages only. |
 | One lenient rule and one script? | `lenient_match_agenttts.py`, through `stair_common.score` (§2). |

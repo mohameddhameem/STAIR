@@ -15,6 +15,10 @@ Pooling the team's results is a concatenation of these files.
     units_retrieve, units_answer, units_fuse, units_router   the same split by stage (0 if the stage is absent)
     ms_router  wall-clock ms of the routing decision itself (empty if no router)
     models     the models called, "role=hf_repo@revision;..." as in models.toml
+
+Optional:
+    price      the question's cost at AgentTTS's Table 5 prices (cost.TABLE5_HOTPOTQA, cost.budget), the HotpotQA golden
+               set's cost rule; required in practice for rows on the slr-* splits
 """
 
 from pathlib import Path
@@ -26,6 +30,7 @@ MENUS = {"A", "B", "C"}
 
 
 UNIT_COLUMNS = ["units", "units_retrieve", "units_answer", "units_fuse", "units_router"]
+OPTIONAL_COLUMNS = ["price"]
 
 
 def validate(df, splits_dir=None) -> None:
@@ -50,7 +55,7 @@ def validate(df, splits_dir=None) -> None:
     seed = pd.to_numeric(df["seed"], errors="coerce")
     if not (seed.notna() & (seed == seed.round())).all():
         raise ValueError("seed must be an integer")
-    for c in UNIT_COLUMNS:  # NaN would slip past the sum check below
+    for c in UNIT_COLUMNS + [c for c in OPTIONAL_COLUMNS if c in df.columns]:  # NaN would slip past the sum check below
         v = pd.to_numeric(df[c], errors="coerce").to_numpy(dtype=float)
         if not (np.isfinite(v) & (v >= 0)).all():
             raise ValueError(f"{c} must be finite and >= 0")
