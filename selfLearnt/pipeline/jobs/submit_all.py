@@ -241,8 +241,8 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None):
                 print(f"\nall runnable jobs submitted; {len(aside)} set aside because a job they need failed: {', '.join(aside)}"
                       + (f"\nfailed: {', '.join(failed)}" if failed else "")
                       + f"\nAfter fixing the cause:  python jobs/submit_all.py --as-job --continue {state_path}"
-                        "   (failed and set-aside jobs are submitted again; finished work is skipped)")
-                sys.exit(1)
+                        "   (failed and set-aside jobs are submitted again; finished work is skipped)", flush=True)
+                return             # ends normally: the lines above say what was set aside
             print(f"\nall {len(P.jobs)} jobs submitted (list in {state_path}). Follow with: squeue --me")
             return
         print(f"{time.strftime('%H:%M')}  {left} jobs still to submit" + (f" ({len(aside)} set aside after a failure)" if aside else "")
