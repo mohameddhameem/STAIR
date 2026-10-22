@@ -1,0 +1,11 @@
+id,question,answer,large_pred,large_em,large_f1,p_correct,written
+5abcf17655429959677d6b5c,Which school with which Gabriela Lemus has been affiliated is a member school of the Thurgood Marshall College Fund?,UDC,University of the District of Columbia,0.0,0.0,1.0,1.0
+5a7e08305542995f4f4023ab,Who was born first Al-Karaji or Masatoshi Gündüz Ikeda?,Abū Bakr ibn Muḥammad ibn al Ḥusayn al-Karajī,Al-Karaji,0.0,0.0,0.9999999403953552,1.0
+5ab3e577554299233954ffe3, Jaroslav Seifert and John McGahern were both part of what shared profession? ,writer,writers,0.0,0.0,1.0,1.0
+5ac5275755429924173fb617,"Because Marc Shiller was born in Beunos Aires in 1957, but is a resident of the United States, what ethnic group does he belong to?",Argentine Americans,Argentinian American,0.0,0.0,0.999997079372406,1.0
+5ae12fcf5542990adbacf72c,Astro Boy and The Secret of Kells share which genre of film?,Animation,animated,0.0,0.0,1.0,1.0
+5a7fa08d55429969796c1af7,"Were the board games, Clans and Drunter und Drüber, both created by Leo Colovini?",Drunter und Drüber is a multiplayer board game invented by Klaus Teuber,no,0.0,0.0,0.9859347939491272,1.0
+5ae7766455429952e35ea920,"Geoffrey Rush, one of the stars in Intolerable Cruelty, is a known actor and film producer in what country?",Australian actor and film producer,Australia,0.0,0.0,0.9046438932418823,1.0
+5abaee665542992ccd8e7e5f,"Who is the patron saint of Europe and has a historical religions building in Castres, Languedoc, France named after him?",Benedict of Nursia,Benedict of Nursia,1.0,1.0,0.3775393068790436,0.0
+5a8b120755429949d91db4a4,What country of origin does André Holland and 42 have in common?,American,United States,0.0,0.0,0.9999995231628418,1.0
+5a893f305542993b751ca91e,"The Whitehead Light is located in what town with a population of 2,591 during the 2010 census?",St.George,St. George,0.0,0.0,1.0,1.0

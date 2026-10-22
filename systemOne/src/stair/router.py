@@ -35,7 +35,7 @@ from sklearn.preprocessing import StandardScaler
 from stair import provenance
 from stair.evidence import tokenize
 from stair.experts import AUX_VERBS
-from stair.metrics import normalize_answer
+from stair.metrics import METRICS, metric_view, normalize_answer
 
 log = logging.getLogger(__name__)
 
@@ -178,18 +178,20 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--tau", type=float, default=0.8, help="small expert counts as correct at F1 >= tau")
     parser.add_argument("--seed", type=int, default=0, help="seed for the cross-validation folds")
+    parser.add_argument("--metric", choices=METRICS, default="f1",
+                        help="score the labels use: F1, or the team's lenient ruler (0/1; use --tau 0.5)")
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-    df = pd.read_parquet(args.run / "router_train.parquet")
+    df = metric_view(pd.read_parquet(args.run / "router_train.parquet"), args.metric)
     rates = " | ".join(f"{label} {escalation_label(df, args.tau, label).mean():.3f}" for label in LABELS)
     log.info(f"router_train: {len(df)} questions, escalate rate at tau={args.tau}: {rates}")
     routers = train_routers(df, args.tau, args.seed)
     out = args.run / "routers.pkl"
-    meta = {"n_train": len(df), "seed": args.seed, "c_grid": C_GRID,
+    meta = {"n_train": len(df), "seed": args.seed, "metric": args.metric, "c_grid": C_GRID,
             "tuning": {name: r["tuning"] for name, r in routers.items()}}
     out.write_bytes(pickle.dumps({"tau": args.tau, "routers": routers, **meta}))
     provenance.record(args.run, "train-router", tau=args.tau, **meta, **provenance.environment())

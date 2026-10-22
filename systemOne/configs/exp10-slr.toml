@@ -1,0 +1,66 @@
+# Experiment 10: the System One judge routing menu A on the HotpotQA golden set (Jonathan's Stage-Level Routing).
+# Job sheet: docs/gpu-jobs-slr.md. Needs `slr fetch` (configs/slr.toml) first.
+#   uv run exp10-slr train --judge nano-jev --plan configs/exp10-slr.toml   # GPU, resumes
+#   uv run exp10-slr eval --plan configs/exp10-slr.toml                     # CPU: every judge set trained so far
+slr_plan = "configs/slr.toml"
+out = "runs/exp10-slr"
+bootstrap = 1000
+
+# His two certified routers, as the baselines: val scores from his run folders, test scores from test_scores/.
+[[his_routers]]
+name = "SLR SFT (label)"
+val = ["sft_router5_ret", "sft_router5_qa"]
+test = ["ret_label", "qa_label"]
+
+[[his_routers]]
+name = "SLR SFT (label) + reward"
+val = ["sft_router5_ret", "reward_train_qa"]
+test = ["ret_label", "qa_reward"]
+
+# Judge sets: trained one GPU job each, evaluated together.
+[[judges]]
+name = "nano-jev"
+judge_dir = "judge-nanojev"
+init = "sdmlai/nano-jev@v1.0"
+inputs = ["qp", "qpa"]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2              # our judges peak at epoch 1 (2026-10-18 write-up); the best dev epoch is kept
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1      # of slr-train, by question: slr-val stays for the thresholds
+
+[[judges]]
+name = "decider-2b"
+judge_dir = "judge-decider-2b"
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+inputs = ["qp", "qpa"]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 1e-4
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+micro_batch = 4
+max_length = 512        # unused by the decider: it keeps its own window
+dev_fraction = 0.1
+
+[[judges]]
+name = "decider-e4b"
+judge_dir = "judge-decider-e4b"
+init = "StrandsAgents/strands-decider-e4b-gemma4-v1-2610"
+inputs = ["qp", "qpa"]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 1e-4
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+micro_batch = 2         # as experiment 9's E4B: 4 ran out of the L40S's 44 GB (job 43099)
+max_length = 512
+dev_fraction = 0.1

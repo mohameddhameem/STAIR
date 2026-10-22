@@ -86,6 +86,15 @@ def test_bootstrap_intervals():
     full = evaluate_routing.policy_curves(a, scores)
     point = aiq(full["router:good"], 1.0, 5.0)
     assert out["aiq_ci95"]["router:good"][0] <= point <= out["aiq_ci95"]["router:good"][1]
+    assert "aiq_diff_with_cost" not in out
+
+    # with-cost: a free judge reproduces the plain differences; a costly one loses AIQ against every baseline
+    free = evaluate_routing.bootstrap(a, scores, {}, 200, seed=0, policy_costs={"router:good": np.zeros(n)})
+    assert free["aiq_diff_with_cost"]["router:good - random"] == out["aiq_diff"]["router:good - random"]
+    costly = evaluate_routing.bootstrap(a, scores, {}, 200, seed=0, policy_costs={"router:good": np.full(n, 1.0)})
+    with_cost, plain = costly["aiq_diff_with_cost"]["router:good - random"], out["aiq_diff"]["router:good - random"]
+    assert with_cost["ci95"][1] < plain["ci95"][1]
+    assert costly["aiq_diff_with_cost"]["router:noise - random"] == out["aiq_diff"]["router:noise - random"]
 
 
 def test_escalation_labels():
@@ -174,7 +183,8 @@ def test_end_to_end_smoke(tmp_path):
     assert report["n_test"] == 120
     assert report["cost_unit"] == "flops"
     assert report["expert_params_b"] == {"small": 1.5, "large": 7.0}
-    assert set(report["single_expert_costs"]) == {"flops", "tokens", "seconds"}
+    assert set(report["single_expert_costs"]) == {"flops", "tokens", "seconds", "agenttts"}  # table5 needs model names
+    assert report["metric"] == "f1"
     rates = report["escalate_label_rate"]
     assert 0 < rates["large-helps"] <= rates["small-fails"] < 1
     small, large, oracle = (report[k]["f1"] for k in ("always_small", "always_large", "oracle"))

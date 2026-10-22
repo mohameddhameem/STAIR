@@ -42,13 +42,16 @@ import pandas as pd
 from scipy.optimize import minimize_scalar
 
 from stair import provenance
-from stair.metrics import normalize_answer
+from stair_common.cost import TABLE5_HOTPOTQA, UNIT_GFLOPS, budget
+
+from stair.metrics import METRICS, metric_view, normalize_answer
 from stair.router import LABELS, escalation_label, predict_escalation
 
 log = logging.getLogger(__name__)
 
 RATES = np.round(np.linspace(0, 1, 21), 2)
-COST_UNITS = ("flops", "tokens", "seconds")
+# agenttts: flops / one 3B pass of 128+64 tokens; table5: the HotpotQA golden set's fixed price per answering call
+COST_UNITS = ("flops", "tokens", "seconds", "agenttts", "table5")
 CPT_FRACTIONS = (0.5, 0.8)
 CURVE_COLUMNS = ("small_f1", "large_f1", "small_em", "large_em", "small_cost", "large_cost", "small_uncertainty")
 BASELINES = ("small-entropy (post)", "random")
@@ -66,15 +69,41 @@ def expert_params(cfg: dict) -> dict[str, float | None]:
     return params
 
 
-def with_cost_unit(df: pd.DataFrame, unit: str, params: dict[str, float | None]) -> pd.DataFrame:
-    """Copy of df whose small_cost/large_cost are in `unit` (cached costs are tokens)."""
+def table5_price(model: str, params_b: float) -> float:
+    """The golden set's price of one HotpotQA answering call: AgentTTS Table 5 for a model it lists, else the same
+    formula at Table 4's answering lengths (stair_common.cost.budget, 256 + 64 tokens), with the nominal size in the
+    model's name, as Table 5 counts (Qwen2.5-1.5B is 1.5, though a config may give its exact 1.54)."""
+    for name, price in TABLE5_HOTPOTQA["answer"].items():
+        if re.search(rf"{re.escape(name)}(?![\d.])", model):
+            return float(price)
+    nominal = re.search(r"(\d+(?:\.\d+)?)[Bb]\b", model)
+    return budget(float(nominal.group(1)) if nominal else params_b, 256, 64)
+
+
+def judge_cost_in(unit: str, gflops):
+    """A judge call's GFLOPs in a curve's unit; under table5, each call priced with stair_common.cost.budget."""
+    if unit == "agenttts":
+        return gflops / UNIT_GFLOPS
+    if unit == "table5":
+        return np.maximum(0.0, 3 * np.asarray(gflops, dtype=float) / UNIT_GFLOPS - 2)
+    return gflops
+
+
+def with_cost_unit(df: pd.DataFrame, unit: str, params: dict[str, float | None],
+                   models: dict[str, str] | None = None) -> pd.DataFrame:
+    """Copy of df whose small_cost/large_cost are in `unit` (cached costs are tokens). `table5` needs the experts'
+    model names (`models`)."""
     df = df.copy()
     for name in ("small", "large"):
-        if unit == "flops":
-            if params.get(name) is None:
-                raise ValueError(f"no parameter count for expert '{name}': add `params = <billions>` to its "
-                                 "config or use --cost tokens")
-            df[f"{name}_cost"] = 2 * params[name] * df[f"{name}_cost"]
+        if unit in ("flops", "agenttts", "table5") and params.get(name) is None:
+            raise ValueError(f"no parameter count for expert '{name}': add `params = <billions>` to its "
+                             "config or use --cost tokens")
+        if unit in ("flops", "agenttts"):
+            df[f"{name}_cost"] = 2 * params[name] * df[f"{name}_cost"] / (UNIT_GFLOPS if unit == "agenttts" else 1)
+        elif unit == "table5":
+            if not (models or {}).get(name):
+                raise ValueError(f"cost table5 needs expert '{name}''s model name")
+            df[f"{name}_cost"] = table5_price(models[name], params[name])
         elif unit == "seconds":
             df[f"{name}_cost"] = df[f"{name}_seconds"]
     return df
@@ -142,11 +171,18 @@ def policy_curves(a: dict[str, np.ndarray], scores: dict[str, tuple[np.ndarray, 
 
 def bootstrap(a: dict[str, np.ndarray], scores: dict[str, tuple[np.ndarray, bool]],
               operating: dict[str, tuple[np.ndarray, bool]], n_boot: int, seed: int,
-              references: tuple[str, ...] = ()) -> dict:
-    """Paired bootstrap over questions: AIQ intervals, AIQ differences, operating-point F1 vs always-large."""
+              references: tuple[str, ...] = (), policy_costs: dict[str, np.ndarray] | None = None) -> dict:
+    """Paired bootstrap over questions: AIQ intervals, AIQ differences, operating-point F1 vs always-large.
+
+    `policy_costs` (policy -> its own per-question cost, e.g. a judge's) adds "aiq_diff_with_cost": the same
+    differences with each such policy's curve shifted by its mean cost on the resampled questions (as
+    `aiq_with_judge_cost`); policies without a cost enter unchanged.
+    """
     rng = np.random.default_rng(seed)
     n = len(a["small_f1"])
+    policy_costs = policy_costs or {}
     aiqs: dict[str, list[float]] = {}
+    aiqs_cost: dict[str, list[float]] = {}
     op_gaps: dict[str, list[float]] = {name: [] for name in operating}
     for _ in range(n_boot):
         idx = rng.integers(0, n, n)
@@ -155,6 +191,9 @@ def bootstrap(a: dict[str, np.ndarray], scores: dict[str, tuple[np.ndarray, bool
         cmin, cmax = s["small_cost"].mean(), s["large_cost"].mean()
         for name, pts in curves.items():
             aiqs.setdefault(name, []).append(aiq(pts, cmin, cmax))
+            extra = float(policy_costs[name][idx].mean()) if name in policy_costs else 0.0
+            aiqs_cost.setdefault(name, []).append(
+                aiq([{**p, "cost": p["cost"] + extra} for p in pts], cmin, cmax) if extra else aiqs[name][-1])
         for name, (esc, post) in operating.items():
             op_gaps[name].append(outcome(s, esc[idx], post)["f1"] - s["large_f1"].mean())
 
@@ -165,8 +204,15 @@ def bootstrap(a: dict[str, np.ndarray], scores: dict[str, tuple[np.ndarray, bool
     aiqs_np = {name: np.asarray(v) for name, v in aiqs.items()}
     diffs = {f"{name} - {base}": summary(aiqs_np[name] - aiqs_np[base])
              for name in scores for base in (*BASELINES, *references) if base != name and base in aiqs_np}
-    return {"n": n_boot, "seed": seed, "aiq_ci95": {name: summary(v)["ci95"] for name, v in aiqs_np.items()},
-            "aiq_diff": diffs, "op_f1_minus_large": {name: summary(v) for name, v in op_gaps.items()}}
+    out = {"n": n_boot, "seed": seed, "aiq_ci95": {name: summary(v)["ci95"] for name, v in aiqs_np.items()},
+           "aiq_diff": diffs, "op_f1_minus_large": {name: summary(v) for name, v in op_gaps.items()}}
+    if policy_costs:
+        cost_np = {name: np.asarray(v) for name, v in aiqs_cost.items()}
+        out["aiq_ci95_with_cost"] = {name: summary(cost_np[name])["ci95"] for name in policy_costs if name in cost_np}
+        out["aiq_diff_with_cost"] = {f"{name} - {base}": summary(cost_np[name] - cost_np[base])
+                                     for name in scores for base in (*BASELINES, *references)
+                                     if base != name and base in cost_np}
+    return out
 
 
 def aiq(points: list[dict], cmin: float, cmax: float) -> float:
@@ -263,7 +309,8 @@ def breakdowns(df: pd.DataFrame, escalate: np.ndarray, post: bool = False) -> di
 
 
 def evaluate(test: pd.DataFrame, calib: pd.DataFrame | None, routers: dict, tau: float, max_drop: float,
-             n_boot: int = 0, seed: int = 0, references: tuple[str, ...] = ()) -> tuple[dict, pd.DataFrame]:
+             n_boot: int = 0, seed: int = 0, references: tuple[str, ...] = (),
+             policy_costs: dict[str, np.ndarray] | None = None) -> tuple[dict, pd.DataFrame]:
     n = len(test)
     oracle = (test["large_f1"] > test["small_f1"]).to_numpy()
     cmin, cmax = test["small_cost"].mean(), test["large_cost"].mean()
@@ -306,7 +353,7 @@ def evaluate(test: pd.DataFrame, calib: pd.DataFrame | None, routers: dict, tau:
         for key, value in breakdowns(test, esc).items():
             report.setdefault(key, {})[single] = value
     if n_boot:
-        report["bootstrap"] = bootstrap(a, scores_by_policy, operating, n_boot, seed, references)
+        report["bootstrap"] = bootstrap(a, scores_by_policy, operating, n_boot, seed, references, policy_costs)
 
     rows = [{"policy": name, **p} for name, pts in curves.items() for p in pts]
     return report, pd.DataFrame(rows)
@@ -317,6 +364,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--max-drop", type=float, default=0.01, help="allowed relative F1 drop vs always-large at the operating point")
     parser.add_argument("--cost", choices=COST_UNITS, default="flops", help="cost unit (see module docstring)")
+    parser.add_argument("--metric", choices=METRICS, default="f1",
+                        help="per-question score for labels, curves and AIQ: F1, or the team's lenient ruler (0/1)")
     parser.add_argument("--exclude", type=Path, action="append", default=[],
                         help="file with test question ids to drop (e.g. ones nano-jev was tuned on); repeatable. "
                              "Writes report-clean.json and curves-clean.csv")
@@ -330,8 +379,10 @@ def main(argv: list[str] | None = None) -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     saved = pickle.loads((args.run / "routers.pkl").read_bytes())
     cfg = tomllib.loads((args.run / "config.toml").read_text())
-    params = expert_params(cfg)
-    test = pd.read_parquet(args.run / "test.parquet")
+    params, models = expert_params(cfg), {e["name"]: e.get("model", "") for e in cfg["experts"]}
+    test = metric_view(pd.read_parquet(args.run / "test.parquet"), args.metric)
+    if saved.get("metric", "f1") != args.metric:
+        raise ValueError(f"routers.pkl was trained with metric {saved.get('metric', 'f1')!r}; rerun train-router --metric {args.metric}")
     excluded = set()
     for path in args.exclude:
         excluded |= {line.strip() for line in path.read_text().splitlines() if line.strip()}
@@ -340,12 +391,12 @@ def main(argv: list[str] | None = None) -> None:
         test = test[~test["id"].isin(excluded)].reset_index(drop=True)
         log.info(f"excluded {before - len(test)} of {before} test questions")
     calib_path = args.run / "calib.parquet"
-    calib = pd.read_parquet(calib_path) if calib_path.exists() else None
+    calib = metric_view(pd.read_parquet(calib_path), args.metric) if calib_path.exists() else None
 
     single = {}
     for unit in COST_UNITS:
         try:
-            t = with_cost_unit(test, unit, params)
+            t = with_cost_unit(test, unit, params, models)
         except ValueError:
             continue
         single[unit] = {"small": float(t["small_cost"].mean()), "large": float(t["large_cost"].mean())}
@@ -355,11 +406,11 @@ def main(argv: list[str] | None = None) -> None:
         scorer_params = cfg.get("scorer", {}).get("params")
         scorer_cost = {"tokens": tokens, "flops": 2 * scorer_params * tokens if scorer_params else None,
                        "truncated_question_rate": float((test["scorer_truncated"] > 0).mean())}
-    test = with_cost_unit(test, args.cost, params)
-    calib = with_cost_unit(calib, args.cost, params) if calib is not None else None
+    test = with_cost_unit(test, args.cost, params, models)
+    calib = with_cost_unit(calib, args.cost, params, models) if calib is not None else None
 
     report, curves = evaluate(test, calib, saved["routers"], saved["tau"], args.max_drop, args.bootstrap, args.seed)
-    report = {"cost_unit": args.cost, "expert_params_b": params, "excluded_files": [str(p) for p in args.exclude],
+    report = {"metric": args.metric, "cost_unit": args.cost, "expert_params_b": params, "excluded_files": [str(p) for p in args.exclude],
               **report, "single_expert_costs": single, "scorer_cost": scorer_cost}
     suffix = "-clean" if excluded else ""
     (args.run / f"report{suffix}.json").write_text(json.dumps(report, indent=1))

@@ -120,7 +120,8 @@ def cmd_build(args) -> None:
 
     split = load_dataset("hotpotqa/hotpot_qa", "distractor", split=args.source)
     if args.ids:
-        wanted = pd.read_parquet(args.ids, columns=["id"])["id"].tolist()[: args.count]
+        wanted = (json.loads(args.ids.read_text())[args.name] if args.ids.suffix == ".json"  # a make-splits key
+                  else pd.read_parquet(args.ids, columns=["id"])["id"].tolist())[: args.count]
         pos = {qid: i for i, qid in enumerate(split["id"])}
         rows = [pos[q] for q in wanted]
     else:
@@ -237,7 +238,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     b.add_argument("--source", choices=["train", "validation"], required=True)
     b.add_argument("--start", type=int, default=0, help="first row (file order) when --ids is not given")
     b.add_argument("--count", type=int, required=True)
-    b.add_argument("--ids", type=Path, help="parquet whose `id` column (in order) picks the questions")
+    b.add_argument("--ids", type=Path, help="parquet whose `id` column (in order) picks the questions, or a make-splits "
+                                            "JSON whose key --name does")
     b.add_argument("--name", required=True)
     b.add_argument("--pool-size", type=int, default=POOL_SIZE)
     b.add_argument("--seed", type=int, default=0)

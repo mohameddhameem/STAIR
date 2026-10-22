@@ -1,0 +1,53 @@
+{
+ "inputs": "qpa",
+ "seed": 1,
+ "init": "StrandsAgents/strands-decider-E4B-gemma4-v1-2610",
+ "zero_shot": false,
+ "options": [
+  "small model, one answer",
+  "small model, ten samples fused",
+  "small model, twenty samples fused",
+  "small model, forty samples fused",
+  "large model, one answer"
+ ],
+ "train": {
+  "epochs": 2,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "micro_batch": 1,
+  "max_length": 512,
+  "dev_fraction": 0.1
+ },
+ "n_train": 900,
+ "n_dev": 100,
+ "label_counts": [
+  737,
+  139,
+  44,
+  24,
+  56
+ ],
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.9365847052836774,
+   "dev_nll": 0.8042424917221069,
+   "seconds": 221.34772508591413
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.7822324145593468,
+   "dev_nll": 0.7564848065376282,
+   "seconds": 221.52215766906738
+  }
+ ],
+ "train_seconds": 443.2427496239543,
+ "scoring_seconds_per_question": {
+  "calib": 0.18546952805668115,
+  "test": 0.17115578516200186
+ },
+ "init_revision": null,
+ "device": "cuda"
+}

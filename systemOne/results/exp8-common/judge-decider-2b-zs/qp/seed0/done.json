@@ -1,0 +1,33 @@
+{
+ "inputs": "qp",
+ "seed": 0,
+ "init": "StrandsAgents/strands-decider-2B-hobson-v21",
+ "zero_shot": true,
+ "options": [
+  "small model, one answer",
+  "small model, ten samples fused",
+  "small model, twenty samples fused",
+  "small model, forty samples fused",
+  "large model, one answer"
+ ],
+ "train": {
+  "dev_fraction": 0.1
+ },
+ "n_train": 900,
+ "n_dev": 100,
+ "label_counts": [
+  737,
+  139,
+  44,
+  24,
+  56
+ ],
+ "history": [],
+ "train_seconds": 2.164393663406372e-06,
+ "scoring_seconds_per_question": {
+  "calib": 0.07688565898686647,
+  "test": 0.06878371029347181
+ },
+ "init_revision": null,
+ "device": "cuda"
+}

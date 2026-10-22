@@ -1,0 +1,34 @@
+{
+ "judge": "nano-jev",
+ "inputs": "qp",
+ "seed": 1,
+ "init": "sdmlai/nano-jev@v1.0",
+ "train": {
+  "epochs": 2,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1
+ },
+ "n_train_items": 12984,
+ "n_dev_items": 1458,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.4825661049540994,
+   "dev_nll": 0.4927591383457184,
+   "seconds": 43.16555461101234
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.42391204834901935,
+   "dev_nll": 0.48215052485466003,
+   "seconds": 43.16003649868071
+  }
+ ],
+ "train_seconds": 86.45913038775325,
+ "init_revision": "ffee345e97797bef0948561461ea54fe558588a0",
+ "device": "cuda"
+}

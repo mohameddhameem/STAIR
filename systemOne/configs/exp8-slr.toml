@@ -1,0 +1,97 @@
+# Experiment 8 on the HotpotQA golden set (Jonathan's Stage-Level Routing setup; docs/gpu-jobs-slr.md): the five
+# answer options of configs/exp8-common.toml, unchanged, on the golden-set split (make-splits --slr: router_train 1,000
+# of slr-train, calib 500 of slr-val, test all 1,481 of slr-test; questions answered before are drawn first and reused,
+# `reuse_answers`). Pools rebuild identically per question. Plus the H2 diagnosis cells (test only): the 70B with
+# Jonathan's short-answer prompt (prompt = "slr", greedy), on nano-jev's top 5 and on his Qwen2.5-72B selections.
+#   uv run pool-answer run --plan configs/exp8-slr.toml --split test
+out = "runs/exp8-slr"
+seed = 0
+agenttts_strong_units = 311   # 72B retrieval (272) + 70B answering (39), at AgentTTS's Table 4 lengths (units, summary only)
+reuse_answers = ["runs/exp8-common/answers/calib", "runs/exp8-common/answers/test"]  # same cells, same pools (dev[0:1000])
+
+[[cells]]
+name = "llama3b-top5"
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 1
+temperature = 0.3
+max_new_tokens = 512
+batch_size = 16
+
+[[cells]]
+name = "llama3b-s10fuse-top5"   # AgentTTS's repeated sampling with fusion (it used 40 samples)
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 10
+temperature = 0.9
+fuse = true
+fuse_temperature = 0.3
+max_new_tokens = 512
+fuse_max_new_tokens = 1024
+batch_size = 4
+
+[[cells]]
+name = "llama3b-s20fuse-top5"   # repeated sampling with fusion; batch_size keeps 40 sequences in flight
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 20
+temperature = 0.9
+fuse = true
+fuse_temperature = 0.3
+max_new_tokens = 512
+fuse_max_new_tokens = 1024
+batch_size = 2
+
+[[cells]]
+name = "llama3b-s40fuse-top5"   # repeated sampling with fusion, AgentTTS's 40 samples; batch_size keeps 40 sequences in flight
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 40
+temperature = 0.9
+fuse = true
+fuse_temperature = 0.3
+max_new_tokens = 512
+fuse_max_new_tokens = 1024
+batch_size = 1
+
+[[cells]]
+name = "llama70b-top5"
+model = "meta-llama/Llama-3.1-70B-Instruct"
+params = 70.6
+load_in_4bit = true
+top_k = 5
+samples = 1
+temperature = 0.3
+max_new_tokens = 512
+batch_size = 4
+
+[[cells]]
+name = "llama70b-slrprompt-top5"   # H2 (a): Jonathan's answering prompt on nano-jev's top 5
+model = "meta-llama/Llama-3.1-70B-Instruct"
+params = 70.6
+load_in_4bit = true
+prompt = "slr"
+passages = "nanojev"
+top_k = 5
+samples = 1
+temperature = 0.0                  # greedy, as his grid
+max_new_tokens = 128               # his QA_OUT
+batch_size = 8
+
+[[cells]]
+name = "llama70b-slrprompt-72bsel"  # H2 (b): the same on his Qwen2.5-72B selections (his SS path, our 70B)
+model = "meta-llama/Llama-3.1-70B-Instruct"
+params = 70.6
+load_in_4bit = true
+prompt = "slr"
+passages = "slr-72b"
+slr_plan = "configs/slr.toml"
+top_k = 5                          # unused: the block is his selection
+samples = 1
+temperature = 0.0
+max_new_tokens = 128
+batch_size = 8

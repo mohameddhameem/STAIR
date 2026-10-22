@@ -1,0 +1,111 @@
+# Experiments 7 + 9 redone under the team's common setup (STAIR common/, docs/gpu-jobs-common.md):
+# router_train = the common 12k HotpotQA train draw minus nano-jev's training questions; calib = common val
+# (dev[0:500]); test = common test (dev[500:1000], AgentTTS's 500). Labels, curves and AIQ use the standard lenient
+# ruler (0/1, so tau 0.5); cost in AgentTTS units. Pair A only (pairs B/C would need their experts rerun).
+#   uv run judge all --plan configs/system-one-common.toml --out runs/common-judges
+# configs/system-one-common-f1.toml is the same with F1 labels (tau 0.8), for comparison with the old reports.
+metric = "lenient"
+cost = "agenttts"
+tau = 0.5
+max_drop = 0.01
+seeds = [0, 1, 2]
+paired_references = ["judge/qp-large-helps-nanojev-A", "judge/qpa-large-helps-nanojev-A"]
+zero_shot_judge = [
+  "sdmlai/nano-jev@v1.0",
+  "StrandsAgents/strands-decider-2B-hobson-v21",
+  "StrandsAgents/strands-decider-E4B-gemma4-v1-2610",
+]
+
+[pairs]
+A = "runs/common"            # 1.5B (top 2) / 7B (all 10), same experts and revisions as results/gpu
+
+[split_data]
+calib = "distractor_validation.parquet"   # common val is dev[0:500]
+
+# nano-jev v1.0's own fine-tuning settings (as configs/system-one.toml)
+[train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+
+# Experiment 7: input ablation, label, and decision pretraining (pair A)
+[[judges]]
+inputs = "q"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qp"
+label = "small-fails"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "small-fails"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "cross-encoder/ms-marco-MiniLM-L12-v2"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "cross-encoder/ms-marco-MiniLM-L12-v2"
+train_pair = "A"
+
+# Experiment 9: Strands Decider 2B and E4B, LoRA + pointer head (settings as configs/system-one-decider.toml)
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 4 }
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 4 }
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-E4B-gemma4-v1-2610"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 2 }
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-E4B-gemma4-v1-2610"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 2 }

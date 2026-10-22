@@ -1,0 +1,41 @@
+id,question,answer,large_pred,extracted,large_em,large_f1,p_correct
+5abae3205542996cc5e49edc,What award did the writer of Never Let Me Go novel win in 1989?,Man Booker Prize for Fiction,Man Booker Prize for Fiction,none,1.0,1.0,0.0
+5a7605f85542994ccc91868d,"Which battle lasted longer, Battle of Hürtgen Forest or Battle of Pusan Perimeter?",Battle of Hürtgen Forest,Battle of Hürtgen Forest,none,1.0,1.0,0.0
+5abcf17655429959677d6b5c,Which school with which Gabriela Lemus has been affiliated is a member school of the Thurgood Marshall College Fund?,UDC,University of the District of Columbia,University of the District of Columbia,0.0,0.0,1.0
+5a7a651b5542990783324f40,What writer worked on both The Ice Cream Man and and a 2007 fantasy comedy loosely based on a Donald Henkel poem?,David Dobkin,David Dobkin,none,1.0,1.0,0.0
+5ac1a2f755429964131be258,"""Big for Your Boots"" is a song by an English grime and hip hop artist whose most  successful song to date is what?",Shut Up,Shut Up,none,1.0,1.0,0.0
+5a7e08305542995f4f4023ab,Who was born first Al-Karaji or Masatoshi Gündüz Ikeda?,Abū Bakr ibn Muḥammad ibn al Ḥusayn al-Karajī,Al-Karaji,Al-Karaji,0.0,0.0,0.9999999403953552
+5ae3de615542992f92d823a5, The Human Condition is a film trilogy that follows a Japanese pacifist and socialist as he tries to survive in a political system that strives to regulate what?,every aspect of public and private life,every aspect of public and private life,none,1.0,1.0,0.0
+5a7a9b9a5542990198eaf160,When was the Chinese American electronic musician and singer who collaborated on the album I Remember born?,1989,1989,none,1.0,1.0,0.0
+5a7e052d5542995f4f40238e,The Joggers are a four-piece band whose lead singer is the son of an American chemist who received the highest what?,Hirsch index rating,Hirsch index rating,none,1.0,1.0,0.0
+5a8c06bb5542995e66a47530,"Darl Hall and John Oats fifth studio album was released in 1976, which song was the first of their six #1 singles?","""Rich Girl""",Rich Girl,none,1.0,1.0,0.0
+5ab94acd554299743d22eac6,What season did a Spanish rally driver won the 2000 World Rally Championship?,28th,28th,none,1.0,1.0,0.0
+5ae3790f5542992e3233c415,Are Leopold Lummerstorfer and Valeria Sarmiento both authors?,no,no,none,1.0,1.0,0.0
+5adf227a5542992d7e9f92a6,Josephine de Reszke made her debut in what grand opera?,Hamlet,Hamlet,none,1.0,1.0,0.0
+5ab3e577554299233954ffe3, Jaroslav Seifert and John McGahern were both part of what shared profession? ,writer,writers,writers,0.0,0.0,1.0
+5ae1da385542997283cd2297,"Which actresses appeared with the mother of Robert Lowery Hanks in the film ""Little Women""?","Katharine Hepburn, Joan Bennett, Frances Dee","Katharine Hepburn, Joan Bennett, Frances Dee",none,1.0,1.0,0.0
+5ab9ddaa5542994dbf019873,"Brigadier Stanley James Ledger Hill was attached to the command post of which senior British Army officer born on July 10, 1886?",Lord Gort,"Field Marshal John Standish Surtees Prendergast Vereker, 6",6th Viscount Gort,0.0,0.0,0.999447226524353
+5adbf34955429947ff173862,Is Karjiang a mountain and Sherpi Kangri a mountain peak?,yes,yes,none,1.0,1.0,0.0
+5ac5275755429924173fb617,"Because Marc Shiller was born in Beunos Aires in 1957, but is a resident of the United States, what ethnic group does he belong to?",Argentine Americans,Argentinian American,Argentinian American,0.0,0.0,0.999997079372406
+5ae12fcf5542990adbacf72c,Astro Boy and The Secret of Kells share which genre of film?,Animation,animated,animated,0.0,0.0,1.0
+5a8a1b7a5542992d82986ec0,"Where did the father of Edward Garrison Walker live when he wrote ""An Appeal to the Coloured Citizens of the World""?",Boston,Boston,none,1.0,1.0,0.0
+5ae5f3bb5542996de7b71a7e,Which star of The Human Stain was born in 1937?,Anthony Hopkins,Anthony Hopkins,none,1.0,1.0,0.0
+5ae638865542992ae0d1628c,"Who created the 2003 remake of the 1983 overhead view, vehicular combat game developed by Bally Midway?",Adam Dawes,Adam Dawes,none,1.0,1.0,0.0
+5a71214d5542994082a3e5b9,What production company was founded by George Balanchine to create a live stage version of the 1942 film Casablanca?,The Los Angeles Dance Theater,Los Angeles Dance Theater,none,1.0,1.0,0.0
+5a8a06c35542992d82986e57,What was the name of Scottish singer-songwriter James Aaron Diamond's first solo album that debuted in 1985?,Double Crossed,Double Crossed,none,1.0,1.0,0.0
+5a7fa08d55429969796c1af7,"Were the board games, Clans and Drunter und Drüber, both created by Leo Colovini?",Drunter und Drüber is a multiplayer board game invented by Klaus Teuber,no,no,0.0,0.0,0.9859347939491272
+5ae5d0b5554299546bf82f80,"Which Disneyland attraction is Matterhorn Bobsleds roller coaster, an expanded version of",Autopia,Autopia,none,1.0,1.0,0.0
+5a8841195542994846c1ce65,"Who produced the 1998 British comedy starring the director of the feature film ""Eddie the Eagle""?",Matthew Vaughn,Matthew Vaughn,none,1.0,1.0,0.0
+5add92885542990dbb2f7e72,How did the chairman of the Luthuanian Union of Actors discribe the star of the film Redirected?,one of Lithuania's most talented actors,one of Lithuania's most talented actors,none,1.0,1.0,0.0
+5a7a030c5542996a35c17077,J.B. Scotts located on this 11 mile stretch in Albany New York and is also known by this name in Schenectady County?,State Street,State Street,none,1.0,1.0,0.0
+5ae1388e5542997b2ef7d13a,Double Jeopardy is a 1999 film starring an American political activist best known for an ongoing acting career spanning how long?,more than two decades,more than two decades,none,1.0,1.0,0.0
+5ae7766455429952e35ea920,"Geoffrey Rush, one of the stars in Intolerable Cruelty, is a known actor and film producer in what country?",Australian actor and film producer,Australia,Australia,0.0,0.0,0.9046438932418823
+5ac023045542996f0d89cb32,What did the main character of the Novel whose second sequel was published by Viking Adult go to college?,New York,New York,none,1.0,1.0,0.0
+5a775f615542993735360250,Which South Korean film about an affair between an attractive thirty-two-year-old woman and a youth just short of legal majority premiered at the 2005 Sundance Film Festival?,Green Chair,Green Chair,none,1.0,1.0,0.0
+5a7c6d98554299683c1c6304,What ABC television series was inspired by a 2011 film and cast Dominic Cooper as young Howard Stark?,Agent Carter,Agent Carter,none,1.0,1.0,0.0
+5abaee665542992ccd8e7e5f,"Who is the patron saint of Europe and has a historical religions building in Castres, Languedoc, France named after him?",Benedict of Nursia,Benedict of Nursia,none,1.0,1.0,0.0
+5adf3ab95542992d7e9f92f3, The 2011–12 Houston Rockets season began with the drafting of the player who now plays for what team?,Boston Celtics,Boston Celtics,none,1.0,1.0,0.0
+5adbe1c5554299438c868cc4,Was 9/11: Press for Truth released prior to Chasing Coral?,yes,yes,none,1.0,1.0,0.0
+5a7b43735542992d025e67cb,what type of media does Ratatouille and PlayStation 3 have in common?,video game,video game,none,1.0,1.0,0.0
+5ac23f9555429951e9e684db,"What role did the actor who played Colonel Sherman T. Potter in ""M*A*S*H"" play in ""Kentucky Jones""",Seldom Jackson,Seldom Jackson,none,1.0,1.0,0.0
+5ac3e0ab554299204fd21eae,What drummer stared along side a former president of the screen actors guild in a 2005 film?,Brad Wilk,Brad Wilk,none,1.0,1.0,0.0

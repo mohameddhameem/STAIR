@@ -23,6 +23,7 @@ from stair import evaluate_routing, make_splits, router, run_experts  # noqa: E4
 from stair.evidence import CrossEncoderScorer, RerankerScorer  # noqa: E402
 from stair.experts import PROMPT, HFExpert  # noqa: E402
 from stair.rescore import GRADE_SYSTEM, GRADE_USER  # noqa: E402
+from stair_common.cost import UNIT_GFLOPS, units  # noqa: E402
 from synthetic import make_split  # noqa: E402
 
 CONFIGS = Path(__file__).parent.parent / "configs"
@@ -221,15 +222,15 @@ def test_system_one_judges_end_to_end(tiny_models, tmp_path):
                                    str(data / "splits.json"), "--split", split, "--name", split])
     run_experts.main(common + ["--data", str(data / "distractor_validation.parquet"), "--name", "test"])
 
-    ce = tiny_models / "ce"
+    ce = (tiny_models / "ce").as_posix()  # TOML basic strings: a Windows path's backslashes would be escapes
     plan = tmp_path / "plan.toml"
     plan.write_text(f"""
 tau = 0.8
 seeds = [0, 1]
 zero_shot_judge = "{ce}"
 [pairs]
-A = "{run}"
-B = "{run}"
+A = "{Path(run).as_posix()}"
+B = "{Path(run).as_posix()}"
 [train]
 epochs = 2
 lr = 1e-3
@@ -266,6 +267,11 @@ train_pair = "B"
     assert trained["post"] is True and len(trained["aiq_per_seed"]) == 2 and trained["judge_gflops"] > 0
     assert trained["aiq_with_judge_cost"] <= trained["aiq"] + 1e-12  # paying for the judge never helps
     assert "router:judge/qpa-small-fails-ce-A - router:question+evidence+small/large-helps" in report["bootstrap"]["aiq_diff"]
+    # the seed mean runs both seeds' models; each seed alone is its own router, paying one pass
+    assert trained["judge_passes"] == 2
+    assert all(c <= s + 1e-12 for c, s in zip(trained["aiq_per_seed_with_cost"], trained["aiq_per_seed"]))
+    assert "router:judge/qpa-small-fails-ce-A#seed1 - router:question+evidence+small/large-helps" in \
+        report["bootstrap"]["aiq_diff_with_cost"]
     scores = pd.read_parquet(out / "eval" / "A" / "scores-test.parquet")
     assert {"judge/qpa-small-fails-ce-A", "judge/qpa-small-fails-ce-A#seed0", "zs_grounded"} <= set(scores.columns)
     assert json.loads((out / "eval" / "B" / "report-clean.json").read_text())["n_test"] == 50
@@ -344,9 +350,9 @@ def test_pool_answer_end_to_end(tiny_models, tmp_path):
     pd.DataFrame(rows).to_parquet(out / "pools" / "test.parquet")
     pd.DataFrame({"id": [r["id"] for r in rows], "nanojev": [[0.9, 0.1, 0.8]] * 5, "tokens": [300] * 5}).to_parquet(
         out / "scores" / "test.parquet")
-    lm = tiny_models / "chat-lm"
+    lm = (tiny_models / "chat-lm").as_posix()
     plan = tmp_path / "plan.toml"
-    plan.write_text(f'out = "{out}"\nseed = 0\n'
+    plan.write_text(f'out = "{out.as_posix()}"\nseed = 0\n'
                     f'[[cells]]\nname = "one"\nmodel = "{lm}"\nparams = 1.0\ntop_k = 2\nsamples = 1\ntemperature = 0.3\n'
                     f'max_new_tokens = 4\nbatch_size = 2\n'
                     f'[[cells]]\nname = "fuse"\nmodel = "{lm}"\nparams = 1.0\ntop_k = 2\nsamples = 3\ntemperature = 0.9\n'
@@ -358,14 +364,63 @@ def test_pool_answer_end_to_end(tiny_models, tmp_path):
     assert one["samples"].isna().all() and fuse["samples"].map(len).eq(3).all()
     assert (fuse["fuse_prompt_tokens"] > fuse["prompt_tokens"]).all()  # the fuser reads the prompt twice + answers
     nanojev = 2 * pool_answer.NANOJEV_PARAMS_B * 300
-    tokens = 3 * fuse["prompt_tokens"] + fuse["gen_tokens"] + fuse["fuse_prompt_tokens"] + fuse["fuse_gen_tokens"]
-    assert np.allclose(fuse["gflops"], 2 * 1.0 * tokens + nanojev)
+    tokens = fuse["prompt_tokens"] + fuse["gen_tokens"] + fuse["fuse_prompt_tokens"] + fuse["fuse_gen_tokens"]
+    assert np.allclose(fuse["gflops"], 2 * 1.0 * tokens + nanojev)  # AgentTTS Eq. 8: the 3 samples share one prompt
     first = pd.read_parquet(out / "answers" / "test" / "one.parquet")
     pool_answer.main(["run", *args])  # resumes: nothing recomputed
     pd.testing.assert_frame_equal(first, pd.read_parquet(out / "answers" / "test" / "one.parquet"))
     pool_answer.main(["summary", "--plan", str(plan)])
     summary = pd.read_csv(out / "answers" / "summary.csv")
     assert set(summary["cell"]) == {"one", "fuse", "oracle"}
+
+    # recost: a file written with the prompt counted per sample (before 2026-10-18) gets Eq. 8, keeping the old cost
+    path = out / "answers" / "test" / "fuse.parquet"
+    recost = ["recost", "--plan", str(plan), "--split", "test"]
+    with pytest.raises(ValueError, match="per-sample-prompt"):
+        pool_answer.main(recost)  # already Eq. 8: refuses rather than shifting it again
+    old_gflops = 2 * 1.0 * (tokens + 2 * fuse["prompt_tokens"]) + nanojev
+    fuse.assign(gflops=old_gflops, units=old_gflops / pool_answer.UNIT_GFLOPS).to_parquet(path)
+    one.to_parquet(out / "answers" / "test" / "one.parquet")
+    pool_answer.main(recost)
+    done = pd.read_parquet(path)
+    expected = [units(1.0, p + fp, g + fg) + nanojev / UNIT_GFLOPS for p, g, fp, fg in
+                zip(fuse["prompt_tokens"], fuse["gen_tokens"], fuse["fuse_prompt_tokens"], fuse["fuse_gen_tokens"])]
+    assert np.allclose(done["units"], expected) and np.allclose(done["units_prompt_per_sample"], old_gflops / UNIT_GFLOPS)
+    pool_answer.main(recost)  # a second recost changes nothing
+    pd.testing.assert_frame_equal(done, pd.read_parquet(path))
+    assert np.allclose(pd.read_parquet(out / "answers" / "test" / "one.parquet")["units"], one["units"])  # 1 sample
+
+
+def test_exp10_judge_trains_and_routes_menu_a(tiny_models, tmp_path):
+    from stair import exp10_slr, slr
+
+    rng = np.random.default_rng(0)
+    base = make_split(60, seed=5)
+    df = pd.DataFrame({"idx": range(60), "id": base["id"], "question": base["question"],
+                       "split": ["train"] * 30 + ["val"] * 15 + ["test"] * 15,
+                       "sel_W": base["full_context"].str[:200], "sel_S": base["full_context"].str[:300],
+                       **{f"answer_{p}": "alpha beta" for p in slr.PATHS},
+                       **{f"ok_{p}": rng.random(60) < q for p, q in zip(slr.PATHS, [0.5, 0.6, 0.6, 0.8])},
+                       **{y: rng.choice(["W", "S"], 60) for y in ("y_ret", "y_qa_W", "y_qa_S")}})
+    spec = {"name": "tiny", "judge_dir": "judge-tiny", "init": str(tiny_models / "ce"), "inputs": ["qp", "qpa"],
+            "seeds": [0, 1], "train": {"epochs": 1, "lr": 1e-3, "weight_decay": 0.0, "warmup": 0.0, "batch_size": 8,
+                                       "max_length": 64, "dev_fraction": 0.2}}
+    plan = {"out": str(tmp_path / "exp10"), "judges": [spec], "bootstrap": 20}
+    for inputs in spec["inputs"]:
+        for seed in spec["seeds"]:
+            exp10_slr.run_train(df, plan, spec, inputs, seed, "cpu")
+    seed_dir = tmp_path / "exp10" / "judge-tiny" / "qpa" / "seed1"
+    done = json.loads((seed_dir / "done.json").read_text())
+    assert done["n_train_items"] + done["n_dev_items"] == 90  # three typed items per training question
+    val = pd.read_parquet(seed_dir / "val.parquet")
+    assert len(val) == 15 and val[["ret", "qa_W", "qa_S"]].apply(lambda c: c.between(0, 1).all()).all()
+
+    ids = {s: df.loc[df["split"] == s, "idx"].reset_index(drop=True) for s in ("val", "test")}
+    routers = exp10_slr.judge_routers(plan, ids["test"], ids["val"])
+    assert [r.name for r in routers] == ["tiny qp#seed0", "tiny qp#seed1", "tiny qp", "tiny qpa#seed0",
+                                         "tiny qpa#seed1", "tiny qpa"]
+    report = exp10_slr.evaluate(df, routers, plan)
+    assert 0 <= report["routers"]["tiny qpa"]["aiq"] <= 1 and "tiny qpa - fixed paths" in report["aiq_diff"]
 
 
 def test_exp8_judge_trains_and_evaluates(tiny_models, tmp_path):
@@ -381,7 +436,7 @@ def test_exp8_judge_trains_and_evaluates(tiny_models, tmp_path):
         out = pd.DataFrame({"id": df["id"], "question": df["question"],
                             "passages": [c.split(". ")[:3] for c in df["full_context"]],
                             "pred0": ["alpha beta"] * n, "entropy0": rng.random(n),
-                            "nanojev": [rng.random(100) for _ in range(n)]})
+                            "nanojev": [rng.random(100) for _ in range(n)], "shared_cost": 1.0})
         return out, ok, cost
 
     tables = {"router_train": table(30, 0), "calib": table(15, 30), "test": table(15, 45)}
@@ -411,6 +466,11 @@ def test_exp8_judge_trains_and_evaluates(tiny_models, tmp_path):
     assert len(report["judges"]["judge qp"]["aiq_per_seed"]) == 2 and report["judges"]["judge qp"]["judge_units"] > 0
     assert report["operating"]["judge qp"]["budget"]["calib"]["cost"] <= report["budget_units"]  # all fit the budget here
     assert "judge qp - entropy threshold" in report["aiq_diff"]
+    qp = report["judges"]["judge qp"]  # the seed mean pays both passes; a seed alone pays one
+    assert qp["passes"] == 2 and all(c <= s + 1e-12 for c, s in zip(qp["aiq_per_seed_with_cost"], qp["aiq_per_seed"]))
+    assert "judge qp#seed1 - entropy threshold" in report["aiq_diff_per_seed"]
+    assert not any(k.startswith("judge qp - judge qp#") for k in report["aiq_diff"])
+    assert report["baseline_options"][0] == "small, one"
     clean = exp8_judge.run_eval(tables, plan, out, set(tables["test"][0]["id"][:5]), "-clean")
     assert clean["n_test"] == 10 and (out / "judge-4opt" / "eval" / "report-clean.json").exists()
     assert (out / "judge-4opt" / "eval" / "curves.csv").exists()

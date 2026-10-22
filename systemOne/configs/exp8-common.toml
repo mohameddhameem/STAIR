@@ -1,0 +1,93 @@
+# Experiment 8 redone under the team's common setup (docs/gpu-jobs-common.md): the same plan as configs/exp8.toml,
+# with router_train drawn from the common train set, calib = common val (dev[0:500]) and test = dev[500:1000].
+# Everything lives in runs/exp8-common.
+# Experiment 8, phase 1 (docs/experiment-8-plan.md, job sheet docs/gpu-jobs-exp8.md): answering cells
+# over AgentTTS-style pools, reading nano-jev's top-k passages. Prompts and temperatures follow
+# AgentTTS's HotpotQA code: one answer at temperature 0.3; samples at 0.9, fused at 0.3. Answers are
+# up to 512 tokens (the fused one up to 1,024).
+#   uv run pool-answer run --plan configs/exp8.toml --split test
+# The Llama models are gated: accept the licences on huggingface.co and `huggingface-cli login` first.
+out = "runs/exp8-common"
+seed = 0
+agenttts_strong_units = 311   # 72B retrieval (272) + 70B answering (39), at AgentTTS's Table 4 lengths (not Table 5's 929)
+
+[[cells]]
+name = "llama3b-top3"
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 3
+samples = 1
+temperature = 0.3
+max_new_tokens = 512
+batch_size = 16
+
+[[cells]]
+name = "llama3b-top5"
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 1
+temperature = 0.3
+max_new_tokens = 512
+batch_size = 16
+
+[[cells]]
+name = "llama3b-s10fuse-top5"   # AgentTTS's repeated sampling with fusion (it used 40 samples)
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 10
+temperature = 0.9
+fuse = true
+fuse_temperature = 0.3
+max_new_tokens = 512
+fuse_max_new_tokens = 1024
+batch_size = 4
+
+[[cells]]
+name = "llama3b-s20fuse-top5"   # repeated sampling with fusion; batch_size keeps 40 sequences in flight
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 20
+temperature = 0.9
+fuse = true
+fuse_temperature = 0.3
+max_new_tokens = 512
+fuse_max_new_tokens = 1024
+batch_size = 2
+
+[[cells]]
+name = "llama3b-s40fuse-top5"   # repeated sampling with fusion, AgentTTS's 40 samples; batch_size keeps 40 sequences in flight
+model = "meta-llama/Llama-3.2-3B-Instruct"
+params = 3.21
+top_k = 5
+samples = 40
+temperature = 0.9
+fuse = true
+fuse_temperature = 0.3
+max_new_tokens = 512
+fuse_max_new_tokens = 1024
+batch_size = 1
+
+[[cells]]
+name = "llama70b-top3"
+model = "meta-llama/Llama-3.1-70B-Instruct"
+params = 70.6
+load_in_4bit = true   # NF4 on the fly: ~40 GB, fits one 46 GB L40S; it spreads over 2 GPUs when given
+top_k = 3
+samples = 1
+temperature = 0.3
+max_new_tokens = 512
+batch_size = 4
+
+[[cells]]
+name = "llama70b-top5"
+model = "meta-llama/Llama-3.1-70B-Instruct"
+params = 70.6
+load_in_4bit = true
+top_k = 5
+samples = 1
+temperature = 0.3
+max_new_tokens = 512
+batch_size = 4

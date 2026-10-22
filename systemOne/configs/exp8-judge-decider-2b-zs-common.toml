@@ -1,0 +1,69 @@
+# Experiment 8 redone under the team's common setup (docs/gpu-jobs-common.md): the same plan as configs/exp8-judge-decider-2b-zs.toml,
+# with router_train drawn from the common train set, calib = common val (dev[0:500]) and test = dev[500:1000].
+# Everything lives in runs/exp8-common.
+# Experiment 9 (docs/experiment-9-plan.md): Amazon's Strands Decider 2B as the five-option judge of
+# experiment 8, zero-shot, on the graded labels. Everything else is configs/exp8-judge-graded.toml.
+#   uv run exp8-judge all --plan configs/exp8-judge-decider-2b-zs.toml --exclude runs/exp8/nanojev_validation_ids.txt
+out = "runs/exp8-common"
+judge_dir = "judge-decider-2b-zs"
+seeds = [0]                     # deterministic: no training
+inputs = ["qp", "qpa"]            # qp decides before any answer; qpa also reads the cheapest option's answer
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+zero_shot = true                # score the checkpoint as it is
+metric = "correct"                # LLM grader on the self-committed answer; "commit_em" for its official EM; "lenient" for the old scorer
+rescore_dir = "runs/exp8-common/rescore"
+state_k = 5                       # nano-jev passages in the judge's state (the cells read the top 5)
+strong_units = 311                # AgentTTS's strong-everything cost: 72B retrieval (272) + 70B answering (39)
+budget_fraction = 0.25            # RQ8: at most 25% of strong-everything
+max_drop = 0.01                   # the "near best" operating point: cheapest within this much of the best calib accuracy
+bootstrap = 1000
+# AgentTTS's recipe on its 500 test questions: LENIENT accuracy as re-scored by the team (not comparable with the
+# graded metric above; kept for reference only), and its cost under Eq. 8: 72B retrieval (272) + 40 sampled 3B
+# answers from one prompt (15) + a 3B fusion call reading them (15) = 302, 97% of strong-everything. Both costs are at
+# AgentTTS's own token lengths (Table 4), so they are lower bounds: its retriever reads the whole 100-passage pool and
+# its fuser repeats it. Table 5's prices (814, 115, 3) are AgentTTS's normalised budget, 3u - 2 for a call of u units,
+# so the team slide's 929 and 937 are on that scale, not this one.
+agenttts_lenient = 0.746
+agenttts_units = 302
+
+# Options, ordered from cheap to expensive (checked against the mean cost on calib). Costs follow AgentTTS Eq. 8, the
+# prompt counted once per call (`pool-answer recost`), so the 70B is the most expensive option. Until 2026-10-18 the
+# prompt was counted once per sample, which put the 70B between the 10- and the 20-sample cells.
+[[options]]
+cell = "llama3b-top5"
+label = "small model, one answer"
+
+[[options]]
+cell = "llama3b-s10fuse-top5"
+label = "small model, ten samples fused"
+
+[[options]]
+cell = "llama3b-s20fuse-top5"
+label = "small model, twenty samples fused"
+
+[[options]]
+cell = "llama3b-s40fuse-top5"
+label = "small model, forty samples fused"
+
+[[options]]
+cell = "llama70b-top5"
+label = "large model, one answer"
+
+# Only dev_fraction is used (zero-shot: the split is recorded, nothing trains)
+[train]
+dev_fraction = 0.1
+
+# The experiment 8 nano-jev judges (graded labels), compared pairwise in the same report
+[[reference_judges]]
+name = "nano-jev qp"
+judge_dir = "judge-5opt-graded"
+inputs = "qp"
+seeds = [0, 1, 2]
+init = "sdmlai/nano-jev@v1.0"
+
+[[reference_judges]]
+name = "nano-jev qpa"
+judge_dir = "judge-5opt-graded"
+inputs = "qpa"
+seeds = [0, 1, 2]
+init = "sdmlai/nano-jev@v1.0"

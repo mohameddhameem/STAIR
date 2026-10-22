@@ -60,8 +60,9 @@ def items_for(df: pd.DataFrame, labels: list[str], inputs: str) -> list[dict]:
 
 def load_all(plan: dict) -> dict[str, tuple]:
     options = [o["cell"] for o in plan["options"]]
+    prices = [o["price"] for o in plan["options"]] if plan.get("cost") == "table5" else None
     return {s: ev.load_tables(plan.get("out", "runs/exp8"), s, options, plan["state_k"], plan.get("metric", "lenient"),
-                              plan.get("rescore_dir"))
+                              plan.get("rescore_dir"), prices)
             for s in ("router_train", "calib", "test")}
 
 
@@ -105,15 +106,19 @@ def run_train(tables: dict, plan: dict, inputs: str, seed: int, out: Path, devic
         "device": judge.device}, indent=1))
 
 
-def judge_probs(root: Path, inputs: str, seeds: list[int], split: str, ids: list[str], init: str = "sdmlai/nano-jev"):
-    """Mean probabilities over the seeds, the judge's cost in units per question, and the per-seed arrays."""
+def judge_probs(root: Path, inputs: str, seeds: list[int], split: str, ids: list[str], init: str = "sdmlai/nano-jev",
+                cost: str = "agenttts"):
+    """Mean probabilities over the seeds, the judge's cost per question (every seed's call), and the per-seed arrays.
+    `cost`: AgentTTS units, or "table5": each call priced with stair_common.cost.budget (3 x units - 2, floored at 0)."""
     per_seed, tokens = [], None
     for s in seeds:
         d = pd.read_parquet(root / inputs / f"seed{s}" / f"{split}.parquet").set_index("id").loc[ids]
         per_seed.append(d[[c for c in d.columns if c.startswith("p")]].to_numpy())
         tokens = d["tokens"].to_numpy()
-    units = 2 * judge_params_b(init) * tokens * len(seeds) / UNIT_GFLOPS  # GFLOPs of every seed's pass, in units
-    return np.mean(per_seed, axis=0), units, per_seed
+    one = 2 * judge_params_b(init) * tokens / UNIT_GFLOPS  # one seed's call, in units
+    if cost == "table5":
+        one = np.maximum(0.0, 3 * one - 2)
+    return np.mean(per_seed, axis=0), one * len(seeds), per_seed
 
 
 def run_eval(tables: dict, plan: dict, out: Path, exclude: set[str] | None = None, tag: str = "") -> dict:
@@ -124,51 +129,65 @@ def run_eval(tables: dict, plan: dict, out: Path, exclude: set[str] | None = Non
     if exclude:
         keep = ~df_t["id"].isin(exclude).to_numpy()
         df_t, ok_t, cost_t = df_t[keep].reset_index(drop=True), ok_t[keep], cost_t[keep]
+    sh_c, sh_t = df_c["shared_cost"].to_numpy(), df_t["shared_cost"].to_numpy()  # nano-jev's ranking: paid once
     n, K = ok_t.shape
     order = np.argsort(cost_c.mean(0))
     if list(order) != list(range(K)):
         log.warning(f"options are not in cost order on calib: {order.tolist()}")
     strong = plan["strong_units"]
     budget = plan["budget_fraction"] * strong
+    top = ev.strongest_option(ok_c)  # the binary baselines escalate to the most accurate option on calib
     cmin, cmax = float(cost_t.mean(0).min()), float(cost_t.mean(0).max())
-    report = {"n_test": n, "metric": plan.get("metric", "lenient"), "options": labels, "budget_units": budget,
-              "strong_units": strong,
+    report = {"n_test": n, "metric": plan.get("metric", "lenient"), "cost_unit": plan.get("cost", "agenttts"),
+              "options": labels, "budget_units": budget,
+              "strong_units": strong, "baseline_options": [labels[0], labels[top]],
               "agenttts": {"lenient": plan["agenttts_lenient"], "units": plan["agenttts_units"]},
               "always": ev.always_points(ok_t, cost_t), "oracle": ev.oracle_point(ok_t, cost_t)}
     curves = {"hull of fixed policies": lambda ix: ev.always_points(ok_t[ix], cost_t[ix])}
     scored = {}  # name -> (calib points, test points function, lo, hi, post)
 
     def add_score(name, calib_score, test_score, post):
-        calib_pts = ev.score_points(ok_c, cost_c, calib_score, 0, K - 1, post)
-        curves[name] = lambda ix, s=test_score, p=post: ev.score_points(ok_t[ix], cost_t[ix], s[ix], 0, K - 1, p)
-        scored[name] = (calib_pts, ev.score_points(ok_t, cost_t, test_score, 0, K - 1, post))
+        calib_pts = ev.score_points(ok_c, cost_c, calib_score, 0, top, post, sh_c)
+        curves[name] = lambda ix, s=test_score, p=post: ev.score_points(ok_t[ix], cost_t[ix], s[ix], 0, top, p, sh_t[ix])
+        scored[name] = (calib_pts, ev.score_points(ok_t, cost_t, test_score, 0, top, post, sh_t))
 
     add_score("entropy threshold", df_c["entropy0"].to_numpy(), df_t["entropy0"].to_numpy(), True)
-    # logistic regression routers on the router_train questions: binary, cheapest versus strongest option
+    # logistic regression routers on the router_train questions: binary, cheapest versus the most accurate option
     df_r, ok_r, cost_r = tables["router_train"]
     feat = lambda d: np.stack([ev.evidence_features(s) for s in d["nanojev"]])
     X_r, X_c, X_t = feat(df_r), feat(df_c), feat(df_t)
-    y_r = (ok_r[:, -1] & ~ok_r[:, 0]).astype(int)
+    y_r = (ok_r[:, top] & ~ok_r[:, 0]).astype(int)
     for name, cols, post in (("LR evidence (before)", [], False), ("LR evidence+answer (after)", ["entropy0"], True)):
         extra = lambda d, X: np.hstack([X] + [d[[c]].to_numpy() for c in cols]) if cols else X
         model, C = ev.fit_logistic(extra(df_r, X_r), y_r, 0)
         add_score(name, model.predict_proba(extra(df_c, X_c))[:, 1], model.predict_proba(extra(df_t, X_t))[:, 1], post)
         report.setdefault("lr_C", {})[name] = C
 
-    judges = {}
+    judges, seed_curves = {}, {}  # seed_curves: each seed alone, as one deployed judge, paying one pass
     runs = [(f"judge {i}", root, i, seeds, plan["init"]) for i in plan["inputs"]]
     runs += [(r["name"], out / r["judge_dir"], r["inputs"], r["seeds"], r["init"]) for r in plan.get("reference_judges", [])]
     for name, jroot, inputs, jseeds, init in runs:
-        pc, uc, _ = judge_probs(jroot, inputs, jseeds, "calib", df_c["id"].tolist(), init)
-        pt, ut, per_seed = judge_probs(jroot, inputs, jseeds, "test", tables["test"][0]["id"].tolist(), init)
+        unit = plan.get("cost", "agenttts")
+        pc, uc, _ = judge_probs(jroot, inputs, jseeds, "calib", df_c["id"].tolist(), init, unit)
+        pt, ut, per_seed = judge_probs(jroot, inputs, jseeds, "test", tables["test"][0]["id"].tolist(), init, unit)
         if exclude:
             pt, ut, per_seed = pt[keep], ut[keep], [p[keep] for p in per_seed]
-        curves[name] = lambda ix, p=pt, u=ut: ev.judge_points(ok_t[ix], cost_t[ix], p[ix], u[ix])
-        scored[name] = (ev.judge_points(ok_c, cost_c, pc, uc), ev.judge_points(ok_t, cost_t, pt, ut))
-        judges[name] = {"aiq_per_seed": [aiq(ev.judge_points(ok_t, cost_t, p), cmin, cmax) for p in per_seed],
-                        "judge_units": float(ut.mean()), "init": init}
+        one = ut / len(jseeds)
+        post = inputs == "qpa"  # it read the cheapest option's answer: that option ran on every question
+        curves[name] = lambda ix, p=pt, u=ut, q=post: ev.judge_points(ok_t[ix], cost_t[ix], p[ix], u[ix], q, sh_t[ix])
+        scored[name] = (ev.judge_points(ok_c, cost_c, pc, uc, post, sh_c), ev.judge_points(ok_t, cost_t, pt, ut, post, sh_t))
+        if len(jseeds) > 1:
+            for s, p in zip(jseeds, per_seed):
+                seed_curves[f"{name}#seed{s}"] = (lambda ix, p=p, u=one, q=post:
+                                                  ev.judge_points(ok_t[ix], cost_t[ix], p[ix], u[ix], q, sh_t[ix]))
+        judges[name] = {"aiq_per_seed": [aiq(ev.judge_points(ok_t, cost_t, p, 0.0, post, sh_t), cmin, cmax)
+                                         for p in per_seed],
+                        "aiq_per_seed_with_cost": [aiq(ev.judge_points(ok_t, cost_t, p, one, post, sh_t), cmin, cmax)
+                                                   for p in per_seed],
+                        "judge_units": float(ut.mean()), "passes": len(jseeds), "init": init,
+                        "pays_cheapest_option": post}
 
-    boot = ev.bootstrap(curves, n, plan.get("bootstrap", 1000), 0, (cmin, cmax))
+    boot = ev.bootstrap(curves | seed_curves, n, plan.get("bootstrap", 1000), 0, (cmin, cmax))
     report["aiq"] = {"hull of fixed policies": aiq(ev.always_points(ok_t, cost_t), cmin, cmax),
                      "oracle": aiq([report["oracle"], *report["always"]], cmin, cmax)}
     for name, (calib_pts, test_pts) in scored.items():
@@ -179,7 +198,9 @@ def run_eval(tables: dict, plan: dict, out: Path, exclude: set[str] | None = Non
         report.setdefault("operating", {})[name] = {
             "budget": _apply(on_budget, calib_pts, test_pts), "near_best": _apply(near_best, calib_pts, test_pts)}
     report["aiq_ci95"] = boot["aiq_ci95"]
-    report["aiq_diff"] = {f"{a} - {b}": ev.diff(boot, a, b) for a in judges for b in boot["aiq_ci95"] if b != a}
+    report["aiq_diff"] = {f"{a} - {b}": ev.diff(boot, a, b) for a in judges for b in curves if b != a}
+    report["aiq_diff_per_seed"] = {f"{a} - {b}": ev.diff(boot, a, b) for a in seed_curves for b in curves
+                                   if b not in judges}
     report["judges"] = judges
     rows = [{"policy": name, **p} for name, (_, test_pts) in scored.items() for p in test_pts]
     pd.DataFrame(rows).to_csv(root / "eval" / f"curves{tag}.csv", index=False)

@@ -1,0 +1,53 @@
+{
+ "inputs": "qpa",
+ "seed": 2,
+ "init": "StrandsAgents/strands-decider-2B-hobson-v21",
+ "zero_shot": false,
+ "options": [
+  "small model, one answer",
+  "small model, ten samples fused",
+  "small model, twenty samples fused",
+  "small model, forty samples fused",
+  "large model, one answer"
+ ],
+ "train": {
+  "epochs": 2,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "micro_batch": 4,
+  "max_length": 512,
+  "dev_fraction": 0.1
+ },
+ "n_train": 900,
+ "n_dev": 100,
+ "label_counts": [
+  737,
+  139,
+  44,
+  24,
+  56
+ ],
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.9542253498772257,
+   "dev_nll": 0.8539974093437195,
+   "seconds": 110.18935605697334
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.7666208196611127,
+   "dev_nll": 0.8919322490692139,
+   "seconds": 110.15777603909373
+  }
+ ],
+ "train_seconds": 220.42723291181028,
+ "scoring_seconds_per_question": {
+  "calib": 0.07815857995301485,
+  "test": 0.07201224636659026
+ },
+ "init_revision": null,
+ "device": "cuda"
+}

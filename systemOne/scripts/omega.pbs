@@ -24,6 +24,7 @@
 #PBS -j oe
 #PBS -r y
 # To get e-mails on abort/begin/end, add: #PBS -m abe and #PBS -M <your address>
+# TODO before the project submission: remove the -M address above (the repo is private for now).
 set -euo pipefail
 
 cd "$PBS_O_WORKDIR"

@@ -1,0 +1,35 @@
+{
+ "judge": "decider-2b",
+ "inputs": "qpa",
+ "seed": 2,
+ "init": "StrandsAgents/strands-decider-2B-hobson-v21",
+ "train": {
+  "epochs": 2,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "micro_batch": 4,
+  "max_length": 512,
+  "dev_fraction": 0.1
+ },
+ "n_train_items": 13080,
+ "n_dev_items": 1362,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.4025388609848217,
+   "dev_nll": 0.3755187690258026,
+   "seconds": 635.0368989221752
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.2090291091447249,
+   "dev_nll": 0.41086894273757935,
+   "seconds": 635.3144898507744
+  }
+ ],
+ "train_seconds": 1270.4342014156282,
+ "init_revision": null,
+ "device": "cuda"
+}

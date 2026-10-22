@@ -13,6 +13,7 @@ dependencies = [
     "pyarrow>=25.0.1",
     "scikit-learn>=1.9.1",
     "scipy>=1.14",
+    "stair-common[plot]",
 ]
 
 [project.scripts]
@@ -31,6 +32,10 @@ pool-answer = "stair.pool_answer:main"
 rescore = "stair.rescore:main"
 exp8-judge = "stair.exp8_judge:main"
 decider-smoke = "stair.decider:main"
+subset-cache = "stair.subset_cache:main"
+export-common = "stair.export_common:main"
+slr = "stair.slr:main"
+exp10-slr = "stair.exp10_slr:main"
 
 [project.optional-dependencies]
 llm = [
@@ -50,6 +55,7 @@ decider = [
 # omega's GPU node has driver 555 (CUDA 12.5): the default cu130 wheels cannot use it, cu126 can.
 [tool.uv.sources]
 torch = { index = "pytorch-cu126" }
+stair-common = { git = "https://github.com/mohameddhameem/STAIR.git", subdirectory = "common", rev = "00ee140c323159619b471253502d2e6537f83dde" }
 
 [[tool.uv.index]]
 name = "pytorch-cu126"

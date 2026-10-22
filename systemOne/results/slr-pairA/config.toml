@@ -1,0 +1,26 @@
+# Minimal first experiment (docs/research-report.md). scorer.path may also be a local nano-jev
+# folder (weights, tokenizer and calibration.json). `params` (billions) sets the FLOPs cost unit.
+# transformers backend: needs ~20 GB GPU memory and bfloat16 (Ampere or newer). gpu-vllm.toml is faster.
+[scorer]
+# nano-jev v1.0 from the Hub (33M MiniLM): relevance per paragraph, sufficiency over the top 2.
+kind = "cross-encoder"
+path = "sdmlai/nano-jev@v1.0"
+sufficiency_top_k = 2
+params = 0.033  # billions; reported as scorer_cost, not added to the curves
+
+[[experts]]
+name = "small"
+kind = "hf"
+model = "Qwen/Qwen2.5-1.5B-Instruct"
+params = 1.54
+top_k = 2
+dtype = "bfloat16"
+batch_size = 32  # runtime-only: lower it on an out-of-memory error and rerun
+
+[[experts]]
+name = "large"
+kind = "hf"
+model = "Qwen/Qwen2.5-7B-Instruct"
+params = 7.62
+dtype = "bfloat16"
+batch_size = 8

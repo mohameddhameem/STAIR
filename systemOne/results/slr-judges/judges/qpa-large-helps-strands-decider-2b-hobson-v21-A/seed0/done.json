@@ -1,0 +1,44 @@
+{
+ "judge": "qpa-large-helps-strands-decider-2b-hobson-v21-A",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "StrandsAgents/strands-decider-2B-hobson-v21",
+ "train_pair": "A",
+ "train": {
+  "epochs": 2,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "micro_batch": 4
+ },
+ "seed": 0,
+ "tau": 0.5,
+ "n_train": 4332,
+ "n_dev": 482,
+ "micro_batch": 4,
+ "train_label_rate": 0.16971333610303282,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.42295963205251075,
+   "dev_nll": 0.3924211859703064,
+   "seconds": 212.27416419796646
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.25040646134783356,
+   "dev_nll": 0.45398834347724915,
+   "seconds": 213.74941023252904
+  }
+ ],
+ "train_seconds": 426.10686285607517,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.029897719801210604,
+  "A/test": 0.029128482181687038
+ },
+ "init_revision": null,
+ "device": "cuda"
+}

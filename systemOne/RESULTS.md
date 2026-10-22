@@ -34,7 +34,8 @@ No router reaches always-large's F1 at its operating point.
 
 ## Experiment 8: the AgentTTS setting (2026-10-14/15)
 
-AgentTTS's 500 HotpotQA test questions, five answer options, cost in AgentTTS units (strong-everything = 929).
+AgentTTS's 500 HotpotQA test questions, five answer options, cost in AgentTTS units (strong-everything = 311 units;
+the 929 quoted here before was the same thing on Table 5's price scale).
 Re-scored with an LLM grader (Qwen2.5-14B) on each model's short committed answer.
 ([write-up](docs/experiments/2026-10-15-experiment-8-rescored.md), [report](results/exp8-rescore/))
 
@@ -45,6 +46,10 @@ Re-scored with an LLM grader (Qwen2.5-14B) on each model's short committed answe
 | 3B, 40 samples fused | 0.756 | 0.632 | 220.0 |
 | **Llama 3.1 70B (4-bit), one answer** | 0.680 | **0.748** | 96.0 |
 | Oracle (cheapest correct option) | | 0.816 | 30.3 |
+
+**Correction (2026-10-23):** these units count the prompt once per sample. Under AgentTTS's Eq. 8 the samples
+share it, so the fused rows cost less: ×10 30, ×40 71 units. See the
+[common-standard write-up](docs/experiments/2026-10-18-common-redo.md).
 
 The judge picks the 70B for 500 of 500 (qp) and 499 of 500 (qpa) questions; its AIQ ties the fixed-policy hull
 (qp 0.701) or slightly beats it (qpa 0.713). AgentTTS's own 74.6 is lenient and not comparable until its answers
@@ -66,3 +71,90 @@ are graded the same way.
 
 The decider gains mostly from reading the small model's answer; on experiment 8 (3,000 training questions, few
 examples for the expensive options) no decider beats the hull.
+
+## Experiments 7–9 on the common standard (2026-10-18)
+
+Rerun on the team's first common standard ([write-up](docs/experiments/2026-10-18-common-redo.md),
+[results](results/common-judges/)):
+- the test set is AgentTTS's 500 questions (dev [500:1000]), with calib dev [0:500];
+- scoring is lenient;
+- costs are AgentTTS units, with each judge's own cost.
+
+It is kept as the comparison with AgentTTS on its own questions.
+
+| Experiment | Result |
+|---|---|
+| 7 / 9 | One decider qpa judge (2B or E4B, one seed), with its cost: AIQ **0.724**. It beats entropy (0.697) and the nano-jev judges (~0.70), and ties the best LR cascade router (0.706) |
+| 8 | 3B ×40 fused: lenient **0.746** (AgentTTS's re-scored 0.746) at 71 units, below the 70B (0.670 at 94). AgentTTS's own setting costs 302 units (97% of strong-everything's 311) |
+| 8, option judge | nano-jev qpa 0.711: ties the best fixed mix (0.716), beats entropy [+0.003, +0.039] |
+
+These figures include two later fixes, both re-evaluated without retraining:
+- a qpa judge pays for the cheap answer it reads (2026-10-21);
+- a policy that runs two options pays nano-jev's ranking once (2026-10-22).
+
+## The golden set (2026-10-21 to 23): Jonathan's SLR setup
+
+**Setup** ([write-up](docs/experiments/2026-10-21-slr-standard.md)):
+- the test split is `slr-test` (1,481 questions);
+- answers are scored with the standard lenient ruler;
+- costs are AgentTTS Table 5 prices per call, weak-first, with strong-everything = 929. Jonathan's routers are not
+  charged; ours are reported both ways.
+
+**Verification** ([results](results/slr/)):
+- his ruler, split and three certified rows reproduce exactly;
+- thresholds are re-selected on `slr-val` by his own rule.
+
+**Menu A paths on `slr-test`:**
+
+| Path | Lenient | Price |
+|---|---|---|
+| WW | 50.30 | 80 |
+| WS | 64.01 | 192 |
+| SW | 61.78 | 817 |
+| SS (always-strong) | 76.77 | 929 |
+| Oracle | 81.5 | 205.5 |
+
+**Experiment 10: the judge routing menu A** ([results](results/exp10-slr/)). AIQ is over weak-first prices 80–1,009,
+with the paired bootstrap.
+
+| Router | AIQ | With its own price | At his operating rule |
+|---|---|---|---|
+| Decider E4B qpa | **0.736** | 0.730 | 76.70 at 737.5 (3 seeds) |
+| Decider 2B qpa | 0.731 | 0.730 | all-SS |
+| SLR SFT (label) + reward (Jonathan) | 0.726 | (uncharged) | 75.96 at 664.7 |
+| SLR SFT (label) (Jonathan) | 0.724 | (uncharged) | 76.70 at 834.8 |
+| nano-jev qpa | 0.719 | 0.719 | all-SS |
+
+- **E4B − his routers:** before its price [+0.004, +0.021] and [+0.003, +0.019]; with it, ties.
+- **2B − his label router:** before its price [+0.001, +0.014]; with it, a tie.
+
+**Experiments 7 / 9 on pair A** ([results](results/slr-judges/)). Prices: Qwen 1.5B 0.5, Qwen 7B 10.
+
+| Router | Before its price | With it |
+|---|---|---|
+| E4B decider, fine-tuned, qpa | **0.711** | one judge 0.655 (4.4 a call) |
+| 2B decider, fine-tuned, qpa | 0.696 | one judge **0.677–0.682** (1.3 a call) |
+| LR cascade | 0.676 | |
+| nano-jev qpa | 0.677 | 0.677 |
+| Entropy | 0.665 | |
+
+One priced 2B qpa judge beats entropy for all three seeds, and ties the LR cascade.
+
+**Experiment 8: cheap retrieval and sampled answers** ([results](results/exp8-slr/)). Every option reads nano-jev's
+top 5.
+
+| Option | Lenient | Price |
+|---|---|---|
+| Llama 3B, one answer | 61.44 | 9.6 |
+| 3B, 10 samples fused | 74.34 | 21.6 |
+| **3B, 20 samples fused** | **75.08** | **31.6** |
+| 3B, 40 samples fused | 74.88 | 51.6 |
+| Llama 70B, one answer | 68.33 | 121.6 |
+
+- **×20 fused − always-strong:** −1.69 [−4.19, +0.68], a tie, at 3.4% of the price.
+- **The option judge** ties the fixed options and the baselines.
+
+**H2: why nano-jev's evidence lags.** Our 70B with Jonathan's prompt:
+- on his 72B's selections, it scores 76.23 (his always-strong is 76.77);
+- on nano-jev's top 5, it scores 69.82: −6.4 points for retrieval;
+- the prompt itself is worth 1.5, which is not significant.

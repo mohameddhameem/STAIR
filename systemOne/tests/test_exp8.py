@@ -1,10 +1,15 @@
 import json
+import tomllib
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import pytest
+from stair_common.cost import AGENTTTS_TABLE5_HOTPOTQA, units
 
 from stair import exp8_eval as ev
+
+CONFIGS = Path(__file__).parent.parent / "configs"
 
 
 def test_cheapest_correct_label():
@@ -35,6 +40,40 @@ def test_judge_curve_cost_never_falls_as_t_rises():
     assert ev.judge_points(ok, cost, p, extra=2.0)[0]["cost"] == pytest.approx(5.0)
 
 
+def test_a_judge_that_read_the_cheapest_answer_pays_for_it():
+    ok = np.ones((2, 3), dtype=bool)
+    cost = np.array([[3.0, 10.0, 50.0], [3.0, 10.0, 50.0]])
+    choice = np.array([0, 2])
+    assert ev.point(ok, cost, choice)["cost"] == pytest.approx((3 + 50) / 2)
+    assert ev.point(ok, cost, choice, post=True)["cost"] == pytest.approx((3 + 50 + 3) / 2)  # option 0 ran first
+    # every option's cost includes a ranking call of 1 that ran once: option 0 adds only its answer (2)
+    assert ev.point(ok, cost, choice, post=True, shared=1.0)["cost"] == pytest.approx((3 + 50 + 2) / 2)
+
+
+def test_strongest_option_is_the_most_accurate_not_the_last():
+    # the last option (70B under Eq. 8) costs most but is less accurate than option 2 (3B x40 fused)
+    ok = np.array([[0, 1, 1, 0], [0, 0, 1, 1], [1, 1, 1, 0], [0, 0, 1, 1]], dtype=bool)
+    assert ev.strongest_option(ok) == 2
+    assert ev.strongest_option(np.array([[1, 0, 1], [1, 0, 1]], dtype=bool)) == 2  # never the cheapest itself
+
+
+def test_agenttts_reference_costs_are_in_stair_common_units():
+    # Table 5 is AgentTTS's normalised budget (Eq. 3-4): the 3B samples, sharing one 128-token prompt, of equal FLOPs,
+    # which is 3u - 2 for a call of u units. Its HotpotQA prices at its Table 4 lengths reproduce that exactly.
+    params = {"Qwen2.5-72B": 72, "Qwen2.5-32B": 32, "Qwen2.5-7B": 7, "Llama-3.1-70B": 70, "Llama-3.1-8B": 8,
+              "Llama-3.2-3B": 3}
+    lengths = {"retrieve": (2048, 128), "answer": (256, 64)}
+    for task, prices in AGENTTTS_TABLE5_HOTPOTQA.items():
+        for model, price in prices.items():
+            assert round(3 * units(params[model], *lengths[task]) - 2) == price
+    assert round(3 * units(3, 256, 10 * 64) - 2) == 12  # Table 7, 10 samples: the prompt counts once (Eq. 8)
+    retrieve = units(72, 2048, 128)
+    recipe = retrieve + units(3, 256, 40 * 64) + units(3, 256 + 40 * 64, 64)  # 40 samples, then a fusion reading them
+    for path in sorted(CONFIGS.glob("exp8-judge*-common.toml")):
+        plan = tomllib.loads(path.read_text(encoding="utf-8"))
+        assert (plan["strong_units"], plan["agenttts_units"]) == (round(retrieve + units(70, 256, 64)), round(recipe))
+
+
 def test_score_points_between_two_options():
     ok = np.array([[0, 1], [1, 1], [0, 1], [1, 0]], dtype=bool)
     cost = np.tile([2.0, 10.0], (4, 1))
@@ -42,6 +81,7 @@ def test_score_points_between_two_options():
     first, last = ev.score_points(ok, cost, score, 0, 1, post=False)[0], ev.score_points(ok, cost, score, 0, 1, post=False)[-1]
     assert (first["f1"], first["cost"]) == (0.5, 2.0) and (last["f1"], last["cost"]) == (0.75, 10.0)
     assert ev.score_points(ok, cost, score, 0, 1, post=True)[-1]["cost"] == 12.0  # post: escalated pay both calls (2 + 10)
+    assert ev.score_points(ok, cost, score, 0, 1, post=True, shared=1.0)[-1]["cost"] == 11.0  # the shared 1 once
     half = [p for p in ev.score_points(ok, cost, score, 0, 1, post=False) if p["rate"] == 0.5][0]
     assert half["f1"] == 1.0  # the two highest scores are the ones the strong option fixes
 
@@ -108,6 +148,33 @@ def test_load_tables_uses_the_chosen_metric(tmp_path):
         ev.load_tables(out, "test", ["cheap", "strong"], 2, metric="correct", rescore_dir=out / "rescore")
 
 
+def test_load_tables_standard_ruler(tmp_path):
+    out = _out_dir(tmp_path)
+    # gold "Kalo": contained; "about" is the ruler's quantity guard; whole words only; empty; case; wrong
+    preds = ["It was Kalo.", "about Kalo and more", "Kalorama", "", "kalo", "no idea"]
+    for cell in ("cheap", "strong"):
+        f = out / "answers" / "test" / f"{cell}.parquet"
+        pd.read_parquet(f).assign(pred=preds).to_parquet(f)
+    _, ok, cost = ev.load_tables(out, "test", ["cheap", "strong"], 2, metric="lenient_std")
+    assert ok[:, 0].tolist() == [True, False, False, False, True, False]
+    assert cost[0].tolist() == [1.0, 9.0]  # no commit step under the response-level ruler
+
+
+def test_the_ranking_every_option_includes_is_paid_once(tmp_path):
+    out = _out_dir(tmp_path)
+    f = out / "scores" / "test.parquet"
+    pd.read_parquet(f).assign(tokens=20_000).to_parquet(f)  # nano-jev read 20k tokens: 1,336 GFLOPs
+    df, ok, cost = ev.load_tables(out, "test", ["cheap", "strong"], 2, prices=[3, 115])
+    ranking = 3 * 1336 / 1152 - 2  # budget(): 1.48
+    assert df["shared_cost"].iat[0] == pytest.approx(ranking)
+    assert cost[0].tolist() == pytest.approx([3 + ranking, 115 + ranking])
+    escalate = np.ones(len(df), dtype=int)  # read the cheap answer, then ran the strong option
+    assert ev.point(ok, cost, escalate, post=True, shared=df["shared_cost"].to_numpy())["cost"] == \
+        pytest.approx(3 + 115 + ranking)
+    measured, _, _ = ev.load_tables(out, "test", ["cheap", "strong"], 2)
+    assert measured["shared_cost"].iat[0] == pytest.approx(1336 / 1152)  # inside each answer's measured units
+
+
 def test_rescore_helpers():
     from stair.rescore import committed_text, grounded
 
@@ -129,3 +196,25 @@ def test_load_tables_adds_commit_cost(tmp_path):
     assert cost[0].tolist() == [1.5, 9.5]
     _, _, lenient_cost = ev.load_tables(out, "test", ["cheap", "strong"], 2)
     assert lenient_cost[0].tolist() == [1.0, 9.0]  # the lenient metric has no commit step
+
+
+def test_golden_set_cost_prices_options_and_nanojev():
+    from stair_common.cost import UNIT_GFLOPS
+
+    cost = ev.golden_set_cost([3, 15, 115], np.array([0.0, 2 * UNIT_GFLOPS]))  # nano-jev: free, then 3 x 2 - 2 = 4
+    assert cost.tolist() == [[3.0, 15.0, 115.0], [7.0, 19.0, 119.0]]
+
+
+def test_slr_splits_cap_with_preferred_ids_first():
+    from stair_common.splits import load_split
+
+    from stair import make_splits
+
+    train, val = load_split("hotpotqa", "slr-train"), load_split("hotpotqa", "slr-val")
+    prefer = set(train[:7]) | set(val[-3:])
+    parts = make_splits.slr_splits({"router_train": 10, "calib": 5}, prefer)
+    assert len(parts["router_train"]) == 10 and set(train[:7]) <= set(parts["router_train"])
+    assert len(parts["calib"]) == 5 and set(val[-3:]) <= set(parts["calib"])
+    assert parts["router_train"] == [i for i in train if i in set(parts["router_train"])]  # the part's order
+    assert len(parts["test"]) == 1481
+    assert make_splits.slr_splits({"router_train": 10, "calib": 5}, prefer) == parts  # deterministic

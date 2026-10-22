@@ -1,0 +1,41 @@
+id,question,gold,large_pred,large_em,large_f1,p_correct
+5a71443f5542994082a3e727,Is Gasherbrum II or Nuptse closest to the tallest mountain in the world?,It lies two kilometres WSW of Mount Everest.,Nuptse,0.0,0.0,0.9626731964540541
+5ab7c87d55429928e1fe38de,What number album is the first W.A.S.P. album to feature Steven Edward Duren playing guitar?,third,3,0.0,0.0,0.9999999970010678
+5ade190f55429975fa854e40,"The Government of Canada, which is the federal administration of Canada, is involved in what scandal in the province of Quebec?",The sponsorship scandal,AdScam,0.0,0.0,0.9999998555072156
+5ab8f3235542991b5579f084,What number president was Annie Caputo nominated by to become a member of the Nuclear Regulatory Commission?,45th,45th,1.0,1.0,0.04742659769784679
+5ae3d8415542992f92d8239a,Southeastern Illinois College offers an undergraduate academic degree considered to be greater level of education than what?,high school diploma or GED,Associate degree,0.0,0.0,0.92414254599118
+5a745e1455429929fddd83fd,What drug is among the list of illegal drugs in the Philippines and can be taken by mouth or by injection?,Ephedrine,Ephedrine,1.0,1.0,1.3007227697488603e-05
+5a8ca7d4554299240d9c21b8,"The telenova ""El Ardiente Secreto"" was based ona novel published under what pen name?","""Currer Bell""",Currer Bell,1.0,1.0,2.9023358574816023e-06
+5a78bc6b554299148911f979,Woman's Era and Naj are what kind of magazines?,fortnightly women interest magazine,lifestyle and women's magazines,0.0,0.0,0.6791790693205608
+5a88fc4255429938390d4019,On what date will the comedy film directed by Kevin Tent and starring the Bulgarian-Canadian actress known for portraying the role of Mia Jones be released on video on demand services?,"September 25, 2017","September 25, 2017",1.0,1.0,0.09534961528440912
+5a80ecea55429938b6142254,My Secret Hotel is a television series starring a South Korean DJ who rose to fame as the lead actress in what?,Queen In-hyun's Man,Yoo In-na,0.0,0.0,0.9241434004839618
+5ae0de1455429924de1b71b4,"The American restaurant chain, the Original House of Pies, is also responsible for an American chain of fruit drink beverage stores with an eponymous beverage consisting of what?",orange juice,Orange Juice,1.0,1.0,0.2570556811552774
+5abd9c2355429924427fd06c,"In what year did the actor who starred in the TV Land original series ""The Soul Man"" host the Black Movie Awards?",2005,2005,1.0,1.0,0.00070967357812261
+5a85fa815542996432c57155,Where was the movement that August Brancart published literature from centerd?,Western Europe,Western Europe,1.0,1.0,0.3208218852648045
+5ae2120e5542997283cd23ad,Are Distortion Mirrors and OK Go both considered rock bands?,yes,yes,1.0,1.0,0.06008700068538145
+5ab467975542991751b4d75f,"When was the duo formed who's English language song is the ""Freaky Like Me""?",1992,1992,1.0,1.0,0.43782476079777694
+5a75ebfc5542992d0ec06018,What indigenous American ethnic group that inhabits land in the northern United States and southern Canada was part of the Treaty of Springwells?,Odawa,Ottawa,0.0,0.0,0.9999986290661637
+5a806cdf5542996402f6a508,An American who is a German literature translator and did a thesis on an Austrian prodigy born in 1874 taught at which university?,University of Vienna,University of Vienna,1.0,1.0,5.82915573625517e-05
+5a72f74a55429901807daf59,"Which American comedian born on March 21, 1962, appeared in the movie ""Sleepless in Seattle?""",Rosie O'Donnell,Rosie O'Donnell,1.0,1.0,1.0130001843432495e-05
+5abaf6865542996cc5e49f3c,"What role did Thomas Doherty play in sitcom based on the Israeli series ""North Star""?",Sean,Sean,1.0,1.0,0.07585838946917844
+5ae534bb5542990ba0bbb21d,"In between Liberty and MIT Technology Review which has a circulation of over 200,000?",Liberty,Liberty,1.0,1.0,0.0015011867874168486
+5ac440385542997ea680ca4e,Carl von Donop was a colonel of which German auxiliaries?,Hessians,Hessian,0.0,0.0,0.9999999123590194
+5a8fa4d95542995b4424207b,"Which airport is busier, Palm Springs International Airport or Trenton–Mercer Airport?",Trenton–Mercer Airport,Trenton–Mercer Airport,1.0,1.0,0.011020890147300406
+5ab72b5c5542993667793f63,What country of origin does The Late Late Show and Craig Kilborn have in common?,American,United States,0.0,0.0,0.9999989323112579
+5a855b5c5542997b5ce3ffeb,"What is the main industry of this town with a population of around 2,600 as of 2010 that has Mountain Valley High School attendees as residents?",papermaking industry,papermaking industry,1.0,1.0,0.0007096730069848871
+5abba581554299642a094af9,How many people were in the group which preceded the release of Eric Clapton's 1975 album E.C. Was Here? ,four,4,0.0,0.0,0.9999998555037706
+5a80956e5542996402f6a579,What was the proper name of the husband of Lollia Paullina?,Gaius Julius Caesar Augustus Germanicus,Caligula,0.0,0.0,0.7310596157588637
+5ac2efd65542990b17b154c7,"What season of the Indian reality TV series ""Big Boss"" did the model Lopamundra Raut compete in?",the tenth season,Bigg Boss 10,0.0,0.0,0.9999998555054241
+5a7c9d2e55429935c91b5261,"What legend that lends its name to a modern medical term, inspired the plot of the horror film Ghostkeeper?",Wendigo,Wendigo,1.0,1.0,0.04742622306653521
+5ae3e2455542994393b9e78c,Scout Tufankjian and Daron Malakian are both what?,Armenian–American,Armenian American,0.0,0.0,0.9999999827424685
+5a790f5e55429970f5fffe40,What date did the movement Hans Knirsch was an activist for officially gain traction?,"November 15, 1903","November 15, 1903",1.0,1.0,0.4378239392362879
+5ae18d615542997283cd2229,To what sport does the Atomweight class belong?,mixed martial arts,combat sports,0.0,0.0,0.7773006969193685
+5ab9d44255429939ce03dc36,The History of Ranching is a mural that was originally located at an American brewery that in 1999 began trasfering its production to who?,Miller Brewing,Miller Brewing,1.0,1.0,0.008577524387555643
+5a863b27554299211dda2ab6,Are both Disney Magazine and The Ring still in publication?,no,no,1.0,1.0,0.0953497836647827
+5a866c04554299211dda2b25,Are Pterostyrax and Dregea both native to Asia?,yes,yes,1.0,1.0,0.2689426225675958
+5ab28e2a5542993be8fa9947,"Who holds the world record for jumping over 6 buses and appeared on the British television series ""The Jump""?","Eddie ""The Eagle"" Edwards","Eddie ""The Eagle"" Edwards",1.0,1.0,1.994742562034623e-06
+5ae17daa55429901ffe4aea9,Who directed the 1941 film based on the novel of the same name by Zane Grey starring an actor who was also an artist and stuntman?,James Tinling,James Tinling,1.0,1.0,0.008577567479953327
+5a7cdcbf55429907fabef04f,"Which film came out first, Still Kicking: Six Artistic Women of Project Arts & Longevity or Time Bombs?",Still Kicking: Six Artistic Women of Project Arts & Longevity,Still Kicking: Six Artistic Women of Project Arts & Longevity,1.0,1.0,0.037326914384476446
+5ac51a055542994611c8b390,What is the name of one the ex-security officials that means The Institute?,Mossad,Mossad,1.0,1.0,0.09534974060565421
+5a90b6985542990a984936c2,"The film ""Arthur Newman"" stars Colin Firth and an actress that made her professional debut in what play?","""The Royal Family""",Emily Blunt,0.0,0.0,0.9889359614038633
+5a872e8e5542991e7718170c,"Daniel Greene has created what for clients including sportscaster Bryant Gumbel, Eleanor Roosevelt, William Randolph Hearst and Dave Thomas, the founder of Wendy's?",portrait,portraits,0.0,0.0,0.9820141641984416

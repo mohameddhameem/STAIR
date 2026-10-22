@@ -17,12 +17,25 @@
 #   bash scripts/run_cluster.sh exp8-rescore           # self-commit, then grade, every cached answer in SPLITS (GPU, hours)
 #   bash scripts/run_cluster.sh exp8-judge-graded      # the five-option judge on the grader's labels (GPU, ~20 min)
 #   bash scripts/run_cluster.sh exp8-rescore-summary   # the re-scoring summary table only (CPU job: scripts/omega-cpu.pbs)
+#   bash scripts/run_cluster.sh exp8-eval      # re-evaluate finished experiment 8 judges, PLANS=<configs> (CPU job)
 #   bash scripts/run_cluster.sh exp9-smoke     # experiment 9: the Strands Decider wrapper against its own engine (GPU, ~10 min)
 #   bash scripts/run_cluster.sh exp9-judge7    # experiment 9 on experiment 7's pair A: zero-shot + fine-tuned deciders (GPU, hours)
 #   bash scripts/run_cluster.sh exp9-judge8    # experiment 9 on experiment 8's five options, PLANS=<configs> (GPU, hours)
+#   bash scripts/run_cluster.sh common-prepare # experiments 7+9 under the team's common setup: splits + dev subsets (CPU job)
+#   bash scripts/run_cluster.sh common-experts # ... experts on the common train draw (GPU, ~1 h)
+#   bash scripts/run_cluster.sh common-judges  # ... judges, J=zeroshot|train (GPU, hours); common-eval: reports (CPU job)
+#   bash scripts/run_cluster.sh slr-fetch      # HotpotQA golden set: Jonathan's pinned SLR files (login node: download only)
+#   bash scripts/run_cluster.sh slr-ladder     # ... verify them, menu A's ladder at Table 5 prices (CPU job)
+#   bash scripts/run_cluster.sh exp10-train    # experiment 10: train one judge set, JUDGE=nano-jev|decider-2b|decider-e4b (GPU)
+#   bash scripts/run_cluster.sh exp10-eval     # experiment 10: reports for every judge set trained so far (CPU job)
+#   bash scripts/run_cluster.sh slr7-prepare   # experiments 7/9 on the golden set: pair A cut from runs/gpu (CPU job)
+#   bash scripts/run_cluster.sh slr7-judges    # ... their judges, J=zeroshot|train, ONLY=... (GPU); slr7-eval: reports (CPU job)
+#   bash scripts/run_cluster.sh exp8s-pools    # experiment 8 on the golden set: split + pools (CPU job); then exp8-score, exp8-answer, exp8-judge with EXP8_OUT/PLAN
+# The common-setup steps are documented in docs/gpu-jobs-common.md; the golden-set steps in docs/gpu-jobs-slr.md.
 # Experiment 9's steps are documented in docs/gpu-jobs-exp9.md.
-# Where each step runs: login node = `prepare` (downloads + light parquet export) and `exp8-prepare` (downloads); CPU job
-# (scripts/omega-cpu.pbs, queue short) = `eval`, `exp8-pools`, `exp8-rescore-summary`; every other step is a GPU job
+# Where each step runs: login node = `prepare` (downloads + light parquet export), `exp8-prepare` and `slr-fetch`
+# (downloads); CPU job (scripts/omega-cpu.pbs, queue short) = `eval`, `exp8-pools`, `exp8-recost`, `exp8-eval`,
+# `exp8-rescore-summary`, `common-eval`, `slr-ladder`, `exp10-eval`, `slr7-prepare`, `slr7-eval`, `exp8s-pools`; every other step is a GPU job
 # (scripts/omega.pbs). Do not run compute on the login node.
 # The re-scoring steps are documented step by step in docs/gpu-jobs-exp8-rescore.md.
 #
@@ -35,7 +48,7 @@
 # the large expert changed) instead of recomputing them: see run-experts --reuse-from.
 set -euo pipefail
 
-STEP=${1:?usage: run_cluster.sh prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-judge|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8|save-judges}
+STEP=${1:?usage: run_cluster.sh prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-recost|exp8-judge|exp8-eval|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8|save-judges|common-prepare|common-experts|common-judges|common-eval|slr-fetch|slr-ladder|exp10-train|exp10-eval|slr7-prepare|slr7-judges|slr7-eval|exp8s-pools}
 CONFIG=${CONFIG:-configs/gpu.toml}
 RUN=${RUN:-runs/gpu}
 DATA=${DATA:-data/hotpotqa}
@@ -45,6 +58,7 @@ PILOT=${PILOT:-500}
 TAU=${TAU:-0.8}
 BIN=${BIN-uv run}  # "uv run", or BIN="" with the project venv activated
 REUSE=${REUSE:-}
+EXP8_OUT=${EXP8_OUT:-runs/exp8}  # runs/exp8-common for the common-setup redo (docs/gpu-jobs-common.md)
 
 experts() {  # experts <run> <name> <data file> [run-experts options...]; one model on the GPU per command
   local run=$1 name=$2 data=$3
@@ -110,8 +124,8 @@ EOF
     [ -f runs/exp8/nanojev_validation_ids.txt ] || $BIN nanojev-ids --out runs/exp8
     ;;
   exp8-score)
-    for split in test calib router_train; do $BIN pools score --name "$split" --device cuda; done
-    $BIN pools recall --name test --exclude runs/exp8/nanojev_validation_ids.txt
+    for split in ${SPLITS:-test calib router_train}; do $BIN pools score --out "$EXP8_OUT" --name "$split" --device cuda; done
+    $BIN pools recall --out "$EXP8_OUT" --name test --exclude runs/exp8/nanojev_validation_ids.txt
     ;;
   exp8-pilot)
     $BIN pool-answer run --plan "${PLAN:-configs/exp8.toml}" --split test --limit "${EXP8_PILOT:-20}" --chunk-size 10
@@ -124,24 +138,35 @@ EOF
     done
     $BIN pool-answer summary --plan "${PLAN:-configs/exp8.toml}"
     ;;
+  exp8-recost)  # CPU job: answer costs under AgentTTS Eq. 8 (prompt once per call) from the stored tokens, no model calls
+    for split in ${SPLITS:-test calib router_train}; do
+      $BIN pool-answer recost --plan "${PLAN:-configs/exp8.toml}" --split "$split"
+    done
+    $BIN pool-answer summary --plan "${PLAN:-configs/exp8.toml}"
+    ;;
   exp8-judge)
     $BIN exp8-judge all --plan "${PLAN:-configs/exp8-judge.toml}" --exclude runs/exp8/nanojev_validation_ids.txt
     ;;
   exp8-rescore-validate)
-    $BIN rescore validate --grader "${GRADER:-Qwen/Qwen2.5-14B-Instruct}"
+    $BIN rescore validate --out "$EXP8_OUT" --grader "${GRADER:-Qwen/Qwen2.5-14B-Instruct}"
     ;;
   exp8-rescore)
     for split in ${SPLITS:-test calib router_train}; do
-      $BIN rescore commit --split "$split"   # the cells' own models (3B, 70B in 4-bit) finish their answers
-      $BIN rescore run --split "$split" --grader "${GRADER:-Qwen/Qwen2.5-14B-Instruct}"
+      $BIN rescore commit --out "$EXP8_OUT" --split "$split"   # the cells' own models (3B, 70B in 4-bit) finish their answers
+      $BIN rescore run --out "$EXP8_OUT" --split "$split" --grader "${GRADER:-Qwen/Qwen2.5-14B-Instruct}"
     done
-    $BIN rescore summary
+    $BIN rescore summary --out "$EXP8_OUT"
     ;;
   exp8-rescore-summary)  # CPU job: rewrites runs/exp8/rescore/summary.csv from the graded files
     $BIN rescore summary
     ;;
   exp8-judge-graded)
     $BIN exp8-judge all --plan "${PLAN:-configs/exp8-judge-graded.toml}" --exclude runs/exp8/nanojev_validation_ids.txt
+    ;;
+  exp8-eval)  # CPU job: the reports of judges already trained (loads no model), PLANS=<judge configs>
+    for plan in ${PLANS:?PLANS=<exp8 judge configs>}; do
+      $BIN exp8-judge eval --plan "$plan" --exclude runs/exp8/nanojev_validation_ids.txt
+    done
     ;;
   exp9-smoke)  # must pass before the long experiment 9 jobs
     mkdir -p runs/exp9
@@ -152,6 +177,40 @@ EOF
     $BIN judge "${J7STEP:-all}" --plan configs/system-one-decider.toml --out runs/system-one ${ONLY:-} \
       --exclude data/hotpotqa/nanojev_validation_ids.txt
     ;;
+  exp8c-pools)  # CPU job, after common-experts: experiment 8's pools for the common setup in runs/exp8-common.
+    # test = dev[500:1000] as before: its pools, scores, answers and grades are copied (same questions, same seed).
+    mkdir -p runs/exp8-common/pools runs/exp8-common/scores runs/exp8-common/answers runs/exp8-common/rescore
+    for d in pools scores; do cp -n runs/exp8/$d/test.parquet runs/exp8-common/$d/; done
+    cp -rn runs/exp8/answers/test runs/exp8-common/answers/
+    [ -d runs/exp8/rescore/test ] && cp -rn runs/exp8/rescore/test runs/exp8-common/rescore/
+    cp -n runs/exp8/nanojev_validation_ids.txt runs/exp8-common/
+    [ -f runs/exp8-common/pools/router_train.parquet ] || $BIN pools build --out runs/exp8-common --source train \
+      --ids runs/common/router_train.parquet --count "${EXP8_TRAIN:-3000}" --name router_train
+    [ -f runs/exp8-common/pools/calib.parquet ] || $BIN pools build --out runs/exp8-common --source validation \
+      --start 0 --count 500 --name calib
+    ;;
+  common-prepare)  # CPU job: the team's common splits, and calib/test cut from runs/gpu's dev cache (no model calls)
+    $BIN make-splits --standard --exclude "$DATA/nanojev_train_ids.txt" --out "$DATA/splits-common.json"
+    for split in calib test; do
+      $BIN subset-cache --from runs/gpu --splits "$DATA/splits-common.json" --split "$split" --run runs/common --name "$split"
+    done
+    ;;
+  common-experts)  # GPU: nano-jev + 1.5B + 7B on the common train draw (~1 h, as the old router_train)
+    experts runs/common router_train "$DATA/distractor_train.parquet" --splits "$DATA/splits-common.json" --split router_train
+    ;;
+  common-judges)  # GPU: J=zeroshot|train (default train), PLAN (default the lenient plan), ONLY="--only <judge> ..."
+    $BIN judge "${J:-train}" --plan "${PLAN:-configs/system-one-common.toml}" --data-dir "$DATA" \
+      --out "${JOUT:-runs/common-judges}" ${ONLY:-} --save-model
+    ;;
+  common-eval)  # CPU job: reports for both metrics (all 500, and without nano-jev's questions) + the team results file
+    $BIN judge eval --plan configs/system-one-common.toml --data-dir "$DATA" --out runs/common-judges \
+      --exclude "$DATA/nanojev_validation_ids.txt"
+    $BIN judge eval --plan configs/system-one-common-f1.toml --data-dir "$DATA" --out runs/common-judges-f1 \
+      --exclude "$DATA/nanojev_validation_ids.txt"
+    $BIN export-common --plan configs/system-one-common.toml --out runs/common-judges \
+      --csv results/common/systemOne-hotpotqa-test.csv \
+      --history results/common/training-history.csv --plot results/common/loss-curves.png
+    ;;
   save-judges)  # retrain judges and keep their weights (for Hugging Face): PLAN=<config>, ONLY="--only <judge> ..."
     $BIN judge train --plan "${PLAN:?PLAN=<judge config>}" --data-dir "$DATA" --out "${JUDGE_OUT:-runs/judge-models}" ${ONLY:-} --save-model
     ;;
@@ -160,8 +219,43 @@ EOF
       $BIN exp8-judge all --plan "$plan" --exclude runs/exp8/nanojev_validation_ids.txt
     done
     ;;
+  slr-fetch)  # login node: downloads Jonathan's pinned files (sha256-checked), no compute
+    $BIN slr fetch --plan "${SLR_PLAN:-configs/slr.toml}"
+    ;;
+  slr-ladder)  # CPU job: verify the golden set and write results/slr (seconds)
+    $BIN slr all --plan "${SLR_PLAN:-configs/slr.toml}"
+    ;;
+  exp10-train)  # GPU: one judge set of configs/exp10-slr.toml, every (inputs, seed); resumes
+    $BIN exp10-slr train --judge "${JUDGE:?JUDGE=nano-jev|decider-2b|decider-e4b}" --plan "${PLAN:-configs/exp10-slr.toml}"
+    ;;
+  exp10-eval)  # CPU job: reports for every judge set trained so far, against Jonathan's routers (loads no model)
+    $BIN exp10-slr eval --plan "${PLAN:-configs/exp10-slr.toml}"
+    ;;
+  exp8s-pools)  # CPU job: experiment 8 on the golden set: its split (questions answered before drawn first) and pools
+    $BIN make-splits --slr --router-size "${EXP8_TRAIN:-1000}" --calib-size "${EXP8_CALIB:-500}" \
+      --prefer runs/exp8-common/answers/calib/llama3b-top5.parquet --prefer runs/exp8-common/answers/test/llama3b-top5.parquet \
+      --out "$DATA/splits-exp8-slr.json"
+    for split in router_train calib test; do  # pools are seeded per dev row, so the reused questions' pools rebuild exactly
+      [ -f runs/exp8-slr/pools/$split.parquet ] || $BIN pools build --out runs/exp8-slr --source validation \
+        --ids "$DATA/splits-exp8-slr.json" --count 100000 --name "$split"
+    done
+    cp -n runs/exp8/nanojev_validation_ids.txt runs/exp8-slr/
+    ;;
+  slr7-prepare)  # CPU job: experiments 7/9's pair A on the golden set, cut from runs/gpu's dev cache (no model calls)
+    $BIN make-splits --slr --out "$DATA/splits-slr.json"
+    for split in router_train calib test; do
+      $BIN subset-cache --from runs/gpu --splits "$DATA/splits-slr.json" --split "$split" --run runs/slr-pairA --name "$split"
+    done
+    ;;
+  slr7-judges)  # GPU: experiments 7/9's judges on the golden set, J=zeroshot|train (default train), ONLY="--only <judge> ..."
+    $BIN judge "${J:-train}" --plan configs/system-one-slr.toml --data-dir "$DATA" --out runs/slr-judges ${ONLY:-}
+    ;;
+  slr7-eval)  # CPU job: reports on slr-test, all 1,481 and without nano-jev's questions (loads no model)
+    $BIN judge eval --plan configs/system-one-slr.toml --data-dir "$DATA" --out runs/slr-judges \
+      --exclude "$DATA/nanojev_validation_ids.txt"
+    ;;
   *)
-    echo "unknown step: $STEP (prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-judge|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8|save-judges)" >&2
+    echo "unknown step: $STEP (prepare|pilot|full|eval|judge-pilot|judge|exp8-prepare|exp8-score|exp8-pilot|exp8-answer|exp8-recost|exp8-judge|exp8-eval|exp8-rescore-validate|exp8-rescore|exp8-judge-graded|exp8-pools|exp8-rescore-summary|exp9-smoke|exp9-judge7|exp9-judge8|save-judges|common-prepare|common-experts|common-judges|common-eval|slr-fetch|slr-ladder|exp10-train|exp10-eval|slr7-prepare|slr7-judges|slr7-eval|exp8s-pools)" >&2
     exit 2
     ;;
 esac

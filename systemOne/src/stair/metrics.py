@@ -29,3 +29,31 @@ def f1_score(prediction: str, gold: str) -> float:
 
 def exact_match(prediction: str, gold: str) -> float:
     return float(normalize_answer(prediction) == normalize_answer(gold))
+
+
+METRICS = ("f1", "lenient")
+
+
+def text(answer) -> str:
+    """A cached answer as a string: a missing one (None, NaN, pd.NA) is the empty answer, never "None" or "nan"."""
+    import pandas as pd
+
+    return "" if answer is None or (not isinstance(answer, str) and pd.isna(answer)) else str(answer)
+
+
+def metric_view(df, metric: str):
+    """df with `small_f1` / `large_f1` holding the chosen per-question metric, so every label, curve, AIQ and
+    threshold downstream uses it. "lenient" is the team's standard ruler (stair_common.score.lenient, 0/1), kept in
+    `small_lenient` / `large_lenient` too; reports must record the metric, as "f1" then means lenient accuracy."""
+    if metric == "f1":
+        return df
+    if metric != "lenient":
+        raise ValueError(f"unknown metric {metric!r}; expected one of {METRICS}")
+    from stair_common.score import lenient
+
+    df = df.copy()
+    for name in ("small", "large"):
+        if f"{name}_lenient" not in df:
+            df[f"{name}_lenient"] = [float(lenient(text(p), [str(g)])) for p, g in zip(df[f"{name}_pred"], df["answer"])]
+        df[f"{name}_f1"] = df[f"{name}_lenient"].astype(float)
+    return df

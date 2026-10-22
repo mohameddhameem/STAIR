@@ -66,3 +66,46 @@ def test_agenttts_prompts_and_scoring():
     assert pa.lenient("Kalomer", "kalo") == 0.0  # whole words only
     assert pa.lenient("anything", "") == 0.0
     assert pa.agreement(["Kalo", "Kalo", "Mer"]) == pytest.approx(1 / 3)
+
+
+def test_jonathans_short_answer_prompt():
+    from stair import pool_answer as pa
+
+    block = pa.slr_block("Who?", ["A: a text", "B: b text"])
+    assert block == "Query: Who?\nSelected references: [1] A: a text [2] B: b text"  # his build_block layout
+    assert pa.slr_qa_prompt("Who?", block) == (
+        "Your task is to answer the query using the provided references. If the references are insufficient, "
+        "supplement your response with your own knowledge. Answer with ONLY the exact answer phrase - no explanation, "
+        "no full sentence.\nQuery: Who?\n" + block)  # run_labels4.py qa_prompt, verbatim
+    assert pa.slr_block("Who?", []).endswith("Selected references: (none)")
+
+
+def test_pool_answer_reuses_earlier_answers_in_the_splits_order(tmp_path):
+    from stair import pool_answer as pa
+
+    out, old = tmp_path / "run", tmp_path / "old" / "test"
+    ids = ["q0", "q1", "q2"]
+    (out / "pools").mkdir(parents=True)
+    (out / "scores").mkdir()
+    pd.DataFrame({"id": ids, "question": ["a?", "b?", "c?"], "answer": ["x", "y", "z"],
+                  "titles": [["T"]] * 3, "texts": [["t"]] * 3}).to_parquet(out / "pools" / "test.parquet")
+    pd.DataFrame({"id": ids, "nanojev": [[1.0]] * 3, "tokens": [100, 200, 300]}).to_parquet(out / "scores" / "test.parquet")
+    old.mkdir(parents=True)
+    pd.DataFrame({"id": ["q2", "q0", "q1"], "pred": ["z", "x", "no"], "prompt_tokens": [10, 10, 10],
+                  "gen_tokens": [5, 5, 5], "fuse_prompt_tokens": [0, 0, 0], "fuse_gen_tokens": [0, 0, 0],
+                  "units": [9.0, 9.0, 9.0]}).to_parquet(old / "cell.parquet")
+    plan = {"out": str(out), "reuse_answers": [str(old)], "cells": [{"name": "cell", "top_k": 1, "params": 3.0}]}
+    args = type("Args", (), {"only": [], "split": "test", "limit": None, "chunk_size": 2, "device": "cpu"})()
+    pa.cmd_run(args, plan)  # every question is reused: no model is loaded
+    merged = pd.read_parquet(out / "answers" / "test" / "cell.parquet")
+    assert merged["id"].tolist() == ids and merged["pred"].tolist() == ["x", "no", "z"]
+    nanojev = 2 * pa.NANOJEV_PARAMS_B * np.array([100, 200, 300])
+    assert merged["gflops"].to_numpy() == pytest.approx(2 * 3.0 * 15 + nanojev)  # recosted from the tokens, this split
+
+
+def test_h2_block_is_nanojevs_top_k_with_titles():
+    from stair import pool_answer as pa
+
+    df = pd.DataFrame({"question": ["Who?"], "titles": [["A", "B", "C"]], "texts": [["a", "b", "c"]],
+                       "nanojev": [[0.1, 0.9, 0.5]]})
+    assert pa.passage_blocks(df, {"top_k": 2}) == ["Query: Who?\nSelected references: [1] B: b [2] C: c"]

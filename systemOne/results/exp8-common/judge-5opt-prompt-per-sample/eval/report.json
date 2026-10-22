@@ -1,0 +1,311 @@
+{
+ "n_test": 500,
+ "metric": "lenient_std",
+ "options": [
+  "small model, one answer",
+  "small model, ten samples fused",
+  "large model, one answer",
+  "small model, twenty samples fused",
+  "small model, forty samples fused"
+ ],
+ "budget_units": 232.25,
+ "strong_units": 929,
+ "agenttts": {
+  "lenient": 0.746,
+  "units": 938
+ },
+ "always": [
+  {
+   "option": 0,
+   "f1": 0.598,
+   "cost": 7.342342480555555
+  },
+  {
+   "option": 1,
+   "f1": 0.72,
+   "cost": 64.68878070972222
+  },
+  {
+   "option": 2,
+   "f1": 0.67,
+   "cost": 93.63575036249999
+  },
+  {
+   "option": 3,
+   "f1": 0.726,
+   "cost": 116.32391560555556
+  },
+  {
+   "option": 4,
+   "f1": 0.746,
+   "cost": 219.82562862638886
+  }
+ ],
+ "oracle": {
+  "f1": 0.844,
+  "cost": 28.34696189027778
+ },
+ "lr_C": {
+  "LR evidence (before)": 0.01,
+  "LR evidence+answer (after)": 0.01
+ },
+ "aiq": {
+  "hull of fixed policies": 0.7128241395196462,
+  "oracle": 0.8312841561607845,
+  "entropy threshold": 0.6791289798667243,
+  "LR evidence (before)": 0.6784363523406911,
+  "LR evidence+answer (after)": 0.6779662918181656,
+  "judge qp": 0.7076979329587894,
+  "judge qpa": 0.715307584184792
+ },
+ "operating": {
+  "entropy threshold": {
+   "budget": {
+    "calib": {
+     "rate": 1.0,
+     "f1": 0.76,
+     "cost": 228.98878755138873
+    },
+    "test": {
+     "rate": 1.0,
+     "f1": 0.746,
+     "cost": 227.16797110694426
+    }
+   },
+   "near_best": {
+    "calib": {
+     "rate": 0.9,
+     "f1": 0.752,
+     "cost": 208.57635383055546
+    },
+    "test": {
+     "rate": 0.9,
+     "f1": 0.73,
+     "cost": 206.07636528472204
+    }
+   }
+  },
+  "LR evidence (before)": {
+   "budget": {
+    "calib": {
+     "rate": 1.0,
+     "f1": 0.76,
+     "cost": 221.65559596319437
+    },
+    "test": {
+     "rate": 1.0,
+     "f1": 0.746,
+     "cost": 219.82562862638906
+    }
+   },
+   "near_best": {
+    "calib": {
+     "rate": 0.95,
+     "f1": 0.752,
+     "cost": 208.7350450256943
+    },
+    "test": {
+     "rate": 0.95,
+     "f1": 0.734,
+     "cost": 208.10093643888908
+    }
+   }
+  },
+  "LR evidence+answer (after)": {
+   "budget": {
+    "calib": {
+     "rate": 1.0,
+     "f1": 0.76,
+     "cost": 228.98878755138878
+    },
+    "test": {
+     "rate": 1.0,
+     "f1": 0.746,
+     "cost": 227.16797110694438
+    }
+   },
+   "near_best": {
+    "calib": {
+     "rate": 0.9,
+     "f1": 0.752,
+     "cost": 203.5767791680555
+    },
+    "test": {
+     "rate": 0.9,
+     "f1": 0.728,
+     "cost": 204.38695605208326
+    }
+   }
+  },
+  "judge qp": {
+   "budget": {
+    "calib": {
+     "t": 0.97,
+     "f1": 0.768,
+     "cost": 157.25877160694444
+    },
+    "test": {
+     "t": 0.97,
+     "f1": 0.738,
+     "cost": 152.6095023701389
+    }
+   },
+   "near_best": {
+    "calib": {
+     "t": 0.97,
+     "f1": 0.768,
+     "cost": 157.25877160694444
+    },
+    "test": {
+     "t": 0.97,
+     "f1": 0.738,
+     "cost": 152.6095023701389
+    }
+   }
+  },
+  "judge qpa": {
+   "budget": {
+    "calib": {
+     "t": 1.0,
+     "f1": 0.76,
+     "cost": 222.0800616027778
+    },
+    "test": {
+     "t": 1.0,
+     "f1": 0.746,
+     "cost": 220.24988899513886
+    }
+   },
+   "near_best": {
+    "calib": {
+     "t": 1.0,
+     "f1": 0.76,
+     "cost": 222.0800616027778
+    },
+    "test": {
+     "t": 1.0,
+     "f1": 0.746,
+     "cost": 220.24988899513886
+    }
+   }
+  }
+ },
+ "aiq_ci95": {
+  "hull of fixed policies": [
+   0.6798109034856259,
+   0.7486168330619298
+  ],
+  "entropy threshold": [
+   0.641838872506123,
+   0.718132850604705
+  ],
+  "LR evidence (before)": [
+   0.6434266404513065,
+   0.7180701024844639
+  ],
+  "LR evidence+answer (after)": [
+   0.6411830963259769,
+   0.7188093048782574
+  ],
+  "judge qp": [
+   0.675761999294228,
+   0.7459789634937521
+  ],
+  "judge qpa": [
+   0.6838512074279545,
+   0.7526919476476208
+  ]
+ },
+ "aiq_diff": {
+  "judge qp - hull of fixed policies": {
+   "ci95": [
+    -0.013683160801190739,
+    0.006388519608120619
+   ],
+   "p_le_0": 0.753
+  },
+  "judge qp - entropy threshold": {
+   "ci95": [
+    0.01661334223860102,
+    0.04625964233647702
+   ],
+   "p_le_0": 0.0
+  },
+  "judge qp - LR evidence (before)": {
+   "ci95": [
+    0.01394731888662258,
+    0.04769445010300036
+   ],
+   "p_le_0": 0.0
+  },
+  "judge qp - LR evidence+answer (after)": {
+   "ci95": [
+    0.015361425654824156,
+    0.04676576384127435
+   ],
+   "p_le_0": 0.0
+  },
+  "judge qp - judge qpa": {
+   "ci95": [
+    -0.017161618622800696,
+    0.0039856280896610865
+   ],
+   "p_le_0": 0.878
+  },
+  "judge qpa - hull of fixed policies": {
+   "ci95": [
+    -0.006249181571729772,
+    0.013187740582247944
+   ],
+   "p_le_0": 0.278
+  },
+  "judge qpa - entropy threshold": {
+   "ci95": [
+    0.021481495864810605,
+    0.0535583336326809
+   ],
+   "p_le_0": 0.0
+  },
+  "judge qpa - LR evidence (before)": {
+   "ci95": [
+    0.020120224848872378,
+    0.054189802457863666
+   ],
+   "p_le_0": 0.0
+  },
+  "judge qpa - LR evidence+answer (after)": {
+   "ci95": [
+    0.019734341789576348,
+    0.05389084239928836
+   ],
+   "p_le_0": 0.0
+  },
+  "judge qpa - judge qp": {
+   "ci95": [
+    -0.0039856280896610865,
+    0.017161618622800693
+   ],
+   "p_le_0": 0.122
+  }
+ },
+ "judges": {
+  "judge qp": {
+   "aiq_per_seed": [
+    0.7049344951203863,
+    0.7125858551464226,
+    0.7061844264818824
+   ],
+   "judge_units": 0.41547895208333324,
+   "init": "sdmlai/nano-jev@v1.0"
+  },
+  "judge qpa": {
+   "aiq_per_seed": [
+    0.7198702026286584,
+    0.7176611139260262,
+    0.7156134381577044
+   ],
+   "judge_units": 0.4242603687499999,
+   "init": "sdmlai/nano-jev@v1.0"
+  }
+ }
+}

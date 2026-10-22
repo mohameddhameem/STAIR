@@ -1,0 +1,43 @@
+# configs/system-one-common.toml with the old F1 labels (tau 0.8), for comparison with the earlier reports: the same
+# common splits and pair, the key judges only. Its own --out, since the labels (so the trained judges) differ.
+#   uv run judge all --plan configs/system-one-common-f1.toml --out runs/common-judges-f1
+metric = "f1"
+cost = "agenttts"
+tau = 0.8
+max_drop = 0.01
+seeds = [0, 1, 2]
+paired_references = ["judge/qp-large-helps-nanojev-A", "judge/qpa-large-helps-nanojev-A"]
+
+[pairs]
+A = "runs/common"
+
+[split_data]
+calib = "distractor_validation.parquet"
+
+[train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+train_pair = "A"
+train = { epochs = 2, lr = 1e-4, micro_batch = 4 }

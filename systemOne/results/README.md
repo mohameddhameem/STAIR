@@ -1,5 +1,8 @@
 # Results
 
+**In this branch:** only the report files (`json`, `csv`, `toml`, `md`). The per-question caches (`*.parquet`), job
+logs (`logs/`) and provenance records (`provenance.jsonl`) that the tables below mention stay in the development repo.
+
 Outputs of every executed run, copied from `runs/` (which git ignores) with
 `scripts/export_results.sh`. The write-ups are in [docs/experiments/](../docs/experiments/) and the
 headline numbers are in [docs/experiments.md](../docs/experiments.md).
@@ -20,6 +23,15 @@ headline numbers are in [docs/experiments.md](../docs/experiments.md).
 | `exp8-phase2c` | 8, re-scoring: the five-option judge on graded labels (GPU, 17 min) | `configs/exp8-judge-graded.toml` |
 | `exp8-phase2b` | 8, part 2: the same judge with five options (adds 3B x20 and x40 fused) and its evaluation (GPU, 17 min) | `configs/exp8-judge.toml` |
 | `exp8-phase1` | 8, phase 1: seven answering cells (Llama-3.2-3B incl. 10/20/40 samples fused, Llama-3.1-70B 4-bit) on nano-jev top-k passages; per-question answers, scores and job logs (GPU) | `configs/exp8.toml` |
+| `common` | 7–9 on the team's common standard: pair A's expert caches on the common splits, the team-layout results file and loss curves; [its README](common/README.md) covers the next three folders too | `configs/system-one-common.toml` |
+| `common-judges` | 7 and 9 on the common standard: nano-jev and Strands Decider judges, lenient labels | `configs/system-one-common.toml` |
+| `common-judges-f1` | The same on F1 labels (check) | `configs/system-one-common-f1.toml` |
+| `exp8-common` | 8 on the common standard: answers recosted under AgentTTS Eq. 8, grades, and the option judges (nano-jev, deciders) | `configs/exp8-common.toml`, `configs/exp8-judge*-common.toml` |
+| `slr` | The HotpotQA golden set (Jonathan's Stage-Level Routing, Config B): verification and the menu A ladder on `slr-val` / `slr-test` at Table 5 prices (`report.json`, `paths-*.parquet`), job IDs (`slr-jobs.txt`). His files themselves are fetched by `slr fetch`, not copied | `configs/slr.toml` |
+| `exp10-slr` | 10: the System One judge routing menu A against Jonathan's SLR routers (nano-jev and the 2B and E4B deciders: val/test scores, `done.json`; `eval/report{,-clean}.json`; job logs) | `configs/exp10-slr.toml` |
+| `slr-pairA` | 7/9 on the golden set: pair A's caches cut from `gpu`'s dev cache to `slr-train` / `slr-val` / `slr-test` | `configs/system-one-slr.toml` |
+| `slr-judges` | 7/9 on the golden set: the judges (nano-jev, MS MARCO, zero-shot, fine-tuned 2B and E4B deciders) and `eval/A/report{,-clean}.json` at Table 5 prices | `configs/system-one-slr.toml` |
+| `exp8-slr` | 8 and the H2 diagnosis on the golden set: the five options' answers (`answers/<split>/`), the 70B with Jonathan's prompt on nano-jev's top 5 and on his 72B selections (`answers/test/llama70b-slrprompt-*`), the option judge (`judge-5opt/`) at Table 5 prices, nano-jev's recall, job logs | `configs/exp8-slr.toml`, `configs/exp8-judge-slr.toml` |
 
 Each folder has:
 

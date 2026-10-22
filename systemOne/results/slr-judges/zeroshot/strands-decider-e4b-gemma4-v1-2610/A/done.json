@@ -1,0 +1,5 @@
+{
+ "judge": "StrandsAgents/strands-decider-E4B-gemma4-v1-2610",
+ "revision": null,
+ "device": "cuda"
+}
