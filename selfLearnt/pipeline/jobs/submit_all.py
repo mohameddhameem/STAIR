@@ -71,8 +71,7 @@ class Plan:
         return jid
 
     def no24(self, args):
-        """Models over 20B that are uncompressed (Qwen 32B, ~61 GB) or carry a fine-tuned adapter (72B / 70B) ran out of memory
-        on 24 GB cards even split four ways: they go to larger cards only."""
+        """Jobs with a model over 20B go to cards of 40 GB+ only (see big_bf16 in main)."""
         t = args.split()
         m = t[t.index("--model") + 1] if "--model" in t else None
         if m is None and "--part" in t and "-" in t[t.index("--part") + 1]:
@@ -298,9 +297,9 @@ def main():
     phases = {int(x) for x in a.phases.split(",") if x.strip()}
     P = Plan(env, a.dry, a.after)
     P.seed_arg = sd
-    # over 20B and either uncompressed (Qwen 32B) or carrying a fine-tuned adapter: not on 24 GB cards (both ran out of memory there)
-    P.big_bf16 = lambda v: (v in cfg["models"] or v.split(":")[0] in cfg["models"]) and float(variant(cfg, v)["params_b"]) > 20 and \
-        (variant(cfg, v).get("dtype", "bf16") != "awq" or v.endswith(":ft"))
+    # every model over 20B: 4 cards of 40 GB+ (160 GB+, about twice what the largest job needs: Qwen 32B ~75 GB,
+    # fine-tuned Llama 70B ~65 GB with its 49k-token context). 24 GB cards ran out of memory for 32B and fine-tuned 70B.
+    P.big_bf16 = lambda v: (v in cfg["models"] or v.split(":")[0] in cfg["models"]) and float(variant(cfg, v)["params_b"]) > 20
     if os.path.basename(env.get("CONFIG", "configs/default.yaml")) != "default.yaml":
         P.prefix = os.path.splitext(os.path.basename(env["CONFIG"]))[0][:2] + "-"     # preflight.yaml -> "pr-"
     max_jobs, poll = int(env.get("MAX_JOBS", 15)), int(float(env.get("POLL_MIN", 5)) * 60)
