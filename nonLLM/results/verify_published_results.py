@@ -42,11 +42,23 @@ def main():
   gr=gd[gd.policy=='grpo-v2-grpo-max_accuracy-learned_only'];assert gr.lenient.sum()==359 and gr.ret_choice.eq(1).all() and gr.qa_choice.eq(1).all()
   ex=gd[gd.policy=='grpo-v2-exact-max_accuracy-learned_only'];assert ex.lenient.sum()==357 and ex.ret_choice.eq(0).sum()==96
   assert json.loads((ROOT/'menu_ws_grpo_v1/status.json').read_text())['phase']=='complete'
+ if (ROOT/'menu_ws_alternatives_v1/results.json').exists():
+  ad=pd.read_csv(ROOT/'menu_ws_alternatives_v1/results.csv.gz');validate(ad);asummary=json.loads((ROOT/'menu_ws_alternatives_v1/results.json').read_text())['summaries'];expected_index+=len(asummary)
+  assert len(ad)==38000 and len(asummary)==76
+  for r in asummary:
+   chosen=ad[ad.policy==r['policy']];assert len(chosen)==500 and chosen.id.nunique()==500
+   assert math.isclose(chosen.lenient.mean(),r['accuracy'],abs_tol=1e-12) and math.isclose(chosen.units.mean(),r['units'],abs_tol=1e-8)
+  assert ad[ad.policy=='alternative-control-qwen72-llama70'].lenient.sum()==359
+  assert ad[ad.policy=='alternative-outcome_trees-max_accuracy-learned_only'].lenient.sum()==362
+  assert ad[ad.policy=='alternative-expected_baseline-max_accuracy-learned_only'].lenient.sum()==360
+  assert ad[ad.policy=='alternative-exact_augmented-max_accuracy-learned_only'].lenient.sum()==359
+  assert ad[ad.policy=='alternative-global-max_accuracy-learned_only'].lenient.sum()==356
+  assert json.loads((ROOT/'menu_ws_alternatives_v1/status.json').read_text())['phase']=='complete'
  assert len(rows)==expected_index
  for row in rows:
   assert 0<=float(row['accuracy_pct'])<=100
   assert float(row['cost_pct_ss'])>=0
   assert (ROOT/row['source']).is_file()
- print(f'Verified classical and available GRPO test records, summaries, route choices, frozen ruler/splits, artifact hashes and {expected_index} cross-cohort index rows.')
+ print(f'Verified classical, GRPO and available alternative test records, summaries, route choices, frozen ruler/splits, artifact hashes and {expected_index} cross-cohort index rows.')
 
 if __name__=='__main__':main()

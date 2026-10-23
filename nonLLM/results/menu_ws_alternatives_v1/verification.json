@@ -1,0 +1,372 @@
+{
+  "rows": 38000,
+  "policies": 76,
+  "schema_and_aggregate_parity": true,
+  "neural_streams": 54,
+  "tree_streams": 24,
+  "ss_correct": 359,
+  "test_construction_after_validation_lock": true,
+  "paired": [
+    {
+      "policy": "alternative-exact_augmented-max_accuracy-learned_only",
+      "gain": 2,
+      "loss": 2,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        -0.8,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-exact_augmented-ss_budget-learned_only",
+      "gain": 2,
+      "loss": 2,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        -0.8,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-exact_augmented-cheap95-learned_only",
+      "gain": 6,
+      "loss": 10,
+      "delta_pp": -0.8,
+      "paired_descriptive95_pp": [
+        -2.4,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-exact_augmented-match_ss_accuracy-learned_only",
+      "gain": 5,
+      "loss": 8,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -2.0,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-expected_baseline-max_accuracy-learned_only",
+      "gain": 1,
+      "loss": 0,
+      "delta_pp": 0.2,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-expected_baseline-ss_budget-learned_only",
+      "gain": 1,
+      "loss": 0,
+      "delta_pp": 0.2,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-expected_baseline-cheap95-learned_only",
+      "gain": 6,
+      "loss": 10,
+      "delta_pp": -0.8,
+      "paired_descriptive95_pp": [
+        -2.4,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-expected_baseline-match_ss_accuracy-learned_only",
+      "gain": 4,
+      "loss": 9,
+      "delta_pp": -1.0,
+      "paired_descriptive95_pp": [
+        -2.4,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-gain_linear-max_accuracy-learned_only",
+      "gain": 2,
+      "loss": 6,
+      "delta_pp": -0.8,
+      "paired_descriptive95_pp": [
+        -2.0,
+        0.2
+      ]
+    },
+    {
+      "policy": "alternative-gain_linear-ss_budget-learned_only",
+      "gain": 2,
+      "loss": 6,
+      "delta_pp": -0.8,
+      "paired_descriptive95_pp": [
+        -2.0,
+        0.2
+      ]
+    },
+    {
+      "policy": "alternative-gain_linear-cheap95-learned_only",
+      "gain": 7,
+      "loss": 23,
+      "delta_pp": -3.2,
+      "paired_descriptive95_pp": [
+        -5.4,
+        -1.0
+      ]
+    },
+    {
+      "policy": "alternative-gain_linear-match_ss_accuracy-learned_only",
+      "gain": 5,
+      "loss": 10,
+      "delta_pp": -1.0,
+      "paired_descriptive95_pp": [
+        -2.6,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-gain_trees-max_accuracy-learned_only",
+      "gain": 4,
+      "loss": 6,
+      "delta_pp": -0.4,
+      "paired_descriptive95_pp": [
+        -1.7999999999999998,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-gain_trees-ss_budget-learned_only",
+      "gain": 4,
+      "loss": 6,
+      "delta_pp": -0.4,
+      "paired_descriptive95_pp": [
+        -1.6,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-gain_trees-cheap95-learned_only",
+      "gain": 7,
+      "loss": 20,
+      "delta_pp": -2.6,
+      "paired_descriptive95_pp": [
+        -4.8,
+        -0.6
+      ]
+    },
+    {
+      "policy": "alternative-gain_trees-match_ss_accuracy-learned_only",
+      "gain": 4,
+      "loss": 8,
+      "delta_pp": -0.8,
+      "paired_descriptive95_pp": [
+        -2.1999999999999997,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-group_centered-max_accuracy-learned_only",
+      "gain": 4,
+      "loss": 9,
+      "delta_pp": -1.0,
+      "paired_descriptive95_pp": [
+        -2.4,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-group_centered-ss_budget-learned_only",
+      "gain": 4,
+      "loss": 9,
+      "delta_pp": -1.0,
+      "paired_descriptive95_pp": [
+        -2.4,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-group_centered-cheap95-learned_only",
+      "gain": 6,
+      "loss": 11,
+      "delta_pp": -1.0,
+      "paired_descriptive95_pp": [
+        -2.6,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-group_centered-match_ss_accuracy-learned_only",
+      "gain": 6,
+      "loss": 11,
+      "delta_pp": -1.0,
+      "paired_descriptive95_pp": [
+        -2.6,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-outcome_linear-max_accuracy-learned_only",
+      "gain": 2,
+      "loss": 5,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -1.6,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-outcome_linear-ss_budget-learned_only",
+      "gain": 2,
+      "loss": 5,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -1.6,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-outcome_linear-cheap95-learned_only",
+      "gain": 6,
+      "loss": 17,
+      "delta_pp": -2.1999999999999997,
+      "paired_descriptive95_pp": [
+        -4.2,
+        -0.4
+      ]
+    },
+    {
+      "policy": "alternative-outcome_linear-match_ss_accuracy-learned_only",
+      "gain": 4,
+      "loss": 8,
+      "delta_pp": -0.8,
+      "paired_descriptive95_pp": [
+        -2.1999999999999997,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-outcome_residual-max_accuracy-learned_only",
+      "gain": 2,
+      "loss": 3,
+      "delta_pp": -0.2,
+      "paired_descriptive95_pp": [
+        -1.0,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-outcome_residual-ss_budget-learned_only",
+      "gain": 2,
+      "loss": 3,
+      "delta_pp": -0.2,
+      "paired_descriptive95_pp": [
+        -1.0,
+        0.6
+      ]
+    },
+    {
+      "policy": "alternative-outcome_residual-cheap95-learned_only",
+      "gain": 6,
+      "loss": 13,
+      "delta_pp": -1.4000000000000001,
+      "paired_descriptive95_pp": [
+        -3.2,
+        0.2
+      ]
+    },
+    {
+      "policy": "alternative-outcome_residual-match_ss_accuracy-learned_only",
+      "gain": 7,
+      "loss": 11,
+      "delta_pp": -0.8,
+      "paired_descriptive95_pp": [
+        -2.4,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-outcome_trees-max_accuracy-learned_only",
+      "gain": 3,
+      "loss": 0,
+      "delta_pp": 0.6,
+      "paired_descriptive95_pp": [
+        0.0,
+        1.4000000000000001
+      ]
+    },
+    {
+      "policy": "alternative-outcome_trees-ss_budget-learned_only",
+      "gain": 3,
+      "loss": 0,
+      "delta_pp": 0.6,
+      "paired_descriptive95_pp": [
+        0.0,
+        1.4000000000000001
+      ]
+    },
+    {
+      "policy": "alternative-outcome_trees-cheap95-learned_only",
+      "gain": 7,
+      "loss": 17,
+      "delta_pp": -2.0,
+      "paired_descriptive95_pp": [
+        -4.0,
+        -0.2
+      ]
+    },
+    {
+      "policy": "alternative-outcome_trees-match_ss_accuracy-learned_only",
+      "gain": 5,
+      "loss": 8,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -2.0,
+        0.8
+      ]
+    },
+    {
+      "policy": "alternative-global-max_accuracy-learned_only",
+      "gain": 2,
+      "loss": 5,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -1.7999999999999998,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-global-ss_budget-learned_only",
+      "gain": 2,
+      "loss": 5,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -1.6,
+        0.4
+      ]
+    },
+    {
+      "policy": "alternative-global-cheap95-learned_only",
+      "gain": 7,
+      "loss": 20,
+      "delta_pp": -2.6,
+      "paired_descriptive95_pp": [
+        -4.8,
+        -0.6
+      ]
+    },
+    {
+      "policy": "alternative-global-match_ss_accuracy-learned_only",
+      "gain": 6,
+      "loss": 11,
+      "delta_pp": -1.0,
+      "paired_descriptive95_pp": [
+        -2.8000000000000003,
+        0.6
+      ]
+    }
+  ],
+  "note": "Intervals are descriptive, unadjusted for multiple validation/test explorations. This previously examined test is not a fresh confirmation set."
+}

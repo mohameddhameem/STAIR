@@ -1,0 +1,870 @@
+{
+  "neural": [
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 1
+      },
+      "best_epoch": 200,
+      "last_epoch": 260,
+      "val_loss": -0.605591356754303,
+      "seconds": 13.515063914470375
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 2
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.6400664448738098,
+      "seconds": 15.133696620352566
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 270,
+      "last_epoch": 300,
+      "val_loss": -0.7531836628913879,
+      "seconds": 15.664894948713481
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 2
+      },
+      "best_epoch": 140,
+      "last_epoch": 200,
+      "val_loss": -0.605475664138794,
+      "seconds": 10.299949318170547
+    },
+    {
+      "task": {
+        "method": "gain_linear",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 30,
+      "last_epoch": 90,
+      "val_loss": 0.1307927519083023,
+      "seconds": 1.1612213114276528
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 0
+      },
+      "best_epoch": 290,
+      "last_epoch": 300,
+      "val_loss": -0.6392706632614136,
+      "seconds": 6.1320019802078605
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 1
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.7100790143013,
+      "seconds": 6.146304638125002
+    },
+    {
+      "task": {
+        "method": "gain_linear",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 1,
+      "last_epoch": 60,
+      "val_loss": 0.13247188925743103,
+      "seconds": 0.8136953180655837
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 2
+      },
+      "best_epoch": 140,
+      "last_epoch": 200,
+      "val_loss": -0.6051337718963623,
+      "seconds": 10.418785033747554
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 210,
+      "last_epoch": 270,
+      "val_loss": -0.7523661255836487,
+      "seconds": 13.960901189595461
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 0
+      },
+      "best_epoch": 140,
+      "last_epoch": 200,
+      "val_loss": -0.6397084593772888,
+      "seconds": 10.848661704920232
+    },
+    {
+      "task": {
+        "method": "gain_linear",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 1,
+      "last_epoch": 60,
+      "val_loss": 0.13052213191986084,
+      "seconds": 0.8216136498376727
+    },
+    {
+      "task": {
+        "method": "outcome_linear",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 60,
+      "last_epoch": 120,
+      "val_loss": 0.6081104278564453,
+      "seconds": 2.366225047968328
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 190,
+      "last_epoch": 250,
+      "val_loss": -0.75223708152771,
+      "seconds": 13.779832527972758
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 1
+      },
+      "best_epoch": 170,
+      "last_epoch": 230,
+      "val_loss": -0.7108961343765259,
+      "seconds": 11.413258096203208
+    },
+    {
+      "task": {
+        "method": "outcome_linear",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 90,
+      "last_epoch": 150,
+      "val_loss": 0.6027798056602478,
+      "seconds": 3.1795370802283287
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 2
+      },
+      "best_epoch": 200,
+      "last_epoch": 260,
+      "val_loss": -0.6398407816886902,
+      "seconds": 12.74295364972204
+    },
+    {
+      "task": {
+        "method": "gain_linear",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 1,
+      "last_epoch": 60,
+      "val_loss": 0.13185566663742065,
+      "seconds": 0.7926401440054178
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 190,
+      "last_epoch": 250,
+      "val_loss": -0.7526600956916809,
+      "seconds": 14.140214054845273
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 270,
+      "last_epoch": 300,
+      "val_loss": -0.7526158690452576,
+      "seconds": 15.845875875093043
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.7519646286964417,
+      "seconds": 6.146608200855553
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 2
+      },
+      "best_epoch": 280,
+      "last_epoch": 300,
+      "val_loss": -0.6393354535102844,
+      "seconds": 6.018927915021777
+    },
+    {
+      "task": {
+        "method": "outcome_residual",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 20,
+      "last_epoch": 80,
+      "val_loss": 0.599990725517273,
+      "seconds": 4.749283988028765
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 1
+      },
+      "best_epoch": 280,
+      "last_epoch": 300,
+      "val_loss": -0.6392425894737244,
+      "seconds": 6.079650307074189
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.7518271803855896,
+      "seconds": 6.386825286783278
+    },
+    {
+      "task": {
+        "method": "outcome_linear",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 100,
+      "last_epoch": 160,
+      "val_loss": 0.6028159856796265,
+      "seconds": 3.409904238767922
+    },
+    {
+      "task": {
+        "method": "gain_linear",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 20,
+      "last_epoch": 80,
+      "val_loss": 0.1305997371673584,
+      "seconds": 1.0184090686962008
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 1
+      },
+      "best_epoch": 190,
+      "last_epoch": 250,
+      "val_loss": -0.6401761770248413,
+      "seconds": 12.982965820468962
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 1
+      },
+      "best_epoch": 190,
+      "last_epoch": 250,
+      "val_loss": -0.7103983759880066,
+      "seconds": 12.660440784879029
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 2
+      },
+      "best_epoch": 170,
+      "last_epoch": 230,
+      "val_loss": -0.7104608416557312,
+      "seconds": 15.732855701819062
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 1
+      },
+      "best_epoch": 120,
+      "last_epoch": 180,
+      "val_loss": -0.6397289037704468,
+      "seconds": 11.087558759376407
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 0
+      },
+      "best_epoch": 170,
+      "last_epoch": 230,
+      "val_loss": -0.6053179502487183,
+      "seconds": 11.827021976932883
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 1
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.6053364872932434,
+      "seconds": 6.097130977548659
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 0
+      },
+      "best_epoch": 170,
+      "last_epoch": 230,
+      "val_loss": -0.6056658029556274,
+      "seconds": 11.716107045300305
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 250,
+      "last_epoch": 300,
+      "val_loss": -0.7529236078262329,
+      "seconds": 14.758454826660454
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.15,
+        "seed": 0
+      },
+      "best_epoch": 140,
+      "last_epoch": 200,
+      "val_loss": -0.6401551961898804,
+      "seconds": 10.463018122129142
+    },
+    {
+      "task": {
+        "method": "outcome_residual",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 70,
+      "last_epoch": 130,
+      "val_loss": 0.6057473421096802,
+      "seconds": 7.436245287768543
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 1
+      },
+      "best_epoch": 200,
+      "last_epoch": 260,
+      "val_loss": -0.6051326990127563,
+      "seconds": 13.190204246900976
+    },
+    {
+      "task": {
+        "method": "expected_baseline",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 0
+      },
+      "best_epoch": 160,
+      "last_epoch": 220,
+      "val_loss": -0.7102700471878052,
+      "seconds": 11.340411336161196
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.7520142197608948,
+      "seconds": 5.990944872610271
+    },
+    {
+      "task": {
+        "method": "outcome_residual",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 60,
+      "last_epoch": 120,
+      "val_loss": 0.6055517196655273,
+      "seconds": 6.853270500898361
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 2
+      },
+      "best_epoch": 280,
+      "last_epoch": 300,
+      "val_loss": -0.7099548578262329,
+      "seconds": 5.963929079473019
+    },
+    {
+      "task": {
+        "method": "outcome_linear",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 100,
+      "last_epoch": 160,
+      "val_loss": 0.6081060171127319,
+      "seconds": 3.27969479188323
+    },
+    {
+      "task": {
+        "method": "gain_linear",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 1
+      },
+      "best_epoch": 1,
+      "last_epoch": 60,
+      "val_loss": 0.13029100000858307,
+      "seconds": 0.7925716079771519
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 0
+      },
+      "best_epoch": 160,
+      "last_epoch": 220,
+      "val_loss": -0.7100303173065186,
+      "seconds": 12.610337600111961
+    },
+    {
+      "task": {
+        "method": "outcome_residual",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 30,
+      "last_epoch": 90,
+      "val_loss": 0.5994739532470703,
+      "seconds": 5.130100226029754
+    },
+    {
+      "task": {
+        "method": "outcome_residual",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 30,
+      "last_epoch": 90,
+      "val_loss": 0.5994683504104614,
+      "seconds": 5.55517006944865
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 2
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.605353057384491,
+      "seconds": 6.030089418403804
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.4,
+        "seed": 0
+      },
+      "best_epoch": 280,
+      "last_epoch": 300,
+      "val_loss": -0.6053425669670105,
+      "seconds": 6.048061823472381
+    },
+    {
+      "task": {
+        "method": "outcome_linear",
+        "wd": 0.001,
+        "lam": 0.0,
+        "seed": 2
+      },
+      "best_epoch": 90,
+      "last_epoch": 150,
+      "val_loss": 0.6029448509216309,
+      "seconds": 3.1754043232649565
+    },
+    {
+      "task": {
+        "method": "exact_augmented",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 0
+      },
+      "best_epoch": 300,
+      "last_epoch": 300,
+      "val_loss": -0.7098942399024963,
+      "seconds": 6.064285947941244
+    },
+    {
+      "task": {
+        "method": "group_centered",
+        "wd": 0.001,
+        "lam": 0.05,
+        "seed": 2
+      },
+      "best_epoch": 150,
+      "last_epoch": 210,
+      "val_loss": -0.7095308899879456,
+      "seconds": 10.784767281264067
+    },
+    {
+      "task": {
+        "method": "outcome_residual",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 70,
+      "last_epoch": 130,
+      "val_loss": 0.6057653427124023,
+      "seconds": 7.261777727864683
+    },
+    {
+      "task": {
+        "method": "outcome_linear",
+        "wd": 0.01,
+        "lam": 0.0,
+        "seed": 0
+      },
+      "best_epoch": 160,
+      "last_epoch": 220,
+      "val_loss": 0.6077435612678528,
+      "seconds": 4.497353813610971
+    }
+  ],
+  "trees": [
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": null,
+        "leaf": 10,
+        "seed": 2
+      },
+      "seconds": 6.403087364509702
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": 8,
+        "leaf": 10,
+        "seed": 1
+      },
+      "seconds": 1.06938920263201
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": null,
+        "leaf": 30,
+        "seed": 1
+      },
+      "seconds": 1.4449450289830565
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": 8,
+        "leaf": 30,
+        "seed": 1
+      },
+      "seconds": 0.994419009424746
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": 8,
+        "leaf": 30,
+        "seed": 0
+      },
+      "seconds": 0.9957276247441769
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": 8,
+        "leaf": 30,
+        "seed": 2
+      },
+      "seconds": 1.0141869354993105
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": null,
+        "leaf": 10,
+        "seed": 1
+      },
+      "seconds": 6.428657705895603
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": 8,
+        "leaf": 30,
+        "seed": 0
+      },
+      "seconds": 3.4142433470115066
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": null,
+        "leaf": 10,
+        "seed": 2
+      },
+      "seconds": 1.953763134777546
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": null,
+        "leaf": 30,
+        "seed": 0
+      },
+      "seconds": 1.450321527197957
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": 8,
+        "leaf": 30,
+        "seed": 2
+      },
+      "seconds": 3.4295307556167245
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": null,
+        "leaf": 30,
+        "seed": 0
+      },
+      "seconds": 4.8462671572342515
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": 8,
+        "leaf": 10,
+        "seed": 1
+      },
+      "seconds": 3.50914244633168
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": 8,
+        "leaf": 10,
+        "seed": 2
+      },
+      "seconds": 1.0939871715381742
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": null,
+        "leaf": 30,
+        "seed": 1
+      },
+      "seconds": 4.845489678904414
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": 8,
+        "leaf": 10,
+        "seed": 2
+      },
+      "seconds": 3.5470436280593276
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": null,
+        "leaf": 10,
+        "seed": 0
+      },
+      "seconds": 6.466887552291155
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": null,
+        "leaf": 10,
+        "seed": 1
+      },
+      "seconds": 1.932750972919166
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": 8,
+        "leaf": 30,
+        "seed": 1
+      },
+      "seconds": 3.4188749473541975
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": 8,
+        "leaf": 10,
+        "seed": 0
+      },
+      "seconds": 1.069067762233317
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": 8,
+        "leaf": 10,
+        "seed": 0
+      },
+      "seconds": 3.508557502180338
+    },
+    {
+      "task": {
+        "method": "outcome_trees",
+        "depth": null,
+        "leaf": 30,
+        "seed": 2
+      },
+      "seconds": 4.820802879519761
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": null,
+        "leaf": 10,
+        "seed": 0
+      },
+      "seconds": 1.973353243432939
+    },
+    {
+      "task": {
+        "method": "gain_trees",
+        "depth": null,
+        "leaf": 30,
+        "seed": 2
+      },
+      "seconds": 1.4204154247418046
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "exported_on": "2026-10-23",
+  "exported_on": "2026-10-24",
   "local_data_and_weights_included": false,
   "runs": [
     {
@@ -180,6 +180,30 @@
       "published_artifacts": [
         "archive_20261023/nonllm_common_menuA_v1/protocol.json",
         "archive_20261023/nonllm_common_menuA_v1/status.json"
+      ],
+      "classification": "cohort-specific, not pooled; see report and results/README.md"
+    },
+    {
+      "run": "nonllm_common_ws_alternatives_smoke_v1",
+      "source_phase": "not recorded",
+      "published_artifacts": [
+        "archive_20261023/nonllm_common_ws_alternatives_smoke_v1/protocol.json",
+        "archive_20261023/nonllm_common_ws_alternatives_smoke_v1/verification.json"
+      ],
+      "classification": "cohort-specific, not pooled; see report and results/README.md"
+    },
+    {
+      "run": "nonllm_common_ws_alternatives_v1",
+      "source_phase": "complete",
+      "published_artifacts": [
+        "archive_20261023/nonllm_common_ws_alternatives_v1/REPORT.md",
+        "archive_20261023/nonllm_common_ws_alternatives_v1/method_summary.csv",
+        "archive_20261023/nonllm_common_ws_alternatives_v1/protocol.json",
+        "archive_20261023/nonllm_common_ws_alternatives_v1/results.json",
+        "archive_20261023/nonllm_common_ws_alternatives_v1/status.json",
+        "archive_20261023/nonllm_common_ws_alternatives_v1/training_summary.json",
+        "archive_20261023/nonllm_common_ws_alternatives_v1/validation_lock.json",
+        "archive_20261023/nonllm_common_ws_alternatives_v1/verification.json"
       ],
       "classification": "cohort-specific, not pooled; see report and results/README.md"
     },
@@ -976,6 +1000,66 @@
       "published": "nonLLM/results/archive_20261023/nonllm_common_menuA_v1/status.json",
       "source_sha256": "0bea2c5595194b5f540f9fbbdb23bf29c48fba34087e427a9d201fb57a9e6e9a",
       "published_sha256": "0bea2c5595194b5f540f9fbbdb23bf29c48fba34087e427a9d201fb57a9e6e9a"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_smoke_v1/protocol.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_smoke_v1/protocol.json",
+      "source_sha256": "69a633fafc9087f46bd75dae4f75f5f10ba02409b2c4534d444b34218a8bb7f5",
+      "published_sha256": "dba256cebc4fdf75923f35178e1d3b25855497cb05176b254942c9cf0a073455"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_smoke_v1/verification.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_smoke_v1/verification.json",
+      "source_sha256": "49acffa47c450456b3a849763cff6279e9a35546bc9f018ca517906da84ea81c",
+      "published_sha256": "49acffa47c450456b3a849763cff6279e9a35546bc9f018ca517906da84ea81c"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/REPORT.md",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/REPORT.md",
+      "source_sha256": "b9bb5f9c72b231605765e490298371bc704d78ba5dad3e6eb829038a2f3ee08d",
+      "published_sha256": "b9bb5f9c72b231605765e490298371bc704d78ba5dad3e6eb829038a2f3ee08d"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/method_summary.csv",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/method_summary.csv",
+      "source_sha256": "ba5d65651b069353569d268dbced6165e82ed2cda0179347c13fb9855dd4e784",
+      "published_sha256": "ba5d65651b069353569d268dbced6165e82ed2cda0179347c13fb9855dd4e784"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/protocol.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/protocol.json",
+      "source_sha256": "61afe3414f2e81c77dc4d1de33524043893c6a4a18115dd914c707199e0cf348",
+      "published_sha256": "231bbc37720900fa7832b300f0d7f1b9b089149969d8765329997115831fd5c6"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/results.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/results.json",
+      "source_sha256": "546d1670ee80bc84816128d8f3c9b244cb5b19892b62608c056201bcc231bf8d",
+      "published_sha256": "546d1670ee80bc84816128d8f3c9b244cb5b19892b62608c056201bcc231bf8d"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/status.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/status.json",
+      "source_sha256": "4eebf3c3459e758958ccf84347d1e83ac80ea05cbbe5faab508b3c82efdabb41",
+      "published_sha256": "4eebf3c3459e758958ccf84347d1e83ac80ea05cbbe5faab508b3c82efdabb41"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/training_summary.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/training_summary.json",
+      "source_sha256": "36fcd45c7deef2185e0872d1883988bd08a6c8eabd6e0ba5e14b171ff1cfb773",
+      "published_sha256": "36fcd45c7deef2185e0872d1883988bd08a6c8eabd6e0ba5e14b171ff1cfb773"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/validation_lock.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/validation_lock.json",
+      "source_sha256": "b33a89b8a6e317b7f116296bd55c8a34edfa22909dde3b2ace6fd6068c45353e",
+      "published_sha256": "b33a89b8a6e317b7f116296bd55c8a34edfa22909dde3b2ace6fd6068c45353e"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/verification.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_alternatives_v1/verification.json",
+      "source_sha256": "9857f9c1188bf8a3f7f1bbd56b762da916c7df8b97ca89ce090774f2b73558a5",
+      "published_sha256": "9857f9c1188bf8a3f7f1bbd56b762da916c7df8b97ca89ce090774f2b73558a5"
     },
     {
       "source": "runs/nonllm_common_ws_gguf_v1/INVALID_RESULTS.md",
@@ -2560,6 +2644,54 @@
       "published": "nonLLM/results/menu_ws_grpo_v1/protocol.json",
       "source_sha256": "a62060c501694c4fc3aade4d0f72a875f3ba6627ba8436b73e2a2c58e7740c5b",
       "published_sha256": "ced28966d444474ea00283cc11dd89e2542dea10f4077e430cea27fff6f86956"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/validation_lock.json",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/validation_lock.json",
+      "source_sha256": "b33a89b8a6e317b7f116296bd55c8a34edfa22909dde3b2ace6fd6068c45353e",
+      "published_sha256": "b33a89b8a6e317b7f116296bd55c8a34edfa22909dde3b2ace6fd6068c45353e"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/method_summary.csv",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/method_summary.csv",
+      "source_sha256": "ba5d65651b069353569d268dbced6165e82ed2cda0179347c13fb9855dd4e784",
+      "published_sha256": "ba5d65651b069353569d268dbced6165e82ed2cda0179347c13fb9855dd4e784"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/results.json",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/results.json",
+      "source_sha256": "546d1670ee80bc84816128d8f3c9b244cb5b19892b62608c056201bcc231bf8d",
+      "published_sha256": "546d1670ee80bc84816128d8f3c9b244cb5b19892b62608c056201bcc231bf8d"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/verification.json",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/verification.json",
+      "source_sha256": "9857f9c1188bf8a3f7f1bbd56b762da916c7df8b97ca89ce090774f2b73558a5",
+      "published_sha256": "9857f9c1188bf8a3f7f1bbd56b762da916c7df8b97ca89ce090774f2b73558a5"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/REPORT.md",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/REPORT.md",
+      "source_sha256": "b9bb5f9c72b231605765e490298371bc704d78ba5dad3e6eb829038a2f3ee08d",
+      "published_sha256": "b9bb5f9c72b231605765e490298371bc704d78ba5dad3e6eb829038a2f3ee08d"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/status.json",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/status.json",
+      "source_sha256": "4eebf3c3459e758958ccf84347d1e83ac80ea05cbbe5faab508b3c82efdabb41",
+      "published_sha256": "4eebf3c3459e758958ccf84347d1e83ac80ea05cbbe5faab508b3c82efdabb41"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/training_summary.json",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/training_summary.json",
+      "source_sha256": "36fcd45c7deef2185e0872d1883988bd08a6c8eabd6e0ba5e14b171ff1cfb773",
+      "published_sha256": "36fcd45c7deef2185e0872d1883988bd08a6c8eabd6e0ba5e14b171ff1cfb773"
+    },
+    {
+      "source": "runs/nonllm_common_ws_alternatives_v1/protocol.json",
+      "published": "nonLLM/results/menu_ws_alternatives_v1/protocol.json",
+      "source_sha256": "61afe3414f2e81c77dc4d1de33524043893c6a4a18115dd914c707199e0cf348",
+      "published_sha256": "231bbc37720900fa7832b300f0d7f1b9b089149969d8765329997115831fd5c6"
     }
   ]
 }

@@ -1,6 +1,27 @@
-# Non-LLM routing results — 23 October 2026
+# Non-LLM routing results — 24 October 2026
 
 The corrected four-model experiment is complete. Earlier experiments are retained as separate cohorts. Do not pool their accuracy or cost values: models, question IDs, scoring implementations and cost rules differ.
+
+## Further alternatives: eight completed families
+
+[Full alternatives report](menu_ws_alternatives_v1/REPORT.md) · [accuracy/cost plot](menu_ws_alternatives_v1/accuracy_cost.png) · [compact method table](menu_ws_alternatives_v1/method_summary.csv) · [38,000 policy/question rows](menu_ws_alternatives_v1/results.csv.gz) · [validation lock](menu_ws_alternatives_v1/validation_lock.json) · [method code](../experiments/menu_ws_gguf/ALTERNATIVES.md).
+
+All numbers use the same corrected executor cache and500-question cohort as the GRPO experiment. There are54 neural streams and24 tree configurations, three seeds, no new executor sampling. The added features are candidate/selected-evidence lexical statistics; none use answers or labels as deployment inputs. Full online latency was not measured in this vectorized replay; ms_router is left empty.
+
+| Per-family validation-selected maximum-accuracy policy | Test lenient | Cost / SS | Difference vs SS |
+|---|---:|---:|---|
+| SS / previous GRPO |71.8%|100.00%|reference|
+| Success prediction, ExtraTrees |72.4%|96.77%|three more correct|
+| PPO with exact expected-reward baseline, no std division |72.0%|96.54%|one more correct|
+| Exact reward with added lexical features |71.8%|89.25%|same total correct; two gains/two losses|
+
+These are observed per-family results, not a stable-improvement claim. The outcome-tree policy makes47 non-SS choices; the exact-baseline PPO makes40. The descriptive paired accuracy intervals include zero, and the test has been repeatedly inspected. No equivalence or confirmatory significance claim is made.
+
+**Global method-family selection on validation differs from choosing the best test row:** the maximum-accuracy winner is the linear outcome predictor, with test71.2% and85.61% SS cost. The validation cheapest-at95%-SS winner is the gain tree, with test69.2% and50.95% SS cost. The validation cheapest-matching-SS winner is group-centered PPO, with test70.8% and70.70% SS cost; its validation accuracy constraint does not carry over automatically to test. Full per-family and global selections are both reported.
+
+The three principal changes are predicting outcomes rather than a cheapest-correct action, predicting the benefit of strong retrieval with QA held strong, and retaining reward magnitude in policy gradients instead of group std normalization. Extra lexical features change the representation too, so this is not a causal isolation of one GRPO implementation detail. See the report for all eight families and four operating-point objectives.
+
+The38,000 rows are76 policies evaluated on the same500 questions, not38,000 independent test examples. The archive directory keeps its original23 October name for stable links; the catalog is updated24 October.
 
 ## New corrected-cache GRPO rerun
 
@@ -45,7 +66,7 @@ The [evaluation snapshot](menu_ws_gguf_v2/evaluation_snapshot/SOURCE.md) preserv
 
 ## Historical methods and results
 
-[Machine-readable result index](all_results.csv) contains165 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps30 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
+[Machine-readable result index](all_results.csv) contains241 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps32 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
 
 | Cohort | What was tested | Baseline / representative result | Primary artifacts |
 |---|---|---|---|

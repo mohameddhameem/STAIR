@@ -1,0 +1,12 @@
+{
+  "run": "nonllm_common_ws_alternatives_v1",
+  "phase": "complete",
+  "source": "nonllm_common_ws_grpo_v1",
+  "executor_cache": "nonllm_common_ws_gguf_v2",
+  "families": 8,
+  "neural_streams": 54,
+  "tree_configurations": 24,
+  "report": "nonLLM/results/menu_ws_alternatives_v1/REPORT.md",
+  "tmux_session": "cs707-ws-alternatives",
+  "scope": "common0.2 test500, not common0.3 golden"
+}

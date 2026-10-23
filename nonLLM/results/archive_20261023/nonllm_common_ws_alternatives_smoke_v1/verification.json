@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "neural_variants": 6,
+  "tree_variants": 2,
+  "finite_cpu_deployment_predictions": true,
+  "full_feature_contract_tests": 8
+}
