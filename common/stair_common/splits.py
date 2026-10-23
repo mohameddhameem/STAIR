@@ -5,11 +5,17 @@ the paper and no test question is in anyone's training data. Validation and trai
 does not test on. Where a split is random, it uses one rule: sort the IDs, then shuffle with
 numpy.random.default_rng(20260729).
 
+HotpotQA also carries the golden set the team follows (Jonathan's Stage-Level Routing split): parts `slr-train`,
+`slr-val` and `slr-test` (4,814 / 1,110 / 1,481 of the 7,405 dev questions), taken by position from his committed
+splits.json. It is a second scheme over the same dev questions, so it overlaps the dev slices above by design; parts
+are disjoint within a scheme.
+
     python -m stair_common.splits build --sources <dir with the files below> --out common/splits
 
 Sources (pinned): AgentTTS @ 3f0c2df (data/HotpotQA/hotpotqa-dev.json, data/2wikimultihopqa/tts_train.json,
 data/cwq/data_with_ct_0.json, data/webqsp/data_with_ct_0.json); HotpotQA train (hotpot_train_v1.1.json, or the HF
-`hotpot_qa` distractor train split, same IDs); MedAgentBench @ 9926011 (data/medagentbench/test_data_v2.json).
+`hotpot_qa` distractor train split, same IDs); MedAgentBench @ 9926011 (data/medagentbench/test_data_v2.json);
+STAIR branch `jonathan` @ 5b69cce (jonathan/lab_package/splits.json, saved as slr_splits.json).
 """
 
 import argparse
@@ -50,6 +56,26 @@ def hotpotqa(dev_ids: list[str], train_ids: list[str]) -> dict[str, list[str]]:
             "train": cut(train_ids, {"train": HOTPOTQA_TRAIN_DRAW})["train"]}
 
 
+SLR_SIZES = {"train": 4814, "val": 1110, "test": 1481}
+
+
+def hotpotqa_slr(dev_ids: list[str], slr: dict) -> dict[str, list[str]]:
+    """Jonathan's Stage-Level Routing split: splits.json lists dev positions per part; IDs follow in position order."""
+    if len(dev_ids) != 7405 or slr.get("n_total") != 7405:
+        raise ValueError("the SLR split is over the 7,405-question dev file")
+    parts = {f"slr-{name}": [dev_ids[i] for i in sorted(slr["splits"][name])] for name in SLR_SIZES}
+    if {k: len(v) for k, v in parts.items()} != {f"slr-{k}": n for k, n in SLR_SIZES.items()}:
+        raise ValueError(f"SLR part sizes {[len(v) for v in parts.values()]}, expected {list(SLR_SIZES.values())}")
+    if set().union(*map(set, parts.values())) != set(dev_ids):
+        raise ValueError("the SLR parts must cover the dev file exactly")
+    return parts
+
+
+def scheme(part: str) -> str:
+    """The scheme a part belongs to: "slr" for slr-*, "" for the rest. Parts are disjoint within a scheme."""
+    return part.split("-")[0] if "-" in part else ""
+
+
 def twowiki(dev_ids: list[str]) -> dict[str, list[str]]:
     """Official dev (AgentTTS's tts_train.json, file order), the same slices as HotpotQA."""
     if len(dev_ids) != 12576:
@@ -79,7 +105,8 @@ def medagentbench(ids: list[str]) -> dict[str, list[str]]:
 
 
 def load_split(dataset: str, part: str, splits_dir: Path = SPLITS_DIR) -> list[str]:
-    """IDs of one part (train, train_extra, val, calib, test) of a dataset, in the committed order."""
+    """IDs of one part (train, train_extra, val, calib, test; HotpotQA also slr-train, slr-val, slr-test) of a dataset,
+    in the committed order."""
     return (splits_dir / dataset / f"{part}.txt").read_text().split()
 
 
@@ -109,10 +136,12 @@ def build(sources: Path, out: Path) -> dict:
         "cwq": sources / "cwq_data_with_ct_0.json",
         "webqsp": sources / "webqsp_data_with_ct_0.json",
         "medagentbench": sources / "test_data_v2.json",
+        "hotpotqa_slr": sources / "slr_splits.json",
     }
+    dev_ids = [e["_id"] for e in _json(files["hotpotqa_dev"])]
     splits = {
-        "hotpotqa": hotpotqa([e["_id"] for e in _json(files["hotpotqa_dev"])],
-                             _hotpotqa_train_ids(files["hotpotqa_train"])),
+        "hotpotqa": hotpotqa(dev_ids, _hotpotqa_train_ids(files["hotpotqa_train"]))
+                    | hotpotqa_slr(dev_ids, _json(files["hotpotqa_slr"])),
         "2wikimultihopqa": twowiki([e["_id"] for e in _json(files["2wikimultihopqa"])]),
         "cwq": kgqa([e["ID"] for e in _json(files["cwq"])]),
         "webqsp": kgqa([e["QuestionId"] for e in _json(files["webqsp"])]),
@@ -120,11 +149,11 @@ def build(sources: Path, out: Path) -> dict:
     }
     manifest = {"seed": SEED, "sources": {k: {"file": v.name, "sha256": _sha(v)} for k, v in files.items()}, "parts": {}}
     for dataset, parts in splits.items():
-        seen = set()
+        seen = defaultdict(set)
         for part, ids in parts.items():
-            if seen & set(ids):
+            if seen[scheme(part)] & set(ids):
                 raise ValueError(f"{dataset}/{part} overlaps another part")
-            seen |= set(ids)
+            seen[scheme(part)] |= set(ids)
             target = out / dataset / f"{part}.txt"
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text("\n".join(ids) + "\n", newline="\n")

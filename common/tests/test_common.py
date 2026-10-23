@@ -8,6 +8,7 @@ from stair_common import cost, schema, score, splits
 
 EXPECTED = {
     "hotpotqa/val": 500, "hotpotqa/test": 500, "hotpotqa/train_extra": 6405, "hotpotqa/train": 12000,
+    "hotpotqa/slr-train": 4814, "hotpotqa/slr-val": 1110, "hotpotqa/slr-test": 1481,
     "2wikimultihopqa/val": 500, "2wikimultihopqa/test": 500, "2wikimultihopqa/train_extra": 11576,
     "cwq/test": 500, "cwq/train": 350, "cwq/val": 150,
     "webqsp/test": 500, "webqsp/train": 350, "webqsp/val": 150,
@@ -28,8 +29,17 @@ def test_committed_splits_match_manifest():
 
 @pytest.mark.parametrize("dataset", ["hotpotqa", "2wikimultihopqa", "cwq", "webqsp", "medagentbench"])
 def test_parts_are_disjoint(dataset):
-    parts = [set(splits.load_split(dataset, n.split("/")[1])) for n in EXPECTED if n.startswith(dataset + "/")]
-    assert sum(map(len, parts)) == len(set().union(*parts))
+    names = [n.split("/")[1] for n in EXPECTED if n.startswith(dataset + "/")]
+    for scheme in {splits.scheme(n) for n in names}:  # the SLR split is a second scheme over HotpotQA's dev questions
+        parts = [set(splits.load_split(dataset, n)) for n in names if splits.scheme(n) == scheme]
+        assert sum(map(len, parts)) == len(set().union(*parts))
+
+
+def test_slr_split_recuts_the_dev_questions():
+    slr = set().union(*(splits.load_split("hotpotqa", f"slr-{p}") for p in ("train", "val", "test")))
+    dev = set().union(*(splits.load_split("hotpotqa", p) for p in ("val", "test", "train_extra")))
+    assert slr == dev and len(slr) == 7405
+    assert not slr & set(splits.load_split("hotpotqa", "train"))  # all dev: none from the train file
 
 
 def test_rule_is_deterministic_and_order_free():
@@ -76,6 +86,30 @@ def test_samples_share_their_prompt():
     assert forty < 40 * cost.units(3.0, 128, 64)
 
 
+def test_table5_is_agenttts_budget_not_units():
+    # Table 5 counts the 3B samples, sharing one 128-token prompt, of equal FLOPs (Eq. 3-4): 3 x units - 2 for one call
+    params = {"Qwen2.5-72B": 72, "Qwen2.5-32B": 32, "Qwen2.5-7B": 7, "Llama-3.1-70B": 70, "Llama-3.1-8B": 8,
+              "Llama-3.2-3B": 3}
+    lengths = {"retrieve": (2048, 128), "answer": (256, 64)}  # AgentTTS Table 4, HotpotQA
+    for task, prices in cost.AGENTTTS_TABLE5_HOTPOTQA.items():
+        for model, price in prices.items():
+            assert round(3 * cost.units(params[model], *lengths[task]) - 2) == price
+            assert round(cost.budget(params[model], *lengths[task])) == price
+    assert cost.units(72.0, 2048, 128) == pytest.approx(272.0)
+
+
+def test_budget_shares_the_prompt_and_is_floored():
+    assert cost.budget(3.0, 256, 10 * 64) == pytest.approx(12.0)  # Table 7, 10 samples: the prompt counts once
+    assert cost.budget(3.0, 256, 40 * 64) == pytest.approx(42.0)
+    assert cost.budget(0.033, 200, 0) == 0.0                       # tiny calls would go negative
+    assert cost.AGENTTTS_TABLE5_HOTPOTQA is cost.TABLE5_HOTPOTQA
+
+
+def test_slr_path_prices_are_jonathans():
+    assert cost.SLR_PATH_PRICES == {"WW": 80, "WS": 195, "SW": 894, "SS": 1009}  # configb_test_readout.py
+    assert cost.STRONG_EVERYTHING == 929
+
+
 def _row(**kw):
     row = {"dataset": "hotpotqa", "split": "test", "id": splits.load_split("hotpotqa", "test")[0], "track": "t",
            "policy": "p", "menu": "A", "seed": 0, "answer": "x", "lenient": 1, "em": 1.0, "f1": 1.0, "units": 3.0,
@@ -86,6 +120,7 @@ def _row(**kw):
 
 def test_schema_accepts_a_good_table_and_rejects_bad_ones():
     schema.validate(pd.DataFrame([_row()]))
+    schema.validate(pd.DataFrame([_row(split="slr-test", id=splits.load_split("hotpotqa", "slr-test")[0], price=80.0)]))
     with pytest.raises(ValueError, match="sum"):
         schema.validate(pd.DataFrame([_row(units=5.0)]))
     with pytest.raises(ValueError, match="not in splits"):
@@ -99,6 +134,8 @@ def test_schema_accepts_a_good_table_and_rejects_bad_ones():
     ({"em": float("nan")}, r"\[0, 1\]"),
     ({"seed": 0.5}, "integer"),
     ({"split": "tset"}, "unknown split"),
+    ({"price": -1.0}, "price must be finite"),
+    ({"price": float("nan")}, "price must be finite"),
 ])
 def test_schema_rejects(bad, match):
     with pytest.raises(ValueError, match=match):
