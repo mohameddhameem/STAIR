@@ -3,7 +3,8 @@
 HotpotQA, the team test set (AgentTTS's 500 questions, dev [500:1000]); accuracy = lenient (team standard, AgentTTS's
 ruler); cost = AgentTTS units per question, counted on the tokens actually processed (`stair_common.cost`). Seed 0 only:
 with 500 questions an accuracy carries about ±2 points of sampling noise. The per-question tables (`results/common/`
-layout) follow when the run's files are copied off the cluster.
+layout) are in [`results/common/`](../results/common/) on this branch, with the fine-tuning loss curves in
+[`results/common/history/`](../results/common/history/).
 
 | Experiment | Policy | Accuracy | Units / question |
 |---|---|---|---|
@@ -18,6 +19,19 @@ layout) follow when the run's files are copied off the cluster.
 | AL-03 | rulebook, starting rules (hidden-state probes) | 0.512 | 531 |
 | AL-03 | rulebook, learnt rules | 0.566 | 609 |
 | AL-03 | oracle within the rulebook's choices | 0.646 | 243 |
+
+## Fine-tuning so far (early stopping on validation loss, `results/common/history/`)
+
+| Model | Role | Epochs run | Best epoch (kept) | Val loss |
+|---|---|---|---|---|
+| Llama 3.2 1B / 3.2 3B / 3.1 8B | answerer | 2 | 1 | 0.354 / 0.270 / 0.273 |
+| Llama 3.1 70B (QLoRA, 2,000 questions) | answerer | 2 | 1 | 0.258 |
+| Qwen2.5 0.5B | retriever | 3 | 2.5 | 0.127 |
+| Qwen3.5 0.8B | retriever | 2 | 1 | 0.044 |
+| Qwen2.5 1.5B / 3B / 7B | retriever | 2 | 2 | 0.058 / 0.034 / 0.024 |
+
+Answerers stop improving after one epoch (validation loss rises in the second, so the epoch-1 checkpoint is kept);
+retrievers keep improving through epoch 2. Qwen2.5 32B and 72B (QLoRA) are still training.
 
 AL-04 .. AL-06 (fine-tuned models + self-learnt rulebook) are still running: they wait for the QLoRA fine-tuning of
 Qwen2.5 32B and 72B; the other nine models are fine-tuned.

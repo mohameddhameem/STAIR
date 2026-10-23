@@ -1,0 +1,5 @@
+track,model,run,seed,epoch,train_loss,val_loss,step,val_metric
+selfLearnt,Llama 3.2 1B answerer,lora-r16,0,0.5,0.31742046788629763,0.37348450227155505,750,0.64
+selfLearnt,Llama 3.2 1B answerer,lora-r16,0,1.0,0.2286824197267027,0.35376295586000195,1500,0.63
+selfLearnt,Llama 3.2 1B answerer,lora-r16,0,1.5,0.14171651413093786,0.3816728520838175,2250,0.73
+selfLearnt,Llama 3.2 1B answerer,lora-r16,0,2.0,0.09956031265464844,0.4264121696906295,3000,0.69

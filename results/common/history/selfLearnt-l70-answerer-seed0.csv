@@ -1,0 +1,5 @@
+track,model,run,seed,epoch,train_loss,val_loss,step,val_metric
+selfLearnt,Llama 3.1 70B answerer,qlora-r16,0,0.5,0.15524635145764115,0.2781234643697583,125,0.74
+selfLearnt,Llama 3.1 70B answerer,qlora-r16,0,1.0,0.1313372145549323,0.25764560227903227,250,0.78
+selfLearnt,Llama 3.1 70B answerer,qlora-r16,0,1.5,0.050102307962639314,0.3073725254540477,375,0.76
+selfLearnt,Llama 3.1 70B answerer,qlora-r16,0,2.0,0.041392022474882655,0.32597800015908435,500,0.8
