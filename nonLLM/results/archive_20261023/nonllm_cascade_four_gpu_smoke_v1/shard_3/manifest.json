@@ -1,0 +1,9 @@
+{
+  "shard": 3,
+  "n": 2,
+  "ids_sha256": "1b6e2c69a18fa55a0730b0c6efc325495085842b75b5708272aa007644c0656b",
+  "grid_code_sha256": "318fb60c48122bebb9346d19a2516527cecd6d71648afd2efaa7ab8660bb676b",
+  "generation": "FP16, greedy, SDPA, 100 passages capped at 600 chars, supplied order, no gold insertion, max input 16384",
+  "weak_model": "<WORKSPACE>/models/Qwen2.5-1.5B-Instruct-HF",
+  "strong_model": "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF"
+}

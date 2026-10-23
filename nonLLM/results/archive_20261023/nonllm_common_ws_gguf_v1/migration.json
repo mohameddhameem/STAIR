@@ -1,0 +1,12 @@
+{
+  "source": "<WORKSPACE>/runs/nonllm_common_menuA_gguf_v2",
+  "source_protocol_sha256": "c826f011c7e04b518dfc3b77f335f4265d9be63299d6cd4a1941d9633cb396b8",
+  "reason": "User requested only Qwen7/72 retrieval and Llama3/70 answering",
+  "imported_counts": {
+    "qwen7": 7405,
+    "qwen72": 6810,
+    "llama3": 4,
+    "llama70": 4
+  },
+  "time": 1792576281.8754084
+}

@@ -1,0 +1,47 @@
+{
+  "name": "exact_reward_lambda0.15",
+  "lock": {
+    "cost": 140.1284813772269,
+    "accuracy": 0.44594594594594594,
+    "theta_ret": 0.8875790238380432,
+    "theta_qa": 0.9883753657341003
+  },
+  "val": {
+    "n": 1110,
+    "lenient_accuracy": 0.44594594594594594,
+    "strict_accuracy": 0.44594594594594594,
+    "mean_cost": 140.1284813772269,
+    "cost_pct_of_direct_SS": 78.70753443095745,
+    "cost_pct_of_cascade_SS": 64.8116637848529,
+    "picks": {
+      "SS": 606,
+      "WS": 501,
+      "SW": 3
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.44294395678595544,
+    "strict_accuracy": 0.44294395678595544,
+    "mean_cost": 137.68263154285555,
+    "cost_pct_of_direct_SS": 77.33374654601273,
+    "cost_pct_of_cascade_SS": 63.68041911870412,
+    "picks": {
+      "WS": 690,
+      "SS": 789,
+      "SW": 2
+    }
+  },
+  "training": {
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "ensemble": "mean action probabilities",
+    "lambda": 0.15,
+    "groups": 8,
+    "nonLLM": "linear policies over TF-IDF and numeric features"
+  }
+}

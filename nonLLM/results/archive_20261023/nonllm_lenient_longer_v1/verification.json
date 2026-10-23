@@ -1,0 +1,8 @@
+{
+  "streams_complete": 54,
+  "full_state_300_checkpoints": 54,
+  "bitwise_120_epoch_replay_checks": 54,
+  "validation_lock_precedes_test": true,
+  "http_reports": 200,
+  "status": "passed"
+}

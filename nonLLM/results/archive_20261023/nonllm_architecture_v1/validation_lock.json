@@ -1,0 +1,74 @@
+{
+  "direct4_max_accuracy": {
+    "family": "direct4",
+    "key": "lambda_0.0",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 175.76720872490273
+  },
+  "direct4_ss_budget": {
+    "family": "direct4",
+    "key": "lambda_0.0",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 175.76720872490273
+  },
+  "direct4_cheap95": {
+    "family": "direct4",
+    "key": "lambda_0.05",
+    "val_accuracy": 0.5954954954954955,
+    "val_cost": 167.66765874185742
+  },
+  "pre_ret_qa_max_accuracy": {
+    "family": "pre_ret_qa",
+    "key": "direct_SS_fallback",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 178.0369343168133
+  },
+  "pre_ret_qa_ss_budget": {
+    "family": "pre_ret_qa",
+    "key": "direct_SS_fallback",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 178.0369343168133
+  },
+  "pre_ret_qa_cheap95": {
+    "family": "pre_ret_qa",
+    "key": "ret_0.05_qa_3.2",
+    "val_accuracy": 0.5711711711711712,
+    "val_cost": 166.2382638779295
+  },
+  "fixed_S_qa_max_accuracy": {
+    "family": "fixed_S_qa",
+    "key": "direct_SS_fallback",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 178.0369343168133
+  },
+  "fixed_S_qa_ss_budget": {
+    "family": "fixed_S_qa",
+    "key": "direct_SS_fallback",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 178.0369343168133
+  },
+  "fixed_S_qa_cheap95": {
+    "family": "fixed_S_qa",
+    "key": "lambda_3.2",
+    "val_accuracy": 0.5774774774774775,
+    "val_cost": 177.06715984428254
+  },
+  "post_answer_chooser_max_accuracy": {
+    "family": "post_answer_chooser",
+    "key": "threshold_0.0",
+    "val_accuracy": 0.6027027027027027,
+    "val_cost": 179.0369343168133
+  },
+  "post_answer_chooser_ss_budget": {
+    "family": "post_answer_chooser",
+    "key": "direct_SS_fallback",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 178.0369343168133
+  },
+  "post_answer_chooser_cheap95": {
+    "family": "post_answer_chooser",
+    "key": "direct_SS_fallback",
+    "val_accuracy": 0.5972972972972973,
+    "val_cost": 178.0369343168133
+  }
+}

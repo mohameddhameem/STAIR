@@ -1,0 +1,320 @@
+# Isolated review-validated lenient rerun; see ../protocol.json.
+"""Longer finite-action GRPO and exact-reward training with sampled weak inputs.
+
+Features remain TF-IDF and numerical statistics, with linear non-LLM heads.
+All checkpoint/threshold/configuration selection is on validation only.
+"""
+import argparse
+from collections import Counter
+import gzip
+import itertools
+import json
+from pathlib import Path
+import sys
+import time
+
+import joblib
+import numpy as np
+from scipy.sparse import csr_matrix,hstack
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import StandardScaler
+
+ROOT=Path('<WORKSPACE>')
+PRIOR=Path('<WORKSPACE>/runs/nonllm_reference_lenient_v1/initial')
+BASE=Path('<WORKSPACE>/runs/nonllm_reference_lenient_v1/base')
+sys.path.insert(0,str(PRIOR/'code'))
+from suite import Data,rich,fixed_mixture_accuracy
+from cascade import load,compose
+from cascade_four_gpu import normalize,score,write_json
+
+MODES=['base','aug9']
+SEEDS=[17,29,43]
+LAMBDAS=[0.,.15,.4]
+CHECKPOINTS=[30,60,120,180,240,300]
+
+
+def features(g,stage,branch,answer,conf):
+    text,num=rich(g,stage,branch,answer,conf)
+    # New document-only overlaps exclude the copied query in evidence strings.
+    ctx=g['evidence_W' if stage=='ret' else 'evidence_'+branch].split('Selected references:',1)[-1]
+    doc=set(normalize(ctx).split());q=set(normalize(g['question']).split())
+    ans=set(normalize(answer or '').split()) if stage=='qa' else set()
+    num += [len(q&doc)/max(1,len(q)),len(q&doc)/max(1,len(q|doc)),
+            len(ans&doc)/max(1,len(ans)),int(bool(ans) and normalize(answer) in normalize(ctx))]
+    return text,num
+
+
+def prepare(out,mode):
+    dest=out/'data'/mode
+    if (dest/'ready.json').exists():return
+    data=Data(BASE,PRIOR/'samples' if mode!='base' else None)
+    if mode=='aug9':
+        for f in (out/'more_samples').glob('trainval_[0-3].jsonl'):
+            for r in load(f):
+                assert r['split']=='train' and 4<=r['sample']<8
+                key=(r['idx'],r['branch'],r['sample'])
+                assert key not in data.samples;data.samples[key]=r
+    samples=[-1] if mode in ['base','confidence'] else [-1,*range(4 if mode=='aug5' else 8)]
+    gold=None
+    if len(samples)>1:
+        with gzip.open(ROOT/'extracted/Dataset/AgentTTS-HotpotQA.json.gz','rt') as f:gold=json.load(f)
+    dest.mkdir(parents=True,exist_ok=True)
+    retindex=[];reward=[];qa_targets=[];ret_targets=[]
+    views={s:{sp:[] for sp in ['train','val','test']} for s in ['ret','qa']}
+    for sp in ['train','val','test']:
+        for local,i in enumerate(data.ids[sp]):
+            g=data.grid[i]
+            views['ret'][sp].append(features(g,'ret','W',None,None))
+            ks=samples if sp=='train' else [-1]
+            for k in ks:
+                outcomes=list(g['em_lenient'])
+                for b,j in [('W',0),('S',2)]:
+                    r=data.samples[i,b,k] if mode!='base' else {'text':data.answer(i,b),'confidence':None}
+                    views['qa'][sp].append(features(g,'qa',b,r['text'],r.get('confidence')))
+                    if sp=='train' and k!=-1:outcomes[j]=score(r['text'],gold[i]['answers'])[1]
+                    if sp=='train':qa_targets.append(int(not outcomes[j] and bool(outcomes[j+1])))
+                if sp=='train':
+                    retindex.append(local);reward.append(outcomes)
+            if sp=='train':
+                ret_targets.append(int(not any(g['em_lenient'][:2]) and any(g['em_lenient'][2:])))
+    for stage in views:
+        vec=TfidfVectorizer(ngram_range=(1,2),min_df=2,max_df=.98,max_features=2500,sublinear_tf=True,dtype=np.float32)
+        vec.fit([v[0] for v in views[stage]['train']])
+        scaler=StandardScaler().fit(np.array([v[1] for v in views[stage]['train']]))
+        for sp in ['train','val','test']:
+            nums=scaler.transform(np.array([v[1] for v in views[stage][sp]])).astype(np.float32)
+            x=hstack([vec.transform([v[0] for v in views[stage][sp]]),csr_matrix(nums)],format='csr').toarray()
+            assert np.isfinite(x).all()
+            np.save(dest/f'{stage}_{sp}.npy',x)
+        joblib.dump({'vectorizer':vec,'scaler':scaler,'feature_version':'document-only overlaps v1'},dest/f'{stage}_features.joblib')
+    np.save(dest/'ret_index.npy',np.array(retindex,dtype=np.int64))
+    np.save(dest/'reward.npy',np.array(reward,dtype=np.float32))
+    np.save(dest/'qa_target.npy',np.array(qa_targets,dtype=np.float32))
+    np.save(dest/'ret_target.npy',np.array(ret_targets,dtype=np.float32))
+    for sp in ['val','test']:
+        np.save(dest/f'em_{sp}.npy',np.array([data.grid[i]['em_lenient'] for i in data.ids[sp]]))
+    write_json(dest/'ready.json',{'mode':mode,'training_variants_per_question':len(samples),
+        'train_questions':len(data.ids['train']),'train_observation_bundles':len(retindex),
+        'val_questions':len(data.ids['val']),'test_questions':len(data.ids['test']),
+        'group_weighting':'Every question contributes exactly K bundles; loss means give equal question weight',
+        'sampling_at_deployment':'greedy answer only','feature_version':'document-only overlaps v1'})
+    print('prepared',mode,len(retindex),flush=True)
+
+
+def joint_logprob(rz,qz):
+    import torch.nn.functional as F
+    return __import__('torch').stack([F.logsigmoid(-rz)+F.logsigmoid(-qz[:,0]),
+        F.logsigmoid(-rz)+F.logsigmoid(qz[:,0]),F.logsigmoid(rz)+F.logsigmoid(-qz[:,1]),
+        F.logsigmoid(rz)+F.logsigmoid(qz[:,1])],1)
+
+
+def tasks():
+    return [{'mode':m,'seed':s,'method':method,'groups':g,'lambda':lam}
+            for m in MODES for s in SEEDS for method,g in [('exact',0),('grpo',16),('grpo',32)] for lam in LAMBDAS]
+
+
+def tag(t):return f"{t['mode']}_{t['method']}_g{t['groups']}_lambda{t['lambda']}_seed{t['seed']}"
+
+
+def train_worker(out,shard,limit=0):
+    import torch
+    torch.set_num_threads(2);torch.backends.cuda.matmul.allow_tf32=False
+    device='cuda';data=Data(BASE)
+    work=[t for j,t in enumerate(tasks()) if j%4==shard]
+    if limit:work=work[:limit]
+    cached_mode=None;warm={}
+    for done,t in enumerate(work):
+        folder=out/'training'/tag(t);folder.mkdir(parents=True,exist_ok=True)
+        if (folder/'complete.json').exists():continue
+        mode=t['mode'];dest=out/'data'/mode
+        if cached_mode!=mode:
+            x={s:{sp:torch.tensor(np.load(dest/f'{s}_{sp}.npy'),device=device) for sp in ['train','val']} for s in ['ret','qa']}
+            ri=torch.tensor(np.load(dest/'ret_index.npy'),device=device)
+            em=torch.tensor(np.load(dest/'reward.npy'),device=device)
+            yr=torch.tensor(np.load(dest/'ret_target.npy'),device=device);yq=torch.tensor(np.load(dest/'qa_target.npy'),device=device)
+            cost=torch.tensor(data.prices/data.direct_ss,dtype=torch.float32,device=device)
+            vem=torch.tensor(np.load(dest/'em_val.npy'),dtype=torch.float32,device=device)
+            cached_mode=mode;warm={}
+        question_count=x['ret']['train'].shape[0]
+        variants=len(ri)//question_count
+        assert len(ri)==question_count*variants
+        def question_batches(generator):
+            # Same number of optimizer updates across data modes. Include every
+            # variant of each sampled question, averaging its contribution.
+            for qids in torch.randperm(question_count,generator=generator).split(256):
+                qids=qids.to(device)
+                yield (qids[:,None]*variants+torch.arange(variants,device=device)[None]).flatten()
+        torch.manual_seed(t['seed'])
+        r=torch.nn.Linear(x['ret']['train'].shape[1],1).to(device);q=torch.nn.Linear(x['qa']['train'].shape[1],1).to(device)
+        parameters=list(r.parameters())+list(q.parameters())
+        if t['seed'] not in warm:
+            opt=torch.optim.Adam(parameters,lr=.01,weight_decay=.001)
+            gen=torch.Generator().manual_seed(t['seed'])
+            for ep in range(10):
+                for b in question_batches(gen):
+                    qb=(b[:,None]*2+torch.arange(2,device=device)[None]).flatten()
+                    loss=torch.nn.functional.binary_cross_entropy_with_logits(r(x['ret']['train'][ri[b]]).flatten(),yr[ri[b]])
+                    loss+=torch.nn.functional.binary_cross_entropy_with_logits(q(x['qa']['train'][qb]).flatten(),yq[qb])
+                    opt.zero_grad();loss.backward();torch.nn.utils.clip_grad_norm_(parameters,1.);opt.step()
+            warm[t['seed']]=({k:v.detach().clone() for k,v in r.state_dict().items()},{k:v.detach().clone() for k,v in q.state_dict().items()})
+        r.load_state_dict(warm[t['seed']][0]);q.load_state_dict(warm[t['seed']][1])
+        opt=torch.optim.Adam(parameters,lr=.002,weight_decay=.001)
+        gen=torch.Generator().manual_seed(t['seed']+100);torch.manual_seed(t['seed'])
+        start=time.monotonic()
+        with (folder/'curve.jsonl').open('w') as curve:
+            for ep in range(1,301):
+                losses=[];zero=[]
+                for b in question_batches(gen):
+                    qb=(b[:,None]*2+torch.arange(2,device=device)[None]).flatten()
+                    def forward():return joint_logprob(r(x['ret']['train'][ri[b]]).flatten(),q(x['qa']['train'][qb]).reshape(-1,2))
+                    lp=forward();p=lp.exp();reward=em[b]-t['lambda']*cost[None]
+                    entropy=-(p*lp).sum(1).mean()
+                    if t['method']=='exact':
+                        loss=-(p*reward).sum(1).mean()-.002*entropy
+                        opt.zero_grad();loss.backward();torch.nn.utils.clip_grad_norm_(parameters,1.);opt.step()
+                    else:
+                        oldlp=lp.detach();oldp=oldlp.exp();actions=torch.multinomial(oldp,t['groups'],replacement=True)
+                        rewards=reward.gather(1,actions);std=rewards.std(1,keepdim=True,unbiased=False)
+                        adv=(rewards-rewards.mean(1,keepdim=True))/std.clamp_min(1e-6)
+                        zero.append((std<1e-6).float().mean().detach())
+                        for update in range(2):
+                            if update:lp=forward()
+                            ratio=(lp.gather(1,actions)-oldlp.gather(1,actions)).clamp(-20,20).exp()
+                            surrogate=torch.minimum(ratio*adv,ratio.clamp(.8,1.2)*adv).mean()
+                            kl=(oldp*(oldlp-lp)).sum(1).mean()
+                            # Same entropy regularizer for exact/GRPO; unchanged clip and rollout KL.
+                            entropy=-(lp.exp()*lp).sum(1).mean()
+                            loss=-surrogate+.01*kl-.002*entropy
+                            opt.zero_grad();loss.backward();torch.nn.utils.clip_grad_norm_(parameters,1.);opt.step()
+                    if not torch.isfinite(loss):raise ValueError(f'Nonfinite loss in {tag(t)}')
+                    losses.append(loss.detach())
+                if ep%10==0:
+                    with torch.no_grad():
+                        rz=r(x['ret']['val']).flatten();qz=q(x['qa']['val']).reshape(-1,2)
+                        vp=joint_logprob(rz,qz).exp()
+                        rec={'epoch':ep,'loss':float(torch.stack(losses).mean()),
+                             'val_expected_accuracy':float((vp*vem).sum(1).mean()),
+                             'val_expected_cost_pct_ss':float((vp*cost[None]).sum(1).mean()*100),
+                             'zero_advantage_fraction':float(torch.stack(zero).mean()) if zero else None,
+                             'seconds':time.monotonic()-start}
+                        curve.write(json.dumps(rec)+'\n');curve.flush()
+                        if ep in CHECKPOINTS:
+                            np.savez(folder/f'val_{ep}.npz',ret=torch.sigmoid(-rz).cpu().numpy(),
+                                     qa=torch.sigmoid(-qz).cpu().numpy())
+                            torch.save({'task':t,'epoch':ep,'ret':r.state_dict(),'qa':q.state_dict()},folder/f'model_{ep}.pt')
+                    if ep==120:
+                        prior=torch.load(Path('<WORKSPACE>/runs/nonllm_reference_lenient_v1/extended/training')/tag(t)/'model_120.pt',map_location=device,weights_only=True)
+                        differences={head:max(float((state[k]-prior[head][k]).abs().max()) for k in state) for head,state in [('ret',r.state_dict()),('qa',q.state_dict())]}
+                        assert all(v==0 for v in differences.values()),('120-epoch replay mismatch',tag(t),differences)
+                        write_json(folder/'replay_parity.json',{'epoch':120,'max_absolute_difference':differences,'bitwise_equal':True})
+                    if ep in CHECKPOINTS:
+                        torch.save({'task':t,'epoch':ep,'ret':r.state_dict(),'qa':q.state_dict(),
+                            'optimizer':opt.state_dict(),'batch_generator':gen.get_state(),
+                            'torch_rng':torch.get_rng_state(),'cuda_rng':torch.cuda.get_rng_state_all()},folder/f'state_{ep}.pt')
+                    print(tag(t),json.dumps(rec),flush=True)
+        write_json(folder/'complete.json',{'task':t,'seconds':time.monotonic()-start})
+        write_json(out/f'worker_{shard}.status.json',{'phase':'training','completed_tasks':done+1,'total_tasks':len(work),'last_task':t})
+    write_json(out/f'worker_{shard}.status.json',{'phase':'complete','total_tasks':len(work)})
+
+
+def operating_points(em,pr,qw,qs,prices,budget):
+    n=len(em);best={};bar=.95*em[:,3].mean()
+    for tr in np.r_[np.unique(pr),np.inf]:
+        r=pr<tr;q=np.where(r,qs,qw);order=np.argsort(-q);s=q[order]
+        aw=em[np.arange(n),2*r.astype(int)][order];ass=em[np.arange(n),2*r.astype(int)+1][order]
+        extra=np.where(r,prices[3]-prices[2],prices[1]-prices[0])[order]
+        base=np.where(r,prices[2],prices[0])
+        ks=np.r_[0,np.flatnonzero(np.r_[s[:-1]!=s[1:],True])+1]
+        acc=(ass.sum()+np.r_[0,np.cumsum(aw-ass)][ks])/n
+        c=(base.sum()+extra.sum()-np.r_[0,np.cumsum(extra)][ks])/n
+        for objective,mask in [('cheap95',acc>=bar-1e-12),('max_accuracy',np.ones(len(ks),dtype=bool)),('ss_budget',c<=budget+1e-12)]:
+            feasible=np.flatnonzero(mask)
+            if not len(feasible):continue
+            if objective=='cheap95':
+                tied=feasible[c[feasible]==c[feasible].min()]
+                j=tied[np.argmax(acc[tied])]
+            else:
+                tied=feasible[acc[feasible]==acc[feasible].max()]
+                j=tied[np.argmin(c[tied])]
+            rec={'accuracy':float(acc[j]),'cost':float(c[j]),'theta_ret':float(tr),
+                 'theta_qa':float(s[ks[j]-1]) if ks[j] else float('inf')}
+            key=lambda r:(r['cost'],-r['accuracy']) if objective=='cheap95' else (-r['accuracy'],r['cost'])
+            if objective not in best or key(rec)<key(best[objective]):best[objective]=rec
+    return best
+
+
+def select_and_evaluate(out):
+    import torch
+    torch.set_num_threads(2);data=Data(BASE)
+    allrows=[]
+    for mode,method,g,lam,ep in itertools.product(MODES,['exact','grpo'],[0,16,32],LAMBDAS,CHECKPOINTS):
+        if (method=='exact')!=(g==0):continue
+        arrays=[]
+        for seed in SEEDS:
+            t={'mode':mode,'method':method,'groups':g,'lambda':lam,'seed':seed}
+            assert (out/'training'/tag(t)/'complete.json').exists()
+            arrays.append(np.load(out/'training'/tag(t)/f'val_{ep}.npz'))
+        pr=np.mean([a['ret'] for a in arrays],0);qa=np.mean([a['qa'] for a in arrays],0)
+        em=np.load(out/'data'/mode/'em_val.npy')
+        points=operating_points(em,pr,qa[:,0],qa[:,1],data.prices,data.direct_ss)
+        allrows.append({'mode':mode,'method':method,'groups':g,'lambda':lam,'epoch':ep,'points':points})
+    chosen={}
+    for mode,method,objective in itertools.product(MODES,['exact','grpo'],['cheap95','max_accuracy','ss_budget']):
+        rows=[r for r in allrows if r['mode']==mode and r['method']==method and objective in r['points']]
+        key=lambda r:(r['points'][objective]['cost'],-r['points'][objective]['accuracy'],r['groups'],r['lambda'],r['epoch']) if objective=='cheap95' else (-r['points'][objective]['accuracy'],r['points'][objective]['cost'],r['groups'],r['lambda'],r['epoch'])
+        chosen[f'{mode}_{method}_{objective}']=min(rows,key=key)
+    global_chosen={}
+    for objective in ['cheap95','max_accuracy','ss_budget']:
+        names=[n for n in chosen if n.endswith('_'+objective)]
+        key=lambda n:(chosen[n]['points'][objective]['cost'],-chosen[n]['points'][objective]['accuracy'],n) if objective=='cheap95' else (-chosen[n]['points'][objective]['accuracy'],chosen[n]['points'][objective]['cost'],n)
+        global_chosen[objective]=min(names,key=key)
+    # All family/checkpoint/threshold selections are written before test inference/outcomes.
+    write_json(out/'validation_lock.json',{'candidates':allrows,'selected':chosen,'global_selected':global_chosen})
+    np.savez(out/'validation_baselines.npz',ss=em[:,3])
+    results=[];cache={}
+    ids=data.ids['test'];grid=[data.grid[i] for i in ids];ss=np.array([g['em_lenient'][3] for g in grid])
+    for name,config in chosen.items():
+        objective=next(o for o in ['cheap95','max_accuracy','ss_budget'] if name.endswith('_'+o))
+        mode=config['mode'];testkey=(mode,config['method'],config['groups'],config['lambda'],config['epoch'])
+        if testkey not in cache:
+            xr=torch.tensor(np.load(out/'data'/mode/'ret_test.npy'));xq=torch.tensor(np.load(out/'data'/mode/'qa_test.npy'))
+            prs=[];qas=[]
+            for seed in SEEDS:
+                t={k:config[k] for k in ['mode','method','groups','lambda']};t['seed']=seed
+                model=torch.load(out/'training'/tag(t)/f"model_{config['epoch']}.pt",map_location='cpu',weights_only=True)
+                r=torch.nn.Linear(xr.shape[1],1);q=torch.nn.Linear(xq.shape[1],1)
+                r.load_state_dict(model['ret']);q.load_state_dict(model['qa'])
+                with torch.no_grad():prs.append(torch.sigmoid(-r(xr).flatten()).numpy());qas.append(torch.sigmoid(-q(xq).reshape(-1,2)).numpy())
+            cache[testkey]=(np.mean(prs,0),np.mean(qas,0))
+        pr,qa=cache[testkey];point=config['points'][objective]
+        test,cells=compose(grid,pr,qa[:,0],qa[:,1],point,data.prices,data.direct_ss)
+        correct=np.array([g['em_lenient'][c] for g,c in zip(grid,cells)])
+        rng=np.random.default_rng(707);bootstrap=rng.integers(0,len(ids),size=(2000,len(ids)))
+        diff=correct-ss;interval=np.quantile(diff[bootstrap].mean(1),[.025,.975])*100
+        result={'name':name,'selected_config':config,'objective':objective,'test':test,
+                'test_difference_from_SS_pp':float(diff.mean()*100),'paired_95_interval_pp':interval.tolist()}
+        results.append(result);np.savez(out/f'{name}_test.npz',ids=ids,cells=cells,correct=correct)
+    write_json(out/'results.json',{'global_selected':global_chosen,'ss_test_accuracy':float(ss.mean()),'results':results})
+    lines=['# Extended non-LLM policy experiments','',
+        '54 seed-specific training runs; 108 three-seed checkpoint/configuration candidates evaluated on validation. 12 predeclared family/objective winners evaluated on the previously used descriptive test set.',
+        'Heads are linear over TF-IDF and numeric features. Qwen weights are unchanged. Every deployed policy sees one greedy weak answer, including augmented-training policies.',
+        'Training uses one, five or nine observation bundles per question; all questions have equal total weight. Maximum accuracy and SS-budget objectives are selected on validation, not test.',
+        'Costs are parameter-weighted token proxies including sunk weak calls, excluding CPU router overhead. Confidence costs assume extraction from normal generation logits.',
+        '',f"SS test lenient accuracy: **{100*ss.mean():.2f}%**.",'',
+        '| Family / objective | G | λ | Epoch | Val acc % | Val cost % SS | Test acc % | Test strict % | Test cost % SS | Δ vs SS (pp) | Paired 95% interval |',
+        '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|']
+    for r in results:
+        c=r['selected_config'];p=c['points'][r['objective']];t=r['test'];lo,hi=r['paired_95_interval_pp']
+        lines.append(f"| {r['name']} | {c['groups']} | {c['lambda']} | {c['epoch']} | {100*p['accuracy']:.2f} | {100*p['cost']/data.direct_ss:.2f} | {100*t['lenient_accuracy']:.2f} | {100*t['strict_accuracy']:.2f} | {t['cost_pct_of_direct_SS']:.2f} | {r['test_difference_from_SS_pp']:+.2f} | [{lo:+.2f}, {hi:+.2f}] |")
+    lines+=['','Global validation selections:','']+[f'- {o}: {n}' for o,n in global_chosen.items()]
+    lines+=['','Training curves record validation expected accuracy/cost and GRPO zero-advantage group frequency every 10 epochs. Only epochs 30/60/120/180/240/300 participate in configuration selection.',
+             'This is a finite-action GRPO adaptation, with the same entropy regularizer as exact optimization. Increased validation search and previously examined test data limit confirmatory claims. Bootstrap intervals are descriptive and not adjusted for multiple comparisons.']
+    (out/'REPORT.md').write_text('\n'.join(lines)+'\n')
+
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--phase',choices=['prepare','train','evaluate'],required=True)
+    p.add_argument('--mode',choices=MODES);p.add_argument('--shard',type=int,choices=range(4));p.add_argument('--limit',type=int,default=0);a=p.parse_args()
+    if a.phase=='prepare':prepare(a.out,a.mode)
+    elif a.phase=='train':train_worker(a.out,a.shard,a.limit)
+    else:select_and_evaluate(a.out)

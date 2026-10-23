@@ -1,0 +1,12 @@
+{
+  "n": 14810,
+  "train_counts": {
+    "W": 8223,
+    "S": 1405
+  },
+  "class_weights_post_mapping": {
+    "W": 0.5854311078681746,
+    "S": 3.4263345195729538
+  },
+  "rule": "Ret: answer coverage; QA: generated outcome; X mapped to W"
+}

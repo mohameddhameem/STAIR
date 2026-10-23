@@ -1,0 +1,48 @@
+{
+  "name": "rich_trees",
+  "lock": {
+    "cost": 142.68420670280426,
+    "accuracy": 0.5675675675675675,
+    "theta_ret": 0.49078363179170026,
+    "theta_qa": 0.5434458737916421
+  },
+  "val": {
+    "n": 1110,
+    "lenient_accuracy": 0.5675675675675675,
+    "strict_accuracy": 0.44414414414414416,
+    "mean_cost": 142.6842067028043,
+    "cost_pct_of_direct_SS": 80.1430373143252,
+    "cost_pct_of_cascade_SS": 65.99372762298047,
+    "picks": {
+      "SS": 593,
+      "WS": 477,
+      "SW": 34,
+      "WW": 6
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.5597569209993247,
+    "strict_accuracy": 0.4449696151249156,
+    "mean_cost": 140.1841739023977,
+    "cost_pct_of_direct_SS": 78.73881587566694,
+    "cost_pct_of_cascade_SS": 64.83742246846398,
+    "picks": {
+      "WS": 665,
+      "SS": 779,
+      "SW": 35,
+      "WW": 2
+    }
+  },
+  "stage_metrics": {
+    "ret": {
+      "val_auc": 0.6307744680851064,
+      "parameter": 8
+    },
+    "qa": {
+      "val_auc": 0.6464950657894737,
+      "parameter": 3
+    }
+  }
+}

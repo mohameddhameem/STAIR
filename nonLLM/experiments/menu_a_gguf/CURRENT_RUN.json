@@ -1,0 +1,47 @@
+{
+  "run": "nonllm_common_ws_gguf_v2",
+  "workspace_relative_root": "runs/nonllm_common_ws_gguf_v2",
+  "controller": "nonLLM/experiments/menu_ws_gguf/run.py",
+  "tmux_session": "cs707-ws-fixed",
+  "menu": "A",
+  "dataset": "hotpotqa",
+  "backend": "llama.cpp",
+  "weight_quantization": "Q4_K_M",
+  "kv_quantization": "q8_0",
+  "max_local_gpus": 4,
+  "pooling_eligible": false,
+  "common_aligned": [
+    "question_ids",
+    "author_lenient",
+    "AgentTTS_units",
+    "output_schema"
+  ],
+  "executor_generation": "K1, greedy, no fusion; local declared prompt/pool contract",
+  "automatic_router_training": true,
+  "router_families": [
+    "majority",
+    "logreg",
+    "linear_svm",
+    "multinomial_nb",
+    "random_forest",
+    "extra_trees"
+  ],
+  "router_seeds": [
+    0,
+    1,
+    2
+  ],
+  "generation_seed": 0,
+  "menu_variant": "WS2x2",
+  "models": [
+    "qwen7",
+    "qwen72",
+    "llama3",
+    "llama70"
+  ],
+  "previous_run": "nonllm_common_ws_gguf_v1",
+  "template_fix": "Llama70 tools explicitly None in rendering and generation; frozen date",
+  "requests_per_replica": 16,
+  "model_replicas": 2,
+  "max_concurrent_requests": 32
+}

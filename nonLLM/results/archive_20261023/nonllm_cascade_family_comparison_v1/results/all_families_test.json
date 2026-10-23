@@ -1,0 +1,109 @@
+{
+  "selected_family": "random_forest",
+  "results": {
+    "majority": {
+      "lock": {
+        "cost": 216.20873959106154,
+        "accuracy": 0.5252252252252252,
+        "theta_ret": Infinity,
+        "theta_qa": Infinity
+      },
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5293720459149224,
+        "strict_accuracy": 0.47197839297771776,
+        "mean_cost": 216.2087395910615,
+        "cost_pct_of_direct_SS": 121.44038562600849,
+        "cost_pct_of_cascade_SS": 99.99999999999999,
+        "picks": {
+          "SS": 1481
+        }
+      }
+    },
+    "logreg": {
+      "lock": {
+        "cost": 150.9001071169661,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.520325933561791,
+        "theta_qa": 0.5922680095593883
+      },
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5091154625253207,
+        "strict_accuracy": 0.44699527346387574,
+        "mean_cost": 145.0731150790109,
+        "cost_pct_of_direct_SS": 81.48484225237,
+        "cost_pct_of_cascade_SS": 67.09863595403361,
+        "picks": {
+          "WS": 625,
+          "SS": 852,
+          "SW": 4
+        }
+      }
+    },
+    "linear_svm": {
+      "lock": {
+        "cost": 151.9677605818735,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.18939265657211687,
+        "theta_qa": 0.7711439397319877
+      },
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5070898041863605,
+        "strict_accuracy": 0.44767049291019584,
+        "mean_cost": 146.10675004462485,
+        "cost_pct_of_direct_SS": 82.0654155865382,
+        "cost_pct_of_cascade_SS": 67.57670865709315,
+        "picks": {
+          "WS": 616,
+          "SS": 864,
+          "SW": 1
+        }
+      }
+    },
+    "multinomial_nb": {
+      "lock": {
+        "cost": 147.11756723079975,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.9514434717364002,
+        "theta_qa": 0.9998303944006208
+      },
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5037137069547603,
+        "strict_accuracy": 0.4463200540175557,
+        "mean_cost": 141.55219027907737,
+        "cost_pct_of_direct_SS": 79.5072049641048,
+        "cost_pct_of_cascade_SS": 65.47015192207772,
+        "picks": {
+          "WS": 655,
+          "SS": 825,
+          "WW": 1
+        }
+      }
+    },
+    "random_forest": {
+      "lock": {
+        "cost": 143.1146063336571,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5991074132898146,
+        "theta_qa": 0.8125148722648511
+      },
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.50033760972316,
+        "strict_accuracy": 0.4415935178933153,
+        "mean_cost": 141.29258388029746,
+        "cost_pct_of_direct_SS": 79.36138892892306,
+        "cost_pct_of_cascade_SS": 65.35007981062148,
+        "picks": {
+          "WS": 658,
+          "SS": 811,
+          "SW": 12
+        }
+      }
+    }
+  },
+  "note": "All families use the previously specified train/validation selection procedure. Additional test comparisons are descriptive; no test-based model selection."
+}

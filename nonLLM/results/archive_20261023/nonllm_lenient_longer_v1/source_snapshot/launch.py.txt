@@ -1,0 +1,18 @@
+import subprocess,os,json,sys
+from pathlib import Path
+out=Path(__file__).resolve().parent
+jobs=[]
+for gpu in range(4):
+    log=(out/f'gpu_{gpu}.log').open('a')
+    env=dict(os.environ,CUDA_VISIBLE_DEVICES=str(gpu),OMP_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2',MKL_NUM_THREADS='2')
+    p=subprocess.Popen([sys.executable,str(out/'experiment.py'),'--out',str(out),'--phase','train','--shard',str(gpu)],env=env,stdout=log,stderr=subprocess.STDOUT)
+    jobs.append((p,log))
+(out/'status.json').write_text(json.dumps({'phase':'training','pids':[p.pid for p,_ in jobs]}))
+codes=[p.wait() for p,_ in jobs]
+for _,f in jobs:f.close()
+if any(codes):
+    (out/'status.json').write_text(json.dumps({'phase':'failed','exit_codes':codes}));sys.exit(1)
+(out/'status.json').write_text(json.dumps({'phase':'validation_selection'}))
+with (out/'evaluate.log').open('w') as f:
+    subprocess.run([sys.executable,str(out/'experiment.py'),'--out',str(out),'--phase','evaluate'],stdout=f,stderr=subprocess.STDOUT,check=True)
+(out/'status.json').write_text(json.dumps({'phase':'complete','streams':54,'maximum_epochs':300}))

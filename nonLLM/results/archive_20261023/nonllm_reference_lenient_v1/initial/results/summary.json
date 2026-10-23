@@ -1,0 +1,1262 @@
+{
+  "selected_on_val": "gain_trees",
+  "results": [
+    {
+      "name": "confidence_rich_trees",
+      "lock": {
+        "cost": 136.8983935817244,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.48179888588891195,
+        "theta_qa": 0.6522687636823848
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 136.8983935817244,
+        "cost_pct_of_direct_SS": 76.89325482212381,
+        "cost_pct_of_cascade_SS": 63.31769651895425,
+        "picks": {
+          "SS": 553,
+          "WS": 514,
+          "WW": 7,
+          "SW": 36
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49966239027683995,
+        "strict_accuracy": 0.44294395678595544,
+        "mean_cost": 134.14172632040302,
+        "cost_pct_of_direct_SS": 75.34488662992838,
+        "cost_pct_of_cascade_SS": 62.042693821775885,
+        "picks": {
+          "WS": 715,
+          "SS": 728,
+          "SW": 33,
+          "WW": 5
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6307744680851064,
+          "parameter": 8
+        },
+        "qa": {
+          "val_auc": 0.6655523548727432,
+          "parameter": 8
+        }
+      }
+    },
+    {
+      "name": "frozen_baseline",
+      "lock": {
+        "cost": 143.1146063336571,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5991074132898146,
+        "theta_qa": 0.8125148722648511
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44954954954954957,
+        "mean_cost": 143.11460633365712,
+        "cost_pct_of_direct_SS": 80.38478469809385,
+        "cost_pct_of_cascade_SS": 66.19279433585568,
+        "picks": {
+          "SS": 614,
+          "WS": 481,
+          "SW": 15
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.50033760972316,
+        "strict_accuracy": 0.4415935178933153,
+        "mean_cost": 141.29258388029746,
+        "cost_pct_of_direct_SS": 79.36138892892306,
+        "cost_pct_of_cascade_SS": 65.35007981062148,
+        "picks": {
+          "WS": 658,
+          "SS": 811,
+          "SW": 12
+        }
+      }
+    },
+    {
+      "name": "outcome_hist",
+      "lock": {
+        "cost": 149.6548934816607,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8827307329974704,
+        "theta_qa": 0.9318574360725865
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 149.65489348166074,
+        "cost_pct_of_direct_SS": 84.05834107171984,
+        "cost_pct_of_cascade_SS": 69.21778174403073,
+        "picks": {
+          "SS": 586,
+          "WS": 418,
+          "SW": 89,
+          "WW": 17
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.512491559756921,
+        "strict_accuracy": 0.4537474679270763,
+        "mean_cost": 149.8063082606396,
+        "cost_pct_of_direct_SS": 84.14338790740027,
+        "cost_pct_of_cascade_SS": 69.287813500964,
+        "picks": {
+          "WS": 559,
+          "SS": 813,
+          "SW": 88,
+          "WW": 21
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.5773788211450769,
+          "parameter": 3
+        },
+        "qa": {
+          "val_auc": 0.6266030933159921,
+          "parameter": 3
+        }
+      }
+    },
+    {
+      "name": "outcome_logreg",
+      "lock": {
+        "cost": 143.3029093263079,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5293473432044138,
+        "theta_qa": 0.6997882005314122
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 143.30290932630794,
+        "cost_pct_of_direct_SS": 80.49055095012095,
+        "cost_pct_of_cascade_SS": 66.27988748158465,
+        "picks": {
+          "SS": 585,
+          "WS": 461,
+          "SW": 47,
+          "WW": 17
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5064145847400405,
+        "strict_accuracy": 0.450371370695476,
+        "mean_cost": 143.11811881260186,
+        "cost_pct_of_direct_SS": 80.386757591504,
+        "cost_pct_of_cascade_SS": 66.19441891354452,
+        "picks": {
+          "WS": 624,
+          "SS": 788,
+          "SW": 53,
+          "WW": 16
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6130721161965884,
+          "parameter": 0.1
+        },
+        "qa": {
+          "val_auc": 0.6112186472796737,
+          "parameter": 0.1
+        }
+      }
+    },
+    {
+      "name": "gain_trees",
+      "lock": {
+        "cost": 134.16900267860854,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": -0.10268418686593558,
+        "theta_qa": -0.08737784664735324
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.4486486486486487,
+        "mean_cost": 134.1690026786085,
+        "cost_pct_of_direct_SS": 75.36020724770366,
+        "cost_pct_of_cascade_SS": 62.055309573690934,
+        "picks": {
+          "SS": 512,
+          "WS": 505,
+          "WW": 32,
+          "SW": 61
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49696151249155973,
+        "strict_accuracy": 0.4395678595543552,
+        "mean_cost": 134.43988156538424,
+        "cost_pct_of_direct_SS": 75.5123548275388,
+        "cost_pct_of_cascade_SS": 62.18059539113202,
+        "picks": {
+          "WS": 682,
+          "SS": 699,
+          "SW": 67,
+          "WW": 33
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.5940145245735517,
+          "parameter": 3
+        },
+        "qa": {
+          "val_auc": 0.612644559939983,
+          "parameter": 3
+        }
+      }
+    },
+    {
+      "name": "sampled_augmentation_logreg",
+      "lock": {
+        "cost": 143.62123151767108,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5293473432044138,
+        "theta_qa": 0.8509158740120669
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 143.6212315176711,
+        "cost_pct_of_direct_SS": 80.66934654249883,
+        "cost_pct_of_cascade_SS": 66.42711658618295,
+        "picks": {
+          "SS": 631,
+          "WS": 477,
+          "SW": 1,
+          "WW": 1
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5097906819716408,
+        "strict_accuracy": 0.4510465901417961,
+        "mean_cost": 143.37562660353257,
+        "cost_pct_of_direct_SS": 80.53139487809783,
+        "cost_pct_of_cascade_SS": 66.31352038530638,
+        "picks": {
+          "WS": 640,
+          "SS": 840,
+          "SW": 1
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6130721161965884,
+          "parameter": 0.1
+        },
+        "qa": {
+          "val_auc": 0.642211079104283,
+          "parameter": 0.1
+        }
+      }
+    },
+    {
+      "name": "rich_trees",
+      "lock": {
+        "cost": 137.6800012241974,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.48364410601611746,
+        "theta_qa": 0.5528061470165779
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 137.6800012241974,
+        "cost_pct_of_direct_SS": 77.33226914545637,
+        "cost_pct_of_cascade_SS": 63.679202554256676,
+        "picks": {
+          "SS": 591,
+          "WS": 514,
+          "WW": 3,
+          "SW": 2
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.50033760972316,
+        "strict_accuracy": 0.4436191762322755,
+        "mean_cost": 135.50296638560542,
+        "cost_pct_of_direct_SS": 76.10946959156267,
+        "cost_pct_of_cascade_SS": 62.67228912295429,
+        "picks": {
+          "WS": 706,
+          "SS": 770,
+          "WW": 3,
+          "SW": 2
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6307744680851064,
+          "parameter": 8
+        },
+        "qa": {
+          "val_auc": 0.6323406136166192,
+          "parameter": 3
+        }
+      }
+    },
+    {
+      "name": "exact_reward_lambda0.0",
+      "lock": {
+        "cost": 135.41032172105437,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.10634062439203262,
+        "theta_qa": 0.9956904053688049
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 135.4103217210544,
+        "cost_pct_of_direct_SS": 76.05743282463759,
+        "cost_pct_of_cascade_SS": 62.62943948388501,
+        "picks": {
+          "SS": 576,
+          "WS": 530,
+          "SW": 2,
+          "WW": 2
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49763673193787983,
+        "strict_accuracy": 0.44564483457123566,
+        "mean_cost": 133.4483146879833,
+        "cost_pct_of_direct_SS": 74.95541034789703,
+        "cost_pct_of_cascade_SS": 61.72197985168788,
+        "picks": {
+          "WS": 724,
+          "SS": 750,
+          "WW": 3,
+          "SW": 4
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.0,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "rich_hist",
+      "lock": {
+        "cost": 139.35871495594535,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8056452706574547,
+        "theta_qa": 0.9318752143055857
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 139.35871495594532,
+        "cost_pct_of_direct_SS": 78.27517109902556,
+        "cost_pct_of_cascade_SS": 64.45563450373432,
+        "picks": {
+          "SS": 534,
+          "WS": 481,
+          "SW": 73,
+          "WW": 22
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49966239027683995,
+        "strict_accuracy": 0.4415935178933153,
+        "mean_cost": 139.31445551140996,
+        "cost_pct_of_direct_SS": 78.25031140083696,
+        "cost_pct_of_cascade_SS": 64.43516380277234,
+        "picks": {
+          "SS": 723,
+          "WS": 666,
+          "SW": 85,
+          "WW": 7
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.5954018237082066,
+          "parameter": 3
+        },
+        "qa": {
+          "val_auc": 0.6266030933159921,
+          "parameter": 3
+        }
+      }
+    },
+    {
+      "name": "confidence_cost_sensitive_logreg",
+      "lock": {
+        "cost": 139.19831722129115,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8017992650955384,
+        "theta_qa": 0.5470565620005141
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 139.19831722129118,
+        "cost_pct_of_direct_SS": 78.18507870596697,
+        "cost_pct_of_cascade_SS": 64.38144798613214,
+        "picks": {
+          "SS": 601,
+          "WS": 504,
+          "WW": 3,
+          "SW": 2
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49831195138419987,
+        "strict_accuracy": 0.44294395678595544,
+        "mean_cost": 135.51149567146092,
+        "cost_pct_of_direct_SS": 76.1142603311293,
+        "cost_pct_of_cascade_SS": 62.676234054075785,
+        "picks": {
+          "WS": 708,
+          "SS": 769,
+          "SW": 3,
+          "WW": 1
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6112751224455328,
+          "parameter": 0.1
+        },
+        "qa": {
+          "val_auc": 0.5653642089148331,
+          "parameter": 0.1
+        }
+      }
+    },
+    {
+      "name": "sampled_consensus_logreg",
+      "lock": {
+        "cost": 149.16728383042752,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5293473432044138,
+        "theta_qa": 0.8609860669296817
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 149.16728383042752,
+        "cost_pct_of_direct_SS": 83.78445989470208,
+        "cost_pct_of_cascade_SS": 67.70981888171846,
+        "picks": {
+          "SS": 631,
+          "WS": 476,
+          "SW": 1,
+          "WW": 2
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5104659014179609,
+        "strict_accuracy": 0.4510465901417961,
+        "mean_cost": 148.93458809955362,
+        "cost_pct_of_direct_SS": 83.65375907592714,
+        "cost_pct_of_cascade_SS": 67.60419393912092,
+        "picks": {
+          "WS": 640,
+          "SS": 840,
+          "SW": 1
+        }
+      }
+    },
+    {
+      "name": "confidence_rich_hist",
+      "lock": {
+        "cost": 139.4304287838872,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8053304039808872,
+        "theta_qa": 0.9772534747647696
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 139.4304287838872,
+        "cost_pct_of_direct_SS": 78.31545140839903,
+        "cost_pct_of_cascade_SS": 64.48880329611409,
+        "picks": {
+          "SS": 586,
+          "WS": 502,
+          "SW": 19,
+          "WW": 3
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4989871708305199,
+        "strict_accuracy": 0.44294395678595544,
+        "mean_cost": 139.41785603638976,
+        "cost_pct_of_direct_SS": 78.3083895324205,
+        "cost_pct_of_cascade_SS": 64.48298819931402,
+        "picks": {
+          "SS": 789,
+          "WS": 668,
+          "SW": 18,
+          "WW": 6
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.5954018237082066,
+          "parameter": 3
+        },
+        "qa": {
+          "val_auc": 0.6633110301626252,
+          "parameter": 3
+        }
+      }
+    },
+    {
+      "name": "exact_reward_lambda0.8",
+      "lock": {
+        "cost": 153.477658739341,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.9626038670539856,
+        "theta_qa": 0.9913458824157715
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44414414414414416,
+        "mean_cost": 153.47765873934097,
+        "cost_pct_of_direct_SS": 86.20551647234637,
+        "cost_pct_of_cascade_SS": 70.98587181518634,
+        "picks": {
+          "SS": 693,
+          "WS": 412,
+          "SW": 4,
+          "WW": 1
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4962862930452397,
+        "strict_accuracy": 0.44091829844699526,
+        "mean_cost": 151.32294315098414,
+        "cost_pct_of_direct_SS": 84.99525322184435,
+        "cost_pct_of_cascade_SS": 69.98928139408113,
+        "picks": {
+          "SS": 906,
+          "WS": 569,
+          "WW": 1,
+          "SW": 5
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.8,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "grpo_lambda0.8",
+      "lock": {
+        "cost": 145.43962514149916,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.9833367466926575,
+        "theta_qa": 0.9972322583198547
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44504504504504505,
+        "mean_cost": 145.4396251414991,
+        "cost_pct_of_direct_SS": 81.6907040663215,
+        "cost_pct_of_cascade_SS": 67.26815271972099,
+        "picks": {
+          "SS": 644,
+          "WS": 464,
+          "WW": 2
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4949358541525996,
+        "strict_accuracy": 0.437542201215395,
+        "mean_cost": 142.22912921722195,
+        "cost_pct_of_direct_SS": 79.88742884334775,
+        "cost_pct_of_cascade_SS": 65.78324700760709,
+        "picks": {
+          "SS": 831,
+          "WS": 648,
+          "WW": 2
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.8,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "rich_logreg",
+      "lock": {
+        "cost": 149.2347917871048,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5329940420290669,
+        "theta_qa": 0.8236729864397434
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 149.2347917871048,
+        "cost_pct_of_direct_SS": 83.82237784523092,
+        "cost_pct_of_cascade_SS": 69.02347799139312,
+        "picks": {
+          "SS": 667,
+          "WS": 440,
+          "SW": 2,
+          "WW": 1
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5077650236326806,
+        "strict_accuracy": 0.44969615124915596,
+        "mean_cost": 145.98664411777645,
+        "cost_pct_of_direct_SS": 81.99795434468449,
+        "cost_pct_of_cascade_SS": 67.52115774500903,
+        "picks": {
+          "WS": 617,
+          "SS": 861,
+          "SW": 3
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6354382978723405,
+          "parameter": 0.1
+        },
+        "qa": {
+          "val_auc": 0.6112186472796737,
+          "parameter": 0.1
+        }
+      }
+    },
+    {
+      "name": "confidence_outcome_hist",
+      "lock": {
+        "cost": 145.7989381320546,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.878577501408222,
+        "theta_qa": 0.9772534747647696
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 145.79893813205462,
+        "cost_pct_of_direct_SS": 81.89252342022932,
+        "cost_pct_of_cascade_SS": 67.43434072453296,
+        "picks": {
+          "SS": 626,
+          "WS": 460,
+          "SW": 21,
+          "WW": 3
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5111411208642809,
+        "strict_accuracy": 0.45442268737339636,
+        "mean_cost": 145.57410042842994,
+        "cost_pct_of_direct_SS": 81.7662363076774,
+        "cost_pct_of_cascade_SS": 67.33034969065989,
+        "picks": {
+          "WS": 617,
+          "SS": 841,
+          "SW": 20,
+          "WW": 3
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.5773788211450769,
+          "parameter": 3
+        },
+        "qa": {
+          "val_auc": 0.6633110301626252,
+          "parameter": 3
+        }
+      }
+    },
+    {
+      "name": "grpo_lambda0.0",
+      "lock": {
+        "cost": 150.04024406307994,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.06027255579829216,
+        "theta_qa": 0.85516756772995
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44504504504504505,
+        "mean_cost": 150.0402440630799,
+        "cost_pct_of_direct_SS": 84.27478525106831,
+        "cost_pct_of_cascade_SS": 69.39601255104994,
+        "picks": {
+          "SS": 672,
+          "WS": 421,
+          "WW": 14,
+          "SW": 3
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5030384875084403,
+        "strict_accuracy": 0.4490209318028359,
+        "mean_cost": 147.64101896930288,
+        "cost_pct_of_direct_SS": 82.92718560665539,
+        "cost_pct_of_cascade_SS": 68.28633257311984,
+        "picks": {
+          "WS": 593,
+          "SS": 876,
+          "WW": 9,
+          "SW": 3
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.0,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "exact_reward_lambda0.4",
+      "lock": {
+        "cost": 142.84944675968495,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.9415701031684875,
+        "theta_qa": 0.9913671612739563
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.4423423423423423,
+        "mean_cost": 142.84944675968495,
+        "cost_pct_of_direct_SS": 80.23584954877235,
+        "cost_pct_of_cascade_SS": 66.07015379205819,
+        "picks": {
+          "SS": 623,
+          "WS": 482,
+          "SW": 4,
+          "WW": 1
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4962862930452397,
+        "strict_accuracy": 0.4402430790006752,
+        "mean_cost": 141.53641748707014,
+        "cost_pct_of_direct_SS": 79.4983456832664,
+        "cost_pct_of_cascade_SS": 65.46285675351189,
+        "picks": {
+          "WS": 655,
+          "SS": 820,
+          "WW": 1,
+          "SW": 5
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.4,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "cost_sensitive_logreg",
+      "lock": {
+        "cost": 139.17072482398544,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8017992650955384,
+        "theta_qa": 0.47355679975604054
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 139.17072482398547,
+        "cost_pct_of_direct_SS": 78.16958057496872,
+        "cost_pct_of_cascade_SS": 64.36868606107866,
+        "picks": {
+          "SS": 600,
+          "WS": 501,
+          "WW": 6,
+          "SW": 3
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49831195138419987,
+        "strict_accuracy": 0.44294395678595544,
+        "mean_cost": 135.50518655465805,
+        "cost_pct_of_direct_SS": 76.11071661879394,
+        "cost_pct_of_cascade_SS": 62.673315986649456,
+        "picks": {
+          "WS": 708,
+          "SS": 767,
+          "SW": 5,
+          "WW": 1
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6112751224455328,
+          "parameter": 0.1
+        },
+        "qa": {
+          "val_auc": 0.548475103260124,
+          "parameter": 0.1
+        }
+      }
+    },
+    {
+      "name": "grpo_lambda0.4",
+      "lock": {
+        "cost": 146.66207243167165,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.9836087822914124,
+        "theta_qa": 0.9971930384635925
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 146.66207243167162,
+        "cost_pct_of_direct_SS": 82.37732973467702,
+        "cost_pct_of_cascade_SS": 67.83355414266283,
+        "picks": {
+          "SS": 652,
+          "WS": 457,
+          "WW": 1
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49561107359891965,
+        "strict_accuracy": 0.43821742066171504,
+        "mean_cost": 144.27747179804118,
+        "cost_pct_of_direct_SS": 81.037944374678,
+        "cost_pct_of_cascade_SS": 66.73063821144716,
+        "picks": {
+          "SS": 849,
+          "WS": 630,
+          "WW": 2
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.4,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "confidence_outcome_logreg",
+      "lock": {
+        "cost": 143.62902601016864,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5293473432044138,
+        "theta_qa": 0.9062177176637475
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 143.62902601016867,
+        "cost_pct_of_direct_SS": 80.67372456244591,
+        "cost_pct_of_cascade_SS": 66.43072166362445,
+        "picks": {
+          "SS": 631,
+          "WS": 478,
+          "SW": 1
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5091154625253207,
+        "strict_accuracy": 0.4510465901417961,
+        "mean_cost": 143.36663012300266,
+        "cost_pct_of_direct_SS": 80.52634172406302,
+        "cost_pct_of_cascade_SS": 66.3093593691759,
+        "picks": {
+          "WS": 639,
+          "SS": 839,
+          "SW": 2,
+          "WW": 1
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6130721161965884,
+          "parameter": 0.1
+        },
+        "qa": {
+          "val_auc": 0.636976523245594,
+          "parameter": 0.1
+        }
+      }
+    },
+    {
+      "name": "exact_reward_lambda0.15",
+      "lock": {
+        "cost": 142.40174645305436,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8840125203132629,
+        "theta_qa": 0.9926609396934509
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 142.4017464530544,
+        "cost_pct_of_direct_SS": 79.98438470056625,
+        "cost_pct_of_cascade_SS": 65.86308523993705,
+        "picks": {
+          "SS": 620,
+          "WS": 486,
+          "SW": 4
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.49831195138419987,
+        "strict_accuracy": 0.4442943956785955,
+        "mean_cost": 140.1798522470539,
+        "cost_pct_of_direct_SS": 78.73638848308103,
+        "cost_pct_of_cascade_SS": 64.83542363374899,
+        "picks": {
+          "WS": 668,
+          "SS": 809,
+          "SW": 4
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.15,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "grpo_lambda0.15",
+      "lock": {
+        "cost": 146.19098864754847,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.9837413430213928,
+        "theta_qa": 0.9966655373573303
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 146.19098864754847,
+        "cost_pct_of_direct_SS": 82.11273082662974,
+        "cost_pct_of_cascade_SS": 67.61567035821723,
+        "picks": {
+          "SS": 649,
+          "WS": 458,
+          "WW": 3
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4962862930452397,
+        "strict_accuracy": 0.43889264010803514,
+        "mean_cost": 144.94272689192883,
+        "cost_pct_of_direct_SS": 81.41160565818667,
+        "cost_pct_of_cascade_SS": 67.03832933214187,
+        "picks": {
+          "SS": 855,
+          "WS": 621,
+          "WW": 5
+        }
+      },
+      "training": {
+        "seeds": [
+          17,
+          29,
+          43
+        ],
+        "ensemble": "mean action probabilities",
+        "lambda": 0.15,
+        "groups": 8,
+        "nonLLM": "linear policies over TF-IDF and numeric features"
+      }
+    },
+    {
+      "name": "confidence_gain_trees",
+      "lock": {
+        "cost": 134.65178706963619,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": -0.10268418686593557,
+        "theta_qa": -0.011289926818201821
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.4477477477477477,
+        "mean_cost": 134.65178706963616,
+        "cost_pct_of_direct_SS": 75.63137816674933,
+        "cost_pct_of_cascade_SS": 62.27860507596378,
+        "picks": {
+          "SS": 573,
+          "WS": 534,
+          "WW": 3
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5010128291694801,
+        "strict_accuracy": 0.4449696151249156,
+        "mean_cost": 134.79050872001557,
+        "cost_pct_of_direct_SS": 75.70929551064863,
+        "cost_pct_of_cascade_SS": 62.342766057911966,
+        "picks": {
+          "WS": 708,
+          "SS": 762,
+          "WW": 7,
+          "SW": 4
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.5940145245735517,
+          "parameter": 3
+        },
+        "qa": {
+          "val_auc": 0.6527055930662033,
+          "parameter": 8
+        }
+      }
+    },
+    {
+      "name": "sampled_augmentation_hist",
+      "lock": {
+        "cost": 150.07485309566695,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8827307329974704,
+        "theta_qa": 0.9803139021707002
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 150.07485309566695,
+        "cost_pct_of_direct_SS": 84.29422449423424,
+        "cost_pct_of_cascade_SS": 69.41201978214174,
+        "picks": {
+          "SS": 658,
+          "WS": 433,
+          "SW": 17,
+          "WW": 2
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.513166779203241,
+        "strict_accuracy": 0.4571235651586766,
+        "mean_cost": 150.13859106385618,
+        "cost_pct_of_direct_SS": 84.33002491308207,
+        "cost_pct_of_cascade_SS": 69.44149961182383,
+        "picks": {
+          "WS": 577,
+          "SS": 885,
+          "SW": 16,
+          "WW": 3
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.5773788211450769,
+          "parameter": 3
+        },
+        "qa": {
+          "val_auc": 0.6659977408937188,
+          "parameter": 3
+        }
+      }
+    },
+    {
+      "name": "sampled_consensus_hist",
+      "lock": {
+        "cost": 155.42778589125348,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.8827307329974704,
+        "theta_qa": 0.973426942619027
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44594594594594594,
+        "mean_cost": 155.42778589125354,
+        "cost_pct_of_direct_SS": 87.30086624310931,
+        "cost_pct_of_cascade_SS": 70.55157781009741,
+        "picks": {
+          "SS": 647,
+          "WS": 430,
+          "SW": 28,
+          "WW": 5
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.513166779203241,
+        "strict_accuracy": 0.4571235651586766,
+        "mean_cost": 155.4963992914732,
+        "cost_pct_of_direct_SS": 87.33940510050031,
+        "cost_pct_of_cascade_SS": 70.58272271521625,
+        "picks": {
+          "WS": 572,
+          "SS": 874,
+          "SW": 27,
+          "WW": 8
+        }
+      }
+    },
+    {
+      "name": "confidence_rich_logreg",
+      "lock": {
+        "cost": 149.2467951994154,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5329940420290669,
+        "theta_qa": 0.9062177176637475
+      },
+      "val": {
+        "n": 1110,
+        "lenient_accuracy": 0.4990990990990991,
+        "strict_accuracy": 0.44684684684684683,
+        "mean_cost": 149.2467951994154,
+        "cost_pct_of_direct_SS": 83.82911993633502,
+        "cost_pct_of_cascade_SS": 69.0290297615636,
+        "picks": {
+          "SS": 668,
+          "WS": 441,
+          "SW": 1
+        }
+      },
+      "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.5077650236326806,
+        "strict_accuracy": 0.44969615124915596,
+        "mean_cost": 145.9897986761779,
+        "cost_pct_of_direct_SS": 81.99972620085217,
+        "cost_pct_of_cascade_SS": 67.52261677872221,
+        "picks": {
+          "WS": 617,
+          "SS": 862,
+          "SW": 2
+        }
+      },
+      "stage_metrics": {
+        "ret": {
+          "val_auc": 0.6354382978723405,
+          "parameter": 0.1
+        },
+        "qa": {
+          "val_auc": 0.636976523245594,
+          "parameter": 0.1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "confidence_rich_logreg",
+  "lock": {
+    "cost": 149.09496359970603,
+    "accuracy": 0.44594594594594594,
+    "theta_ret": 0.5328009276522104,
+    "theta_qa": 0.9336119733779343
+  },
+  "val": {
+    "n": 1110,
+    "lenient_accuracy": 0.44594594594594594,
+    "strict_accuracy": 0.44594594594594594,
+    "mean_cost": 149.09496359970603,
+    "cost_pct_of_direct_SS": 83.74383898028395,
+    "cost_pct_of_cascade_SS": 68.95880521837606,
+    "picks": {
+      "SS": 667,
+      "WS": 442,
+      "SW": 1
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.4490209318028359,
+    "strict_accuracy": 0.4490209318028359,
+    "mean_cost": 145.87915642453382,
+    "cost_pct_of_direct_SS": 81.9375805275015,
+    "cost_pct_of_cascade_SS": 67.47144296777758,
+    "picks": {
+      "WS": 618,
+      "SS": 862,
+      "SW": 1
+    }
+  },
+  "stage_metrics": {
+    "ret": {
+      "val_auc": 0.6354382978723405,
+      "parameter": 0.1
+    },
+    "qa": {
+      "val_auc": 0.6420832049306624,
+      "parameter": 0.1
+    }
+  }
+}

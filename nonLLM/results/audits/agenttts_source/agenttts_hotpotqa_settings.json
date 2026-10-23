@@ -1,0 +1,125 @@
+{
+  "source_commit": "3f0c2df814c059d0df57a71056c3266ff02c8559",
+  "task": "HotpotQA",
+  "stage_models": {
+    "retrieval": [
+      {
+        "id": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+        "gguf_repo": "Qwen/Qwen2.5-7B-Instruct-GGUF",
+        "revision": "bb5d59e06d9551d752d08b292a50eb208b07ab1f",
+        "first_shard": "<WORKSPACE>/models/agenttts_gguf/Qwen2.5-7B-Instruct-GGUF/qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+        "all_shards_required": [
+          "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+          "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf"
+        ]
+      },
+      {
+        "id": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+        "gguf_repo": "Qwen/Qwen2.5-72B-Instruct-GGUF",
+        "revision": "7ca3bc388f97b264c4283bc9bf1055e2abc38441",
+        "first_shard": "<WORKSPACE>/models/agenttts_gguf/Qwen2.5-72B-Instruct-GGUF/qwen2.5-72b-instruct-q4_k_m-00001-of-00012.gguf",
+        "all_shards_required": [
+          "qwen2.5-72b-instruct-q4_k_m-00001-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00002-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00003-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00004-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00005-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00006-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00007-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00008-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00009-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00010-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00011-of-00012.gguf",
+          "qwen2.5-72b-instruct-q4_k_m-00012-of-00012.gguf"
+        ]
+      },
+      {
+        "id": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+        "gguf_repo": "Qwen/Qwen2.5-32B-Instruct-GGUF",
+        "revision": "a15e3cc10f8bbb2c0af6f8f1f34a32e3b060c09d",
+        "first_shard": "<WORKSPACE>/models/agenttts_gguf/Qwen2.5-32B-Instruct-GGUF/qwen2.5-32b-instruct-q4_k_m-00001-of-00005.gguf",
+        "all_shards_required": [
+          "qwen2.5-32b-instruct-q4_k_m-00001-of-00005.gguf",
+          "qwen2.5-32b-instruct-q4_k_m-00002-of-00005.gguf",
+          "qwen2.5-32b-instruct-q4_k_m-00003-of-00005.gguf",
+          "qwen2.5-32b-instruct-q4_k_m-00004-of-00005.gguf",
+          "qwen2.5-32b-instruct-q4_k_m-00005-of-00005.gguf"
+        ]
+      }
+    ],
+    "answering": [
+      {
+        "id": "meta-llama/Llama-3.1-70B-Instruct",
+        "gguf_repo": "bartowski/Meta-Llama-3.1-70B-Instruct-GGUF",
+        "revision": "83fb6e83d0a8aada42d499259bc929d922e9a558",
+        "first_shard": "<WORKSPACE>/models/agenttts_gguf/Meta-Llama-3.1-70B-Instruct-GGUF/Meta-Llama-3.1-70B-Instruct-Q4_K_M.gguf",
+        "all_shards_required": [
+          "Meta-Llama-3.1-70B-Instruct-Q4_K_M.gguf"
+        ]
+      },
+      {
+        "id": "meta-llama/Llama-3.2-3B-Instruct",
+        "gguf_repo": "bartowski/Llama-3.2-3B-Instruct-GGUF",
+        "revision": "5ab33fa94d1d04e903623ae72c95d1696f09f9e8",
+        "first_shard": "<WORKSPACE>/models/agenttts_gguf/Llama-3.2-3B-Instruct-GGUF/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+        "all_shards_required": [
+          "Llama-3.2-3B-Instruct-Q4_K_M.gguf"
+        ]
+      },
+      {
+        "id": "meta-llama/Llama-3.1-8B-Instruct",
+        "gguf_repo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+        "revision": "bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+        "first_shard": "<WORKSPACE>/models/agenttts_gguf/Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+        "all_shards_required": [
+          "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf"
+        ]
+      }
+    ]
+  },
+  "pipeline": [
+    "retrieval samples",
+    "reference-ID frequency merge (no model call)",
+    "answer samples",
+    "answer fusion (same selected answer model)"
+  ],
+  "main_combined_branch": {
+    "retrieval": {
+      "temperature": 0.9,
+      "max_new_tokens": 512
+    },
+    "answering": {
+      "temperature": 0.7,
+      "max_new_tokens": 512
+    },
+    "fusion": {
+      "temperature": 0.3,
+      "max_new_tokens": 512,
+      "calls": 1,
+      "enabled_even_with_one_answer": true
+    }
+  },
+  "custom_generator": {
+    "do_sample": true,
+    "max_return_sequences_per_batch": 10,
+    "top_p": "not explicitly set; inherited from generation config/defaults",
+    "top_k": "not explicitly set; inherited from generation config/defaults",
+    "input_truncation": true
+  },
+  "search": {
+    "controller": "o3-mini-2025-01-31",
+    "reasoning_effort": "high",
+    "default_budget": 1000,
+    "default_iterations": 5,
+    "default_candidates_per_iteration": 10,
+    "environment": "precomputed CSV exact or fuzzy matching",
+    "main_metric": "Gen_EM",
+    "allocation_scope": "stage model and sample count configuration; not per-question weak-first escalation"
+  },
+  "evaluation": {
+    "external_module": "evaluation_2wiki.metric_evaluation",
+    "module_missing_in_release": true,
+    "lenient_equivalence_certified": false
+  },
+  "precision": "Same Instruct model identities; GGUF Q4_K_M differs from original Qwen AWQ and Llama bitsandbytes NF4."
+}

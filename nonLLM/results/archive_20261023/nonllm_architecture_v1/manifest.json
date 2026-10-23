@@ -1,0 +1,37 @@
+{
+  "base": "<WORKSPACE>/runs/nonllm_cascade_four_gpu_full_v1",
+  "code_sha256": "196d2e954213e559f0623561fd32fda0b61feee2a231374c81ad1c0a523ba5f1",
+  "features": "Pre-router: question and capped candidate pool only; QA: paid selected evidence, weak answer, greedy confidence; chooser: additionally paid strong answer",
+  "training": "3-fold grouped CV on train only selects model by MSE; then refit all train; no LLM weight changes",
+  "models": [
+    "ridge10",
+    "ridge100",
+    "trees",
+    "hist"
+  ],
+  "costs": {
+    "direct": [
+      39.023777241392,
+      45.823691946514934,
+      174.36503332427247,
+      178.03693431681327
+    ],
+    "review": [
+      39.023777241392,
+      47.675663913658695,
+      174.36503332427247,
+      179.03693431681327
+    ],
+    "fixed_S": [
+      174.36503332427247,
+      179.03693431681327
+    ],
+    "post": [
+      179.03693431681327,
+      179.03693431681327
+    ]
+  },
+  "selection": "Small predeclared lambda/threshold grids on validation; direct SS fallback; lock all 12 policies before test replay",
+  "test": "Previously examined, descriptive; paired intervals unadjusted for multiple comparisons",
+  "cost_scope": "Same mean parameter-weighted token ruler as prior runs; paid weak calls included; CPU router overhead excluded"
+}

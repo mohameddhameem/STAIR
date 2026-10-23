@@ -1,0 +1,136 @@
+{
+  "config": {
+    "experiment": "nonLLM Config A cascade",
+    "weak_answer_input": false,
+    "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+    "file_sha256": {
+      "grid": "f131a515f69cd3fcd20ae5bd718a49e729018b9b4631937a16282d60442038cf",
+      "ret": "fc8b45cce422d74d99a9d05dffdc6706789a31cb056360753fd6fb9eb97bd0f8",
+      "qa": "0a0f64493d060a493e75433c1d353a3d139e8ef4b1cc8c81483de92c774cc760"
+    },
+    "selection": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+    "ret_labels": "Provided answer-coverage labels; X mapped to W",
+    "qa_labels": "Provided outcome labels; X mapped to W",
+    "qa_classifier": "One shared classifier over both retrieval branches",
+    "passage_char_cap": 600,
+    "test_status": "Previously used split; new frozen replay, not a first-ever sealed test",
+    "token_costs_sha256": "d1bfb8a5fe618364eea95c548b54803da19df57dae53cf162be259fe77c65166"
+  },
+  "lock": {
+    "selected_family": "random_forest",
+    "rule": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+    "bar": 0.4989639639639639,
+    "families": {
+      "majority": {
+        "cost": 216.20873959106154,
+        "accuracy": 0.5252252252252252,
+        "theta_ret": Infinity,
+        "theta_qa": Infinity
+      },
+      "logreg": {
+        "cost": 150.9001071169661,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.520325933561791,
+        "theta_qa": 0.5942508150469271
+      },
+      "linear_svm": {
+        "cost": 151.9677605818735,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.18939265657211687,
+        "theta_qa": 0.7797701486402568
+      },
+      "multinomial_nb": {
+        "cost": 147.1253617232973,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.9514434717364002,
+        "theta_qa": Infinity
+      },
+      "random_forest": {
+        "cost": 138.17415178460655,
+        "accuracy": 0.4990990990990991,
+        "theta_ret": 0.5903993242237187,
+        "theta_qa": 0.668426009782065
+      }
+    },
+    "stage_metrics": {
+      "ret": {
+        "majority": {
+          "val_auc": 0.5,
+          "parameter": null
+        },
+        "logreg": {
+          "val_auc": 0.6279246200607903,
+          "parameter": 0.1
+        },
+        "linear_svm": {
+          "val_auc": 0.6225993920972646,
+          "parameter": 0.1
+        },
+        "multinomial_nb": {
+          "val_auc": 0.5989641337386018,
+          "parameter": 0.1
+        },
+        "random_forest": {
+          "val_auc": 0.6196911854103344,
+          "parameter": null
+        }
+      },
+      "qa": {
+        "majority": {
+          "val_auc": 0.5,
+          "parameter": null
+        },
+        "logreg": {
+          "val_auc": 0.568688515983939,
+          "parameter": 0.1
+        },
+        "linear_svm": {
+          "val_auc": 0.5542668150157748,
+          "parameter": 0.1
+        },
+        "multinomial_nb": {
+          "val_auc": 0.4895114132284729,
+          "parameter": 0.1
+        },
+        "random_forest": {
+          "val_auc": 0.6255201109570042,
+          "parameter": 8
+        }
+      }
+    }
+  },
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.4989871708305199,
+    "strict_accuracy": 0.4395678595543552,
+    "mean_cost": 138.2769660851267,
+    "cost_pct_of_direct_SS": 77.66757308855112,
+    "cost_pct_of_cascade_SS": 63.95530835000683,
+    "picks": {
+      "WS": 677,
+      "SS": 743,
+      "SW": 55,
+      "WW": 6
+    }
+  },
+  "fixed_test": {
+    "WW": {
+      "accuracy": 0.31600270087778526,
+      "cascade_cost": 39.023777241392
+    },
+    "WS": {
+      "accuracy": 0.4355165428764348,
+      "cascade_cost": 47.675663913658695
+    },
+    "SW": {
+      "accuracy": 0.41053342336259285,
+      "cascade_cost": 211.53683859852072
+    },
+    "SS": {
+      "accuracy": 0.5293720459149224,
+      "cascade_cost": 216.20873959106152
+    }
+  },
+  "direct_SS_cost": 178.03693431681327,
+  "seconds": 20.21942529641092
+}

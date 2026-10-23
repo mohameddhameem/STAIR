@@ -1,0 +1,15 @@
+{
+  "source": "<WORKSPACE>/runs/nonllm_common_ws_gguf_v1",
+  "source_protocol_sha256": "68ac102c01c2b8488ee5bd81102ff997d87d32045d41e5aa507cd6d1a9e5ff59",
+  "imported_counts": {
+    "qwen7": 7405,
+    "qwen72": 7405,
+    "llama3": 14810
+  },
+  "discarded_models": [
+    "llama70"
+  ],
+  "reason": "Legacy GGUF template injects tool-call instructions with empty tool list; explicitly tools=None in both render and generation, frozen date. All 70B labels and router fits must be regenerated.",
+  "audit": "runs/nonllm_ws_template_audit_v1",
+  "time": 1792646635.5909593
+}

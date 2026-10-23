@@ -1,0 +1,17 @@
+{
+  "max_accuracy": {
+    "key": "direct_SS",
+    "val_accuracy": 0.46936936936936935,
+    "val_cost": 178.0369343168133
+  },
+  "ss_budget": {
+    "key": "direct_SS",
+    "val_accuracy": 0.46936936936936935,
+    "val_cost": 178.0369343168133
+  },
+  "cheap95": {
+    "key": "lambda_0.05_no_chooser",
+    "val_accuracy": 0.4657657657657658,
+    "val_cost": 164.9252870407498
+  }
+}

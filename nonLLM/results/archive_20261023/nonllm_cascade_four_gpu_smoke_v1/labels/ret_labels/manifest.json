@@ -1,0 +1,10 @@
+{
+  "n": 8,
+  "train_counts": {
+    "W": 4
+  },
+  "class_weights_post_mapping": {
+    "W": 0.5
+  },
+  "rule": "Ret: answer coverage; QA: generated outcome; X mapped to W"
+}

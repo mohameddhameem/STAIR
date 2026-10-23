@@ -1,0 +1,15 @@
+{
+  "sample": "first 12 training-extra IDs, Qwen7 evidence branch only; diagnostic, not headline test",
+  "n": 12,
+  "old_lenient_correct": 2,
+  "new_lenient_correct": 5,
+  "new_tool_json": 0,
+  "cause": "Legacy tools is not none template condition treats empty list as enabled tools. Actual rendered prompt injects function-call instructions.",
+  "fix": {
+    "chat_template_kwargs": {
+      "tools": null,
+      "date_string": "22 Oct 2026"
+    }
+  },
+  "scope": "applied to both render and completion requests"
+}

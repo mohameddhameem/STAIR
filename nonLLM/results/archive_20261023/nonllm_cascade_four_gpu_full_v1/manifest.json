@@ -1,0 +1,16 @@
+{
+  "weak_model": "<WORKSPACE>/models/Qwen2.5-1.5B-Instruct-HF",
+  "strong_model": "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF",
+  "limit_per_gpu": 0,
+  "script_sha256": "ee9bb5553d11021e7d2a391bcd762be41c62758c806041866045ce850a2bd361",
+  "source_sha256": "481a2a8925da00bedfc7179e5a77d0bcd71494784d49037ec6dcfac18d1033de",
+  "router_code_sha256": "f66c95921fcb2ce5a67786afd677d302c9498f306341b047d41ef4f238ed86fe",
+  "splits_sha256": "4ec686a411194467d234938c6d16ce80d11cc8af9306b613ce5bc6cd5035da22",
+  "model_files": {
+    "<WORKSPACE>/models/Qwen2.5-1.5B-Instruct-HF/model.safetensors": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+    "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00001-of-00004.safetensors": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+    "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00002-of-00004.safetensors": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+    "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00003-of-00004.safetensors": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+    "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00004-of-00004.safetensors": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd"
+  }
+}

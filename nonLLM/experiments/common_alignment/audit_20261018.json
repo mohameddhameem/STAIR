@@ -1,0 +1,358 @@
+{
+  "date": "2026-10-18",
+  "main_commit": "c906e3dcdb0a704e06a16061809799b08851ad6d",
+  "local_merge_commit": "c02b09367718249af962140e605a91ddd392baa0",
+  "common_version": "0.2.0",
+  "policy_status": "Merged main implementation; common/README.md still labels the setup a proposal until team agreement. No Teams/Word attachment was available beyond the user-pasted discussion.",
+  "standard_scorer": {
+    "path": "common/stair_common/lenient_match_agenttts.py",
+    "sha256": "2f184ac252a26df49d402f22f9ba52af3db6ed4812adb42507d3bbb989a0c882",
+    "byte_identical_to_jonathan_branch": true,
+    "published_74_6_claim": "Claim in upstream header; not independently reproduced in this synchronization."
+  },
+  "splits": {
+    "hotpotqa_counts": {
+      "train": 12000,
+      "train_extra": 6405,
+      "val": 500,
+      "test": 500,
+      "nanojev_v1_seen": 1000
+    },
+    "common_ids_overlap_historical_partitions": {
+      "val": {
+        "train": 317,
+        "test": 105,
+        "val": 78
+      },
+      "test": {
+        "train": 335,
+        "val": 71,
+        "test": 94
+      },
+      "train_extra": {
+        "train": 4162,
+        "val": 961,
+        "test": 1282
+      }
+    },
+    "old_training_examples_in_common_test": 335,
+    "nanojev_seen_test": 62,
+    "nanojev_seen_val": 66,
+    "source_order_assertions_passed": true
+  },
+  "scorer_drift": {
+    "cached_answers_audited": 29620,
+    "changed_grades_per_cell": {
+      "WW": 405,
+      "WS": 434,
+      "SW": 518,
+      "SS": 504
+    },
+    "changed_total": 1861,
+    "probes": [
+      {
+        "answer": "1936",
+        "gold": [
+          "7 January 1936"
+        ],
+        "historical": 0,
+        "common": 1
+      },
+      {
+        "answer": "Yes\nNo",
+        "gold": [
+          "yes"
+        ],
+        "historical": 0,
+        "common": 1
+      },
+      {
+        "answer": "more than 20",
+        "gold": [
+          "20"
+        ],
+        "historical": 1,
+        "common": 0
+      },
+      {
+        "answer": "Armenian-American",
+        "gold": [
+          "Armenian\u2013American"
+        ],
+        "historical": 1,
+        "common": 0
+      }
+    ]
+  },
+  "diagnostic_only_old_executor_SS": {
+    "historical_test": {
+      "n": 1481,
+      "historical_scorer_SS_correct": 784,
+      "common_scorer_SS_correct": 872,
+      "scope": "Diagnostic on old Qwen1.5B/7B executor caches; not menu-A/B pooled results."
+    },
+    "common_val": {
+      "n": 500,
+      "historical_scorer_SS_correct": 281,
+      "common_scorer_SS_correct": 311,
+      "scope": "Diagnostic on old Qwen1.5B/7B executor caches; not menu-A/B pooled results."
+    },
+    "common_test": {
+      "n": 500,
+      "historical_scorer_SS_correct": 264,
+      "common_scorer_SS_correct": 289,
+      "scope": "Diagnostic on old Qwen1.5B/7B executor caches; not menu-A/B pooled results."
+    }
+  },
+  "menus": {
+    "A": {
+      "retriever": [
+        {
+          "name": "Qwen2.5-7B",
+          "repo": "Qwen/Qwen2.5-7B-Instruct",
+          "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+          "params_b": 7.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen2.5-32B",
+          "repo": "Qwen/Qwen2.5-32B-Instruct",
+          "revision": "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+          "params_b": 32.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen2.5-72B",
+          "repo": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+          "revision": "698703eae6604af048a3d2f509995dc302088217",
+          "params_b": 72.0,
+          "dtype": "awq"
+        }
+      ],
+      "answerer": [
+        {
+          "name": "Llama-3.2-3B",
+          "repo": "meta-llama/Llama-3.2-3B-Instruct",
+          "revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+          "params_b": 3.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Llama-3.1-8B",
+          "repo": "meta-llama/Llama-3.1-8B-Instruct",
+          "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+          "params_b": 8.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Llama-3.1-70B",
+          "repo": "hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
+          "revision": "2123003760781134cfc31124aa6560a45b491fdf",
+          "params_b": 70.0,
+          "dtype": "awq"
+        }
+      ],
+      "planner": [
+        {
+          "name": "Qwen2.5-72B",
+          "repo": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+          "revision": "698703eae6604af048a3d2f509995dc302088217",
+          "params_b": 72.0,
+          "dtype": "awq"
+        }
+      ]
+    },
+    "B": {
+      "retriever": [
+        {
+          "name": "nano-jev-33M",
+          "repo": "sdmlai/nano-jev",
+          "revision": "ffee345e97797bef0948561461ea54fe558588a0",
+          "params_b": 0.033,
+          "dtype": "fp32",
+          "note": "v1.0; ranks passages only, keep its top 5; it saw 1,000 HotpotQA dev questions (splits/hotpotqa/nanojev_v1_seen.txt)"
+        },
+        {
+          "name": "Qwen2.5-0.5B",
+          "repo": "Qwen/Qwen2.5-0.5B-Instruct",
+          "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+          "params_b": 0.5,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen3.5-0.8B",
+          "repo": "Qwen/Qwen3.5-0.8B",
+          "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+          "params_b": 0.8,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen2.5-1.5B",
+          "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+          "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+          "params_b": 1.5,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen2.5-3B",
+          "repo": "Qwen/Qwen2.5-3B-Instruct",
+          "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+          "params_b": 3.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen2.5-7B",
+          "repo": "Qwen/Qwen2.5-7B-Instruct",
+          "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+          "params_b": 7.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen2.5-32B",
+          "repo": "Qwen/Qwen2.5-32B-Instruct",
+          "revision": "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+          "params_b": 32.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Qwen2.5-72B",
+          "repo": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+          "revision": "698703eae6604af048a3d2f509995dc302088217",
+          "params_b": 72.0,
+          "dtype": "awq"
+        }
+      ],
+      "answerer": [
+        {
+          "name": "Llama-3.2-1B",
+          "repo": "meta-llama/Llama-3.2-1B-Instruct",
+          "revision": "9213176726f574b556790deb65791e0c5aa438b6",
+          "params_b": 1.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Llama-3.2-3B",
+          "repo": "meta-llama/Llama-3.2-3B-Instruct",
+          "revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+          "params_b": 3.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Llama-3.1-8B",
+          "repo": "meta-llama/Llama-3.1-8B-Instruct",
+          "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+          "params_b": 8.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Llama-3.1-70B",
+          "repo": "hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
+          "revision": "2123003760781134cfc31124aa6560a45b491fdf",
+          "params_b": 70.0,
+          "dtype": "awq"
+        }
+      ],
+      "planner": [
+        {
+          "name": "Qwen2.5-72B",
+          "repo": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+          "revision": "698703eae6604af048a3d2f509995dc302088217",
+          "params_b": 72.0,
+          "dtype": "awq"
+        }
+      ]
+    },
+    "C": {
+      "retriever": [
+        {
+          "name": "Gemma-3-270M",
+          "repo": "google/gemma-3-270m-it",
+          "revision": "ac82b4e820549b854eebf28ce6dedaf9fdfa17b3",
+          "params_b": 0.27,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Gemma-3-1B",
+          "repo": "google/gemma-3-1b-it",
+          "revision": "dcc83ea841ab6100d6b47a070329e1ba4cf78752",
+          "params_b": 1.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Gemma-4-E2B",
+          "repo": "google/gemma-4-E2B-it",
+          "revision": "3e22461f65e89153144f8adb70e3b8c2cc9845a7",
+          "params_b": 2.0,
+          "dtype": "bf16",
+          "note": "params_b = effective parameters"
+        },
+        {
+          "name": "Gemma-4-E4B",
+          "repo": "google/gemma-4-E4B-it",
+          "revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+          "params_b": 4.0,
+          "dtype": "bf16",
+          "note": "params_b = effective parameters"
+        },
+        {
+          "name": "Gemma-4-31B",
+          "repo": "google/gemma-4-31B-it",
+          "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+          "params_b": 31.0,
+          "dtype": "bf16"
+        }
+      ],
+      "answerer": [
+        {
+          "name": "Ministral-3-3B",
+          "repo": "mistralai/Ministral-3-3B-Instruct-2512-BF16",
+          "revision": "b6d637bef2393152b3da2b2fde72eecdee30557e",
+          "params_b": 3.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Ministral-3-8B",
+          "repo": "mistralai/Ministral-3-8B-Instruct-2512-BF16",
+          "revision": "f6fae9795746f63c9be8344932f01275f3c63734",
+          "params_b": 8.0,
+          "dtype": "bf16"
+        },
+        {
+          "name": "Ministral-3-14B",
+          "repo": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+          "revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+          "params_b": 14.0,
+          "dtype": "bf16"
+        }
+      ],
+      "planner": [
+        {
+          "name": "Gemma-4-31B",
+          "repo": "google/gemma-4-31B-it",
+          "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+          "params_b": 31.0,
+          "dtype": "bf16"
+        }
+      ]
+    }
+  },
+  "cost_shared_prompt_example": {
+    "input": {
+      "params_b": 3,
+      "prompt_tokens": 600,
+      "samples": 40,
+      "generated_tokens_per_sample": 16
+    },
+    "shared_prompt_once_units": 6.458333333333333,
+    "repeated_prompt_40_times_units": 128.33333333333334,
+    "scope": "Illustration only, excluding fusion and routing; no measured historical cost relabeling."
+  },
+  "historical_results_pooled_eligible": false,
+  "reasons": [
+    "Historical split differs; some common test questions were used in router training.",
+    "Historical reconstructed lenient scorer differs from now-available author standard.",
+    "Historical Qwen1.5B/7B pair and GGUF copies do not equal the pinned pooled menus.",
+    "Historical mean token cost percentages differ from per-question AgentTTS units and shared-prompt accounting.",
+    "Router seed/checkpoint/history/output layouts need common adapters."
+  ]
+}

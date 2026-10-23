@@ -1,0 +1,39 @@
+{
+  "training_epochs": 300,
+  "warm_epochs": 10,
+  "modes": [
+    "base",
+    "aug9"
+  ],
+  "methods": [
+    "exact",
+    "grpo_g16",
+    "grpo_g32"
+  ],
+  "lambdas": [
+    0,
+    0.15,
+    0.4
+  ],
+  "seeds": [
+    17,
+    29,
+    43
+  ],
+  "checkpoint_epochs": [
+    30,
+    60,
+    120,
+    180,
+    240,
+    300
+  ],
+  "seed_streams": 54,
+  "candidate_ensembles": 108,
+  "replay": "Reproduce original 120 epochs, assert bitwise weight equality, continue same optimizer and random states to 300. No optimizer reset at 120.",
+  "selection": "All thresholds/configurations on validation; save lock before test. Historical test already inspected; descriptive only.",
+  "scoring": "Unchanged review-validated lenient reconstruction, not EM. Original mint_labels.py remains missing.",
+  "input_run": "<WORKSPACE>/runs/nonllm_reference_lenient_v1",
+  "scope": "Finite-action linear non-LLM heads; Qwen Instruct caches unchanged. base means unaugmented features, not Base LLM.",
+  "script_sha256": "214f70072b468a99447fab207c338d36a753fbe0245fdc2b69985331b91d45cf"
+}

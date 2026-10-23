@@ -1,0 +1,98 @@
+{
+  "base": "<WORKSPACE>/runs/nonllm_cascade_four_gpu_full_v1",
+  "base_manifest": {
+    "weak_model": "<WORKSPACE>/models/Qwen2.5-1.5B-Instruct-HF",
+    "strong_model": "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF",
+    "limit_per_gpu": 0,
+    "script_sha256": "ee9bb5553d11021e7d2a391bcd762be41c62758c806041866045ce850a2bd361",
+    "source_sha256": "481a2a8925da00bedfc7179e5a77d0bcd71494784d49037ec6dcfac18d1033de",
+    "router_code_sha256": "f66c95921fcb2ce5a67786afd677d302c9498f306341b047d41ef4f238ed86fe",
+    "splits_sha256": "4ec686a411194467d234938c6d16ce80d11cc8af9306b613ce5bc6cd5035da22",
+    "model_files": {
+      "<WORKSPACE>/models/Qwen2.5-1.5B-Instruct-HF/model.safetensors": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00001-of-00004.safetensors": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00002-of-00004.safetensors": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00003-of-00004.safetensors": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00004-of-00004.safetensors": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd"
+    }
+  },
+  "prior_samples": "<WORKSPACE>/runs/nonllm_router_improvements_v2/samples",
+  "more_samples": {
+    "indices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "split": "train only",
+    "count": 38512,
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "top_k": 0,
+    "max_new_tokens": 128
+  },
+  "policy": {
+    "modes": [
+      "base",
+      "confidence",
+      "aug5",
+      "aug9"
+    ],
+    "heads": "linear TF-IDF + numeric",
+    "epochs": [
+      30,
+      60,
+      120
+    ],
+    "warm_epochs": 10,
+    "groups": [
+      8,
+      16,
+      32
+    ],
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "lambdas": [
+      0.0,
+      0.15,
+      0.4
+    ],
+    "methods": [
+      "exact",
+      "grpo"
+    ],
+    "entropy_regularizer": 0.002,
+    "clip": 0.2,
+    "rollout_KL": 0.01,
+    "PPO_updates_per_group": 2,
+    "batch_questions": 256,
+    "warm_lr": 0.01,
+    "policy_lr": 0.002,
+    "gradient_norm_clip": 1.0,
+    "update_matching": "All variants of a question in each minibatch; same optimizer-update counts across modes",
+    "numeric_fix": "Stable joint log probabilities and sigmoid(-logit) weak scores avoid subtraction saturation"
+  },
+  "selection": {
+    "split": "validation only",
+    "checkpoint_candidates": [
+      30,
+      60,
+      120
+    ],
+    "objectives": [
+      "cheap95",
+      "max_accuracy",
+      "ss_budget"
+    ],
+    "test": "Previously examined; descriptive comparisons"
+  },
+  "code_sha256": {
+    "extended_run.py": "d621bc1cb5b7ba4a8800871801132a3f84b77849b29edf2a7e947b64e1a6c8c3",
+    "collect.py": "57db2137251b5e0c2cc7d05f289a775caafa46ee7e55c08cca13a931afbc15d9",
+    "extended_policy.py": "fae3657e40721231952b7b969a877dcff22f407ce2c83509908da684758b1136",
+    "test_extended.py": "b65f3b2c5640f5956003cde6b872f45b987ec8336852a5277f179ef2cba9bf53"
+  }
+}

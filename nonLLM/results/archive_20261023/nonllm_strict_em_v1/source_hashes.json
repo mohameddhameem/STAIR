@@ -1,0 +1,19 @@
+{
+  "cascade.py": "b4c2bba9506f881212b83e9bc8a21eacace2b3e209e63d2b1e519d4bb9fc45ce",
+  "architecture_figures.py": "145d6ff45eb914b49a54db250d338096b483937cb6bfef63f4b03fc1fdd4d544",
+  "compare.py": "54e1a7b18c3f1e26c75d2a7e1acc1f5760baf233abe61e9471f06b73e4202e20",
+  "architecture_combine.py": "29a008f89faef2b56a1aeeaf3158b4c52e535f41121ea481ff4583b27d4d93cc",
+  "suite.py": "b9c0099f3cc4c3fb129fa7595960c85ad88c616fd67a531d06e2fee9db83302d",
+  "architecture.py": "9654c5be6f30a6abe6ecb3fb8d94f7cebba4004e0a057af22c590e51983e9479",
+  "run.py": "0093a6f5f9f5b9f1f0996f790538f04b90d55ef02186dba204d201bbca943c3d",
+  "baselines.py": "59468c6ac48b677b2e369b02a0f453142a18cbd3fcf6e02c28658efbae6a9fd5",
+  "extended_run.py": "095bc7b78121fb0e5d7284e11b5bdc49e69ace07d37f01a79722d23b0e13a966",
+  "cascade_four_gpu.py": "468eace1dd67dc4c39f9cb5e3f8606465efeffde556e78bdcdecf26c50743896",
+  "collect.py": "27b57571c0f7572b180bf9fd2f2c486cd4bfce8d6812fef0c1c730829195a72a",
+  "extended_figures.py": "ebd34f4870ba34f17a31de259ed85bde979122be2153b9099aa15c5ba3028d53",
+  "test_architecture.py": "d25b55fe6babca31f69d1a0794eaa09f82517e2f7de955c844490bf47bece8e5",
+  "extended_policy.py": "b1368d91007011f98f3c4a310571a0dd429c3e038ca0a77a659c3daf3efeda2c",
+  "test_extended.py": "91981987fb168c8cbe2cc7dfcba8ec9858363cae8cac5b06564b202862cc48ec",
+  "build_html_report.py": "3e6e170a329a41d86c956e98b53d874b991152eb3ae47aa8ffed45f07573ff30",
+  "test_methods.py": "660d7a021d0d4ff807e310bd4c810a5711d84d3b20794e14de2419e08135c623"
+}

@@ -1,0 +1,9 @@
+{
+  "reason": "Llama70 chat template incorrectly injected tool mode; 97% function-JSON responses. All model comparisons and learned policies depend on invalid 70B labels. Preserve for audit only.",
+  "replacement": "nonllm_common_ws_gguf_v2",
+  "unaffected_caches": [
+    "qwen7",
+    "qwen72",
+    "llama3"
+  ]
+}

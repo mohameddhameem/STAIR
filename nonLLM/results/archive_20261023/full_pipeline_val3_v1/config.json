@@ -1,0 +1,50 @@
+{
+  "version": "actual-pipeline-v1",
+  "split": "val",
+  "ids": [
+    4,
+    7,
+    14
+  ],
+  "models": {
+    "W": {
+      "repo": "mradermacher/Qwen2.5-1.5B-GGUF",
+      "base_model": "Qwen/Qwen2.5-1.5B",
+      "filename": "Qwen2.5-1.5B.Q4_K_M.gguf",
+      "directory": "Qwen2.5-1.5B-GGUF",
+      "revision": "4d8150eba159047c0ad5f72a8473e4ad60419c4a",
+      "quantization": "Q4_K_M",
+      "size_bytes": 986048544,
+      "sha256": "ea47cef917fa77a3458206d0848f81dd033dfb859bbb3b176bf6006d3b620814"
+    },
+    "S": {
+      "repo": "mradermacher/Qwen2.5-7B-GGUF",
+      "base_model": "Qwen/Qwen2.5-7B",
+      "filename": "Qwen2.5-7B.Q4_K_M.gguf",
+      "directory": "Qwen2.5-7B-GGUF",
+      "revision": "70758bc7e4ea7671578fdcb3fbc62e6d2870e66c",
+      "quantization": "Q4_K_M",
+      "size_bytes": 4683073984,
+      "sha256": "c1c8899139b014b35d0b205e99319a8de73cf122c615b5cb0d2cd28c8a97b4d2"
+    }
+  },
+  "workers": 2,
+  "gpu": 2,
+  "context_per_request": 32768,
+  "kv_cache": "q8_0",
+  "temperature": 0,
+  "seed": 707,
+  "ret_prompt": "Select up to 4 references that contain the information needed to answer the question. Return only their reference numbers in square brackets, separated by commas.\nQuestion: {question}\nReferences:\n{pool}\nSelected references:",
+  "qa_prompt": "References: {evidence}\nQuestion: {question}\nGive only a short answer.\nAnswer:",
+  "retrieval_grammar": "root ::= \"[\" id \"]\" (\", [\" id \"]\")? (\", [\" id \"]\")? (\", [\" id \"]\")?\nid ::= \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\" | \"7\" | \"8\" | \"9\" | \"10\" | \"11\" | \"12\" | \"13\" | \"14\" | \"15\" | \"16\" | \"17\" | \"18\" | \"19\" | \"20\" | \"21\" | \"22\" | \"23\" | \"24\" | \"25\" | \"26\" | \"27\" | \"28\" | \"29\" | \"30\" | \"31\" | \"32\" | \"33\" | \"34\" | \"35\" | \"36\" | \"37\" | \"38\" | \"39\" | \"40\" | \"41\" | \"42\" | \"43\" | \"44\" | \"45\" | \"46\" | \"47\" | \"48\" | \"49\" | \"50\" | \"51\" | \"52\" | \"53\" | \"54\" | \"55\" | \"56\" | \"57\" | \"58\" | \"59\" | \"60\" | \"61\" | \"62\" | \"63\" | \"64\" | \"65\" | \"66\" | \"67\" | \"68\" | \"69\" | \"70\" | \"71\" | \"72\" | \"73\" | \"74\" | \"75\" | \"76\" | \"77\" | \"78\" | \"79\" | \"80\" | \"81\" | \"82\" | \"83\" | \"84\" | \"85\" | \"86\" | \"87\" | \"88\" | \"89\" | \"90\" | \"91\" | \"92\" | \"93\" | \"94\" | \"95\" | \"96\" | \"97\" | \"98\" | \"99\" | \"100\"",
+  "retrieval_max_selected": 4,
+  "retrieval_max_tokens": 64,
+  "qa_max_tokens": 64,
+  "split_sha256": "4ec686a411194467d234938c6d16ce80d11cc8af9306b613ce5bc6cd5035da22",
+  "routers_sha256": {
+    "ret": "2385914ccb13e29b8abda56cc66be0a2ec6c9e056b029997f0dc00e7c16efa11",
+    "qa_W": "e3266d5925a68e06c56b1a3c61df4b5edaddb00ff9c553a56817760c049252f3",
+    "qa_S": "9d12cf6343551cf9972180d5a786bcc69e7b091cb154601650037d6684bf925e"
+  },
+  "note": "Frozen routers; new actual evidence; full six-call grid per question. No silent truncation."
+}

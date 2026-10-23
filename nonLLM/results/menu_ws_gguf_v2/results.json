@@ -1,0 +1,417 @@
+{
+  "scope": "Four-model WS2x2 subset of menu A; GGUF exploratory; NOT eligible for pooled bf16/AWQ headline tables without team adopting the identical GGUF copies",
+  "summaries": [
+    {
+      "policy": "gguf-fixed-qwen7-llama3",
+      "seed": 0,
+      "accuracy": 0.54,
+      "units": 151.48122916666668,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-fixed-qwen7-llama70",
+      "seed": 0,
+      "accuracy": 0.622,
+      "units": 198.38403472222225,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-fixed-qwen72-llama3",
+      "seed": 0,
+      "accuracy": 0.658,
+      "units": 1531.792625,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-fixed-qwen72-llama70",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-max_accuracy",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-ss_budget",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-cheap95",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-max_accuracy",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-ss_budget",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-cheap95",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-max_accuracy",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-ss_budget",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-cheap95",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-max_accuracy",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-ss_budget",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-cheap95",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-max_accuracy",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-ss_budget",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-cheap95",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-max_accuracy",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-ss_budget",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-cheap95",
+      "seed": 0,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-max_accuracy",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-ss_budget",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-cheap95",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-max_accuracy",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-ss_budget",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-cheap95",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-max_accuracy",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-ss_budget",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-cheap95",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-max_accuracy",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-ss_budget",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-cheap95",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-max_accuracy",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-ss_budget",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-cheap95",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-max_accuracy",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-ss_budget",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-cheap95",
+      "seed": 1,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-max_accuracy",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-ss_budget",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-majority-cheap95",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-max_accuracy",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-ss_budget",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-logreg-cheap95",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-max_accuracy",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-ss_budget",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-linear_svm-cheap95",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-max_accuracy",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-ss_budget",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-multinomial_nb-cheap95",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-max_accuracy",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-ss_budget",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-random_forest-cheap95",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-max_accuracy",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-ss_budget",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    },
+    {
+      "policy": "gguf-extra_trees-cheap95",
+      "seed": 2,
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0
+    }
+  ],
+  "router_seeds": [
+    0,
+    1,
+    2
+  ],
+  "generation_seed": 0
+}

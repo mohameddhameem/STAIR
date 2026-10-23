@@ -1,0 +1,49 @@
+{
+  "name": "grpo_lambda0.0",
+  "lock": {
+    "cost": 154.4907507567656,
+    "accuracy": 0.44594594594594594,
+    "theta_ret": 0.07182520627975464,
+    "theta_qa": 0.96065354347229
+  },
+  "val": {
+    "n": 1110,
+    "lenient_accuracy": 0.44594594594594594,
+    "strict_accuracy": 0.44594594594594594,
+    "mean_cost": 154.49075075676558,
+    "cost_pct_of_direct_SS": 86.77455121859843,
+    "cost_pct_of_cascade_SS": 71.45444307615422,
+    "picks": {
+      "SS": 703,
+      "WS": 397,
+      "WW": 9,
+      "SW": 1
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.44564483457123566,
+    "strict_accuracy": 0.44564483457123566,
+    "mean_cost": 151.98913263422065,
+    "cost_pct_of_direct_SS": 85.36943933428945,
+    "cost_pct_of_cascade_SS": 70.29740468479388,
+    "picks": {
+      "WS": 558,
+      "SS": 916,
+      "WW": 6,
+      "SW": 1
+    }
+  },
+  "training": {
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "ensemble": "mean action probabilities",
+    "lambda": 0.0,
+    "groups": 8,
+    "nonLLM": "linear policies over TF-IDF and numeric features"
+  }
+}

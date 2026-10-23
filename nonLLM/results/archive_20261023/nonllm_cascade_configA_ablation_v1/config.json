@@ -1,0 +1,16 @@
+{
+  "experiment": "nonLLM Config A cascade",
+  "weak_answer_input": false,
+  "cost_scope": "Config A flat parameter-ratio proxy, NOT measured token costs; excludes routing overhead",
+  "file_sha256": {
+    "grid": "2946508a94f9e9819e8e0acf86aef45e5ee1acdeb46352c1a53db7eae095cccb",
+    "ret": "29612e0a9caecf4bb66ad8af801a118eec5c8ec10d9b078d9fcf2ea8c1b00e6d",
+    "qa": "fe7c469ad4d205e3acd38b38ae4c3be6b71de03207c38e10e621dbd5375fe5b1"
+  },
+  "selection": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+  "ret_labels": "Provided answer-coverage labels; X mapped to W",
+  "qa_labels": "Provided outcome labels; X mapped to W",
+  "qa_classifier": "One shared classifier over both retrieval branches",
+  "passage_char_cap": 600,
+  "test_status": "Previously used split; new frozen replay, not a first-ever sealed test"
+}

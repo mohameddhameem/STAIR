@@ -1,0 +1,44 @@
+{
+  "results_19421.json": [
+    {
+      "port": 19421,
+      "concurrency": 8,
+      "seconds": 71.26204609964043,
+      "requests_per_second": 0.2245234437645586,
+      "generated_tokens_per_second": 22.326049939338294
+    },
+    {
+      "port": 19421,
+      "concurrency": 16,
+      "seconds": 35.794832749292254,
+      "requests_per_second": 0.4469918915968774,
+      "generated_tokens_per_second": 34.53012362585878,
+      "exact_text_matches_to_previous_level": 14
+    }
+  ],
+  "results_19420.json": [
+    {
+      "port": 19420,
+      "concurrency": 4,
+      "seconds": 47.247322550043464,
+      "requests_per_second": 0.3386435280655979,
+      "generated_tokens_per_second": 24.530490564251746
+    },
+    {
+      "port": 19420,
+      "concurrency": 8,
+      "seconds": 42.46747739613056,
+      "requests_per_second": 0.37675889836248777,
+      "generated_tokens_per_second": 27.597589305052228,
+      "exact_text_matches_to_previous_level": 13
+    },
+    {
+      "port": 19420,
+      "concurrency": 16,
+      "seconds": 34.243516308255494,
+      "requests_per_second": 0.4672417358068654,
+      "generated_tokens_per_second": 35.27675105341834,
+      "exact_text_matches_to_previous_level": 13
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "cascade.py": "febefe87632fb13017ae5bb2768aab1866bc8d39e8864f6f8dab5c2adb56f4a0",
+  "architecture_figures.py": "8ca4d199a325f5b028d48d55cf33382e82b4004e3c1f749db34ce9898e127080",
+  "compare.py": "471275b43f00515156ff82db8ed3c3a6521256dd26586a19810ae286f91a15e8",
+  "architecture_combine.py": "b6f4f1debbf35a24135c965af5dc5ffb88d8ef95dab8aed6e001f8b9cd620fcf",
+  "suite.py": "59981a0ae7e6bc653db5c76accc9256b5085c800622d8860b6812e8b2b356a16",
+  "architecture.py": "7c7e6e9a800baaf6b474b6df6922ba7282c3b6c0035fa7471d3bf9c0f56d013c",
+  "reference_lenient.py": "3f997b2f9831e595e4e377be73f08173be652c4127d3483ae4234b4be68cde00",
+  "run.py": "e186227cb34b2a345b49f49a22bf3a25704703a568b68461ae26c36bb278dfab",
+  "test_reference_lenient.py": "e789aaa0fac32c7aa58eb526e2ca7081e8e41d510c525b0d6000148004a89e81",
+  "baselines.py": "b68ccbf0bf38c7b531659a8585abe9b8108a7d6e4440605913d134b931116022",
+  "extended_run.py": "e5211f0fa668a064203839d2025126a06457aa62a7c84a1068f952e02ece4a04",
+  "cascade_four_gpu.py": "edd23808b1b8e34f7b349e42a6b934e3778c4115d940ca6cb5cd2a8a5962bf08",
+  "collect.py": "05edad2eec95ed4778008e836fdd19b629e7b90a5267c36afd260b523de0d17d",
+  "extended_figures.py": "04e9de2aec53cb8699e7dc39ac5a4f798ca111be4aabe1d0e90ee177edcbfb56",
+  "test_architecture.py": "fd87534e28b571d4fb2eb10a02cf1f2a8e3077ab86588bb60a92b0b20369e038",
+  "extended_policy.py": "b4742f39256abba61698be729097385342516bc4c158bc80b162a941f5d2ff8c",
+  "test_extended.py": "5aab0b2d227f159ec1c3e071e8b792acc27f476173d985d0e6375be0f85b084c",
+  "build_strict_html_report.py": "28feabbb06eb7f482a9b8b132867536e1b0bb774911a73a3d012cd9da531c5aa",
+  "build_html_report.py": "b642be1f744a361c48600be90033fcc997c4a435d8fe3c7a70debc81fdcbd541",
+  "reference_pre_router.py": "38ffead3a1de4bd5950704b0cdf01fa945043c2d697e2cb287dea40d92743724",
+  "test_methods.py": "d45788104315b458f3a7c1977b8717df2956af7635d25c39d68b6f7a7d38a566"
+}

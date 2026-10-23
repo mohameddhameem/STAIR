@@ -1,0 +1,17 @@
+{
+  "max_accuracy": {
+    "key": "lambda_0.0_threshold_0.0",
+    "val_accuracy": 0.5252252252252252,
+    "val_cost": 176.99673150573668
+  },
+  "ss_budget": {
+    "key": "lambda_0.0_threshold_0.0",
+    "val_accuracy": 0.5252252252252252,
+    "val_cost": 176.99673150573668
+  },
+  "cheap95": {
+    "key": "lambda_0.05_no_chooser",
+    "val_accuracy": 0.5198198198198198,
+    "val_cost": 166.36405345889506
+  }
+}

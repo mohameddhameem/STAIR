@@ -1,0 +1,17 @@
+{
+  "experiment": "nonLLM Config A cascade",
+  "weak_answer_input": false,
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "file_sha256": {
+    "grid": "1f09bb7e3667e09626c3eb2014ffa6fbb5e2e7e4000a4c416f100f32cc608365",
+    "ret": "fc8b45cce422d74d99a9d05dffdc6706789a31cb056360753fd6fb9eb97bd0f8",
+    "qa": "5124dd9f60e42b19b435c97ad486259b9b7112cee67978e09ec1775385ad3b5a"
+  },
+  "selection": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+  "ret_labels": "Provided answer-coverage labels; X mapped to W",
+  "qa_labels": "Provided outcome labels; X mapped to W",
+  "qa_classifier": "One shared classifier over both retrieval branches",
+  "passage_char_cap": 600,
+  "test_status": "Previously used split; new frozen replay, not a first-ever sealed test",
+  "token_costs_sha256": "d1bfb8a5fe618364eea95c548b54803da19df57dae53cf162be259fe77c65166"
+}

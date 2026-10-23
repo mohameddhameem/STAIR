@@ -1,0 +1,24 @@
+{
+  "primary_metric": "Review-validated reference-lenient reconstruction; forward whole-word containment",
+  "review_records_agree": 4267,
+  "all_sample_and_confidence_records_verified": 112562,
+  "unit_tests_passed": 19,
+  "unit_suites": {
+    "test_methods.py": 4,
+    "test_extended.py": 4,
+    "test_architecture.py": 5,
+    "test_reference_lenient.py": 6
+  },
+  "lenient_distinct_from_strict": true,
+  "reward_arrays_newly_written": true,
+  "equal_question_sample_indexing_verified": true,
+  "cohort_SS_val_correct": 583,
+  "cohort_SS_test_correct": 784,
+  "limitation": "Original scorer source is missing; agreement supports reconstruction but does not prove every unobserved original case.",
+  "completed_result_count": 73,
+  "extended_training_streams": 144,
+  "report_links_verified": 22,
+  "http_status": 200,
+  "primary_report": "reports/router_methods_results_lenient.html",
+  "browser_filters_chart_and_mobile_layout": "PASS"
+}

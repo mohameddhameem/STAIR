@@ -1,0 +1,19 @@
+{
+  "phase": "prepared_not_trained",
+  "menu": "A",
+  "dataset": "hotpotqa",
+  "splits": {
+    "train_extra": 6405,
+    "val": 500,
+    "test": 500
+  },
+  "routes": 9,
+  "blockers": [
+    "Llama3B and8B official pinned weight access returns401.",
+    "vLLM not installed.",
+    "Qwen32B bf16 cannot fit two local24GB GPUs.",
+    "Need shared executor-cache/prompt/decoding contract for a pure router comparison."
+  ],
+  "jobs_submitted": false,
+  "full_generation_started": false
+}

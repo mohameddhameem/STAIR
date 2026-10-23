@@ -1,0 +1,136 @@
+{
+  "config": {
+    "experiment": "nonLLM Config A cascade",
+    "weak_answer_input": true,
+    "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+    "file_sha256": {
+      "grid": "8ac8c4d93719809a259a3e765229b83621ad3152c149a7baae775e2df4a71040",
+      "ret": "fc8b45cce422d74d99a9d05dffdc6706789a31cb056360753fd6fb9eb97bd0f8",
+      "qa": "8050ffe2fad511888e1b5675b5b64f35ba7694684610f6b1bfd0c53de51538c8"
+    },
+    "selection": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+    "ret_labels": "Provided answer-coverage labels; X mapped to W",
+    "qa_labels": "Provided outcome labels; X mapped to W",
+    "qa_classifier": "One shared classifier over both retrieval branches",
+    "passage_char_cap": 600,
+    "test_status": "Previously used split; new frozen replay, not a first-ever sealed test",
+    "qa_weak_sha256": "f73ed5d4245b005f88cd8d765b404f787449d5efa22e5fcc767b921a4a33d317",
+    "token_costs_sha256": "d1bfb8a5fe618364eea95c548b54803da19df57dae53cf162be259fe77c65166"
+  },
+  "lock": {
+    "selected_family": "multinomial_nb",
+    "rule": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+    "bar": 0.5674324324324325,
+    "families": {
+      "majority": {
+        "cost": 216.20873959106154,
+        "accuracy": 0.5972972972972973,
+        "theta_ret": Infinity,
+        "theta_qa": Infinity
+      },
+      "logreg": {
+        "cost": 149.229959520163,
+        "accuracy": 0.5675675675675675,
+        "theta_ret": 0.5195019763887085,
+        "theta_qa": 0.5961241786834031
+      },
+      "linear_svm": {
+        "cost": 143.78085760987804,
+        "accuracy": 0.5675675675675675,
+        "theta_ret": 0.16562596578046027,
+        "theta_qa": 0.8040457297273398
+      },
+      "multinomial_nb": {
+        "cost": 143.77727203719357,
+        "accuracy": 0.5675675675675675,
+        "theta_ret": 0.9481792446858017,
+        "theta_qa": 0.9999076865358885
+      },
+      "random_forest": {
+        "cost": 148.58054392319454,
+        "accuracy": 0.5675675675675675,
+        "theta_ret": 0.616878566607049,
+        "theta_qa": 0.7512195555103449
+      }
+    },
+    "stage_metrics": {
+      "ret": {
+        "majority": {
+          "val_auc": 0.5,
+          "parameter": null
+        },
+        "logreg": {
+          "val_auc": 0.6279246200607903,
+          "parameter": 0.1
+        },
+        "linear_svm": {
+          "val_auc": 0.6225993920972646,
+          "parameter": 0.1
+        },
+        "multinomial_nb": {
+          "val_auc": 0.5989641337386018,
+          "parameter": 0.1
+        },
+        "random_forest": {
+          "val_auc": 0.6196911854103344,
+          "parameter": null
+        }
+      },
+      "qa": {
+        "majority": {
+          "val_auc": 0.5,
+          "parameter": null
+        },
+        "logreg": {
+          "val_auc": 0.5728996710526315,
+          "parameter": 0.1
+        },
+        "linear_svm": {
+          "val_auc": 0.5676907894736842,
+          "parameter": 0.1
+        },
+        "multinomial_nb": {
+          "val_auc": 0.4882039473684211,
+          "parameter": 0.1
+        },
+        "random_forest": {
+          "val_auc": 0.6201513157894737,
+          "parameter": 8
+        }
+      }
+    }
+  },
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.5597569209993247,
+    "strict_accuracy": 0.44564483457123566,
+    "mean_cost": 138.02448916766653,
+    "cost_pct_of_direct_SS": 77.525761549036,
+    "cost_pct_of_cascade_SS": 63.83853373768649,
+    "picks": {
+      "WS": 686,
+      "SS": 794,
+      "WW": 1
+    }
+  },
+  "fixed_test": {
+    "WW": {
+      "accuracy": 0.3760972316002701,
+      "cascade_cost": 39.023777241392
+    },
+    "WS": {
+      "accuracy": 0.49291019581363943,
+      "cascade_cost": 47.675663913658695
+    },
+    "SW": {
+      "accuracy": 0.48278190411883865,
+      "cascade_cost": 211.53683859852072
+    },
+    "SS": {
+      "accuracy": 0.5908170155300473,
+      "cascade_cost": 216.20873959106152
+    }
+  },
+  "direct_SS_cost": 178.03693431681327,
+  "seconds": 21.71985616441816
+}

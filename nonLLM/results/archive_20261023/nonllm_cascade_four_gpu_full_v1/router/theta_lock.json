@@ -1,0 +1,83 @@
+{
+  "selected_family": "multinomial_nb",
+  "rule": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+  "bar": 0.5674324324324325,
+  "families": {
+    "majority": {
+      "cost": 216.20873959106154,
+      "accuracy": 0.5972972972972973,
+      "theta_ret": Infinity,
+      "theta_qa": Infinity
+    },
+    "logreg": {
+      "cost": 149.229959520163,
+      "accuracy": 0.5675675675675675,
+      "theta_ret": 0.5195019763887085,
+      "theta_qa": 0.5961241786834031
+    },
+    "linear_svm": {
+      "cost": 143.78085760987804,
+      "accuracy": 0.5675675675675675,
+      "theta_ret": 0.16562596578046027,
+      "theta_qa": 0.8040457297273398
+    },
+    "multinomial_nb": {
+      "cost": 143.77727203719357,
+      "accuracy": 0.5675675675675675,
+      "theta_ret": 0.9481792446858017,
+      "theta_qa": 0.9999076865358885
+    },
+    "random_forest": {
+      "cost": 148.58054392319454,
+      "accuracy": 0.5675675675675675,
+      "theta_ret": 0.616878566607049,
+      "theta_qa": 0.7512195555103449
+    }
+  },
+  "stage_metrics": {
+    "ret": {
+      "majority": {
+        "val_auc": 0.5,
+        "parameter": null
+      },
+      "logreg": {
+        "val_auc": 0.6279246200607903,
+        "parameter": 0.1
+      },
+      "linear_svm": {
+        "val_auc": 0.6225993920972646,
+        "parameter": 0.1
+      },
+      "multinomial_nb": {
+        "val_auc": 0.5989641337386018,
+        "parameter": 0.1
+      },
+      "random_forest": {
+        "val_auc": 0.6196911854103344,
+        "parameter": null
+      }
+    },
+    "qa": {
+      "majority": {
+        "val_auc": 0.5,
+        "parameter": null
+      },
+      "logreg": {
+        "val_auc": 0.5728996710526315,
+        "parameter": 0.1
+      },
+      "linear_svm": {
+        "val_auc": 0.5676907894736842,
+        "parameter": 0.1
+      },
+      "multinomial_nb": {
+        "val_auc": 0.4882039473684211,
+        "parameter": 0.1
+      },
+      "random_forest": {
+        "val_auc": 0.6201513157894737,
+        "parameter": 8
+      }
+    }
+  }
+}

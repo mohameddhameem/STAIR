@@ -1,0 +1,7 @@
+{
+  "n": 8,
+  "calls": 48,
+  "strict_metric": "normalized exact match",
+  "lenient_metric": "normalized bidirectional whole-word containment; prefix guard more than/less than/at least/at most/over/under",
+  "reproduction_limit": "Original mint/scoring implementation absent; local explicit scorer. New outputs and labels, not original Config A result reproduction."
+}

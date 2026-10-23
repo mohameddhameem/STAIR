@@ -1,0 +1,17 @@
+{
+  "max_accuracy": {
+    "key": "constant_3",
+    "val_accuracy": 0.527927927927928,
+    "val_cost": 9.4
+  },
+  "ss_budget": {
+    "key": "constant_3",
+    "val_accuracy": 0.527927927927928,
+    "val_cost": 9.4
+  },
+  "cheap95": {
+    "key": "lambda_0.15",
+    "val_accuracy": 0.5108108108108108,
+    "val_cost": 8.463333333333333
+  }
+}

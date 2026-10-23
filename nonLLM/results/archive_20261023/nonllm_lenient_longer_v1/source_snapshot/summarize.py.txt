@@ -1,0 +1,38 @@
+from pathlib import Path
+import json,html
+out=Path(__file__).resolve().parent
+old=out.parent/'nonllm_reference_lenient_v1/extended'
+new=json.loads((out/'results.json').read_text()); prior=json.loads((old/'results.json').read_text())
+oldmap={r['name']:r for r in prior['results']}
+rows=[]
+for r in new['results']:
+ c=r['selected_config']; t=r['test'];o=oldmap[r['name']];oc=o['selected_config'];p=c['points'][r['objective']]
+ rows.append({'name':r['name'],'G':c['groups'],'lambda':c['lambda'],'epoch':c['epoch'],'val_accuracy_pct':100*p['accuracy'],'previous_val_accuracy_pct':100*oc['points'][r['objective']]['accuracy'],'test_accuracy_pct':100*t['lenient_accuracy'],'previous_test_accuracy_pct':100*o['test']['lenient_accuracy'],'test_cost_pct_ss':t['cost_pct_of_direct_SS'],'previous_test_cost_pct_ss':o['test']['cost_pct_of_direct_SS'],'test_delta_ss_pp':r['test_difference_from_SS_pp'],'interval':r['paired_95_interval_pp']})
+parities=[json.loads(p.read_text()) for p in (out/'training').glob('*/replay_parity.json')]
+assert len(parities)==54 and all(p['bitwise_equal'] for p in parities)
+summary={'replay_checks':54,'all_120_epoch_weights_bitwise_equal':True,'global_selected':new['global_selected'],'rows':rows,'comparison_note':'Earlier search includes G8 and confidence/aug5; this extension focuses base/aug9 and G16/G32. Each family comparison includes its old checkpoints and hence prior validation winner for base/aug9 if G16/G32/exact; G8 prior winners can be outside extension.'}
+curves=[]
+for mode in ['base','aug9']:
+ for g in [16,32]:
+  means={ep:[] for ep in [120,300]};zero=[]
+  for path in (out/'training').glob(f'{mode}_grpo_g{g}_lambda0.0*/curve.jsonl'):
+   for line in path.read_text().splitlines():
+    rec=json.loads(line)
+    if rec['epoch'] in means:means[rec['epoch']].append(100*rec['val_expected_accuracy'])
+    if rec['epoch']==300:zero.append(100*rec['zero_advantage_fraction'])
+  assert all(len(v)==3 for v in means.values())
+  curves.append({'mode':mode,'groups':g,'lambda':0,'val_expected_accuracy_pct':{str(ep):sum(v)/3 for ep,v in means.items()},'zero_advantage_pct_at300':sum(zero)/3})
+summary['curve_diagnostics']=curves
+(out/'comparison.json').write_text(json.dumps(summary,indent=2))
+lines=['# Non-LLM GRPO continuation to 300 epochs','','54 seed-specific streams: base/aug9 × exact/G16/G32 × λ0/.15/.4 × seeds17/29/43. Every replay matched original epoch120 weights bit for bit before uninterrupted continuation. Full optimizer and RNG states saved at checkpoints.','', 'Primary: unchanged review-validated lenient reconstruction. Original mint_labels.py unavailable. Same regenerated Instruct cohort: SS test52.94%, val52.52%. Test previously inspected; comparisons descriptive. Exact means exact expected reward, not exact-match scoring.','', '| Family / objective | G | λ | Selected epoch | Val % | Old val % | Test % | Old test % | Cost % SS | Old cost % SS |','|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|']
+for r in rows:lines.append(f"| {r['name']} | {r['G']} | {r['lambda']} | {r['epoch']} | {r['val_accuracy_pct']:.2f} | {r['previous_val_accuracy_pct']:.2f} | {r['test_accuracy_pct']:.2f} | {r['previous_test_accuracy_pct']:.2f} | {r['test_cost_pct_ss']:.2f} | {r['previous_test_cost_pct_ss']:.2f} |")
+lines+=['','All checkpoints and deployment thresholds selected on validation before test inference. Costs include sunk weak calls, use parameter-weighted recorded-token proxies, and exclude router/training overhead. More training does not remove the cascade cost floor.','',summary['comparison_note']]
+(out/'COMPARISON.md').write_text('\n'.join(lines)+'\n')
+head='<th>Method / objective</th><th>G</th><th>λ</th><th>Epoch</th><th>Val %</th><th>Old val %</th><th>Test %</th><th>Old test %</th><th>Cost % SS</th><th>Old cost % SS</th>'
+table=''.join('<tr>'+''.join('<td>'+html.escape(str(v))+'</td>' for v in [r['name'],r['G'],r['lambda'],r['epoch'],f"{r['val_accuracy_pct']:.2f}",f"{r['previous_val_accuracy_pct']:.2f}",f"{r['test_accuracy_pct']:.2f}",f"{r['previous_test_accuracy_pct']:.2f}",f"{r['test_cost_pct_ss']:.2f}",f"{r['previous_test_cost_pct_ss']:.2f}"])+'</tr>' for r in rows)
+page='<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Non-LLM router: 300-epoch continuation</title><style>body{font:16px system-ui;max-width:1250px;margin:32px auto;padding:0 20px;color:#18253c}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:10px;border-bottom:1px solid #ddd;text-align:right}th:first-child,td:first-child{text-align:left}.scroll{overflow:auto}p{line-height:1.6}</style><h1>Does longer GRPO training help?</h1><p>Controlled extension from 120 to 300 epochs. 54 runs; all epoch-120 replays matched previous weights bit for bit. Linear non-LLM policies only; Qwen Instruct models unchanged. Checkpoint and threshold selection uses validation.</p><p>Primary metric: review-validated lenient reconstruction; the author’s complete scorer is unavailable. Regenerated-cohort SS: <b>52.94% test / 100% cost</b> (52.52% validation). The original 52.79% figure belongs to the original validation cohort. Results below are descriptive on a previously inspected test set.</p><div class="scroll"><table><thead><tr>'+head+'</tr></thead><tbody>'+table+'</tbody></table></div><p>Base = unaugmented router features. Aug9 = greedy plus eight sampled weak-answer training variants; one weak answer at deployment. Exact = exact expectation over four action rewards. Earlier family searches also included G8. Costs include sunk weak calls and use parameter-weighted token proxies.</p><p><a href="../runs/nonllm_lenient_longer_v1/COMPARISON.md">Protocol and results</a> · <a href="../runs/nonllm_lenient_longer_v1/comparison.json">Machine-readable comparison</a> · <a href="router_methods_results.html">All previous methods</a></p></html>'
+report=out.parents[1]/'reports/router_longer_training.html';report.write_text(page)
+for name in ['router_methods_results.html','router_methods_results_lenient.html']:
+ p=report.parent/name;s=p.read_text();mark='<!-- longer-training-link -->'
+ if mark not in s:s=s.replace('</body>',mark+'<p style="margin:24px"><a href="router_longer_training.html">New: controlled GRPO continuation to 300 epochs</a></p></body>');p.write_text(s)
+print(json.dumps(summary,indent=2))

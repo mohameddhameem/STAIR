@@ -1,0 +1,721 @@
+{
+  "selections": [
+    {
+      "name": "majority_seed0",
+      "family": "majority",
+      "seed": 0,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed0",
+      "family": "majority",
+      "seed": 0,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed0",
+      "family": "majority",
+      "seed": 0,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed0",
+      "family": "logreg",
+      "seed": 0,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed0",
+      "family": "logreg",
+      "seed": 0,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed0",
+      "family": "logreg",
+      "seed": 0,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed0",
+      "family": "linear_svm",
+      "seed": 0,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed0",
+      "family": "linear_svm",
+      "seed": 0,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed0",
+      "family": "linear_svm",
+      "seed": 0,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed0",
+      "family": "multinomial_nb",
+      "seed": 0,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed0",
+      "family": "multinomial_nb",
+      "seed": 0,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed0",
+      "family": "multinomial_nb",
+      "seed": 0,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed0",
+      "family": "random_forest",
+      "seed": 0,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed0",
+      "family": "random_forest",
+      "seed": 0,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed0",
+      "family": "random_forest",
+      "seed": 0,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed0",
+      "family": "extra_trees",
+      "seed": 0,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed0",
+      "family": "extra_trees",
+      "seed": 0,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed0",
+      "family": "extra_trees",
+      "seed": 0,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed1",
+      "family": "majority",
+      "seed": 1,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed1",
+      "family": "majority",
+      "seed": 1,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed1",
+      "family": "majority",
+      "seed": 1,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed1",
+      "family": "logreg",
+      "seed": 1,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed1",
+      "family": "logreg",
+      "seed": 1,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed1",
+      "family": "logreg",
+      "seed": 1,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed1",
+      "family": "linear_svm",
+      "seed": 1,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed1",
+      "family": "linear_svm",
+      "seed": 1,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed1",
+      "family": "linear_svm",
+      "seed": 1,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed1",
+      "family": "multinomial_nb",
+      "seed": 1,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed1",
+      "family": "multinomial_nb",
+      "seed": 1,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed1",
+      "family": "multinomial_nb",
+      "seed": 1,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed1",
+      "family": "random_forest",
+      "seed": 1,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed1",
+      "family": "random_forest",
+      "seed": 1,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed1",
+      "family": "random_forest",
+      "seed": 1,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed1",
+      "family": "extra_trees",
+      "seed": 1,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed1",
+      "family": "extra_trees",
+      "seed": 1,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed1",
+      "family": "extra_trees",
+      "seed": 1,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed2",
+      "family": "majority",
+      "seed": 2,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed2",
+      "family": "majority",
+      "seed": 2,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "majority_seed2",
+      "family": "majority",
+      "seed": 2,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed2",
+      "family": "logreg",
+      "seed": 2,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed2",
+      "family": "logreg",
+      "seed": 2,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "logreg_seed2",
+      "family": "logreg",
+      "seed": 2,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed2",
+      "family": "linear_svm",
+      "seed": 2,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed2",
+      "family": "linear_svm",
+      "seed": 2,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "linear_svm_seed2",
+      "family": "linear_svm",
+      "seed": 2,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed2",
+      "family": "multinomial_nb",
+      "seed": 2,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed2",
+      "family": "multinomial_nb",
+      "seed": 2,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "multinomial_nb_seed2",
+      "family": "multinomial_nb",
+      "seed": 2,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed2",
+      "family": "random_forest",
+      "seed": 2,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed2",
+      "family": "random_forest",
+      "seed": 2,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "random_forest_seed2",
+      "family": "random_forest",
+      "seed": 2,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed2",
+      "family": "extra_trees",
+      "seed": 2,
+      "objective": "max_accuracy",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed2",
+      "family": "extra_trees",
+      "seed": 2,
+      "objective": "ss_budget",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "extra_trees_seed2",
+      "family": "extra_trees",
+      "seed": 2,
+      "objective": "cheap95",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.758,
+        "units": 1582.4921875
+      }
+    }
+  ],
+  "training_mean_ret_units": [
+    149.3602098512447,
+    1531.003825136612
+  ],
+  "training_mean_qa_units": [
+    [
+      2.206289845173042,
+      49.124032331511835
+    ],
+    [
+      2.092238322924798,
+      45.57464329083181
+    ]
+  ],
+  "note": "Written before any test feature construction or test scoring; historical test was previously examined."
+}

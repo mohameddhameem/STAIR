@@ -1,0 +1,6 @@
+{
+  "time": 1792671519.0976965,
+  "reason": "Fixed port reused immediately after pilot caused EADDRINUSE at bind preflight; no listeners remained after cleanup. Use OS-assigned ephemeral ports. Generation and model protocol unchanged.",
+  "previous_code": "code/before_port_fix/run.py",
+  "retained_70b_calls": 4
+}

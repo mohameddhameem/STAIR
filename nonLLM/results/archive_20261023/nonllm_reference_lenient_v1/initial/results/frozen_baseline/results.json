@@ -1,0 +1,36 @@
+{
+  "name": "frozen_baseline",
+  "lock": {
+    "cost": 143.1146063336571,
+    "accuracy": 0.4990990990990991,
+    "theta_ret": 0.5991074132898146,
+    "theta_qa": 0.8125148722648511
+  },
+  "val": {
+    "n": 1110,
+    "lenient_accuracy": 0.4990990990990991,
+    "strict_accuracy": 0.44954954954954957,
+    "mean_cost": 143.11460633365712,
+    "cost_pct_of_direct_SS": 80.38478469809385,
+    "cost_pct_of_cascade_SS": 66.19279433585568,
+    "picks": {
+      "SS": 614,
+      "WS": 481,
+      "SW": 15
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.50033760972316,
+    "strict_accuracy": 0.4415935178933153,
+    "mean_cost": 141.29258388029746,
+    "cost_pct_of_direct_SS": 79.36138892892306,
+    "cost_pct_of_cascade_SS": 65.35007981062148,
+    "picks": {
+      "WS": 658,
+      "SS": 811,
+      "SW": 12
+    }
+  }
+}

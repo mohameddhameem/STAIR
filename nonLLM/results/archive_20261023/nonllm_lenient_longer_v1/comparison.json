@@ -1,0 +1,258 @@
+{
+  "replay_checks": 54,
+  "all_120_epoch_weights_bitwise_equal": true,
+  "global_selected": {
+    "cheap95": "base_exact_cheap95",
+    "max_accuracy": "base_grpo_max_accuracy",
+    "ss_budget": "base_grpo_ss_budget"
+  },
+  "rows": [
+    {
+      "name": "base_exact_cheap95",
+      "G": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "val_accuracy_pct": 49.90990990990991,
+      "previous_val_accuracy_pct": 49.90990990990991,
+      "test_accuracy_pct": 49.155975692099936,
+      "previous_test_accuracy_pct": 49.155975692099936,
+      "test_cost_pct_ss": 67.35578693094787,
+      "previous_test_cost_pct_ss": 67.35578693094787,
+      "test_delta_ss_pp": -3.7812288993923024,
+      "interval": [
+        -5.200877785280216,
+        -2.363268062120189
+      ]
+    },
+    {
+      "name": "base_exact_max_accuracy",
+      "G": 0,
+      "lambda": 0.0,
+      "epoch": 120,
+      "val_accuracy_pct": 52.702702702702695,
+      "previous_val_accuracy_pct": 52.702702702702695,
+      "test_accuracy_pct": 51.92437542201216,
+      "previous_test_accuracy_pct": 51.92437542201216,
+      "test_cost_pct_ss": 114.46805772323872,
+      "previous_test_cost_pct_ss": 114.46805772323872,
+      "test_delta_ss_pp": -1.012829169480081,
+      "interval": [
+        -1.688048615800135,
+        -0.4051316677920324
+      ]
+    },
+    {
+      "name": "base_exact_ss_budget",
+      "G": 0,
+      "lambda": 0.15,
+      "epoch": 240,
+      "val_accuracy_pct": 52.072072072072075,
+      "previous_val_accuracy_pct": 51.98198198198198,
+      "test_accuracy_pct": 50.84402430790007,
+      "previous_test_accuracy_pct": 51.58676569885212,
+      "test_cost_pct_ss": 90.3466071397088,
+      "previous_test_cost_pct_ss": 96.05095155788273,
+      "test_delta_ss_pp": -2.0931802835921673,
+      "interval": [
+        -3.1735313977042536,
+        -1.012829169480081
+      ]
+    },
+    {
+      "name": "base_grpo_cheap95",
+      "G": 16,
+      "lambda": 0.0,
+      "epoch": 240,
+      "val_accuracy_pct": 49.90990990990991,
+      "previous_val_accuracy_pct": 49.90990990990991,
+      "test_accuracy_pct": 49.49358541525996,
+      "previous_test_accuracy_pct": 49.02093180283592,
+      "test_cost_pct_ss": 69.06042642738403,
+      "previous_test_cost_pct_ss": 67.4460182717465,
+      "test_delta_ss_pp": -3.443619176232275,
+      "interval": [
+        -4.929101958136394,
+        -1.9581363943281564
+      ]
+    },
+    {
+      "name": "base_grpo_max_accuracy",
+      "G": 16,
+      "lambda": 0.15,
+      "epoch": 30,
+      "val_accuracy_pct": 52.792792792792795,
+      "previous_val_accuracy_pct": 52.792792792792795,
+      "test_accuracy_pct": 51.85685347738015,
+      "previous_test_accuracy_pct": 51.85685347738015,
+      "test_cost_pct_ss": 119.92453903003336,
+      "previous_test_cost_pct_ss": 119.92453903003336,
+      "test_delta_ss_pp": -1.0803511141120865,
+      "interval": [
+        -1.7555705604321403,
+        -0.4051316677920324
+      ]
+    },
+    {
+      "name": "base_grpo_ss_budget",
+      "G": 32,
+      "lambda": 0.15,
+      "epoch": 300,
+      "val_accuracy_pct": 52.25225225225225,
+      "previous_val_accuracy_pct": 51.621621621621614,
+      "test_accuracy_pct": 51.85685347738015,
+      "previous_test_accuracy_pct": 51.85685347738015,
+      "test_cost_pct_ss": 100.15584829639847,
+      "previous_test_cost_pct_ss": 101.75378653435718,
+      "test_delta_ss_pp": -1.0803511141120865,
+      "interval": [
+        -1.9581363943281564,
+        -0.26839972991223066
+      ]
+    },
+    {
+      "name": "aug9_exact_cheap95",
+      "G": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "val_accuracy_pct": 49.90990990990991,
+      "previous_val_accuracy_pct": 49.90990990990991,
+      "test_accuracy_pct": 49.155975692099936,
+      "previous_test_accuracy_pct": 49.155975692099936,
+      "test_cost_pct_ss": 68.24735104633761,
+      "previous_test_cost_pct_ss": 68.24735104633761,
+      "test_delta_ss_pp": -3.7812288993923024,
+      "interval": [
+        -5.334233625928427,
+        -2.363268062120189
+      ]
+    },
+    {
+      "name": "aug9_exact_max_accuracy",
+      "G": 0,
+      "lambda": 0.0,
+      "epoch": 180,
+      "val_accuracy_pct": 52.702702702702695,
+      "previous_val_accuracy_pct": 52.61261261261261,
+      "test_accuracy_pct": 52.46455097906819,
+      "previous_test_accuracy_pct": 52.66711681296421,
+      "test_cost_pct_ss": 117.91960431722956,
+      "previous_test_cost_pct_ss": 120.47276340239489,
+      "test_delta_ss_pp": -0.4726536124240378,
+      "interval": [
+        -1.012829169480081,
+        0.0675219446320054
+      ]
+    },
+    {
+      "name": "aug9_exact_ss_budget",
+      "G": 0,
+      "lambda": 0.4,
+      "epoch": 300,
+      "val_accuracy_pct": 52.072072072072075,
+      "previous_val_accuracy_pct": 51.891891891891895,
+      "test_accuracy_pct": 51.789331532748136,
+      "previous_test_accuracy_pct": 51.2491559756921,
+      "test_cost_pct_ss": 96.5054616891819,
+      "previous_test_cost_pct_ss": 90.88249094773491,
+      "test_delta_ss_pp": -1.1478730587440917,
+      "interval": [
+        -2.0931802835921673,
+        -0.2025658338960162
+      ]
+    },
+    {
+      "name": "aug9_grpo_cheap95",
+      "G": 32,
+      "lambda": 0.0,
+      "epoch": 30,
+      "val_accuracy_pct": 49.90990990990991,
+      "previous_val_accuracy_pct": 49.90990990990991,
+      "test_accuracy_pct": 49.42606347062796,
+      "previous_test_accuracy_pct": 49.56110735989196,
+      "test_cost_pct_ss": 70.2240037218398,
+      "previous_test_cost_pct_ss": 69.96505230589926,
+      "test_delta_ss_pp": -3.5111411208642807,
+      "interval": [
+        -5.064145847400405,
+        -2.025658338960162
+      ]
+    },
+    {
+      "name": "aug9_grpo_max_accuracy",
+      "G": 16,
+      "lambda": 0.15,
+      "epoch": 300,
+      "val_accuracy_pct": 52.702702702702695,
+      "previous_val_accuracy_pct": 52.702702702702695,
+      "test_accuracy_pct": 52.397029034436194,
+      "previous_test_accuracy_pct": 52.73463875759622,
+      "test_cost_pct_ss": 118.31984344325342,
+      "previous_test_cost_pct_ss": 121.4102640711579,
+      "test_delta_ss_pp": -0.5401755570560433,
+      "interval": [
+        -0.9453072248480756,
+        -0.2025658338960162
+      ]
+    },
+    {
+      "name": "aug9_grpo_ss_budget",
+      "G": 32,
+      "lambda": 0.4,
+      "epoch": 240,
+      "val_accuracy_pct": 51.891891891891895,
+      "previous_val_accuracy_pct": 51.621621621621614,
+      "test_accuracy_pct": 51.2491559756921,
+      "previous_test_accuracy_pct": 50.77650236326806,
+      "test_cost_pct_ss": 99.06268769885226,
+      "previous_test_cost_pct_ss": 97.5827406263288,
+      "test_delta_ss_pp": -1.688048615800135,
+      "interval": [
+        -2.633355840648211,
+        -0.7427413909520594
+      ]
+    }
+  ],
+  "comparison_note": "Earlier search includes G8 and confidence/aug5; this extension focuses base/aug9 and G16/G32. Each family comparison includes its old checkpoints and hence prior validation winner for base/aug9 if G16/G32/exact; G8 prior winners can be outside extension.",
+  "curve_diagnostics": [
+    {
+      "mode": "base",
+      "groups": 16,
+      "lambda": 0,
+      "val_expected_accuracy_pct": {
+        "120": 52.16320753097534,
+        "300": 52.17682719230652
+      },
+      "zero_advantage_pct_at300": 95.12367447217305
+    },
+    {
+      "mode": "base",
+      "groups": 32,
+      "lambda": 0,
+      "val_expected_accuracy_pct": {
+        "120": 52.214779456456505,
+        "300": 52.21832791964213
+      },
+      "zero_advantage_pct_at300": 93.03928017616272
+    },
+    {
+      "mode": "aug9",
+      "groups": 16,
+      "lambda": 0,
+      "val_expected_accuracy_pct": {
+        "120": 52.162559827168785,
+        "300": 52.18124588330587
+      },
+      "zero_advantage_pct_at300": 95.19536097844441
+    },
+    {
+      "mode": "aug9",
+      "groups": 32,
+      "lambda": 0,
+      "val_expected_accuracy_pct": {
+        "120": 52.21415162086487,
+        "300": 52.223179737726845
+      },
+      "zero_advantage_pct_at300": 93.07640393575032
+    }
+  ]
+}

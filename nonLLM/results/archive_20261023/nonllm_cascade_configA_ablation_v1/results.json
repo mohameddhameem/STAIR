@@ -1,0 +1,135 @@
+{
+  "config": {
+    "experiment": "nonLLM Config A cascade",
+    "weak_answer_input": false,
+    "cost_scope": "Config A flat parameter-ratio proxy, NOT measured token costs; excludes routing overhead",
+    "file_sha256": {
+      "grid": "2946508a94f9e9819e8e0acf86aef45e5ee1acdeb46352c1a53db7eae095cccb",
+      "ret": "29612e0a9caecf4bb66ad8af801a118eec5c8ec10d9b078d9fcf2ea8c1b00e6d",
+      "qa": "fe7c469ad4d205e3acd38b38ae4c3be6b71de03207c38e10e621dbd5375fe5b1"
+    },
+    "selection": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+    "ret_labels": "Provided answer-coverage labels; X mapped to W",
+    "qa_labels": "Provided outcome labels; X mapped to W",
+    "qa_classifier": "One shared classifier over both retrieval branches",
+    "passage_char_cap": 600,
+    "test_status": "Previously used split; new frozen replay, not a first-ever sealed test"
+  },
+  "lock": {
+    "selected_family": "random_forest",
+    "rule": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+    "bar": 0.5015315315315315,
+    "families": {
+      "majority": {
+        "cost": 11.4,
+        "accuracy": 0.527927927927928,
+        "theta_ret": Infinity,
+        "theta_qa": Infinity
+      },
+      "logreg": {
+        "cost": 8.70702702702702,
+        "accuracy": 0.5018018018018018,
+        "theta_ret": 0.5199198283527257,
+        "theta_qa": 0.5440830195208096
+      },
+      "linear_svm": {
+        "cost": 8.850990990990983,
+        "accuracy": 0.5018018018018018,
+        "theta_ret": 0.2822077440483302,
+        "theta_qa": 0.320433041598967
+      },
+      "multinomial_nb": {
+        "cost": 9.0627027027027,
+        "accuracy": 0.5018018018018018,
+        "theta_ret": 0.9535642652388393,
+        "theta_qa": 0.9913733556613714
+      },
+      "random_forest": {
+        "cost": 8.173513513513505,
+        "accuracy": 0.5018018018018018,
+        "theta_ret": 0.5581017912976061,
+        "theta_qa": 0.5652912676224255
+      }
+    },
+    "stage_metrics": {
+      "ret": {
+        "majority": {
+          "val_auc": 0.5,
+          "parameter": null
+        },
+        "logreg": {
+          "val_auc": 0.6272968593787707,
+          "parameter": 0.1
+        },
+        "linear_svm": {
+          "val_auc": 0.6141226994469315,
+          "parameter": 0.1
+        },
+        "multinomial_nb": {
+          "val_auc": 0.5816921038764042,
+          "parameter": 0.1
+        },
+        "random_forest": {
+          "val_auc": 0.626833916936306,
+          "parameter": 8
+        }
+      },
+      "qa": {
+        "majority": {
+          "val_auc": 0.5,
+          "parameter": null
+        },
+        "logreg": {
+          "val_auc": 0.5762222222222222,
+          "parameter": 0.1
+        },
+        "linear_svm": {
+          "val_auc": 0.5607916666666666,
+          "parameter": 0.1
+        },
+        "multinomial_nb": {
+          "val_auc": 0.5187430555555556,
+          "parameter": 0.1
+        },
+        "random_forest": {
+          "val_auc": 0.5820685763888889,
+          "parameter": 8
+        }
+      }
+    }
+  },
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.5030384875084403,
+    "strict_accuracy": 0.45644834571235654,
+    "mean_cost": 8.366103983794734,
+    "cost_pct_of_direct_SS": 89.00110621058228,
+    "cost_pct_of_cascade_SS": 73.386877050831,
+    "picks": {
+      "SS": 629,
+      "WW": 104,
+      "WS": 472,
+      "SW": 276
+    }
+  },
+  "fixed_test": {
+    "WW": {
+      "accuracy": 0.31802835921674544,
+      "cascade_cost": 2.0
+    },
+    "WS": {
+      "accuracy": 0.4355165428764348,
+      "cascade_cost": 6.7
+    },
+    "SW": {
+      "accuracy": 0.4172856178257934,
+      "cascade_cost": 6.7
+    },
+    "SS": {
+      "accuracy": 0.5354490209318028,
+      "cascade_cost": 11.4
+    }
+  },
+  "direct_SS_cost": 9.4,
+  "seconds": 14.921626417897642
+}

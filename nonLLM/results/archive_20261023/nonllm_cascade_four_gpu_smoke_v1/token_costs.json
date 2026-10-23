@@ -1,0 +1,43 @@
+{
+  "measured": {
+    "retr_weak": {
+      "calls": 8,
+      "mean_tokens": 11914.125,
+      "params_times_tokens": 17871.1875
+    },
+    "retr_strong": {
+      "calls": 8,
+      "mean_tokens": 11899.0,
+      "params_times_tokens": 83293.0
+    },
+    "qa_weak_given_W": {
+      "calls": 8,
+      "mean_tokens": 289.875,
+      "params_times_tokens": 434.8125
+    },
+    "qa_weak_given_S": {
+      "calls": 8,
+      "mean_tokens": 228.375,
+      "params_times_tokens": 342.5625
+    },
+    "qa_strong_given_W": {
+      "calls": 8,
+      "mean_tokens": 291.375,
+      "params_times_tokens": 2039.625
+    },
+    "qa_strong_given_S": {
+      "calls": 8,
+      "mean_tokens": 229.375,
+      "params_times_tokens": 1605.625
+    }
+  },
+  "gate_eval_constants": {
+    "COST_RET_W": 52.16912972085386,
+    "COST_RET_S": 243.14687100893997,
+    "COST_QA_W_GIVEN_W": 1.2692939244663382,
+    "COST_QA_W_GIVEN_S": 1.0,
+    "COST_QA_S_GIVEN_W": 5.954022988505747,
+    "COST_QA_S_GIVEN_S": 4.687100893997446
+  },
+  "excludes": "CPU router overhead"
+}

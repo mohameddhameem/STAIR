@@ -1,0 +1,9 @@
+{
+  "state": "complete",
+  "calls_done": 8886,
+  "calls_total": 8886,
+  "execution_host": "gpuserver1 (10.193.104.142)",
+  "execution_gpu": 3,
+  "results": "<WORKSPACE>/runs/full_pipeline_test_v1/results.json",
+  "local_gpu_used": false
+}

@@ -1,0 +1,32 @@
+{
+  "name": "sampled_consensus_logreg",
+  "lock": {
+    "cost": 54.053362740309126,
+    "accuracy": 0.525,
+    "theta_ret": 0.17273540499444517,
+    "theta_qa": 0.6423759915146586
+  },
+  "val": {
+    "n": 40,
+    "lenient_accuracy": 0.525,
+    "strict_accuracy": 0.45,
+    "mean_cost": 54.053362740309126,
+    "cost_pct_of_direct_SS": 30.360757978522713,
+    "cost_pct_of_cascade_SS": 24.552011851067483,
+    "picks": {
+      "WS": 34,
+      "WW": 6
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "stage_metrics": {
+    "ret": {
+      "val_auc": 0.5541125541125541,
+      "parameter": 0.1
+    },
+    "qa": {
+      "val_auc": 0.6066536203522506,
+      "parameter": 0.1
+    }
+  }
+}

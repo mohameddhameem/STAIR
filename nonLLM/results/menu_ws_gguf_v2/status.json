@@ -1,0 +1,6 @@
+{
+  "phase": "complete",
+  "full_generation_started": true,
+  "training_started": true,
+  "scope": "Four-model WS2x2 subset of menu A; GGUF exploratory; NOT eligible for pooled bf16/AWQ headline tables without team adopting the identical GGUF copies"
+}

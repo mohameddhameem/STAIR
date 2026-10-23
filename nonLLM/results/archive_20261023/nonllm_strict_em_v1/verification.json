@@ -1,0 +1,24 @@
+{
+  "primary_metric": "official normalized answer EM",
+  "greedy_QA_verified": 29620,
+  "sample_and_confidence_records_verified": 112562,
+  "mismatches": 0,
+  "unit_test_suites": {
+    "test_methods.py": 4,
+    "test_extended.py": 4,
+    "test_architecture.py": 5
+  },
+  "unit_tests_passed": 13,
+  "data_checks": [
+    "All 7405 rows have identical strict/legacy compatibility metric arrays",
+    "SS validation 521/1110 and test 699/1481",
+    "Imported modules originate from isolated code snapshots",
+    "Reverse containment is rejected; normalized exact matches accepted"
+  ],
+  "aggregated_result_count": 73,
+  "initial_completed_comparisons": 27,
+  "extended_training_streams": 144,
+  "equal_question_sample_indexing_verified": true,
+  "report_links_verified": 28,
+  "http_status": 200
+}

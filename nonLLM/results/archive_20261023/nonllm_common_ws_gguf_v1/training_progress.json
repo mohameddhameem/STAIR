@@ -1,0 +1,6 @@
+{
+  "phase": "training",
+  "completed_model_pairs": 18,
+  "total_model_pairs": 18,
+  "last": "extra_trees_seed2"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "confidence_outcome_hist",
+  "lock": {
+    "cost": 155.89370417283826,
+    "accuracy": 0.44594594594594594,
+    "theta_ret": 0.8898933196736625,
+    "theta_qa": 0.9597974056510455
+  },
+  "val": {
+    "n": 1110,
+    "lenient_accuracy": 0.44594594594594594,
+    "strict_accuracy": 0.44594594594594594,
+    "mean_cost": 155.89370417283823,
+    "cost_pct_of_direct_SS": 87.56256378546061,
+    "cost_pct_of_cascade_SS": 72.1033314692535,
+    "picks": {
+      "SS": 610,
+      "WS": 368,
+      "WW": 25,
+      "SW": 107
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.45847400405131666,
+    "strict_accuracy": 0.45847400405131666,
+    "mean_cost": 156.64789931547642,
+    "cost_pct_of_direct_SS": 87.98618102282335,
+    "cost_pct_of_cascade_SS": 72.45215878495993,
+    "picks": {
+      "SS": 835,
+      "WS": 482,
+      "SW": 128,
+      "WW": 36
+    }
+  },
+  "stage_metrics": {
+    "ret": {
+      "val_auc": 0.5686260816124143,
+      "parameter": 3
+    },
+    "qa": {
+      "val_auc": 0.6686066475896985,
+      "parameter": 3
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "metric": "Provided original em_lenient outcomes; no regrading",
+  "baseline_val": 0.527927927927928,
+  "baseline_test": 0.5354490209318028,
+  "grid_sha256": "2946508a94f9e9819e8e0acf86aef45e5ee1acdeb46352c1a53db7eae095cccb",
+  "inputs": "Question and original archived candidate pool only; no regenerated answer/evidence/cache inputs",
+  "costs": "Original flat model-size proxy, WW/WS/SW/SS = 2/5.7/5.7/9.4; excludes router CPU overhead",
+  "selection": "3-fold question-grouped training CV selects the regressor; small validation cost-penalty grid selects operating point; locked before test predictions",
+  "test": "Previously examined split; descriptive",
+  "scope": "Direct pre-retrieval router only; no claim that missing raw-answer methods have been aligned"
+}

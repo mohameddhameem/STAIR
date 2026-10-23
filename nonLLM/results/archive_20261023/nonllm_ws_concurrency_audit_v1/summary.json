@@ -1,0 +1,22 @@
+[
+  {
+    "concurrency": 1,
+    "seconds": 70.83396258205175,
+    "requests_per_second": 0.11294017316528157,
+    "generated_tokens_per_second": 11.943423312228525
+  },
+  {
+    "concurrency": 2,
+    "seconds": 41.360108233988285,
+    "requests_per_second": 0.19342309151468517,
+    "generated_tokens_per_second": 14.772688614434081,
+    "exact_text_matches_to_serial": 6
+  },
+  {
+    "concurrency": 4,
+    "seconds": 35.78316443692893,
+    "requests_per_second": 0.22356882421901858,
+    "generated_tokens_per_second": 17.075068949727545,
+    "exact_text_matches_to_serial": 6
+  }
+]

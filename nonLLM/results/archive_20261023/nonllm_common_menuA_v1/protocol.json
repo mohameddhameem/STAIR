@@ -1,0 +1,156 @@
+{
+  "id": "nonllm-common-hotpotqa-menuA-k1-direct-v1",
+  "status": "prepared_not_trained",
+  "menu": "A",
+  "dataset": "hotpotqa",
+  "question_source": {
+    "file": "extracted/Dataset/AgentTTS-HotpotQA.json.gz",
+    "sha256": "481a2a8925da00bedfc7179e5a77d0bcd71494784d49037ec6dcfac18d1033de",
+    "pool_status": "Existing supplied candidate pool/order frozen for a proposed run; team-common currently freezes IDs, not this candidate pool or prompt contract. Match the comparison partner before claiming a router-only comparison.",
+    "no_gold_features": true
+  },
+  "splits": {
+    "train_part": "train_extra",
+    "train": 6405,
+    "val": 500,
+    "test": 500,
+    "seed": 20260729,
+    "id_hashes": {
+      "train_extra": "40e2137582ba0e1ed9c6b17d3846a5295d9d11fbfb9881224c45f6ea97391619",
+      "val": "4d8e71545f6714b8052815b3e6539785383364be9ccec44561b7608ee95818d6",
+      "test": "e7e09d8f18bd49322500d3f84f318535f5675c8a575ba58c2a9d9e359784b707"
+    }
+  },
+  "models": {
+    "retriever": {
+      "Qwen2.5-7B": {
+        "repo": "Qwen/Qwen2.5-7B-Instruct",
+        "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "params_b": 7.0,
+        "dtype": "bf16"
+      },
+      "Qwen2.5-32B": {
+        "repo": "Qwen/Qwen2.5-32B-Instruct",
+        "revision": "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+        "params_b": 32.0,
+        "dtype": "bf16"
+      },
+      "Qwen2.5-72B": {
+        "repo": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+        "revision": "698703eae6604af048a3d2f509995dc302088217",
+        "params_b": 72.0,
+        "dtype": "awq"
+      }
+    },
+    "answerer": {
+      "Llama-3.2-3B": {
+        "repo": "meta-llama/Llama-3.2-3B-Instruct",
+        "revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+        "params_b": 3.0,
+        "dtype": "bf16"
+      },
+      "Llama-3.1-8B": {
+        "repo": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+        "params_b": 8.0,
+        "dtype": "bf16"
+      },
+      "Llama-3.1-70B": {
+        "repo": "hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
+        "revision": "2123003760781134cfc31124aa6560a45b491fdf",
+        "params_b": 70.0,
+        "dtype": "awq"
+      }
+    }
+  },
+  "executors": {
+    "fine_tune": false,
+    "backend": "vllm",
+    "dtype": "From common models.toml: bf16, AWQ only70B/72B",
+    "sampling_count": 1,
+    "fuse": false,
+    "proposed_sampling": {
+      "temperature": 0.0,
+      "max_new_tokens": 512,
+      "top_p": 1.0
+    },
+    "sampling_status": "Proposed deterministic K1 router-control protocol, not an upstream common mandate or original AgentTTS sampling recipe. Must match LLM-router comparator/cache.",
+    "evidence_policy": "Use only actual selected retrieval output; never gold evidence. Pool cap, passage char limit and context budget must be frozen with the shared generation/cache contract; no silent truncation."
+  },
+  "router": {
+    "architecture": "Direct two-stage, three-way model selection at each stage",
+    "retrieval_inputs": [
+      "question",
+      "candidate pool"
+    ],
+    "answering_inputs": [
+      "question",
+      "selected retrieval evidence",
+      "retrieval model identity"
+    ],
+    "forbidden_inputs": [
+      "gold answers",
+      "gold supporting annotations",
+      "unexecuted weak/strong answers",
+      "per-question observed correctness at deployment"
+    ],
+    "families": [
+      "majority",
+      "logistic_regression",
+      "linear_svm",
+      "multinomial_nb",
+      "random_forest",
+      "extra_trees"
+    ],
+    "features": "Training-only TF-IDF vocabulary and numerical text features; trees use appropriate numeric features. QA training uses all3 branches grouped by question.",
+    "labels": "Proposed: cheapest correct QA model per branch, cheapest retrieval+QA success branch for retrieval; mask all-incorrect groups rather than invent a correct target. Train only on train_extra outcomes.",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "selection": "Training CV within question groups for fit settings; validation for operating points; freeze before test. No artificial epoch count for non-iterative classifiers. Iterative additions must log common train/val loss and keep best val epoch.",
+    "grpo": "Separate later extension, not part of this supervised K1 baseline."
+  },
+  "generation_plan": {
+    "retrieval_calls_per_question": 3,
+    "qa_calls_per_question": 9,
+    "total_offline_calls": 88860,
+    "n_routes": 9,
+    "note": "Full offline9-cell grid supports labels, fixed-route controls and exact replay. Deployment charges only executed calls, not all offline counterfactual cells. Must re-generate with common pinned executors; old Qwen1.5B/7B labels are not substitutes."
+  },
+  "controls": [
+    "all9 fixed retrieval-answering pairs",
+    "strongest: Qwen72B-AWQ + Llama70B-AWQ, K1/no fusion",
+    "accuracy-cost frontier / cheapest validation >=95% of current strongest validation accuracy"
+  ],
+  "scoring": {
+    "import": "stair_common.score.score",
+    "ruler_sha256": "2f184ac252a26df49d402f22f9ba52af3db6ed4812adb42507d3bbb989a0c882",
+    "headline": "lenient",
+    "secondary": [
+      "em",
+      "f1"
+    ]
+  },
+  "cost": {
+    "import": "stair_common.cost.units",
+    "basis": "Actual per-question prompt and generated tokens, nominal params from common menu; include every executed model call. Shared prompt once for sampling extensions.",
+    "report": [
+      "absolute AgentTTS units",
+      "relative cost versus strongest run on the same questions",
+      "ms_router"
+    ],
+    "router_overhead": "Time feature extraction and decision; no fictional LLM size for a classical router. FLOP proxy excludes CPU router work, which must be disclosed."
+  },
+  "outputs": {
+    "results": "stair_common.schema.COLUMNS, schema.validate",
+    "loss_history": "stair_common.training.HISTORY_COLUMNS for iterative models",
+    "test_status": "Historical test content previously examined; new routers must not fit it. This project cannot recover a never-observed confirmation set."
+  },
+  "comparison": {
+    "pure_router": "Share exact executor caches, prompts, candidate pools, decoding, copies, split and cost/score scripts with LLM-router comparator.",
+    "full_system": "If generation/retrieval differs, label as whole-system comparison, not an isolated router comparison.",
+    "other_track_results": "No aligned external results imported yet."
+  }
+}

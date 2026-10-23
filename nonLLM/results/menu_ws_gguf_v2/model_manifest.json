@@ -1,0 +1,125 @@
+{
+  "subset": "Four-model weak/strong menu; GGUF exploratory",
+  "quantization": "Q4_K_M",
+  "agenttts_commit": "3f0c2df814c059d0df57a71056c3266ff02c8559",
+  "models": [
+    {
+      "repo": "Qwen/Qwen2.5-7B-Instruct-GGUF",
+      "revision": "bb5d59e06d9551d752d08b292a50eb208b07ab1f",
+      "files": [
+        {
+          "filename": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+          "size": 3993201344,
+          "sha256": "dfce12e3862a5283ccfb88221b48480e58745165de856439950d0f22590580db"
+        },
+        {
+          "filename": "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf",
+          "size": 689872288,
+          "sha256": "539cf93f78e887edea1c04e2d7d8cdaca9d01dae9c9025bcb8accbe29df3d72a"
+        }
+      ],
+      "stage": "retrieval",
+      "role": "weak",
+      "original_agenttts_model": "Qwen/Qwen2.5-7B-Instruct-AWQ"
+    },
+    {
+      "repo": "Qwen/Qwen2.5-72B-Instruct-GGUF",
+      "revision": "7ca3bc388f97b264c4283bc9bf1055e2abc38441",
+      "files": [
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00001-of-00012.gguf",
+          "size": 3986869120,
+          "sha256": "3531a90691b5f4edb4bdf488246d72ce0b5d40cacfab1489718a662cec386e43"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00002-of-00012.gguf",
+          "size": 3877864544,
+          "sha256": "a4cfb079461591e2c23ef73953aeba4b2520a9b93afaa841f31adf4e480647ab"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00003-of-00012.gguf",
+          "size": 3963622720,
+          "sha256": "c67c3641d018b7ca646e7c37b50152687d4b52ce6ab6bf170b006a756b52778d"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00004-of-00012.gguf",
+          "size": 3941463040,
+          "sha256": "92f5149d685ad5c5ab0fc30f5e0725d95a746d9a8e54d8397707b97dc435cd76"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00005-of-00012.gguf",
+          "size": 3963688384,
+          "sha256": "f5abb6ecd7f3ec4438a4e89ae704acd43405182a0477776d5e8aa35a71a5ecdc"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00006-of-00012.gguf",
+          "size": 3941463040,
+          "sha256": "ead67a4ac2648b0f7b71fea755f910ed208f3f8b881b55c208fc3fdca67359ee"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00007-of-00012.gguf",
+          "size": 3826849152,
+          "sha256": "f7b168a5fdf78695736a6441dc846b19251339750ea78bf993057b7bf499671d"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00008-of-00012.gguf",
+          "size": 3983901792,
+          "sha256": "4ab253ada85c14097597546ac13cfb1426cb175d1d8da520b7a2904d0c323e32"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00009-of-00012.gguf",
+          "size": 3921183968,
+          "sha256": "51661b80af773b488e807a03fc7ea31bb64630c50e3ee77fbb5e37bdd9ff9979"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00010-of-00012.gguf",
+          "size": 3995005888,
+          "sha256": "fcc180433606a81e2137ba1f088defe3ad51ec9353f5d129a7209614597e16f9"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00011-of-00012.gguf",
+          "size": 3586683584,
+          "sha256": "57b9437649f12062bdbed6c623c3f6adc6924a3d2f4e7aabdd3ab32883f5485d"
+        },
+        {
+          "filename": "qwen2.5-72b-instruct-q4_k_m-00012-of-00012.gguf",
+          "size": 1021870240,
+          "sha256": "60ae16428f9edb62b60e6c8657ba9344c6fae6ef44c497845dc6a6fd002e4d5b"
+        }
+      ],
+      "stage": "retrieval",
+      "role": "strong",
+      "original_agenttts_model": "Qwen/Qwen2.5-72B-Instruct-AWQ"
+    },
+    {
+      "repo": "bartowski/Meta-Llama-3.1-70B-Instruct-GGUF",
+      "revision": "83fb6e83d0a8aada42d499259bc929d922e9a558",
+      "files": [
+        {
+          "filename": "Meta-Llama-3.1-70B-Instruct-Q4_K_M.gguf",
+          "size": 42520398400,
+          "sha256": "f775c87029be95fb41df9e2882e6e938b73121c30ffc235ac6b6b880add49aa5"
+        }
+      ],
+      "stage": "answering",
+      "role": "strong",
+      "original_agenttts_model": "meta-llama/Llama-3.1-70B-Instruct"
+    },
+    {
+      "repo": "bartowski/Llama-3.2-3B-Instruct-GGUF",
+      "revision": "5ab33fa94d1d04e903623ae72c95d1696f09f9e8",
+      "files": [
+        {
+          "filename": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+          "size": 2019377696,
+          "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff"
+        }
+      ],
+      "stage": "answering",
+      "role": "weak",
+      "original_agenttts_model": "meta-llama/Llama-3.2-3B-Instruct"
+    }
+  ],
+  "total_expected_bytes": 118005390816,
+  "precision_note": "Same Instruct model identities; GGUF Q4_K_M differs from original Qwen AWQ and Llama bitsandbytes NF4."
+}

@@ -1,0 +1,1194 @@
+{
+  "global_selected": {
+    "cheap95": "aug5_exact_cheap95",
+    "max_accuracy": "confidence_grpo_max_accuracy",
+    "ss_budget": "aug9_grpo_ss_budget"
+  },
+  "ss_test_accuracy": 0.47197839297771776,
+  "results": [
+    {
+      "name": "base_exact_cheap95",
+      "selected_config": {
+        "mode": "base",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 207.23804844876926,
+            "theta_ret": 0.9777352809906006,
+            "theta_qa": 0.9934289455413818
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 177.47905490573237,
+            "theta_ret": 0.5859914422035217,
+            "theta_qa": 0.9934289455413818
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 120.82669365645715,
+            "theta_ret": 0.11570116132497787,
+            "theta_qa": 0.9928973317146301
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.43889264010803514,
+        "strict_accuracy": 0.43889264010803514,
+        "mean_cost": 118.45097064516409,
+        "cost_pct_of_direct_SS": 66.53168405741187,
+        "cost_pct_of_cascade_SS": 54.78546837153898,
+        "picks": {
+          "WS": 859,
+          "SS": 620,
+          "SW": 2
+        }
+      },
+      "test_difference_from_SS_pp": -3.308575286968265,
+      "paired_95_interval_pp": [
+        -4.794058068872384,
+        -1.8906144496961512
+      ]
+    },
+    {
+      "name": "base_exact_max_accuracy",
+      "selected_config": {
+        "mode": "base",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.15,
+        "epoch": 120,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 204.8171606930455,
+            "theta_ret": 0.988520622253418,
+            "theta_qa": 0.9201194643974304
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 176.8843552663342,
+            "theta_ret": 0.9706218838691711,
+            "theta_qa": Infinity
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 130.27205415555702,
+            "theta_ret": 0.9282744526863098,
+            "theta_qa": Infinity
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4665766374071573,
+        "strict_accuracy": 0.4665766374071573,
+        "mean_cost": 203.46034230756274,
+        "cost_pct_of_direct_SS": 114.27985046378579,
+        "cost_pct_of_cascade_SS": 94.10366236461525,
+        "picks": {
+          "SS": 1368,
+          "WS": 112,
+          "SW": 1
+        }
+      },
+      "test_difference_from_SS_pp": -0.5401755570560433,
+      "paired_95_interval_pp": [
+        -1.012829169480081,
+        -0.1350438892640108
+      ]
+    },
+    {
+      "name": "base_exact_ss_budget",
+      "selected_config": {
+        "mode": "base",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.4,
+        "epoch": 120,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 213.46735295666662,
+            "theta_ret": 0.984799861907959,
+            "theta_qa": 0.9390509724617004
+          },
+          "ss_budget": {
+            "accuracy": 0.46306306306306305,
+            "cost": 176.57648314710235,
+            "theta_ret": 0.9811306595802307,
+            "theta_qa": 0.9126195907592773
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 134.35108609577324,
+            "theta_ret": 0.978752851486206,
+            "theta_qa": 0.8922238349914551
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.45577312626603644,
+        "strict_accuracy": 0.45577312626603644,
+        "mean_cost": 172.1504467530398,
+        "cost_pct_of_direct_SS": 96.69367056540156,
+        "cost_pct_of_cascade_SS": 79.62233491515939,
+        "picks": {
+          "WS": 387,
+          "SS": 1088,
+          "SW": 6
+        }
+      },
+      "test_difference_from_SS_pp": -1.6205266711681297,
+      "paired_95_interval_pp": [
+        -2.700877785280216,
+        -0.675219446320054
+      ]
+    },
+    {
+      "name": "base_grpo_cheap95",
+      "selected_config": {
+        "mode": "base",
+        "method": "grpo",
+        "groups": 8,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 210.89042468142037,
+            "theta_ret": 0.8010733723640442,
+            "theta_qa": 0.9529466032981873
+          },
+          "ss_budget": {
+            "accuracy": 0.46126126126126127,
+            "cost": 160.2993240082094,
+            "theta_ret": 0.0984346941113472,
+            "theta_qa": 0.942287266254425
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 126.68218453245792,
+            "theta_ret": 0.05997156724333763,
+            "theta_qa": 0.9348669052124023
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.43686698176907496,
+        "strict_accuracy": 0.43686698176907496,
+        "mean_cost": 124.90549184338886,
+        "cost_pct_of_direct_SS": 70.15706730892252,
+        "cost_pct_of_cascade_SS": 57.770787656241765,
+        "picks": {
+          "WS": 796,
+          "SS": 678,
+          "WW": 6,
+          "SW": 1
+        }
+      },
+      "test_difference_from_SS_pp": -3.5111411208642807,
+      "paired_95_interval_pp": [
+        -4.9966239027684,
+        -2.0931802835921673
+      ]
+    },
+    {
+      "name": "base_grpo_max_accuracy",
+      "selected_config": {
+        "mode": "base",
+        "method": "grpo",
+        "groups": 32,
+        "lambda": 0.0,
+        "epoch": 120,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4720720720720721,
+            "cost": 205.8686018258292,
+            "theta_ret": 0.028711872175335884,
+            "theta_qa": 0.24954092502593994
+          },
+          "ss_budget": {
+            "accuracy": 0.45765765765765765,
+            "cost": 171.5428075487722,
+            "theta_ret": 0.012480390258133411,
+            "theta_qa": 0.477933406829834
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 143.04117550815408,
+            "theta_ret": 0.009995825588703156,
+            "theta_qa": 0.4755098521709442
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.46455097906819715,
+        "strict_accuracy": 0.46455097906819715,
+        "mean_cost": 205.5672170355442,
+        "cost_pct_of_direct_SS": 115.46324240213063,
+        "cost_pct_of_cascade_SS": 95.07812562265302,
+        "picks": {
+          "SS": 1388,
+          "WS": 83,
+          "WW": 10
+        }
+      },
+      "test_difference_from_SS_pp": -0.7427413909520594,
+      "paired_95_interval_pp": [
+        -1.350438892640108,
+        -0.1350438892640108
+      ]
+    },
+    {
+      "name": "base_grpo_ss_budget",
+      "selected_config": {
+        "mode": "base",
+        "method": "grpo",
+        "groups": 8,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 210.89042468142037,
+            "theta_ret": 0.8010733723640442,
+            "theta_qa": 0.9529466032981873
+          },
+          "ss_budget": {
+            "accuracy": 0.46126126126126127,
+            "cost": 160.2993240082094,
+            "theta_ret": 0.0984346941113472,
+            "theta_qa": 0.942287266254425
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 126.68218453245792,
+            "theta_ret": 0.05997156724333763,
+            "theta_qa": 0.9348669052124023
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4490209318028359,
+        "strict_accuracy": 0.4490209318028359,
+        "mean_cost": 159.07374446768472,
+        "cost_pct_of_direct_SS": 89.34873265376277,
+        "cost_pct_of_cascade_SS": 73.57415096566297,
+        "picks": {
+          "WS": 501,
+          "SS": 978,
+          "SW": 1,
+          "WW": 1
+        }
+      },
+      "test_difference_from_SS_pp": -2.2957461174881835,
+      "paired_95_interval_pp": [
+        -3.5111411208642807,
+        -1.1478730587440917
+      ]
+    },
+    {
+      "name": "confidence_exact_cheap95",
+      "selected_config": {
+        "mode": "confidence",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 196.44958702977766,
+            "theta_ret": 0.9362018704414368,
+            "theta_qa": 0.9944632649421692
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 177.92613186523428,
+            "theta_ret": 0.5614941716194153,
+            "theta_qa": 0.9944632649421692
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 122.49263233344715,
+            "theta_ret": 0.11959563940763474,
+            "theta_qa": 0.9960561394691467
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.43889264010803514,
+        "strict_accuracy": 0.43889264010803514,
+        "mean_cost": 120.73006140447576,
+        "cost_pct_of_direct_SS": 67.81180650394651,
+        "cost_pct_of_cascade_SS": 55.839584298407786,
+        "picks": {
+          "WS": 839,
+          "SS": 641,
+          "SW": 1
+        }
+      },
+      "test_difference_from_SS_pp": -3.308575286968265,
+      "paired_95_interval_pp": [
+        -4.794058068872384,
+        -1.8906144496961512
+      ]
+    },
+    {
+      "name": "confidence_exact_max_accuracy",
+      "selected_config": {
+        "mode": "confidence",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 196.44958702977766,
+            "theta_ret": 0.9362018704414368,
+            "theta_qa": 0.9944632649421692
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 177.92613186523428,
+            "theta_ret": 0.5614941716194153,
+            "theta_qa": 0.9944632649421692
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 122.49263233344715,
+            "theta_ret": 0.11959563940763474,
+            "theta_qa": 0.9960561394691467
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4679270762997974,
+        "strict_accuracy": 0.4679270762997974,
+        "mean_cost": 193.32296253830788,
+        "cost_pct_of_direct_SS": 108.58587476814974,
+        "cost_pct_of_cascade_SS": 89.41496208893317,
+        "picks": {
+          "SS": 1276,
+          "WS": 201,
+          "SW": 4
+        }
+      },
+      "test_difference_from_SS_pp": -0.4051316677920324,
+      "paired_95_interval_pp": [
+        -1.1478730587440917,
+        0.337609723160027
+      ]
+    },
+    {
+      "name": "confidence_exact_ss_budget",
+      "selected_config": {
+        "mode": "confidence",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.15,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 214.0620525960648,
+            "theta_ret": 0.9890055656433105,
+            "theta_qa": 0.9934579730033875
+          },
+          "ss_budget": {
+            "accuracy": 0.46126126126126127,
+            "cost": 177.47063706610618,
+            "theta_ret": 0.9325816035270691,
+            "theta_qa": 0.9934579730033875
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 130.2510095564915,
+            "theta_ret": 0.8645262718200684,
+            "theta_qa": 0.9934579730033875
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.45577312626603644,
+        "strict_accuracy": 0.45577312626603644,
+        "mean_cost": 170.56675508760696,
+        "cost_pct_of_direct_SS": 95.80414072064774,
+        "cost_pct_of_cascade_SS": 78.88985219108994,
+        "picks": {
+          "WS": 401,
+          "SS": 1077,
+          "SW": 3
+        }
+      },
+      "test_difference_from_SS_pp": -1.6205266711681297,
+      "paired_95_interval_pp": [
+        -2.633355840648211,
+        -0.675219446320054
+      ]
+    },
+    {
+      "name": "confidence_grpo_cheap95",
+      "selected_config": {
+        "mode": "confidence",
+        "method": "grpo",
+        "groups": 32,
+        "lambda": 0.4,
+        "epoch": 60,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 213.55603979590435,
+            "theta_ret": 0.9963290095329285,
+            "theta_qa": 0.7052329182624817
+          },
+          "ss_budget": {
+            "accuracy": 0.45765765765765765,
+            "cost": 175.2142076695311,
+            "theta_ret": 0.9943490624427795,
+            "theta_qa": Infinity
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 129.66472775671954,
+            "theta_ret": 0.9929749369621277,
+            "theta_qa": Infinity
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4334908845374747,
+        "strict_accuracy": 0.4334908845374747,
+        "mean_cost": 129.83696076651813,
+        "cost_pct_of_direct_SS": 72.92698072158205,
+        "cost_pct_of_cascade_SS": 60.0516709047435,
+        "picks": {
+          "SS": 722,
+          "WS": 759
+        }
+      },
+      "test_difference_from_SS_pp": -3.848750844024308,
+      "paired_95_interval_pp": [
+        -5.334233625928427,
+        -2.4307900067521944
+      ]
+    },
+    {
+      "name": "confidence_grpo_max_accuracy",
+      "selected_config": {
+        "mode": "confidence",
+        "method": "grpo",
+        "groups": 32,
+        "lambda": 0.0,
+        "epoch": 120,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4720720720720721,
+            "cost": 205.80733807001866,
+            "theta_ret": 0.029278062283992767,
+            "theta_qa": 0.26146870851516724
+          },
+          "ss_budget": {
+            "accuracy": 0.45765765765765765,
+            "cost": 170.3905106910775,
+            "theta_ret": 0.012484167702496052,
+            "theta_qa": 0.6942265033721924
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 141.33611369910471,
+            "theta_ret": 0.010069766081869602,
+            "theta_qa": 0.6575897932052612
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.46455097906819715,
+        "strict_accuracy": 0.46455097906819715,
+        "mean_cost": 205.98501676958335,
+        "cost_pct_of_direct_SS": 115.69791266066007,
+        "cost_pct_of_cascade_SS": 95.27136468173516,
+        "picks": {
+          "SS": 1382,
+          "WS": 78,
+          "WW": 11,
+          "SW": 10
+        }
+      },
+      "test_difference_from_SS_pp": -0.7427413909520594,
+      "paired_95_interval_pp": [
+        -1.4179608372721135,
+        -0.0675219446320054
+      ]
+    },
+    {
+      "name": "confidence_grpo_ss_budget",
+      "selected_config": {
+        "mode": "confidence",
+        "method": "grpo",
+        "groups": 8,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 211.02962952169045,
+            "theta_ret": 0.7458350658416748,
+            "theta_qa": 0.9441189169883728
+          },
+          "ss_budget": {
+            "accuracy": 0.46126126126126127,
+            "cost": 166.3761735692687,
+            "theta_ret": 0.11372082680463791,
+            "theta_qa": 0.9588346481323242
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 129.90182609634488,
+            "theta_ret": 0.06493004411458969,
+            "theta_qa": 0.9735603332519531
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.450371370695476,
+        "strict_accuracy": 0.450371370695476,
+        "mean_cost": 161.33168770753514,
+        "cost_pct_of_direct_SS": 90.61697693606008,
+        "cost_pct_of_cascade_SS": 74.61848582655763,
+        "picks": {
+          "WS": 479,
+          "SS": 996,
+          "WW": 3,
+          "SW": 3
+        }
+      },
+      "test_difference_from_SS_pp": -2.160702228224173,
+      "paired_95_interval_pp": [
+        -3.308575286968265,
+        -1.0803511141120865
+      ]
+    },
+    {
+      "name": "aug5_exact_cheap95",
+      "selected_config": {
+        "mode": "aug5",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 213.60655779693667,
+            "theta_ret": 1.0,
+            "theta_qa": 0.9960294365882874
+          },
+          "ss_budget": {
+            "accuracy": 0.4603603603603604,
+            "cost": 177.92613186523428,
+            "theta_ret": 0.5773462653160095,
+            "theta_qa": 0.9960294365882874
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 118.84867394042222,
+            "theta_ret": 0.11261854320764542,
+            "theta_qa": 0.9967216849327087
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.437542201215395,
+        "strict_accuracy": 0.437542201215395,
+        "mean_cost": 117.08272156089092,
+        "cost_pct_of_direct_SS": 65.76316426149221,
+        "cost_pct_of_cascade_SS": 54.152631286941435,
+        "picks": {
+          "WS": 870,
+          "SS": 609,
+          "WW": 1,
+          "SW": 1
+        }
+      },
+      "test_difference_from_SS_pp": -3.443619176232275,
+      "paired_95_interval_pp": [
+        -4.929101958136394,
+        -2.025658338960162
+      ]
+    },
+    {
+      "name": "aug5_exact_max_accuracy",
+      "selected_config": {
+        "mode": "aug5",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.0,
+        "epoch": 120,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4711711711711712,
+            "cost": 206.75480290173212,
+            "theta_ret": 0.3685727119445801,
+            "theta_qa": 0.20598502457141876
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 150.82761780606114,
+            "theta_ret": 0.05177277326583862,
+            "theta_qa": 0.7167280316352844
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 130.14734227559643,
+            "theta_ret": 0.04513650760054588,
+            "theta_qa": 0.7167280316352844
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4638757596218771,
+        "strict_accuracy": 0.4638757596218771,
+        "mean_cost": 205.6952663708122,
+        "cost_pct_of_direct_SS": 115.53516530720613,
+        "cost_pct_of_cascade_SS": 95.13735048817428,
+        "picks": {
+          "SS": 1364,
+          "WS": 78,
+          "SW": 26,
+          "WW": 13
+        }
+      },
+      "test_difference_from_SS_pp": -0.8102633355840648,
+      "paired_95_interval_pp": [
+        -1.4854827819041188,
+        -0.2025658338960162
+      ]
+    },
+    {
+      "name": "aug5_exact_ss_budget",
+      "selected_config": {
+        "mode": "aug5",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.15,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 212.8473997983898,
+            "theta_ret": 0.9830257296562195,
+            "theta_qa": 0.9937707781791687
+          },
+          "ss_budget": {
+            "accuracy": 0.46216216216216216,
+            "cost": 177.1669738666874,
+            "theta_ret": 0.9324018955230713,
+            "theta_qa": 0.9937707781791687
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 133.1358099509696,
+            "theta_ret": 0.8736202716827393,
+            "theta_qa": 0.9937707781791687
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4550979068197164,
+        "strict_accuracy": 0.4550979068197164,
+        "mean_cost": 169.77648653409128,
+        "cost_pct_of_direct_SS": 95.36026172635466,
+        "cost_pct_of_cascade_SS": 78.5243403459118,
+        "picks": {
+          "WS": 408,
+          "SS": 1072,
+          "SW": 1
+        }
+      },
+      "test_difference_from_SS_pp": -1.688048615800135,
+      "paired_95_interval_pp": [
+        -2.700877785280216,
+        -0.675219446320054
+      ]
+    },
+    {
+      "name": "aug5_grpo_cheap95",
+      "selected_config": {
+        "mode": "aug5",
+        "method": "grpo",
+        "groups": 16,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.46936936936936935,
+            "cost": 206.4704726105962,
+            "theta_ret": 0.4032178819179535,
+            "theta_qa": 0.9672040343284607
+          },
+          "ss_budget": {
+            "accuracy": 0.4603603603603604,
+            "cost": 158.12987688284875,
+            "theta_ret": 0.07862032204866409,
+            "theta_qa": 0.9635093808174133
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 129.00642548308375,
+            "theta_ret": 0.051549021154642105,
+            "theta_qa": 0.9941644668579102
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.43889264010803514,
+        "strict_accuracy": 0.43889264010803514,
+        "mean_cost": 125.50099814053176,
+        "cost_pct_of_direct_SS": 70.49155200415053,
+        "cost_pct_of_cascade_SS": 58.04621884291314,
+        "picks": {
+          "WS": 795,
+          "SS": 684,
+          "WW": 2
+        }
+      },
+      "test_difference_from_SS_pp": -3.308575286968265,
+      "paired_95_interval_pp": [
+        -4.794058068872384,
+        -1.8230925050641458
+      ]
+    },
+    {
+      "name": "aug5_grpo_max_accuracy",
+      "selected_config": {
+        "mode": "aug5",
+        "method": "grpo",
+        "groups": 8,
+        "lambda": 0.0,
+        "epoch": 60,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4711711711711712,
+            "cost": 207.52612266319295,
+            "theta_ret": 0.15149928629398346,
+            "theta_qa": 0.3563562333583832
+          },
+          "ss_budget": {
+            "accuracy": 0.4603603603603604,
+            "cost": 177.26190514048693,
+            "theta_ret": 0.04254336282610893,
+            "theta_qa": 0.8452017307281494
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 139.98521828671548,
+            "theta_ret": 0.02965787798166275,
+            "theta_qa": 0.8324076533317566
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4679270762997974,
+        "strict_accuracy": 0.4679270762997974,
+        "mean_cost": 207.62677626594595,
+        "cost_pct_of_direct_SS": 116.62005811472699,
+        "cost_pct_of_cascade_SS": 96.03070470631874,
+        "picks": {
+          "SS": 1404,
+          "WS": 68,
+          "WW": 7,
+          "SW": 2
+        }
+      },
+      "test_difference_from_SS_pp": -0.4051316677920324,
+      "paired_95_interval_pp": [
+        -0.8777852802160702,
+        0.0675219446320054
+      ]
+    },
+    {
+      "name": "aug5_grpo_ss_budget",
+      "selected_config": {
+        "mode": "aug5",
+        "method": "grpo",
+        "groups": 8,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.46936936936936935,
+            "cost": 206.3186410108868,
+            "theta_ret": 0.414661169052124,
+            "theta_qa": 0.9758491516113281
+          },
+          "ss_budget": {
+            "accuracy": 0.4603603603603604,
+            "cost": 157.67438208372062,
+            "theta_ret": 0.08859854936599731,
+            "theta_qa": 0.9722517132759094
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 129.61375188192122,
+            "theta_ret": 0.06063033267855644,
+            "theta_qa": 0.9951847195625305
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.44969615124915596,
+        "strict_accuracy": 0.44969615124915596,
+        "mean_cost": 156.77128601985913,
+        "cost_pct_of_direct_SS": 88.05548501575952,
+        "cost_pct_of_cascade_SS": 72.50922710912485,
+        "picks": {
+          "WS": 517,
+          "SS": 957,
+          "WW": 5,
+          "SW": 2
+        }
+      },
+      "test_difference_from_SS_pp": -2.2282241728561782,
+      "paired_95_interval_pp": [
+        -3.5111411208642807,
+        -1.012829169480081
+      ]
+    },
+    {
+      "name": "aug9_exact_cheap95",
+      "selected_config": {
+        "mode": "aug9",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 198.4233978259995,
+            "theta_ret": 0.9413436055183411,
+            "theta_qa": 0.9956119656562805
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 177.77430026552491,
+            "theta_ret": 0.5812951922416687,
+            "theta_qa": 0.9956119656562805
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 119.75966353867845,
+            "theta_ret": 0.1126042976975441,
+            "theta_qa": 0.9961280822753906
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.43889264010803514,
+        "strict_accuracy": 0.43889264010803514,
+        "mean_cost": 117.65754753324694,
+        "cost_pct_of_direct_SS": 66.0860332069511,
+        "cost_pct_of_cascade_SS": 54.418497492647674,
+        "picks": {
+          "WS": 866,
+          "SS": 614,
+          "SW": 1
+        }
+      },
+      "test_difference_from_SS_pp": -3.308575286968265,
+      "paired_95_interval_pp": [
+        -4.794058068872384,
+        -1.8889264010803604
+      ]
+    },
+    {
+      "name": "aug9_exact_max_accuracy",
+      "selected_config": {
+        "mode": "aug9",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.0,
+        "epoch": 120,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4711711711711712,
+            "cost": 203.84771121393123,
+            "theta_ret": 0.3670365810394287,
+            "theta_qa": 0.1977415233850479
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 176.4012680699004,
+            "theta_ret": 0.13287381827831268,
+            "theta_qa": 0.4897885322570801
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 124.066283794724,
+            "theta_ret": 0.04343422129750252,
+            "theta_qa": 0.7111740112304688
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4638757596218771,
+        "strict_accuracy": 0.4638757596218771,
+        "mean_cost": 202.01497935918968,
+        "cost_pct_of_direct_SS": 113.46801725967036,
+        "cost_pct_of_cascade_SS": 93.43515888454925,
+        "picks": {
+          "SS": 1316,
+          "WS": 112,
+          "SW": 42,
+          "WW": 11
+        }
+      },
+      "test_difference_from_SS_pp": -0.8102633355840648,
+      "paired_95_interval_pp": [
+        -1.5530047265361242,
+        -0.0675219446320054
+      ]
+    },
+    {
+      "name": "aug9_exact_ss_budget",
+      "selected_config": {
+        "mode": "aug9",
+        "method": "exact",
+        "groups": 0,
+        "lambda": 0.4,
+        "epoch": 60,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4702702702702703,
+            "cost": 215.42853699344911,
+            "theta_ret": 0.9751874804496765,
+            "theta_qa": 0.9821732044219971
+          },
+          "ss_budget": {
+            "accuracy": 0.46126126126126127,
+            "cost": 175.95232106901244,
+            "theta_ret": 0.9647366404533386,
+            "theta_qa": 0.9821732044219971
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 137.23526314312264,
+            "theta_ret": 0.9602101445198059,
+            "theta_qa": 0.9821732044219971
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.45644834571235654,
+        "strict_accuracy": 0.45644834571235654,
+        "mean_cost": 172.61825222682762,
+        "cost_pct_of_direct_SS": 96.95642810814569,
+        "cost_pct_of_cascade_SS": 79.83870242864316,
+        "picks": {
+          "WS": 383,
+          "SS": 1096,
+          "SW": 2
+        }
+      },
+      "test_difference_from_SS_pp": -1.5530047265361242,
+      "paired_95_interval_pp": [
+        -2.633355840648211,
+        -0.6076975016880486
+      ]
+    },
+    {
+      "name": "aug9_grpo_cheap95",
+      "selected_config": {
+        "mode": "aug9",
+        "method": "grpo",
+        "groups": 16,
+        "lambda": 0.0,
+        "epoch": 30,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.46936936936936935,
+            "cost": 206.61450971780806,
+            "theta_ret": 0.42227616906166077,
+            "theta_qa": 0.9501679539680481
+          },
+          "ss_budget": {
+            "accuracy": 0.4594594594594595,
+            "cost": 156.35949690826325,
+            "theta_ret": 0.07656747847795486,
+            "theta_qa": 0.9939711689949036
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 128.85459388337432,
+            "theta_ret": 0.05078304186463356,
+            "theta_qa": 0.9920669198036194
+          }
+        }
+      },
+      "objective": "cheap95",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.43889264010803514,
+        "strict_accuracy": 0.43889264010803514,
+        "mean_cost": 125.38720133048623,
+        "cost_pct_of_direct_SS": 70.42763447463219,
+        "cost_pct_of_cascade_SS": 57.993585998255355,
+        "picks": {
+          "WS": 796,
+          "SS": 683,
+          "WW": 2
+        }
+      },
+      "test_difference_from_SS_pp": -3.308575286968265,
+      "paired_95_interval_pp": [
+        -4.794058068872384,
+        -1.8230925050641458
+      ]
+    },
+    {
+      "name": "aug9_grpo_max_accuracy",
+      "selected_config": {
+        "mode": "aug9",
+        "method": "grpo",
+        "groups": 16,
+        "lambda": 0.0,
+        "epoch": 60,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.4711711711711712,
+            "cost": 206.9067928520448,
+            "theta_ret": 0.15079490840435028,
+            "theta_qa": 0.3600306808948517
+          },
+          "ss_budget": {
+            "accuracy": 0.45765765765765765,
+            "cost": 173.74639486967874,
+            "theta_ret": 0.03377130255103111,
+            "theta_qa": 0.8679569363594055
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 143.01405578840533,
+            "theta_ret": 0.02422572858631611,
+            "theta_qa": 0.8521866798400879
+          }
+        }
+      },
+      "objective": "max_accuracy",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.4686022957461175,
+        "strict_accuracy": 0.4686022957461175,
+        "mean_cost": 207.15675062310552,
+        "cost_pct_of_direct_SS": 116.35605354475162,
+        "cost_pct_of_cascade_SS": 95.8133103291398,
+        "picks": {
+          "SS": 1399,
+          "WS": 70,
+          "WW": 9,
+          "SW": 3
+        }
+      },
+      "test_difference_from_SS_pp": -0.337609723160027,
+      "paired_95_interval_pp": [
+        -0.8102633355840648,
+        0.1350438892640108
+      ]
+    },
+    {
+      "name": "aug9_grpo_ss_budget",
+      "selected_config": {
+        "mode": "aug9",
+        "method": "grpo",
+        "groups": 8,
+        "lambda": 0.15,
+        "epoch": 60,
+        "points": {
+          "max_accuracy": {
+            "accuracy": 0.46936936936936935,
+            "cost": 214.1293914725586,
+            "theta_ret": 0.9934259057044983,
+            "theta_qa": 0.8894491195678711
+          },
+          "ss_budget": {
+            "accuracy": 0.46306306306306305,
+            "cost": 171.72208087621556,
+            "theta_ret": 0.9907824397087097,
+            "theta_qa": Infinity
+          },
+          "cheap95": {
+            "accuracy": 0.44594594594594594,
+            "cost": 147.1253617232973,
+            "theta_ret": 0.9899144172668457,
+            "theta_qa": Infinity
+          }
+        }
+      },
+      "objective": "ss_budget",
+      "test": {
+        "n": 1481,
+        "lenient_accuracy": 0.45172180958811614,
+        "strict_accuracy": 0.45172180958811614,
+        "mean_cost": 175.12809116463177,
+        "cost_pct_of_direct_SS": 98.36615746988471,
+        "cost_pct_of_cascade_SS": 80.99954307854071,
+        "picks": {
+          "SS": 1120,
+          "WS": 361
+        }
+      },
+      "test_difference_from_SS_pp": -2.025658338960162,
+      "paired_95_interval_pp": [
+        -3.038487508440243,
+        -1.0803511141120865
+      ]
+    }
+  ]
+}

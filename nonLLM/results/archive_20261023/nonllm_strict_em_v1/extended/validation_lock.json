@@ -1,0 +1,4547 @@
+{
+  "candidates": [
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 207.23804844876926,
+          "theta_ret": 0.9777352809906006,
+          "theta_qa": 0.9934289455413818
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.47905490573237,
+          "theta_ret": 0.5859914422035217,
+          "theta_qa": 0.9934289455413818
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 120.82669365645715,
+          "theta_ret": 0.11570116132497787,
+          "theta_qa": 0.9928973317146301
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 211.8014142796766,
+          "theta_ret": 0.9989151954650879,
+          "theta_qa": 0.9801515936851501
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.4874727453586,
+          "theta_ret": 0.18773774802684784,
+          "theta_qa": 0.9801515936851501
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 123.79738413797986,
+          "theta_ret": 0.07247021794319153,
+          "theta_qa": 0.9680423140525818
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.77522507589845,
+          "theta_ret": 0.9999988079071045,
+          "theta_qa": 0.566368043422699
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 157.65956711542592,
+          "theta_ret": 0.0490255206823349,
+          "theta_qa": 0.5635127425193787
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.68731654866997,
+          "theta_ret": 0.04016982764005661,
+          "theta_qa": 0.5628823637962341
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.0076492377254,
+          "theta_ret": 0.983406126499176,
+          "theta_qa": 0.9928317070007324
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.63088650544174,
+          "theta_ret": 0.9340755343437195,
+          "theta_qa": 0.9928317070007324
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 128.43744819960526,
+          "theta_ret": 0.8683438897132874,
+          "theta_qa": 0.9928317070007324
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.26844657236055,
+          "theta_ret": 0.9819048047065735,
+          "theta_qa": 0.9677554965019226
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 161.84460905548016,
+          "theta_ret": 0.9482229351997375,
+          "theta_qa": 0.9677554965019226
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.04898351825582,
+          "theta_ret": 0.9118313789367676,
+          "theta_qa": 0.9677554965019226
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 204.8171606930455,
+          "theta_ret": 0.988520622253418,
+          "theta_qa": 0.9201194643974304
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 176.8843552663342,
+          "theta_ret": 0.9706218838691711,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.27205415555702,
+          "theta_ret": 0.9282744526863098,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.53438307444532,
+          "theta_ret": 0.9640974402427673,
+          "theta_qa": 0.993701696395874
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 170.95091946535803,
+          "theta_ret": 0.9479720592498779,
+          "theta_qa": 0.993701696395874
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.24430432987748,
+          "theta_ret": 0.9409677982330322,
+          "theta_qa": 0.993701696395874
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.29354107299218,
+          "theta_ret": 0.9756280779838562,
+          "theta_qa": 0.9824325442314148
+        },
+        "ss_budget": {
+          "accuracy": 0.46216216216216216,
+          "cost": 173.53985115291493,
+          "theta_ret": 0.9647252559661865,
+          "theta_qa": 0.9824325442314148
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.85942522121252,
+          "theta_ret": 0.9602697491645813,
+          "theta_qa": 0.9824325442314148
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.46735295666662,
+          "theta_ret": 0.984799861907959,
+          "theta_qa": 0.9390509724617004
+        },
+        "ss_budget": {
+          "accuracy": 0.46306306306306305,
+          "cost": 176.57648314710235,
+          "theta_ret": 0.9811306595802307,
+          "theta_qa": 0.9126195907592773
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 134.35108609577324,
+          "theta_ret": 0.978752851486206,
+          "theta_qa": 0.8922238349914551
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 210.89042468142037,
+          "theta_ret": 0.8010733723640442,
+          "theta_qa": 0.9529466032981873
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 160.2993240082094,
+          "theta_ret": 0.0984346941113472,
+          "theta_qa": 0.942287266254425
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 126.68218453245792,
+          "theta_ret": 0.05997156724333763,
+          "theta_qa": 0.9348669052124023
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 206.6193419847498,
+          "theta_ret": 0.1647038608789444,
+          "theta_qa": 0.3142832815647125
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.23072717049678,
+          "theta_ret": 0.04718964174389839,
+          "theta_qa": 0.7491140961647034
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 138.54858345685327,
+          "theta_ret": 0.030716264620423317,
+          "theta_qa": 0.7274240851402283
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 205.25348093449412,
+          "theta_ret": 0.04059895873069763,
+          "theta_qa": 0.29291436076164246
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 173.68403892969846,
+          "theta_ret": 0.02031814120709896,
+          "theta_qa": 0.45004144310951233
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.87874368966166,
+          "theta_ret": 0.016684874892234802,
+          "theta_qa": 0.45004144310951233
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.24520545111676,
+          "theta_ret": 0.9916414618492126,
+          "theta_qa": 0.8619422912597656
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 175.97336566807797,
+          "theta_ret": 0.9861660599708557,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.3923929285286,
+          "theta_ret": 0.9839181900024414,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.64365663898255,
+          "theta_ret": 0.9937321543693542,
+          "theta_qa": 0.9974861741065979
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 172.91335019639791,
+          "theta_ret": 0.9908270835876465,
+          "theta_qa": 0.9991049766540527
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.225129772198,
+          "theta_ret": 0.9895960688591003,
+          "theta_qa": 0.9991049766540527
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.5702352222339,
+          "theta_ret": 0.9968394637107849,
+          "theta_qa": 0.9979486465454102
+        },
+        "ss_budget": {
+          "accuracy": 0.45585585585585586,
+          "cost": 174.27983459378225,
+          "theta_ret": 0.9958660006523132,
+          "theta_qa": 0.9997076988220215
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 164.71444381209182,
+          "theta_ret": 0.9957787990570068,
+          "theta_qa": 0.9997076988220215
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.60685969435244,
+          "theta_ret": 0.9918377995491028,
+          "theta_qa": 0.8682295680046082
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 173.0885652735999,
+          "theta_ret": 0.9859180450439453,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.0731407441148,
+          "theta_ret": 0.9837047457695007,
+          "theta_qa": 0.9977870583534241
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.51520851676582,
+          "theta_ret": 0.9935948252677917,
+          "theta_qa": 0.9981091618537903
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 175.6463189911666,
+          "theta_ret": 0.9909883141517639,
+          "theta_qa": 0.9991298317909241
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.22512977219796,
+          "theta_ret": 0.9895864129066467,
+          "theta_qa": 0.9991298317909241
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.7298613144408,
+          "theta_ret": 0.9968580603599548,
+          "theta_qa": 0.9978585839271545
+        },
+        "ss_budget": {
+          "accuracy": 0.45315315315315313,
+          "cost": 172.4578553972698,
+          "theta_ret": 0.9958407282829285,
+          "theta_qa": 0.9997212886810303
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 161.98147501732313,
+          "theta_ret": 0.9957268834114075,
+          "theta_qa": 0.9997212886810303
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 211.18987896102604,
+          "theta_ret": 0.7782801985740662,
+          "theta_qa": 0.908602774143219
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 158.16588711978068,
+          "theta_ret": 0.08203991502523422,
+          "theta_qa": 0.9499878883361816
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.31834843298532,
+          "theta_ret": 0.052197348326444626,
+          "theta_qa": 0.922151505947113
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 206.6193419847498,
+          "theta_ret": 0.1635766476392746,
+          "theta_qa": 0.30862221121788025
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.36696978521107,
+          "theta_ret": 0.03817526996135712,
+          "theta_qa": 0.7820456027984619
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.89667314295696,
+          "theta_ret": 0.02503674291074276,
+          "theta_qa": 0.7523468136787415
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 205.87639631832667,
+          "theta_ret": 0.03509167954325676,
+          "theta_qa": 0.2636016309261322
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 173.88263748439306,
+          "theta_ret": 0.016111552715301514,
+          "theta_qa": 0.5316275954246521
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 138.8444521637745,
+          "theta_ret": 0.01254961360245943,
+          "theta_qa": 0.5063205361366272
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.14560143042922,
+          "theta_ret": 0.9939553737640381,
+          "theta_qa": 0.8893226981163025
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 168.53361728231874,
+          "theta_ret": 0.9887266755104065,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 147.27719332300668,
+          "theta_ret": 0.9873804450035095,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.6124786689924,
+          "theta_ret": 0.9952144026756287,
+          "theta_qa": 0.9976406097412109
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.48388717267414,
+          "theta_ret": 0.9929862022399902,
+          "theta_qa": 0.9993813633918762
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 131.0156231691088,
+          "theta_ret": 0.991354763507843,
+          "theta_qa": 0.9993417859077454
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 212.70102381275086,
+          "theta_ret": 0.9972760081291199,
+          "theta_qa": 0.9997110366821289
+        },
+        "ss_budget": {
+          "accuracy": 0.4540540540540541,
+          "cost": 177.5889518173983,
+          "theta_ret": 0.9967706799507141,
+          "theta_qa": 0.9996536374092102
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 157.85084385517993,
+          "theta_ret": 0.9965980052947998,
+          "theta_qa": 0.9996536374092102
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 213.29571248887393,
+          "theta_ret": 0.9938972592353821,
+          "theta_qa": 0.8616035580635071
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 175.97336566807797,
+          "theta_ret": 0.989154577255249,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 147.88451972184416,
+          "theta_ret": 0.9873949885368347,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.7721047611993,
+          "theta_ret": 0.9951812624931335,
+          "theta_qa": 0.9976964592933655
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.02839237354604,
+          "theta_ret": 0.9929214119911194,
+          "theta_qa": 0.9993458390235901
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.40829677027133,
+          "theta_ret": 0.9912750720977783,
+          "theta_qa": 0.999333381652832
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 212.54139772054396,
+          "theta_ret": 0.9972791075706482,
+          "theta_qa": 0.9996106624603271
+        },
+        "ss_budget": {
+          "accuracy": 0.4540540540540541,
+          "cost": 176.8297938188514,
+          "theta_ret": 0.9967265725135803,
+          "theta_qa": 0.9995869994163513
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 153.5995590633175,
+          "theta_ret": 0.9965236186981201,
+          "theta_qa": 0.9995869994163513
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 210.88621576160727,
+          "theta_ret": 0.7999770045280457,
+          "theta_qa": 0.9305379986763
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 158.1736816122782,
+          "theta_ret": 0.07382415980100632,
+          "theta_qa": 0.9609684944152832
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.86285363385718,
+          "theta_ret": 0.04572416469454765,
+          "theta_qa": 0.9419634342193604
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 207.38208555598112,
+          "theta_ret": 0.1701962947845459,
+          "theta_qa": 0.33104047179222107
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 176.6078117866642,
+          "theta_ret": 0.03196747601032257,
+          "theta_qa": 0.8105826377868652
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 138.70041505656266,
+          "theta_ret": 0.01990167610347271,
+          "theta_qa": 0.7729969024658203
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4720720720720721,
+          "cost": 205.8686018258292,
+          "theta_ret": 0.028711872175335884,
+          "theta_qa": 0.24954092502593994
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 171.5428075487722,
+          "theta_ret": 0.012480390258133411,
+          "theta_qa": 0.477933406829834
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 143.04117550815408,
+          "theta_ret": 0.009995825588703156,
+          "theta_qa": 0.4755098521709442
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.97787035928698,
+          "theta_ret": 0.9954332709312439,
+          "theta_qa": 0.9072205424308777
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 170.81109127795935,
+          "theta_ret": 0.9911239743232727,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.0887297291099,
+          "theta_ret": 0.9896268248558044,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.93173085340626,
+          "theta_ret": 0.996459424495697,
+          "theta_qa": 0.9979758858680725
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 177.7797558795954,
+          "theta_ret": 0.9945008158683777,
+          "theta_qa": 0.999580442905426
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.0443032424249,
+          "theta_ret": 0.993419349193573,
+          "theta_qa": 0.9996640086174011
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 215.56508772034815,
+          "theta_ret": 0.9983692169189453,
+          "theta_qa": 0.4525825083255768
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 170.31630200835832,
+          "theta_ret": 0.997427761554718,
+          "theta_qa": 0.9993090629577637
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 151.79658308607108,
+          "theta_ret": 0.9972915649414062,
+          "theta_qa": 0.9993083477020264
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.97366143947386,
+          "theta_ret": 0.9954202771186829,
+          "theta_qa": 0.9077353477478027
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 171.26658607708742,
+          "theta_ret": 0.9910993576049805,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.15155092707545,
+          "theta_ret": 0.9897134900093079,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.1097516568938,
+          "theta_ret": 0.9960770010948181,
+          "theta_qa": 0.9989773631095886
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 175.79815059087596,
+          "theta_ret": 0.9944071173667908,
+          "theta_qa": 0.9995840191841125
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 134.50774996242436,
+          "theta_ret": 0.9931478500366211,
+          "theta_qa": 0.9996402859687805
+        }
+      }
+    },
+    {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.97070331589393,
+          "theta_ret": 0.997986376285553,
+          "theta_qa": 0.9991431832313538
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 170.0204333014371,
+          "theta_ret": 0.9973933696746826,
+          "theta_qa": 0.9993019104003906
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 148.12144672305598,
+          "theta_ret": 0.9972311854362488,
+          "theta_qa": 0.9993019104003906
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 196.44958702977766,
+          "theta_ret": 0.9362018704414368,
+          "theta_qa": 0.9944632649421692
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.92613186523428,
+          "theta_ret": 0.5614941716194153,
+          "theta_qa": 0.9944632649421692
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 122.49263233344715,
+          "theta_ret": 0.11959563940763474,
+          "theta_qa": 0.9960561394691467
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 211.63695592052792,
+          "theta_ret": 0.9982013702392578,
+          "theta_qa": 0.9522971510887146
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 177.32301438620993,
+          "theta_ret": 0.2501317858695984,
+          "theta_qa": 0.9522971510887146
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 126.87298859465497,
+          "theta_ret": 0.0754157081246376,
+          "theta_qa": 0.9797762036323547
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.5855131978712,
+          "theta_ret": 0.9999982714653015,
+          "theta_qa": 0.4810972213745117
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 159.2678314498057,
+          "theta_ret": 0.05027954280376434,
+          "theta_qa": 0.667452335357666
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.16400277591947,
+          "theta_ret": 0.04122016951441765,
+          "theta_qa": 0.5233707427978516
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.0620525960648,
+          "theta_ret": 0.9890055656433105,
+          "theta_qa": 0.9934579730033875
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.47063706610618,
+          "theta_ret": 0.9325816035270691,
+          "theta_qa": 0.9934579730033875
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.2510095564915,
+          "theta_ret": 0.8645262718200684,
+          "theta_qa": 0.9934579730033875
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.9102209963554,
+          "theta_ret": 0.99379962682724,
+          "theta_qa": 0.9764726758003235
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 175.3449946701749,
+          "theta_ret": 0.9574844241142273,
+          "theta_qa": 0.9764726758003235
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 131.31383075445711,
+          "theta_ret": 0.9087035059928894,
+          "theta_qa": 0.9764726758003235
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 206.01497781146807,
+          "theta_ret": 0.9893215298652649,
+          "theta_qa": 0.8057165145874023
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 173.5314333132887,
+          "theta_ret": 0.9677016139030457,
+          "theta_qa": 0.8057165145874023
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 133.0008140305126,
+          "theta_ret": 0.9270564913749695,
+          "theta_qa": 0.8324964642524719
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.25986971448737,
+          "theta_ret": 0.9658188223838806,
+          "theta_qa": 0.9826898574829102
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 173.20672551480448,
+          "theta_ret": 0.9483826756477356,
+          "theta_qa": 0.9846048355102539
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.01640142563457,
+          "theta_ret": 0.9404256343841553,
+          "theta_qa": 0.9863676428794861
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.27670539373977,
+          "theta_ret": 0.974841833114624,
+          "theta_qa": 0.9825165271759033
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 173.37118387395313,
+          "theta_ret": 0.9646461606025696,
+          "theta_qa": 0.9825165271759033
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.02061034544764,
+          "theta_ret": 0.9600526690483093,
+          "theta_qa": 0.9825165271759033
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.09962027515184,
+          "theta_ret": 0.9853885173797607,
+          "theta_qa": 0.9334319233894348
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 170.02667976053385,
+          "theta_ret": 0.9806394577026367,
+          "theta_qa": 0.9339502453804016
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.99816388126777,
+          "theta_ret": 0.978559672832489,
+          "theta_qa": 0.8763135075569153
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 211.02962952169045,
+          "theta_ret": 0.7458350658416748,
+          "theta_qa": 0.9441189169883728
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 166.3761735692687,
+          "theta_ret": 0.11372082680463791,
+          "theta_qa": 0.9588346481323242
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.90182609634488,
+          "theta_ret": 0.06493004411458969,
+          "theta_qa": 0.9735603332519531
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 206.41279442747015,
+          "theta_ret": 0.15894697606563568,
+          "theta_qa": 0.41017115116119385
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 175.5995520361814,
+          "theta_ret": 0.04661798104643822,
+          "theta_qa": 0.8787463307380676
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 140.75217077775983,
+          "theta_ret": 0.03172200918197632,
+          "theta_qa": 0.8432028293609619
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 205.0715635489644,
+          "theta_ret": 0.03824765980243683,
+          "theta_qa": 0.3634057343006134
+        },
+        "ss_budget": {
+          "accuracy": 0.45675675675675675,
+          "cost": 171.78817305845203,
+          "theta_ret": 0.020225977525115013,
+          "theta_qa": 0.6464508175849915
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 142.862224188696,
+          "theta_ret": 0.01663428172469139,
+          "theta_qa": 0.6464508175849915
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 212.97677316515097,
+          "theta_ret": 0.9914953708648682,
+          "theta_qa": 0.8679750561714172
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 177.03618686604358,
+          "theta_ret": 0.9863376021385193,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.44741963399667,
+          "theta_ret": 0.9838991165161133,
+          "theta_qa": 0.9986674189567566
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.4918250392732,
+          "theta_ret": 0.9936618804931641,
+          "theta_qa": 0.9973087906837463
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 174.43166619349165,
+          "theta_ret": 0.9909367561340332,
+          "theta_qa": 0.999113142490387
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.83245617103546,
+          "theta_ret": 0.989599883556366,
+          "theta_qa": 0.999113142490387
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.38676039454907,
+          "theta_ret": 0.9966300129890442,
+          "theta_qa": Infinity
+        },
+        "ss_budget": {
+          "accuracy": 0.45315315315315313,
+          "cost": 175.18302969954095,
+          "theta_ret": 0.9958877563476562,
+          "theta_qa": 0.9996044039726257
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 167.57586072907728,
+          "theta_ret": 0.9958128929138184,
+          "theta_qa": 0.9996044039726257
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.9438861400913,
+          "theta_ret": 0.9916074872016907,
+          "theta_qa": 0.8874349594116211
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 172.17757567534366,
+          "theta_ret": 0.9858438372612,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.1437564345779,
+          "theta_ret": 0.9838586449623108,
+          "theta_qa": 0.9986333250999451
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.62868862686307,
+          "theta_ret": 0.9937825202941895,
+          "theta_qa": 0.7778357863426208
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.02839237354604,
+          "theta_ret": 0.9909815788269043,
+          "theta_qa": 0.9990798830986023
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 138.92954756527695,
+          "theta_ret": 0.9895755648612976,
+          "theta_qa": 0.9978446960449219
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.7298613144408,
+          "theta_ret": 0.9969061017036438,
+          "theta_qa": 0.9975273013114929
+        },
+        "ss_budget": {
+          "accuracy": 0.4540540540540541,
+          "cost": 177.452709202684,
+          "theta_ret": 0.9958736300468445,
+          "theta_qa": 0.9994800090789795
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 162.86908113808676,
+          "theta_ret": 0.9956987500190735,
+          "theta_qa": 0.9994800090789795
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 211.17725220158673,
+          "theta_ret": 0.7584304809570312,
+          "theta_qa": 0.8969901204109192
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 156.048039216347,
+          "theta_ret": 0.08143999427556992,
+          "theta_qa": 0.9736669659614563
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 131.571973693148,
+          "theta_ret": 0.05588243529200554,
+          "theta_qa": 0.9736669659614563
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.9735119604658,
+          "theta_ret": 0.15645961463451385,
+          "theta_qa": 0.4428040683269501
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.11007354077756,
+          "theta_ret": 0.03846351429820061,
+          "theta_qa": 0.8742929100990295
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.7944142245184,
+          "theta_ret": 0.02489529550075531,
+          "theta_qa": 0.8404704928398132
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 206.12659025443244,
+          "theta_ret": 0.03531712666153908,
+          "theta_qa": 0.2649010419845581
+        },
+        "ss_budget": {
+          "accuracy": 0.45585585585585586,
+          "cost": 177.42822970050577,
+          "theta_ret": 0.016983192414045334,
+          "theta_qa": 0.3679223954677582
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.2338547806661,
+          "theta_ret": 0.012722562067210674,
+          "theta_qa": 0.6692226529121399
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.66251423399538,
+          "theta_ret": 0.9938285946846008,
+          "theta_qa": 0.891339123249054
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 167.91849639098373,
+          "theta_ret": 0.9886226654052734,
+          "theta_qa": 0.9996137619018555
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 148.33222002847472,
+          "theta_ret": 0.9874486923217773,
+          "theta_qa": 0.9996137619018555
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.7721047611993,
+          "theta_ret": 0.9952125549316406,
+          "theta_qa": 0.9973936080932617
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.93938197180225,
+          "theta_ret": 0.9930333495140076,
+          "theta_qa": 0.9996864199638367
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.26425966305948,
+          "theta_ret": 0.9913122653961182,
+          "theta_qa": 0.9996864199638367
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 212.70881830524843,
+          "theta_ret": 0.9972925186157227,
+          "theta_qa": 0.9996495246887207
+        },
+        "ss_budget": {
+          "accuracy": 0.45315315315315313,
+          "cost": 177.90040950931458,
+          "theta_ret": 0.9967712759971619,
+          "theta_qa": 0.9995723366737366
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 153.1440642641894,
+          "theta_ret": 0.9965541958808899,
+          "theta_qa": 0.9995723366737366
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.18628057373334,
+          "theta_ret": 0.9938799738883972,
+          "theta_qa": 0.858130156993866
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 168.9813175889493,
+          "theta_ret": 0.9887142777442932,
+          "theta_qa": 0.9996548295021057
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 146.35840923225288,
+          "theta_ret": 0.9872786402702332,
+          "theta_qa": 0.9996548295021057
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.52689021790354,
+          "theta_ret": 0.9951394200325012,
+          "theta_qa": 0.7176700234413147
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.78755037209288,
+          "theta_ret": 0.9929733872413635,
+          "theta_qa": 0.99949711561203
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.26425966305948,
+          "theta_ret": 0.9912473559379578,
+          "theta_qa": 0.99949711561203
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.16431310437653,
+          "theta_ret": 0.9972617030143738,
+          "theta_qa": 0.9997269511222839
+        },
+        "ss_budget": {
+          "accuracy": 0.45135135135135135,
+          "cost": 177.90820400181212,
+          "theta_ret": 0.9967284202575684,
+          "theta_qa": 0.9996731877326965
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 158.01046994738687,
+          "theta_ret": 0.9965598583221436,
+          "theta_qa": 0.9996731877326965
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 205.71552353186246,
+          "theta_ret": 0.41359636187553406,
+          "theta_qa": 0.9483245015144348
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 159.9992463814751,
+          "theta_ret": 0.079818956553936,
+          "theta_qa": 0.9634177684783936
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 133.69761608907916,
+          "theta_ret": 0.05093635991215706,
+          "theta_qa": 0.979928195476532
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 207.18037026564318,
+          "theta_ret": 0.16184283792972565,
+          "theta_qa": 0.420194149017334
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 175.28029985176758,
+          "theta_ret": 0.03187280148267746,
+          "theta_qa": 0.8883946537971497
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.97976426251813,
+          "theta_ret": 0.020124422386288643,
+          "theta_qa": 0.9096341133117676
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4720720720720721,
+          "cost": 205.80733807001866,
+          "theta_ret": 0.029278062283992767,
+          "theta_qa": 0.26146870851516724
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 170.3905106910775,
+          "theta_ret": 0.012484167702496052,
+          "theta_qa": 0.6942265033721924
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.33611369910471,
+          "theta_ret": 0.010069766081869602,
+          "theta_qa": 0.6575897932052612
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.78005112807128,
+          "theta_ret": 0.9953963160514832,
+          "theta_qa": 0.8921265006065369
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 171.41062318429925,
+          "theta_ret": 0.9911589622497559,
+          "theta_qa": 0.9996695518493652
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.38459843603107,
+          "theta_ret": 0.9896343350410461,
+          "theta_qa": 0.9996695518493652
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.41324938294986,
+          "theta_ret": 0.9962771534919739,
+          "theta_qa": 0.7032505869865417
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 176.12519726778734,
+          "theta_ret": 0.9944232106208801,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 133.1568545500351,
+          "theta_ret": 0.9931521415710449,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 202.5127176472279,
+          "theta_ret": 0.9977223873138428,
+          "theta_qa": 0.9994370341300964
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 173.4894986252453,
+          "theta_ret": 0.9974376559257507,
+          "theta_qa": 0.9994753003120422
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 152.36152278814993,
+          "theta_ret": 0.9972870349884033,
+          "theta_qa": 0.9995395541191101
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.78005112807128,
+          "theta_ret": 0.9954420924186707,
+          "theta_qa": 0.8916678428649902
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 170.34780198633368,
+          "theta_ret": 0.9910585880279541,
+          "theta_qa": 0.999663770198822
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.99192483486854,
+          "theta_ret": 0.9896981120109558,
+          "theta_qa": 0.999663770198822
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.55603979590435,
+          "theta_ret": 0.9963290095329285,
+          "theta_qa": 0.7052329182624817
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 175.2142076695311,
+          "theta_ret": 0.9943490624427795,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.66472775671954,
+          "theta_ret": 0.9929749369621277,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.9784978083915,
+          "theta_ret": 0.9979570508003235,
+          "theta_qa": 0.9993190169334412
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 174.49743636774286,
+          "theta_ret": 0.9974104762077332,
+          "theta_qa": 0.9992855191230774
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.11754590118844,
+          "theta_ret": 0.9971701502799988,
+          "theta_qa": 0.9992855191230774
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.60655779693667,
+          "theta_ret": 1.0,
+          "theta_qa": 0.9960294365882874
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.92613186523428,
+          "theta_ret": 0.5773462653160095,
+          "theta_qa": 0.9960294365882874
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 118.84867394042222,
+          "theta_ret": 0.11261854320764542,
+          "theta_qa": 0.9967216849327087
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 209.20344140536488,
+          "theta_ret": 0.7071523666381836,
+          "theta_qa": 0.9744517207145691
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 177.92613186523428,
+          "theta_ret": 0.35007068514823914,
+          "theta_qa": 0.9744517207145691
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 125.66613028947755,
+          "theta_ret": 0.07915692776441574,
+          "theta_qa": 0.9931656718254089
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 206.75480290173212,
+          "theta_ret": 0.3685727119445801,
+          "theta_qa": 0.20598502457141876
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 150.82761780606114,
+          "theta_ret": 0.05177277326583862,
+          "theta_qa": 0.7167280316352844
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.14734227559643,
+          "theta_ret": 0.04513650760054588,
+          "theta_qa": 0.7167280316352844
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 212.8473997983898,
+          "theta_ret": 0.9830257296562195,
+          "theta_qa": 0.9937707781791687
+        },
+        "ss_budget": {
+          "accuracy": 0.46216216216216216,
+          "cost": 177.1669738666874,
+          "theta_ret": 0.9324018955230713,
+          "theta_qa": 0.9937707781791687
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 133.1358099509696,
+          "theta_ret": 0.8736202716827393,
+          "theta_qa": 0.9937707781791687
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.1039882132119,
+          "theta_ret": 0.98216313123703,
+          "theta_qa": 0.9773703217506409
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.1669738666874,
+          "theta_ret": 0.9585418701171875,
+          "theta_qa": 0.9773703217506409
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 131.9211571532946,
+          "theta_ret": 0.9139444231987,
+          "theta_qa": 0.9773703217506409
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.09136145377258,
+          "theta_ret": 0.988603413105011,
+          "theta_qa": 0.7485727667808533
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 174.88529095123377,
+          "theta_ret": 0.9680551886558533,
+          "theta_qa": 0.7538121342658997
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.65630991709335,
+          "theta_ret": 0.9259759783744812,
+          "theta_qa": 0.7538121342658997
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.4074923943836,
+          "theta_ret": 0.9661243557929993,
+          "theta_qa": 0.9844777584075928
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 170.62137939993204,
+          "theta_ret": 0.9476343989372253,
+          "theta_qa": 0.9844777584075928
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.80798249855576,
+          "theta_ret": 0.9412298798561096,
+          "theta_qa": 0.9844777584075928
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.42432807363602,
+          "theta_ret": 0.9752580523490906,
+          "theta_qa": 0.9791470170021057
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 172.30415375617446,
+          "theta_ret": 0.9642540812492371,
+          "theta_qa": 0.9791470170021057
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.83838062214704,
+          "theta_ret": 0.9602136611938477,
+          "theta_qa": 0.9791470170021057
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.2135715965433,
+          "theta_ret": 0.9853589534759521,
+          "theta_qa": 0.9251905083656311
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 167.40345336734353,
+          "theta_ret": 0.9803948402404785,
+          "theta_qa": 0.9286627769470215
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.67704191692795,
+          "theta_ret": 0.9786583781242371,
+          "theta_qa": 0.9286627769470215
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.3186410108868,
+          "theta_ret": 0.414661169052124,
+          "theta_qa": 0.9758491516113281
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 157.67438208372062,
+          "theta_ret": 0.08859854936599731,
+          "theta_qa": 0.9722517132759094
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.61375188192122,
+          "theta_ret": 0.06063033267855644,
+          "theta_qa": 0.9951847195625305
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 207.52612266319295,
+          "theta_ret": 0.15149928629398346,
+          "theta_qa": 0.3563562333583832
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.26190514048693,
+          "theta_ret": 0.04254336282610893,
+          "theta_qa": 0.8452017307281494
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.98521828671548,
+          "theta_ret": 0.02965787798166275,
+          "theta_qa": 0.8324076533317566
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 207.2194972382184,
+          "theta_ret": 0.04039129987359047,
+          "theta_qa": 0.270830899477005
+        },
+        "ss_budget": {
+          "accuracy": 0.45675675675675675,
+          "cost": 164.5039925146583,
+          "theta_ret": 0.01921517215669155,
+          "theta_qa": 0.4852224886417389
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 133.38225081649324,
+          "theta_ret": 0.016183823347091675,
+          "theta_qa": 0.48449790477752686
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.0491134988546,
+          "theta_ret": 0.9939152598381042,
+          "theta_qa": 0.9936051964759827
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 176.57289757441788,
+          "theta_ret": 0.9860773086547852,
+          "theta_qa": 0.9975040555000305
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.33750947306063,
+          "theta_ret": 0.9838886260986328,
+          "theta_qa": 0.9953468441963196
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.4528525767855,
+          "theta_ret": 0.9936746954917908,
+          "theta_qa": 0.9963107705116272
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 172.61748148947672,
+          "theta_ret": 0.9908649325370789,
+          "theta_qa": 0.9988246560096741
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.37444214562194,
+          "theta_ret": 0.9898004531860352,
+          "theta_qa": 0.9976871609687805
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.67031110074603,
+          "theta_ret": 0.9966363906860352,
+          "theta_qa": 0.9982738494873047
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 177.14904600326528,
+          "theta_ret": 0.9959933757781982,
+          "theta_qa": 0.9991194605827332
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 140.8223212102377,
+          "theta_ret": 0.9956396222114563,
+          "theta_qa": 0.9991194605827332
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.7721047611993,
+          "theta_ret": 0.9916867613792419,
+          "theta_qa": 0.9810238480567932
+        },
+        "ss_budget": {
+          "accuracy": 0.45675675675675675,
+          "cost": 167.15933839243684,
+          "theta_ret": 0.985347330570221,
+          "theta_qa": 0.9974348545074463
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.01825728864682,
+          "theta_ret": 0.9838218688964844,
+          "theta_qa": 0.995258629322052
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.4528525767855,
+          "theta_ret": 0.9936071038246155,
+          "theta_qa": 0.996304452419281
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 167.30337549964872,
+          "theta_ret": 0.9905787110328674,
+          "theta_qa": 0.9988284111022949
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.8062669672573,
+          "theta_ret": 0.9896626472473145,
+          "theta_qa": 0.9988284111022949
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.1491893773668,
+          "theta_ret": 0.9966325759887695,
+          "theta_qa": 0.9985670447349548
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.33985006546234,
+          "theta_ret": 0.995966911315918,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 143.46581434527732,
+          "theta_ret": 0.9956355094909668,
+          "theta_qa": 0.9994831085205078
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.4704726105962,
+          "theta_ret": 0.4032178819179535,
+          "theta_qa": 0.9672040343284607
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 158.12987688284875,
+          "theta_ret": 0.07862032204866409,
+          "theta_qa": 0.9635093808174133
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.00642548308375,
+          "theta_ret": 0.051549021154642105,
+          "theta_qa": 0.9941644668579102
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 207.52612266319295,
+          "theta_ret": 0.1540348380804062,
+          "theta_qa": 0.36056408286094666
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 171.9244156731663,
+          "theta_ret": 0.03344184532761574,
+          "theta_qa": 0.8439257144927979
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.3700973953804,
+          "theta_ret": 0.023940980434417725,
+          "theta_qa": 0.8439257144927979
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.55714413391286,
+          "theta_ret": 0.030756430700421333,
+          "theta_qa": 0.3508845865726471
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 177.34358630771845,
+          "theta_ret": 0.016248414292931557,
+          "theta_qa": 0.48529013991355896
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.09963062626687,
+          "theta_ret": 0.012434477917850018,
+          "theta_qa": 0.4765152931213379
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.0491134988546,
+          "theta_ret": 0.9953527450561523,
+          "theta_qa": 0.9949910640716553
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 175.9655711755804,
+          "theta_ret": 0.9890331625938416,
+          "theta_qa": 0.9983405470848083
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.44741963399667,
+          "theta_ret": 0.9872362017631531,
+          "theta_qa": 0.9983405470848083
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.80857498469032,
+          "theta_ret": 0.9951658248901367,
+          "theta_qa": 0.7112526893615723
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 176.2770288674967,
+          "theta_ret": 0.9928911328315735,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 138.47096053986309,
+          "theta_ret": 0.9917379021644592,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.40640021021386,
+          "theta_ret": 0.9975011348724365,
+          "theta_qa": 0.6493131518363953
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 177.30087760297462,
+          "theta_ret": 0.9967973232269287,
+          "theta_qa": 0.9993776679039001
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.81686718604038,
+          "theta_ret": 0.9964926838874817,
+          "theta_qa": 0.9993776679039001
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.0491134988546,
+          "theta_ret": 0.9953262805938721,
+          "theta_qa": 0.9949303269386292
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 171.86611798342736,
+          "theta_ret": 0.9887484908103943,
+          "theta_qa": 0.9983149170875549
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.59925123370607,
+          "theta_ret": 0.9872350096702576,
+          "theta_qa": 0.9983149170875549
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.6124786689924,
+          "theta_ret": 0.9950961470603943,
+          "theta_qa": 0.996903121471405
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 173.39222847301866,
+          "theta_ret": 0.9927734732627869,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 140.7484345355037,
+          "theta_ret": 0.9917107224464417,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.72565239462767,
+          "theta_ret": 0.9976725578308105,
+          "theta_qa": 0.6428694725036621
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 172.58630351948656,
+          "theta_ret": 0.9967182278633118,
+          "theta_qa": 0.9993646740913391
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.17555709092719,
+          "theta_ret": 0.9964489936828613,
+          "theta_qa": 0.9993646740913391
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.77413581001494,
+          "theta_ret": 0.41914090514183044,
+          "theta_qa": 0.9684556126594543
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 157.71818681315008,
+          "theta_ret": 0.07108286768198013,
+          "theta_qa": 0.9917755126953125
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.00642548308375,
+          "theta_ret": 0.0460193008184433,
+          "theta_qa": 0.9946334958076477
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 207.21045605146355,
+          "theta_ret": 0.14814536273479462,
+          "theta_qa": 0.3433103561401367
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 174.67297345293005,
+          "theta_ret": 0.0297922994941473,
+          "theta_qa": 0.8849875330924988
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.9590290829373,
+          "theta_ret": 0.020357465371489525,
+          "theta_qa": 0.8734464645385742
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.25348093449412,
+          "theta_ret": 0.026825862005352974,
+          "theta_qa": 0.36304497718811035
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 166.3493551886634,
+          "theta_ret": 0.011729937978088856,
+          "theta_qa": 0.5136633515357971
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.90555557979894,
+          "theta_ret": 0.009678032249212265,
+          "theta_qa": 0.5083602070808411
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.0491134988546,
+          "theta_ret": 0.9965767860412598,
+          "theta_qa": 0.9957212805747986
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 172.65613194397918,
+          "theta_ret": 0.991096556186676,
+          "theta_qa": 0.9974961280822754
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 148.61217774241564,
+          "theta_ret": 0.9898478388786316,
+          "theta_qa": 0.9974961280822754
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.7721047611993,
+          "theta_ret": 0.996234118938446,
+          "theta_qa": 0.9977359771728516
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 173.68809717993986,
+          "theta_ret": 0.9942235946655273,
+          "theta_qa": 0.9994754791259766
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.83245617103546,
+          "theta_ret": 0.9932985305786133,
+          "theta_qa": 0.9994754791259766
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.92752193359317,
+          "theta_ret": 0.9979939460754395,
+          "theta_qa": 0.6061034798622131
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.14125151076772,
+          "theta_ret": 0.9974679946899414,
+          "theta_qa": 0.9995290637016296
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 135.0605149137791,
+          "theta_ret": 0.9972031116485596,
+          "theta_qa": 0.9995290637016296
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.74046153322388,
+          "theta_ret": 0.9951145052909851,
+          "theta_qa": 0.9974918365478516
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 173.2400748653241,
+          "theta_ret": 0.9911378026008606,
+          "theta_qa": 0.9973527789115906
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 146.60718897620367,
+          "theta_ret": 0.9897425770759583,
+          "theta_qa": 0.9973527789115906
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.7721047611993,
+          "theta_ret": 0.9961915016174316,
+          "theta_qa": 0.9976970553398132
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 172.32161278255552,
+          "theta_ret": 0.9941356182098389,
+          "theta_qa": 0.9994642734527588
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.625597865858,
+          "theta_ret": 0.9932146072387695,
+          "theta_qa": 0.9994642734527588
+        }
+      }
+    },
+    {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.92752193359317,
+          "theta_ret": 0.997976541519165,
+          "theta_qa": 0.6143186688423157
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 176.55730858942283,
+          "theta_ret": 0.9974189400672913,
+          "theta_qa": 0.9995555281639099
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.13113060424226,
+          "theta_ret": 0.9971621632575989,
+          "theta_qa": 0.9995471835136414
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 198.4233978259995,
+          "theta_ret": 0.9413436055183411,
+          "theta_qa": 0.9956119656562805
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.77430026552491,
+          "theta_ret": 0.5812951922416687,
+          "theta_qa": 0.9956119656562805
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 119.75966353867845,
+          "theta_ret": 0.1126042976975441,
+          "theta_qa": 0.9961280822753906
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 209.96259940391172,
+          "theta_ret": 0.7693886160850525,
+          "theta_qa": 0.9640070796012878
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.77430026552491,
+          "theta_ret": 0.3753778040409088,
+          "theta_qa": 0.9640070796012878
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 125.21063549034942,
+          "theta_ret": 0.07653947919607162,
+          "theta_qa": 0.9893560409545898
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 203.84771121393123,
+          "theta_ret": 0.3670365810394287,
+          "theta_qa": 0.1977415233850479
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 176.4012680699004,
+          "theta_ret": 0.13287381827831268,
+          "theta_qa": 0.4897885322570801
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 124.066283794724,
+          "theta_ret": 0.04343422129750252,
+          "theta_qa": 0.7111740112304688
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 212.68715035905424,
+          "theta_ret": 0.9836242198944092,
+          "theta_qa": 0.9862833023071289
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.00672442735186,
+          "theta_ret": 0.932708203792572,
+          "theta_qa": 0.9862833023071289
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 134.3420449090184,
+          "theta_ret": 0.8728601336479187,
+          "theta_qa": 0.9862833023071289
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.21388419577414,
+          "theta_ret": 0.9931398034095764,
+          "theta_qa": 0.9755297303199768
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 175.4968262698843,
+          "theta_ret": 0.9575058817863464,
+          "theta_qa": 0.9755297303199768
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 131.9211571532946,
+          "theta_ret": 0.9125600457191467,
+          "theta_qa": 0.9755297303199768
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.0829436141464,
+          "theta_ret": 0.9888517260551453,
+          "theta_qa": 0.7223324775695801
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 175.33236791073566,
+          "theta_ret": 0.9685463905334473,
+          "theta_qa": 0.7223324775695801
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.4154679156402,
+          "theta_ret": 0.9253661632537842,
+          "theta_qa": 0.7509214282035828
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.41170131419673,
+          "theta_ret": 0.9660263061523438,
+          "theta_qa": 0.9845501780509949
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 173.35855711451384,
+          "theta_ret": 0.9480915069580078,
+          "theta_qa": 0.9845501780509949
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 136.47189622476267,
+          "theta_ret": 0.9402954578399658,
+          "theta_qa": 0.9859671592712402
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.42853699344911,
+          "theta_ret": 0.9751874804496765,
+          "theta_qa": 0.9821732044219971
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 175.95232106901244,
+          "theta_ret": 0.9647366404533386,
+          "theta_qa": 0.9821732044219971
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.23526314312264,
+          "theta_ret": 0.9602101445198059,
+          "theta_qa": 0.9821732044219971
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.14201995972059,
+          "theta_ret": 0.9853834509849548,
+          "theta_qa": 0.9039478898048401
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 167.19690581006387,
+          "theta_ret": 0.9803948402404785,
+          "theta_qa": 0.9039478898048401
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.48312111908757,
+          "theta_ret": 0.9787092804908752,
+          "theta_qa": 0.9039478898048401
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 209.35527300507425,
+          "theta_ret": 0.5306646227836609,
+          "theta_qa": 0.9638643264770508
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 153.93019131291337,
+          "theta_ret": 0.08409766107797623,
+          "theta_qa": 0.9937925934791565
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 132.65038387610863,
+          "theta_ret": 0.0625876784324646,
+          "theta_qa": 0.9918472170829773
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 207.06641894425175,
+          "theta_ret": 0.1549227386713028,
+          "theta_qa": 0.3588953912258148
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 176.3431210497332,
+          "theta_ret": 0.04122411832213402,
+          "theta_qa": 0.8527274131774902
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 142.88560766618858,
+          "theta_ret": 0.029829857870936394,
+          "theta_qa": 0.8490989804267883
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 206.44475025467648,
+          "theta_ret": 0.042833197861909866,
+          "theta_qa": 0.24746213853359222
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 169.43275413783604,
+          "theta_ret": 0.02000551111996174,
+          "theta_qa": 0.4894789159297943
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.52067647113398,
+          "theta_ret": 0.016327809542417526,
+          "theta_qa": 0.48528575897216797
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.0491134988546,
+          "theta_ret": 0.9937931895256042,
+          "theta_qa": 0.9930720329284668
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 170.4918390935455,
+          "theta_ret": 0.9855008721351624,
+          "theta_qa": 0.9972918629646301
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 142.5548247470211,
+          "theta_ret": 0.9835770726203918,
+          "theta_qa": 0.9972918629646301
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.1293914725586,
+          "theta_ret": 0.9934259057044983,
+          "theta_qa": 0.8894491195678711
+        },
+        "ss_budget": {
+          "accuracy": 0.46306306306306305,
+          "cost": 171.72208087621556,
+          "theta_ret": 0.9907824397087097,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 147.1253617232973,
+          "theta_ret": 0.9899144172668457,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 211.73920900926802,
+          "theta_ret": 0.9966753125190735,
+          "theta_qa": 0.9977195262908936
+        },
+        "ss_budget": {
+          "accuracy": 0.45585585585585586,
+          "cost": 177.62012978738844,
+          "theta_ret": 0.9960188865661621,
+          "theta_qa": 0.9990761876106262
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 156.79581714971187,
+          "theta_ret": 0.9957728981971741,
+          "theta_qa": 0.9990447163581848
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.0491134988546,
+          "theta_ret": 0.9937863349914551,
+          "theta_qa": 0.9929563403129578
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 172.16198669034858,
+          "theta_ret": 0.985692024230957,
+          "theta_qa": 0.9972880482673645
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.52863554324293,
+          "theta_ret": 0.9836685657501221,
+          "theta_qa": 0.9972880482673645
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.93173085340626,
+          "theta_ret": 0.9938664436340332,
+          "theta_qa": 0.996074378490448
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 169.29277528086558,
+          "theta_ret": 0.9906113743782043,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 146.06254052533174,
+          "theta_ret": 0.9898268580436707,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 208.9635315097555,
+          "theta_ret": 0.9965134263038635,
+          "theta_qa": 0.9987332820892334
+        },
+        "ss_budget": {
+          "accuracy": 0.45675675675675675,
+          "cost": 177.6123352948909,
+          "theta_ret": 0.9959955215454102,
+          "theta_qa": 0.9990985989570618
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 156.18069625837683,
+          "theta_ret": 0.9957287907600403,
+          "theta_qa": 0.9990962147712708
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.61450971780806,
+          "theta_ret": 0.42227616906166077,
+          "theta_qa": 0.9501679539680481
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 156.35949690826325,
+          "theta_ret": 0.07656747847795486,
+          "theta_qa": 0.9939711689949036
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 128.85459388337432,
+          "theta_ret": 0.05078304186463356,
+          "theta_qa": 0.9920669198036194
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 206.9067928520448,
+          "theta_ret": 0.15079490840435028,
+          "theta_qa": 0.3600306808948517
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 173.74639486967874,
+          "theta_ret": 0.03377130255103111,
+          "theta_qa": 0.8679569363594055
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 143.01405578840533,
+          "theta_ret": 0.02422572858631611,
+          "theta_qa": 0.8521866798400879
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 205.7167702261198,
+          "theta_ret": 0.03449336066842079,
+          "theta_qa": 0.3657452166080475
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 168.06626974045167,
+          "theta_ret": 0.015343636274337769,
+          "theta_qa": 0.5376337170600891
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.15684037166136,
+          "theta_ret": 0.01282909233123064,
+          "theta_qa": 0.5022938251495361
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.0491134988546,
+          "theta_ret": 0.9951371550559998,
+          "theta_qa": 0.9945717453956604
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 175.16338246430453,
+          "theta_ret": 0.988808810710907,
+          "theta_qa": 0.9968090653419495
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.35762196628238,
+          "theta_ret": 0.9870043396949768,
+          "theta_qa": 0.9968090653419495
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.92752193359317,
+          "theta_ret": 0.9953517913818359,
+          "theta_qa": 0.8982829451560974
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 174.29542357877736,
+          "theta_ret": 0.9927270412445068,
+          "theta_qa": 0.9993090629577637
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.499798041553,
+          "theta_ret": 0.9917645454406738,
+          "theta_qa": 0.9993090629577637
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 215.41060913002696,
+          "theta_ret": 0.9977269172668457,
+          "theta_qa": 0.9981977343559265
+        },
+        "ss_budget": {
+          "accuracy": 0.45315315315315313,
+          "cost": 171.2587915845899,
+          "theta_ret": 0.9967737197875977,
+          "theta_qa": 0.999427855014801
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 147.86113624435154,
+          "theta_ret": 0.9965518116950989,
+          "theta_qa": 0.999427855014801
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.87670414793817,
+          "theta_ret": 0.9933804869651794,
+          "theta_qa": 0.9963751435279846
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.88855676657568,
+          "theta_ret": 0.9890205264091492,
+          "theta_qa": 0.996742308139801
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.34982747378484,
+          "theta_ret": 0.9869392514228821,
+          "theta_qa": 0.996742308139801
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.92752193359317,
+          "theta_ret": 0.9953217506408691,
+          "theta_qa": 0.8953818678855896
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 172.77710758168357,
+          "theta_ret": 0.992630660533905,
+          "theta_qa": 0.9992933869361877
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.6516296412624,
+          "theta_ret": 0.9917015433311462,
+          "theta_qa": 0.9992933869361877
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 215.41060913002696,
+          "theta_ret": 0.9977002739906311,
+          "theta_qa": 0.9981508851051331
+        },
+        "ss_budget": {
+          "accuracy": 0.4540540540540541,
+          "cost": 174.59908677819607,
+          "theta_ret": 0.996767520904541,
+          "theta_qa": 0.9994481205940247
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 153.62294254081013,
+          "theta_ret": 0.9965435862541199,
+          "theta_qa": 0.9994373321533203
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.77413581001494,
+          "theta_ret": 0.44795894622802734,
+          "theta_qa": 0.9533746838569641
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 160.4391521956082,
+          "theta_ret": 0.07640839368104935,
+          "theta_qa": 0.9747004508972168
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.3729098804681,
+          "theta_ret": 0.04613221809267998,
+          "theta_qa": 0.9908042550086975
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 207.0544155319411,
+          "theta_ret": 0.1510166972875595,
+          "theta_qa": 0.37568795680999756
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 174.51334736072317,
+          "theta_ret": 0.029338425025343895,
+          "theta_qa": 0.8858489990234375
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 142.877813173691,
+          "theta_ret": 0.020460452884435654,
+          "theta_qa": 0.883797824382782
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 206.48372271716417,
+          "theta_ret": 0.029834622517228127,
+          "theta_qa": 0.34725895524024963
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 166.38832765115106,
+          "theta_ret": 0.011881339363753796,
+          "theta_qa": 0.5505008101463318
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 138.67703157907005,
+          "theta_ret": 0.00977575033903122,
+          "theta_qa": 0.5407025218009949
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 216.20873959106154,
+          "theta_ret": Infinity,
+          "theta_qa": Infinity
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 176.30788482950163,
+          "theta_ret": 0.9911840558052063,
+          "theta_qa": 0.9975452423095703
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 147.2612823300264,
+          "theta_ret": 0.9897027015686035,
+          "theta_qa": 0.9975452423095703
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.6124786689924,
+          "theta_ret": 0.9961785674095154,
+          "theta_qa": 0.9975962042808533
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 167.31896448464377,
+          "theta_ret": 0.9940390586853027,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 143.78506652969114,
+          "theta_ret": 0.9934163093566895,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 215.5702352222339,
+          "theta_ret": 0.998140811920166,
+          "theta_qa": 0.9987180233001709
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 173.2092189033191,
+          "theta_ret": 0.9974802136421204,
+          "theta_qa": 0.9995453953742981
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 149.65193747087383,
+          "theta_ret": 0.9972979426383972,
+          "theta_qa": 0.9995430111885071
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 213.87670414793817,
+          "theta_ret": 0.9950152039527893,
+          "theta_qa": 0.9970226287841797
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 175.73953089315182,
+          "theta_ret": 0.9911642074584961,
+          "theta_qa": 0.9975495338439941
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 145.91818141013465,
+          "theta_ret": 0.9896464347839355,
+          "theta_qa": 0.9975495338439941
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.13360039237165,
+          "theta_ret": 0.9961099624633789,
+          "theta_qa": 0.997591495513916
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 175.2142076695311,
+          "theta_ret": 0.9942054748535156,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 144.53643003574044,
+          "theta_ret": 0.993378221988678,
+          "theta_qa": 0.999444305896759
+        }
+      }
+    },
+    {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 215.5702352222339,
+          "theta_ret": 0.9981257319450378,
+          "theta_qa": 0.9987077713012695
+        },
+        "ss_budget": {
+          "accuracy": 0.45855855855855854,
+          "cost": 172.75372410419098,
+          "theta_ret": 0.9974192976951599,
+          "theta_qa": 0.9995372891426086
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 146.61530547668644,
+          "theta_ret": 0.9972188472747803,
+          "theta_qa": 0.9995372891426086
+        }
+      }
+    }
+  ],
+  "selected": {
+    "base_exact_cheap95": {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 207.23804844876926,
+          "theta_ret": 0.9777352809906006,
+          "theta_qa": 0.9934289455413818
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.47905490573237,
+          "theta_ret": 0.5859914422035217,
+          "theta_qa": 0.9934289455413818
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 120.82669365645715,
+          "theta_ret": 0.11570116132497787,
+          "theta_qa": 0.9928973317146301
+        }
+      }
+    },
+    "base_exact_max_accuracy": {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 204.8171606930455,
+          "theta_ret": 0.988520622253418,
+          "theta_qa": 0.9201194643974304
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 176.8843552663342,
+          "theta_ret": 0.9706218838691711,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.27205415555702,
+          "theta_ret": 0.9282744526863098,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    "base_exact_ss_budget": {
+      "mode": "base",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.46735295666662,
+          "theta_ret": 0.984799861907959,
+          "theta_qa": 0.9390509724617004
+        },
+        "ss_budget": {
+          "accuracy": 0.46306306306306305,
+          "cost": 176.57648314710235,
+          "theta_ret": 0.9811306595802307,
+          "theta_qa": 0.9126195907592773
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 134.35108609577324,
+          "theta_ret": 0.978752851486206,
+          "theta_qa": 0.8922238349914551
+        }
+      }
+    },
+    "base_grpo_cheap95": {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 210.89042468142037,
+          "theta_ret": 0.8010733723640442,
+          "theta_qa": 0.9529466032981873
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 160.2993240082094,
+          "theta_ret": 0.0984346941113472,
+          "theta_qa": 0.942287266254425
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 126.68218453245792,
+          "theta_ret": 0.05997156724333763,
+          "theta_qa": 0.9348669052124023
+        }
+      }
+    },
+    "base_grpo_max_accuracy": {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4720720720720721,
+          "cost": 205.8686018258292,
+          "theta_ret": 0.028711872175335884,
+          "theta_qa": 0.24954092502593994
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 171.5428075487722,
+          "theta_ret": 0.012480390258133411,
+          "theta_qa": 0.477933406829834
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 143.04117550815408,
+          "theta_ret": 0.009995825588703156,
+          "theta_qa": 0.4755098521709442
+        }
+      }
+    },
+    "base_grpo_ss_budget": {
+      "mode": "base",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 210.89042468142037,
+          "theta_ret": 0.8010733723640442,
+          "theta_qa": 0.9529466032981873
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 160.2993240082094,
+          "theta_ret": 0.0984346941113472,
+          "theta_qa": 0.942287266254425
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 126.68218453245792,
+          "theta_ret": 0.05997156724333763,
+          "theta_qa": 0.9348669052124023
+        }
+      }
+    },
+    "confidence_exact_cheap95": {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 196.44958702977766,
+          "theta_ret": 0.9362018704414368,
+          "theta_qa": 0.9944632649421692
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.92613186523428,
+          "theta_ret": 0.5614941716194153,
+          "theta_qa": 0.9944632649421692
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 122.49263233344715,
+          "theta_ret": 0.11959563940763474,
+          "theta_qa": 0.9960561394691467
+        }
+      }
+    },
+    "confidence_exact_max_accuracy": {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 196.44958702977766,
+          "theta_ret": 0.9362018704414368,
+          "theta_qa": 0.9944632649421692
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.92613186523428,
+          "theta_ret": 0.5614941716194153,
+          "theta_qa": 0.9944632649421692
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 122.49263233344715,
+          "theta_ret": 0.11959563940763474,
+          "theta_qa": 0.9960561394691467
+        }
+      }
+    },
+    "confidence_exact_ss_budget": {
+      "mode": "confidence",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 214.0620525960648,
+          "theta_ret": 0.9890055656433105,
+          "theta_qa": 0.9934579730033875
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 177.47063706610618,
+          "theta_ret": 0.9325816035270691,
+          "theta_qa": 0.9934579730033875
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.2510095564915,
+          "theta_ret": 0.8645262718200684,
+          "theta_qa": 0.9934579730033875
+        }
+      }
+    },
+    "confidence_grpo_cheap95": {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.55603979590435,
+          "theta_ret": 0.9963290095329285,
+          "theta_qa": 0.7052329182624817
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 175.2142076695311,
+          "theta_ret": 0.9943490624427795,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.66472775671954,
+          "theta_ret": 0.9929749369621277,
+          "theta_qa": Infinity
+        }
+      }
+    },
+    "confidence_grpo_max_accuracy": {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 32,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4720720720720721,
+          "cost": 205.80733807001866,
+          "theta_ret": 0.029278062283992767,
+          "theta_qa": 0.26146870851516724
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 170.3905106910775,
+          "theta_ret": 0.012484167702496052,
+          "theta_qa": 0.6942265033721924
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 141.33611369910471,
+          "theta_ret": 0.010069766081869602,
+          "theta_qa": 0.6575897932052612
+        }
+      }
+    },
+    "confidence_grpo_ss_budget": {
+      "mode": "confidence",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 211.02962952169045,
+          "theta_ret": 0.7458350658416748,
+          "theta_qa": 0.9441189169883728
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 166.3761735692687,
+          "theta_ret": 0.11372082680463791,
+          "theta_qa": 0.9588346481323242
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.90182609634488,
+          "theta_ret": 0.06493004411458969,
+          "theta_qa": 0.9735603332519531
+        }
+      }
+    },
+    "aug5_exact_cheap95": {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 213.60655779693667,
+          "theta_ret": 1.0,
+          "theta_qa": 0.9960294365882874
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.92613186523428,
+          "theta_ret": 0.5773462653160095,
+          "theta_qa": 0.9960294365882874
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 118.84867394042222,
+          "theta_ret": 0.11261854320764542,
+          "theta_qa": 0.9967216849327087
+        }
+      }
+    },
+    "aug5_exact_max_accuracy": {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 206.75480290173212,
+          "theta_ret": 0.3685727119445801,
+          "theta_qa": 0.20598502457141876
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 150.82761780606114,
+          "theta_ret": 0.05177277326583862,
+          "theta_qa": 0.7167280316352844
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 130.14734227559643,
+          "theta_ret": 0.04513650760054588,
+          "theta_qa": 0.7167280316352844
+        }
+      }
+    },
+    "aug5_exact_ss_budget": {
+      "mode": "aug5",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.15,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 212.8473997983898,
+          "theta_ret": 0.9830257296562195,
+          "theta_qa": 0.9937707781791687
+        },
+        "ss_budget": {
+          "accuracy": 0.46216216216216216,
+          "cost": 177.1669738666874,
+          "theta_ret": 0.9324018955230713,
+          "theta_qa": 0.9937707781791687
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 133.1358099509696,
+          "theta_ret": 0.8736202716827393,
+          "theta_qa": 0.9937707781791687
+        }
+      }
+    },
+    "aug5_grpo_cheap95": {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.4704726105962,
+          "theta_ret": 0.4032178819179535,
+          "theta_qa": 0.9672040343284607
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 158.12987688284875,
+          "theta_ret": 0.07862032204866409,
+          "theta_qa": 0.9635093808174133
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.00642548308375,
+          "theta_ret": 0.051549021154642105,
+          "theta_qa": 0.9941644668579102
+        }
+      }
+    },
+    "aug5_grpo_max_accuracy": {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 207.52612266319295,
+          "theta_ret": 0.15149928629398346,
+          "theta_qa": 0.3563562333583832
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 177.26190514048693,
+          "theta_ret": 0.04254336282610893,
+          "theta_qa": 0.8452017307281494
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 139.98521828671548,
+          "theta_ret": 0.02965787798166275,
+          "theta_qa": 0.8324076533317566
+        }
+      }
+    },
+    "aug5_grpo_ss_budget": {
+      "mode": "aug5",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.3186410108868,
+          "theta_ret": 0.414661169052124,
+          "theta_qa": 0.9758491516113281
+        },
+        "ss_budget": {
+          "accuracy": 0.4603603603603604,
+          "cost": 157.67438208372062,
+          "theta_ret": 0.08859854936599731,
+          "theta_qa": 0.9722517132759094
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 129.61375188192122,
+          "theta_ret": 0.06063033267855644,
+          "theta_qa": 0.9951847195625305
+        }
+      }
+    },
+    "aug9_exact_cheap95": {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 198.4233978259995,
+          "theta_ret": 0.9413436055183411,
+          "theta_qa": 0.9956119656562805
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 177.77430026552491,
+          "theta_ret": 0.5812951922416687,
+          "theta_qa": 0.9956119656562805
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 119.75966353867845,
+          "theta_ret": 0.1126042976975441,
+          "theta_qa": 0.9961280822753906
+        }
+      }
+    },
+    "aug9_exact_max_accuracy": {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.0,
+      "epoch": 120,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 203.84771121393123,
+          "theta_ret": 0.3670365810394287,
+          "theta_qa": 0.1977415233850479
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 176.4012680699004,
+          "theta_ret": 0.13287381827831268,
+          "theta_qa": 0.4897885322570801
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 124.066283794724,
+          "theta_ret": 0.04343422129750252,
+          "theta_qa": 0.7111740112304688
+        }
+      }
+    },
+    "aug9_exact_ss_budget": {
+      "mode": "aug9",
+      "method": "exact",
+      "groups": 0,
+      "lambda": 0.4,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4702702702702703,
+          "cost": 215.42853699344911,
+          "theta_ret": 0.9751874804496765,
+          "theta_qa": 0.9821732044219971
+        },
+        "ss_budget": {
+          "accuracy": 0.46126126126126127,
+          "cost": 175.95232106901244,
+          "theta_ret": 0.9647366404533386,
+          "theta_qa": 0.9821732044219971
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 137.23526314312264,
+          "theta_ret": 0.9602101445198059,
+          "theta_qa": 0.9821732044219971
+        }
+      }
+    },
+    "aug9_grpo_cheap95": {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 30,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 206.61450971780806,
+          "theta_ret": 0.42227616906166077,
+          "theta_qa": 0.9501679539680481
+        },
+        "ss_budget": {
+          "accuracy": 0.4594594594594595,
+          "cost": 156.35949690826325,
+          "theta_ret": 0.07656747847795486,
+          "theta_qa": 0.9939711689949036
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 128.85459388337432,
+          "theta_ret": 0.05078304186463356,
+          "theta_qa": 0.9920669198036194
+        }
+      }
+    },
+    "aug9_grpo_max_accuracy": {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 16,
+      "lambda": 0.0,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.4711711711711712,
+          "cost": 206.9067928520448,
+          "theta_ret": 0.15079490840435028,
+          "theta_qa": 0.3600306808948517
+        },
+        "ss_budget": {
+          "accuracy": 0.45765765765765765,
+          "cost": 173.74639486967874,
+          "theta_ret": 0.03377130255103111,
+          "theta_qa": 0.8679569363594055
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 143.01405578840533,
+          "theta_ret": 0.02422572858631611,
+          "theta_qa": 0.8521866798400879
+        }
+      }
+    },
+    "aug9_grpo_ss_budget": {
+      "mode": "aug9",
+      "method": "grpo",
+      "groups": 8,
+      "lambda": 0.15,
+      "epoch": 60,
+      "points": {
+        "max_accuracy": {
+          "accuracy": 0.46936936936936935,
+          "cost": 214.1293914725586,
+          "theta_ret": 0.9934259057044983,
+          "theta_qa": 0.8894491195678711
+        },
+        "ss_budget": {
+          "accuracy": 0.46306306306306305,
+          "cost": 171.72208087621556,
+          "theta_ret": 0.9907824397087097,
+          "theta_qa": Infinity
+        },
+        "cheap95": {
+          "accuracy": 0.44594594594594594,
+          "cost": 147.1253617232973,
+          "theta_ret": 0.9899144172668457,
+          "theta_qa": Infinity
+        }
+      }
+    }
+  },
+  "global_selected": {
+    "cheap95": "aug5_exact_cheap95",
+    "max_accuracy": "confidence_grpo_max_accuracy",
+    "ss_budget": "aug9_grpo_ss_budget"
+  }
+}

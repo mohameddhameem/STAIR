@@ -1,0 +1,63 @@
+{
+  "primary_metric": "Review-validated reference-lenient reconstruction; forward whole-word containment",
+  "scorer_sha256": "aa8110af5e2c2cdf4d413d4ce24f36ca06ced975d7a77f1f6091f98913a81af7",
+  "review_validation": {
+    "review_records": 4267,
+    "mismatches": 0,
+    "excluded_truncated_records": 3,
+    "coverage": "Selected original train/validation review answers, not a complete independent scorer certification",
+    "original_SS_val": 0.527927927927928,
+    "original_SS_test": 0.5354490209318028
+  },
+  "rules": [
+    "Lowercase; remove Unicode punctuation; remove English articles; collapse whitespace",
+    "Exact normalized equality or gold whole-word sequence contained in prediction",
+    "For gold yes/no, reject a prediction containing both yes and no",
+    "Do not accept prediction-contained-in-gold reverse matching; no blanket quantifier-prefix rejection"
+  ],
+  "limitation": "Original mint_labels.py is unavailable. Agreement on all 4267 reviewed answers supports this reconstruction but does not certify unobserved original cases.",
+  "cohorts": "Original em_lenient reference grid remains separate; this run uses regenerated Instruct answers with freshly matching lenient labels",
+  "generation": "Qwen2.5-1.5B/7B Instruct FP16, existing greedy and random weak samples; Qwen weights unchanged; no Base generations",
+  "generation_manifest": {
+    "weak_model": "<WORKSPACE>/models/Qwen2.5-1.5B-Instruct-HF",
+    "strong_model": "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF",
+    "limit_per_gpu": 0,
+    "script_sha256": "ee9bb5553d11021e7d2a391bcd762be41c62758c806041866045ce850a2bd361",
+    "source_sha256": "481a2a8925da00bedfc7179e5a77d0bcd71494784d49037ec6dcfac18d1033de",
+    "router_code_sha256": "f66c95921fcb2ce5a67786afd677d302c9498f306341b047d41ef4f238ed86fe",
+    "splits_sha256": "4ec686a411194467d234938c6d16ce80d11cc8af9306b613ce5bc6cd5035da22",
+    "model_files": {
+      "<WORKSPACE>/models/Qwen2.5-1.5B-Instruct-HF/model.safetensors": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00001-of-00004.safetensors": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00002-of-00004.safetensors": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00003-of-00004.safetensors": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+      "<WORKSPACE>/models/Qwen2.5-7B-Instruct-HF/model-00004-of-00004.safetensors": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd"
+    }
+  },
+  "strict_diagnostic": "Official normalized answer EM retained only as a secondary diagnostic, never used for targets, rewards, model selection or thresholds",
+  "labels": "Original-style and gain/policy targets use lenient outcomes; Config A retrieval coverage labels unchanged; all QA and sampled rewards rebuilt with the same scorer",
+  "features": "Target-free extended-policy feature arrays reused from identical Instruct observations; no trained router weights or old reward/target arrays reused",
+  "cost": "One six-price mean parameter-weighted token ruler; direct routes skip unused calls; cascades and consensus pay for all calls; CPU overhead excluded",
+  "test": "Previously examined; exploratory fixed-split results, not confirmatory evidence",
+  "greedy_QA_regraded": 29620,
+  "SS": {
+    "train": {
+      "n": 4814,
+      "correct": 2534,
+      "accuracy": 0.5263813876194433,
+      "strict_accuracy": 0.4671790610718737
+    },
+    "val": {
+      "n": 1110,
+      "correct": 583,
+      "accuracy": 0.5252252252252252,
+      "strict_accuracy": 0.46936936936936935
+    },
+    "test": {
+      "n": 1481,
+      "correct": 784,
+      "accuracy": 0.5293720459149224,
+      "strict_accuracy": 0.47197839297771776
+    }
+  }
+}

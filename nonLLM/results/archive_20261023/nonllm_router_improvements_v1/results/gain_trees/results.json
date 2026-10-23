@@ -1,0 +1,46 @@
+{
+  "name": "gain_trees",
+  "lock": {
+    "cost": 138.91382857955193,
+    "accuracy": 0.5675675675675675,
+    "theta_ret": -0.11119859648538521,
+    "theta_qa": -0.08034944820475962
+  },
+  "val": {
+    "n": 1110,
+    "lenient_accuracy": 0.5675675675675675,
+    "strict_accuracy": 0.4477477477477477,
+    "mean_cost": 138.9138285795519,
+    "cost_pct_of_direct_SS": 78.02528678254897,
+    "cost_pct_of_cascade_SS": 64.24986743935251,
+    "picks": {
+      "SS": 598,
+      "WS": 509,
+      "SW": 3
+    }
+  },
+  "cost_scope": "Six mean token-aware call costs from token_costs.json; excludes routing overhead",
+  "test": {
+    "n": 1481,
+    "lenient_accuracy": 0.5644834571235652,
+    "strict_accuracy": 0.4463200540175557,
+    "mean_cost": 135.61851617002912,
+    "cost_pct_of_direct_SS": 76.17437173384405,
+    "cost_pct_of_cascade_SS": 62.72573274629822,
+    "picks": {
+      "WS": 708,
+      "SS": 766,
+      "SW": 7
+    }
+  },
+  "stage_metrics": {
+    "ret": {
+      "val_auc": 0.600122230710466,
+      "parameter": 3
+    },
+    "qa": {
+      "val_auc": 0.6517409539473684,
+      "parameter": 3
+    }
+  }
+}

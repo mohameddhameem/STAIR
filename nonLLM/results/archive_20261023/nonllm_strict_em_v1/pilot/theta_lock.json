@@ -1,0 +1,83 @@
+{
+  "selected_family": "random_forest",
+  "rule": "Stage hyperparameters by validation AUC; family and two thresholds by cheapest >=95% SS validation accuracy",
+  "bar": 0.44590090090090084,
+  "families": {
+    "majority": {
+      "cost": 216.20873959106154,
+      "accuracy": 0.46936936936936935,
+      "theta_ret": Infinity,
+      "theta_qa": Infinity
+    },
+    "logreg": {
+      "cost": 145.89028767368546,
+      "accuracy": 0.44594594594594594,
+      "theta_ret": 0.5178693960119383,
+      "theta_qa": 0.6027055098927052
+    },
+    "linear_svm": {
+      "cost": 151.0153051326149,
+      "accuracy": 0.44594594594594594,
+      "theta_ret": 0.18676328322441982,
+      "theta_qa": 0.692695551018781
+    },
+    "multinomial_nb": {
+      "cost": 146.21437212504108,
+      "accuracy": 0.44594594594594594,
+      "theta_ret": 0.9505963688577959,
+      "theta_qa": Infinity
+    },
+    "random_forest": {
+      "cost": 136.59160980614655,
+      "accuracy": 0.44594594594594594,
+      "theta_ret": 0.587209536200881,
+      "theta_qa": 0.6851739468870384
+    }
+  },
+  "stage_metrics": {
+    "ret": {
+      "majority": {
+        "val_auc": 0.5,
+        "parameter": null
+      },
+      "logreg": {
+        "val_auc": 0.6279246200607903,
+        "parameter": 0.1
+      },
+      "linear_svm": {
+        "val_auc": 0.6225993920972646,
+        "parameter": 0.1
+      },
+      "multinomial_nb": {
+        "val_auc": 0.5989641337386018,
+        "parameter": 0.1
+      },
+      "random_forest": {
+        "val_auc": 0.6196911854103344,
+        "parameter": null
+      }
+    },
+    "qa": {
+      "majority": {
+        "val_auc": 0.5,
+        "parameter": null
+      },
+      "logreg": {
+        "val_auc": 0.5772397094430992,
+        "parameter": 0.1
+      },
+      "linear_svm": {
+        "val_auc": 0.5575012106537531,
+        "parameter": 0.1
+      },
+      "multinomial_nb": {
+        "val_auc": 0.5007897864847017,
+        "parameter": 0.1
+      },
+      "random_forest": {
+        "val_auc": 0.6340338983050848,
+        "parameter": 8
+      }
+    }
+  }
+}

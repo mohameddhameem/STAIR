@@ -1,0 +1,340 @@
+[
+  {
+    "concurrency": 1,
+    "seconds": 70.83396258205175,
+    "requests_per_second": 0.11294017316528157,
+    "generated_tokens_per_second": 11.943423312228525,
+    "rows": [
+      {
+        "id": "5ab55b0c554299488d4d995e",
+        "text": "Billy Preston is an American college basketball player for the Kansas Jayhawks, which competes in the National Collegiate Athletic Association (NCAA).",
+        "usage": {
+          "completion_tokens": 29,
+          "prompt_tokens": 143,
+          "total_tokens": 172,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 2.563248380087316
+      },
+      {
+        "id": "5ae4a1875542995ad6573dd2",
+        "text": "The provided references are insufficient to answer the query about Nicolau Colaco. The reference provided is about Bowari Khongstia, an Indian professional footballer, and does not mention Nicolau Colaco or the company sponsoring the league he played in.",
+        "usage": {
+          "completion_tokens": 52,
+          "prompt_tokens": 161,
+          "total_tokens": 213,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 4.291864989325404
+      },
+      {
+        "id": "5abae3205542996cc5e49edc",
+        "text": "The provided references do not contain information about the writer of the novel \"Never Let Me Go\" or the award they won in 1989. However, I can supplement my response with my own knowledge.\n\nThe writer of the novel \"Never Let Me Go\" is Kazuo Ishiguro. Kazuo Ishiguro won the Booker Prize in 1989 for his novel \"The Remains of the Day\".",
+        "usage": {
+          "completion_tokens": 84,
+          "prompt_tokens": 256,
+          "total_tokens": 340,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 6.941556786186993
+      },
+      {
+        "id": "5ab5a4555542997d4ad1f19c",
+        "text": "The Cineplex Odeon Theatres are now operated as AMC Theatres in the United States. AMC Theatres is an American movie theater chain majority-owned by Chinese conglomerate Dalian Wanda Group.",
+        "usage": {
+          "completion_tokens": 46,
+          "prompt_tokens": 331,
+          "total_tokens": 377,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 4.327965610660613
+      },
+      {
+        "id": "5abbd85a5542993f40c73be1",
+        "text": "Based on the provided references, Chris Tarbell, a former FBI special agent, was involved in the arrest of Dread Pirate Roberts, whose real name is Ross Ulbricht. According to reference [1], Chris Tarbell led the team that led to the arrest of Ross Ulbricht in the Glen Park Public Library.",
+        "usage": {
+          "completion_tokens": 65,
+          "prompt_tokens": 648,
+          "total_tokens": 713,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 6.659410513937473
+      },
+      {
+        "id": "5abe731255429965af743f0e",
+        "text": "Based on the provided references, Matt Thiessen and George Thorogood both have a profession as musicians.",
+        "usage": {
+          "completion_tokens": 22,
+          "prompt_tokens": 392,
+          "total_tokens": 414,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 2.7724862853065133
+      },
+      {
+        "id": "5a77bef05542992a6e59dfaf",
+        "text": "Dr. Jan Schneider ran for United States Congress in Florida's 13th congressional district, but lost twice to Republican politician Katherine Harris in 2002 and 2004.",
+        "usage": {
+          "completion_tokens": 36,
+          "prompt_tokens": 200,
+          "total_tokens": 236,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 3.3166583385318518
+      },
+      {
+        "id": "5a9064d05542990a9849360f",
+        "text": "The actor's debut film that also starred an actor who received four National Film Awards and eight Filmfare Awards, as well as an Academy Award nomination, cannot be determined from the provided references. \n\nHowever, based on my knowledge, I can provide an answer. The actor who received four National Film Awards and eight Filmfare Awards is not mentioned in the references, but I can tell you that the actor who received four National Film Awards is N. Trivikrama Rao's brother, N. T. Rama Rao, is not the correct answer, but another actor who received four National Film Awards is mentioned in the references, which is not the correct answer either. \n\nHowever, I can tell you that the actor who received four National Film Awards and eight Filmfare Awards is likely to be Kamal Haasan or N. T. Rama Rao's contemporary, but the correct answer is Kamal Haasan's contemporary, N. T. Rama Rao's contemporary, and the actor who received four National Film Awards is not the correct answer, but another actor who received four National Film Awards is mentioned in the references, which is not the correct answer either.\n\nHowever, I can tell you that the actor who received four National Film Awards and eight Filmfare Awards is likely to be Kamal Haasan. \n\nThe correct answer is Aamir Khan, whose debut film was Yaadon Ki Baaraat, which also starred Kamal Haasan's contemporary, but not Kamal Haasan, but the correct answer is Aamir Khan's debut film, which also starred Kamal Haasan's contemporary, but not Kamal Haasan, but the correct answer is Aamir Khan's debut film, which also starred Kamal Haasan's contemporary, but not Kamal Haasan, but the correct answer is Aamir Khan's debut film, which also starred Kamal Haasan's contemporary, but not Kamal Haasan, but the correct answer is Aamir Khan's debut film, which also starred Kamal Haasan's contemporary, but not Kamal Haasan, but the correct answer is Aamir Khan's debut film, which also starred Kamal Haasan's contemporary, but not Kamal Haasan, but the correct answer is Aamir Khan's debut film, which also starred Kamal Haasan's contemporary, but not Kamal Haasan, but the correct answer is Aamir Khan's debut film, which also starred Kamal Haasan's contemporary, but not Kamal Haasan,",
+        "usage": {
+          "completion_tokens": 512,
+          "prompt_tokens": 424,
+          "total_tokens": 936,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 39.95840373262763
+      }
+    ]
+  },
+  {
+    "concurrency": 2,
+    "seconds": 41.360108233988285,
+    "requests_per_second": 0.19342309151468517,
+    "generated_tokens_per_second": 14.772688614434081,
+    "rows": [
+      {
+        "id": "5ab55b0c554299488d4d995e",
+        "text": "Billy Preston is an American college basketball player for the Kansas Jayhawks, which competes in the National Collegiate Athletic Association (NCAA).",
+        "usage": {
+          "completion_tokens": 29,
+          "prompt_tokens": 143,
+          "total_tokens": 172,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 3.0182052133604884
+      },
+      {
+        "id": "5ae4a1875542995ad6573dd2",
+        "text": "The provided references are insufficient to answer the query about Nicolau Colaco. The reference provided is about Bowari Khongstia, an Indian professional footballer, and does not mention Nicolau Colaco or the company sponsoring the league he played in.",
+        "usage": {
+          "completion_tokens": 52,
+          "prompt_tokens": 161,
+          "total_tokens": 213,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 5.545340861193836
+      },
+      {
+        "id": "5abae3205542996cc5e49edc",
+        "text": "The provided references do not contain information about the writer of the novel \"Never Let Me Go\" or the award they won in 1989. However, I can supplement my response with my own knowledge.\n\nThe writer of the novel \"Never Let Me Go\" is Kazuo Ishiguro. According to my knowledge, Kazuo Ishiguro won the Booker Prize in 1989 for his novel \"The Remains of the Day\".",
+        "usage": {
+          "completion_tokens": 89,
+          "prompt_tokens": 256,
+          "total_tokens": 345,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 10.357625397853553
+      },
+      {
+        "id": "5ab5a4555542997d4ad1f19c",
+        "text": "The Cineplex Odeon Theatres are now operated as AMC Theatres in the United States. AMC Theatres is an American movie theater chain majority-owned by Chinese conglomerate Dalian Wanda Group.",
+        "usage": {
+          "completion_tokens": 46,
+          "prompt_tokens": 331,
+          "total_tokens": 377,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 4.61539111007005
+      },
+      {
+        "id": "5abbd85a5542993f40c73be1",
+        "text": "Based on the provided references, Chris Tarbell, a former FBI special agent, was involved in the arrest of Dread Pirate Roberts, whose real name is Ross Ulbricht. According to reference [1], Chris Tarbell led the team that led to the arrest of Ross Ulbricht in the Glen Park Public Library.",
+        "usage": {
+          "completion_tokens": 65,
+          "prompt_tokens": 648,
+          "total_tokens": 713,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 9.015395937487483
+      },
+      {
+        "id": "5abe731255429965af743f0e",
+        "text": "Based on the provided references, Matt Thiessen and George Thorogood both have a profession as musicians.",
+        "usage": {
+          "completion_tokens": 22,
+          "prompt_tokens": 392,
+          "total_tokens": 414,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 3.090567795559764
+      },
+      {
+        "id": "5a77bef05542992a6e59dfaf",
+        "text": "Dr. Jan Schneider ran for United States Congress in Florida's 13th congressional district, but lost twice to Republican politician Katherine Harris in 2002 and 2004.",
+        "usage": {
+          "completion_tokens": 36,
+          "prompt_tokens": 200,
+          "total_tokens": 236,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 4.91217890009284
+      },
+      {
+        "id": "5a9064d05542990a9849360f",
+        "text": "The actor's debut film that also starred an actor who received four National Film Awards and eight Filmfare Awards, as well as an Academy Award nomination, cannot be determined from the provided references. \n\nHowever, based on my own knowledge, I can provide an answer. The actor who received four National Film Awards and eight Filmfare Awards is not mentioned in the references, but I can tell you that the actor who received four National Film Awards is N. Trivikrama Rao's brother, N. T. Rama Rao, is not the correct answer as he received three National Film Awards. However, another actor, Kamal Haasan, received four National Film Awards and eight Filmfare Awards, as well as an Academy Award nomination (as a producer for the film \"Hey Ram\" in the Best Foreign Language Film category, but not as an actor).\n\nKamal Haasan's debut film was \"Kalathur Kannamma\" (1960), but it does not match the query as it does not mention the debut of another actor. However, another film \"Yaadon Ki Baaraat\" (1973) is mentioned in the references, and it is the debut film of Aamir Khan and Tariq Khan. But the actor who received four National Film Awards and eight Filmfare Awards is not mentioned in the references.",
+        "usage": {
+          "completion_tokens": 272,
+          "prompt_tokens": 424,
+          "total_tokens": 696,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 22.18141911830753
+      }
+    ],
+    "exact_text_matches_to_serial": 6
+  },
+  {
+    "concurrency": 4,
+    "seconds": 35.78316443692893,
+    "requests_per_second": 0.22356882421901858,
+    "generated_tokens_per_second": 17.075068949727545,
+    "rows": [
+      {
+        "id": "5ab55b0c554299488d4d995e",
+        "text": "Billy Preston is an American college basketball player for the Kansas Jayhawks, which competes in the National Collegiate Athletic Association (NCAA).",
+        "usage": {
+          "completion_tokens": 29,
+          "prompt_tokens": 143,
+          "total_tokens": 172,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 5.18929466791451
+      },
+      {
+        "id": "5ae4a1875542995ad6573dd2",
+        "text": "The provided references are insufficient to answer the query about Nicolau Colaco. The reference provided is about Bowari Khongstia, an Indian professional footballer, and does not mention Nicolau Colaco or the company sponsoring the league he played in.",
+        "usage": {
+          "completion_tokens": 52,
+          "prompt_tokens": 161,
+          "total_tokens": 213,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 10.090147943235934
+      },
+      {
+        "id": "5abae3205542996cc5e49edc",
+        "text": "The provided references do not contain information about the writer of the novel \"Never Let Me Go\" or the award they won in 1989. However, I can supplement my response with my own knowledge.\n\nThe writer of the novel \"Never Let Me Go\" is Kazuo Ishiguro. According to my knowledge, Kazuo Ishiguro won the Booker Prize in 1989 for his novel \"The Remains of the Day\".",
+        "usage": {
+          "completion_tokens": 89,
+          "prompt_tokens": 256,
+          "total_tokens": 345,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 15.987724522128701
+      },
+      {
+        "id": "5ab5a4555542997d4ad1f19c",
+        "text": "The Cineplex Odeon Theatres are now operated as AMC Theatres in the United States. AMC Theatres is an American movie theater chain majority-owned by Chinese conglomerate Dalian Wanda Group.",
+        "usage": {
+          "completion_tokens": 46,
+          "prompt_tokens": 331,
+          "total_tokens": 377,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 8.568337918259203
+      },
+      {
+        "id": "5abbd85a5542993f40c73be1",
+        "text": "Based on the provided references, Chris Tarbell, a former FBI special agent, was involved in the arrest of Dread Pirate Roberts, whose real name is Ross Ulbricht. According to reference [1], Chris Tarbell led the team that led to the arrest of Ross Ulbricht in the Glen Park Public Library.",
+        "usage": {
+          "completion_tokens": 65,
+          "prompt_tokens": 648,
+          "total_tokens": 713,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 11.21349335834384
+      },
+      {
+        "id": "5abe731255429965af743f0e",
+        "text": "Based on the provided references, Matt Thiessen and George Thorogood both have a profession as musicians.",
+        "usage": {
+          "completion_tokens": 22,
+          "prompt_tokens": 392,
+          "total_tokens": 414,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 4.240541782230139
+      },
+      {
+        "id": "5a77bef05542992a6e59dfaf",
+        "text": "Dr. Jan Schneider ran for United States Congress in Florida's 13th congressional district, but lost twice to Republican politician Katherine Harris in 2002 and 2004.",
+        "usage": {
+          "completion_tokens": 36,
+          "prompt_tokens": 200,
+          "total_tokens": 236,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 5.7122397013008595
+      },
+      {
+        "id": "5a9064d05542990a9849360f",
+        "text": "The actor's debut film that also starred an actor who received four National Film Awards and eight Filmfare Awards, as well as an Academy Award nomination, cannot be determined from the provided references. \n\nHowever, based on my knowledge, I can provide an answer. The actor who received four National Film Awards and eight Filmfare Awards is not mentioned in the references, but I can tell you that the actor who received four National Film Awards is N. Trivikrama Rao's brother, N. T. Rama Rao, is not the correct answer as he received three National Film Awards. However, another actor, Kamal Haasan, received four National Film Awards and eight Filmfare Awards, as well as an Academy Award nomination (as a producer for the film \"Hey Ram\" in the Best Foreign Language Film category, but not as an actor).\n\nKamal Haasan's debut film was \"Kalathur Kannamma\" (1960), but it does not match the query as it does not mention the debut film of another actor. However, another film \"Yaadon Ki Baaraat\" (1973) is mentioned in the references, and it is the debut film of Aamir Khan and Tariq Khan. But the actor who received four National Film Awards and eight Filmfare Awards is not mentioned in the references.",
+        "usage": {
+          "completion_tokens": 272,
+          "prompt_tokens": 424,
+          "total_tokens": 696,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "seconds": 22.97075547836721
+      }
+    ],
+    "exact_text_matches_to_serial": 6
+  }
+]

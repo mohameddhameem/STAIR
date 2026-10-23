@@ -1,0 +1,21 @@
+{
+  "cost_scope": "Recorded per-question parameter-weighted input/output tokens relative to test direct SS; excludes CPU router overhead. Primary reports retain prior mean-cost ruler.",
+  "post_chooser": {
+    "actual_cached_token_cost_pct_test_SS": 100.57342564024371,
+    "rescued_SS_errors": 9,
+    "harmed_SS_correct": 2,
+    "n": 1481
+  },
+  "pre_direct_cheap95": {
+    "actual_cached_token_cost_pct_test_SS": 93.56763875828615,
+    "rescued_SS_errors": 8,
+    "harmed_SS_correct": 13,
+    "n": 1481
+  },
+  "combined_ss_budget": {
+    "actual_cached_token_cost_pct_test_SS": 98.9106582813528,
+    "rescued_SS_errors": 10,
+    "harmed_SS_correct": 5,
+    "n": 1481
+  }
+}
