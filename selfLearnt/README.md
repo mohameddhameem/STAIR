@@ -10,6 +10,7 @@ calibrated Sure / Unsure flag, also when the largest model answered.
 - **Development history** (Google Colab, notebooks 00–28, results per experiment set): branch
   [`selfLearnt-colab-dev`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt-colab-dev).
 - This branch: the method and the full-scale pipeline for the SMU Origami GPU cluster (`pipeline/`).
+- **Results so far:** [`RESULTS.md`](RESULTS.md) (AL-01 .. AL-03, seed 0).
 
 ## Six experiments (AL-01 .. AL-06), one test set, the team standard
 
