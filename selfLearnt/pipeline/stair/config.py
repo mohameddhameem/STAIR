@@ -90,6 +90,8 @@ def load_config(path, seed=None, exp=None):
     cfg = _interp(raw, env)
     if "${" in cfg["paths"]["project_dir"]:
         raise SystemExit("set STAIR_PROJECT_DIR (storage for models, data and runs) before running")
+    if os.environ.get("STAIR_RESULTS_DIR") and cfg.get("run_name") == "full_v1":
+        cfg["paths"]["results_dir"] = os.environ["STAIR_RESULTS_DIR"]     # outside the git copy (no clash with committed tables)
     rd = cfg["paths"].get("results_dir", "results/common")
     if not os.path.isabs(rd):   # relative to the STAIR repo root, wherever the command is run from
         cfg["paths"]["results_dir"] = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", rd)

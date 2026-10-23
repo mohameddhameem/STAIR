@@ -22,7 +22,8 @@ echo
 echo "================ results so far (accuracy = lenient, cost = units per question) ================"
 "$VENV_PY" - <<'PY' 2>/dev/null
 import glob, os, pandas as pd
-fs = sorted(glob.glob(os.path.expanduser("~/STAIR/results/common/AL-0*-seed*.csv")))
+d = os.environ.get("STAIR_RESULTS_DIR") or os.path.expanduser("~/STAIR/results/common")
+fs = sorted(glob.glob(os.path.join(d, "AL-0*-seed*.csv")))
 if not fs:
     print("  none yet")
 for f in fs:
