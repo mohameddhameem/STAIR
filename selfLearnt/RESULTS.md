@@ -44,7 +44,15 @@ Qwen2.5 32B and 72B; the other nine models are fine-tuned.
 - **Our single-pass pipeline is efficient.** Qwen 72B -> Llama 70B with our prompts, one answer: 0.730 at 1,875 units,
   against 0.692 at 5,142 for the same two models in AgentTTS's pipeline.
 - **AL-03's rulebook does not yet beat fixed pipelines.** The learnt rules (0.566 at 609 units) are dominated by the fixed
-  Qwen 7B -> Llama 70B pipeline (0.584 at 276). Even the oracle over the rulebook's choices (0.646) stays below the best
-  fixed pipeline (0.730): on escalation the rulebook *merges* the shortlists of the retrievers it has used rather than
-  switching to the larger retriever's own shortlist, which appears to cap accuracy. Under investigation before AL-04 .. AL-06
-  reach rule learning, since they share the mechanism.
+  Qwen 7B -> Llama 70B pipeline (0.584 at 276). They escalate too rarely: 41% of test questions stop at the cheapest pair
+  (Qwen 7B -> Llama 3B, 0.400 when used alone), because the untrained models' probe signals flag few wrong answers.
+  The "oracle" row is answer-only switching on Qwen 7B's shortlist (the cheapest answerer if right, else Llama 70B), not
+  an upper bound on retrieval escalation.
+- **Escalation with merged shortlists works.** Where the retrievers disagree (about 430-460 of 500 questions), merging
+  Qwen 7B's shortlist with a larger retriever's (the current rule: identical or majority shortlist, else the union)
+  answers as well as the larger retriever's own list or better: Llama 70B on 7B+32B merged 0.700 vs 32B alone 0.677
+  (test; val 0.698 vs 0.667); 7B+72B 0.754 vs 0.735; 7B+32B+72B 0.743 vs 0.735. A passage-level vote adds nothing.
+  The rule is kept as designed for AL-04 .. AL-06.
+- **Headroom for switching.** Picking, per question, the cheapest fixed pipeline that answers correctly would reach 0.866
+  at 366 units (AL-03 models, test): the target the learnt rules approach as their signals improve (fine-tuned models,
+  AL-04 .. AL-06).
