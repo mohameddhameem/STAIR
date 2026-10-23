@@ -304,6 +304,14 @@ def make_charts(cfg, res, stages, out):
 # ==================================================================================
 def final_report(cfg):
     """Stage 'report': the comparison table in results/ (and the status page)."""
+    import fcntl                     # several report jobs may run at once (one per experiment): take turns
+    os.makedirs(cfg["run_dir"], exist_ok=True)
+    with open(os.path.join(cfg["run_dir"], "report.lock"), "w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return _final_report(cfg)
+
+
+def _final_report(cfg):
     from .config import full_run
     cfg = full_run(cfg)
     from .progress import mark_done, maybe_push

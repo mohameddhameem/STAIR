@@ -149,7 +149,7 @@ def _already_done(cfg, args):
     return False
 
 
-def submit_loop(P, state_path, max_jobs, poll, cfg=None):
+def submit_loop(P, state_path, max_jobs, poll, cfg=None, wait_slots=6):
     """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
     # jobs of this plan already in the queue (from an earlier submitter): adopt them instead of submitting twice
     rc, out, _ = _sh(["squeue", "--me", "-h", "-o", "%i %j"])
@@ -205,9 +205,28 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None):
                 continue
             waiting = sum(1 for d in j["deps"] if st(real[d]) != "COMPLETED")
             cands.append((waiting, k, j))
-        for _, _, j in sorted(cands, key=lambda c: (c[0], c[1])):
+        # jobs waiting on others may hold at most WAIT_SLOTS queue places, so work that can start now always gets in;
+        # if waiting jobs already hold more, the latest-submitted ones nothing else waits on are withdrawn (sent again later)
+        rc_, out_, _ = _sh(["squeue", "--me", "-h", "-o", "%i %r"])
+        waiting_q = [l.split()[0] for l in out_.splitlines() if l.strip() and "Dependency" in l] if rc_ == 0 else []
+        ready = [c for c in cands if c[0] == 0]
+        if ready and free <= 0 and len(waiting_q) > wait_slots:
+            needed = {d for x in P.jobs if x["id"] not in (None, "done", "blocked") for d in x["deps"]}
+            leaves = [x for x in P.jobs if x["id"] in waiting_q and x["key"] not in needed]
+            for x in sorted(leaves, key=lambda x: -int(x["id"]))[:min(len(ready), len(waiting_q) - wait_slots)]:
+                _sh(["scancel", x["id"]])
+                print(f"{time.strftime('%H:%M')}  withdrew {x['name']} ({x['id']}) to make room for jobs that can start now; sent again later", flush=True)
+                waiting_q.remove(x["id"])
+                x["id"] = None
+                real.pop(x["key"], None)
+                free += 1
+        n_wait = len(waiting_q)
+        for waiting_, _, j in sorted(cands, key=lambda c: (c[0], c[1])):
             if free <= 0:
                 break
+            if waiting_ and n_wait >= wait_slots:
+                continue
+            n_wait += 1 if waiting_ else 0
             deps = [real[d] for d in j["deps"] if st(real[d]) not in ("COMPLETED", "BLOCKED", "FAILED", "CANCELLED", "TIMEOUT", "OUT_OF_MEMORY", "NODE_FAIL")]
             if P.after and not deps and first:
                 deps = [x for x in str(P.after).split(",") if x.strip()]     # --after 123,456: wait for these jobs
@@ -314,7 +333,7 @@ def main():
                                         and _final_state(j["id"]) not in ("COMPLETED", "UNKNOWN", "PENDING", "RUNNING", "REQUEUED")):
                 j["id"], retry = None, retry + 1
         print(f"continuing {a.cont}: {sum(1 for j in P.jobs if not j['id'])} of {len(P.jobs)} jobs still to submit ({retry} to try again)")
-        submit_loop(P, a.cont, max_jobs, poll, cfg)
+        submit_loop(P, a.cont, max_jobs, poll, cfg, int(env.get("WAIT_SLOTS", 6)))
         return
     W = cfg["workstreams"]
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
@@ -338,12 +357,10 @@ def main():
         last = [P.add("report-phase1", "--stage report", 0, 1, ta, cpu_only=True)]
     # ---------------- phases 2-5: rule-based experiments, run side by side (the cluster runs up to 8 of your jobs at once).
     # Each job waits only for what it reads: a model's training, its shortlists, the experiment's earlier steps. Jobs that
-    # write the same model's files (answers, samples) and the reports are chained, so two never write at once.
+    # write the same model's files (answers, samples) are chained, so two never write at once; reports take turns via a lock.
     train_job, ret_job, last_ans, last_smp = {}, {}, {}, {}
-    rep = list(last)
 
     def phase(ws):
-        nonlocal rep
         w = W[ws]
         base = lambda v: v.split(":")[0]
         for v in w["retrievers"] + w["answerers"]:
@@ -373,7 +390,7 @@ def main():
             sm.append(last_smp[v])
         ln = P.add(f"learn-{ws}", f"--stage learn --ws {ws}", tp(cfg["planner"]), 12, dep + sm)
         te = P.add(f"test-{ws}", f"--stage test --ws {ws}", 0, 2, [ln], cpu_only=True)
-        rep = [P.add(f"report-{ws}", "--stage report", 0, 1, [te] + rep, cpu_only=True)]
+        P.add(f"report-{ws}", "--stage report", 0, 1, [te], cpu_only=True)   # reports take turns via a lock file, so no chain
 
     for ph, ws in ((2, "ws4"), (3, "ws5"), (4, "ws6"), (5, "ws3")):
         if ph in phases and ws in W:
@@ -383,7 +400,7 @@ def main():
         return
     out = os.path.join(ROOT, "logs", f"plan_{time.strftime('%Y%m%d_%H%M%S')}.json")
     print(f"\nsubmitting {len(P.jobs)} jobs, at most {max_jobs} of yours queued at a time (keep this running in tmux) ...")
-    submit_loop(P, out, max_jobs, poll, cfg)
+    submit_loop(P, out, max_jobs, poll, cfg, int(env.get("WAIT_SLOTS", 6)))
 
 
 if __name__ == "__main__":
