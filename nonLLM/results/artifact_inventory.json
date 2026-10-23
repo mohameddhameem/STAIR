@@ -218,6 +218,30 @@
       "classification": "cohort-specific, not pooled; see report and results/README.md"
     },
     {
+      "run": "nonllm_common_ws_grpo_smoke_v1",
+      "source_phase": "not recorded",
+      "published_artifacts": [
+        "archive_20261023/nonllm_common_ws_grpo_smoke_v1/protocol.json",
+        "archive_20261023/nonllm_common_ws_grpo_smoke_v1/verification.json"
+      ],
+      "classification": "cohort-specific, not pooled; see report and results/README.md"
+    },
+    {
+      "run": "nonllm_common_ws_grpo_v1",
+      "source_phase": "complete",
+      "published_artifacts": [
+        "archive_20261023/nonllm_common_ws_grpo_v1/REPORT.md",
+        "archive_20261023/nonllm_common_ws_grpo_v1/protocol.json",
+        "archive_20261023/nonllm_common_ws_grpo_v1/results.json",
+        "archive_20261023/nonllm_common_ws_grpo_v1/status.json",
+        "archive_20261023/nonllm_common_ws_grpo_v1/training_summary.json",
+        "archive_20261023/nonllm_common_ws_grpo_v1/validation_lock.json",
+        "archive_20261023/nonllm_common_ws_grpo_v1/verification.json",
+        "archive_20261023/nonllm_common_ws_grpo_v1/warm_start_verification.json"
+      ],
+      "classification": "cohort-specific, not pooled; see report and results/README.md"
+    },
+    {
       "run": "nonllm_grpo_extended_v1",
       "source_phase": "complete",
       "published_artifacts": [
@@ -1072,6 +1096,66 @@
       "published": "nonLLM/results/archive_20261023/nonllm_common_ws_gguf_v2/validation_lock.json",
       "source_sha256": "ce96420aac95eb839a06d59c0a2f84a4716cff21c62d30f2007504b43b01852c",
       "published_sha256": "ce96420aac95eb839a06d59c0a2f84a4716cff21c62d30f2007504b43b01852c"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_smoke_v1/protocol.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_smoke_v1/protocol.json",
+      "source_sha256": "4e522e9d2b64f61a9db54fc2d9a5fc7e353143669b679b78e83d6e02fb66caf2",
+      "published_sha256": "ec7c2aa54318d513ffa8877763cc59469970500af37565a4fbcae4539e16806a"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_smoke_v1/verification.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_smoke_v1/verification.json",
+      "source_sha256": "f01bac0c37614634e7b748eede93fb9dccc453762d97e52cde90b0c8d4beb024",
+      "published_sha256": "f01bac0c37614634e7b748eede93fb9dccc453762d97e52cde90b0c8d4beb024"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/REPORT.md",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/REPORT.md",
+      "source_sha256": "bd499ba99c1df2b23093d99510690e0e4d6bd8b9762ef9987e2d7bcc0f03babe",
+      "published_sha256": "bd499ba99c1df2b23093d99510690e0e4d6bd8b9762ef9987e2d7bcc0f03babe"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/protocol.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/protocol.json",
+      "source_sha256": "a62060c501694c4fc3aade4d0f72a875f3ba6627ba8436b73e2a2c58e7740c5b",
+      "published_sha256": "ced28966d444474ea00283cc11dd89e2542dea10f4077e430cea27fff6f86956"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/results.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/results.json",
+      "source_sha256": "355a6e6be91c6b3779f8e85c2c02c6262f132b55bab6eaabeb59d055a0f9f1c4",
+      "published_sha256": "355a6e6be91c6b3779f8e85c2c02c6262f132b55bab6eaabeb59d055a0f9f1c4"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/status.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/status.json",
+      "source_sha256": "5c29aedd1afba667aedc6a5292ff58c95234130eab94446ae1ca458b17cbe38e",
+      "published_sha256": "3e2faa1d0b472a53b51d5c7950c77748325efb095dcf07fd26ca546065ac4305"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/training_summary.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/training_summary.json",
+      "source_sha256": "17d6078003be034df94b870ff65db698ab7a561ae6cd5a49b19d51d241e3578c",
+      "published_sha256": "17d6078003be034df94b870ff65db698ab7a561ae6cd5a49b19d51d241e3578c"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/validation_lock.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/validation_lock.json",
+      "source_sha256": "0fb580e73b7241e3ea9871ceb434de417c167cbf2a3923373c016f1e6da4aae1",
+      "published_sha256": "0fb580e73b7241e3ea9871ceb434de417c167cbf2a3923373c016f1e6da4aae1"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/verification.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/verification.json",
+      "source_sha256": "22787bb57a1059ef639802b181e70c689bf59f0d92cf445e04618bf34b56d1e4",
+      "published_sha256": "22787bb57a1059ef639802b181e70c689bf59f0d92cf445e04618bf34b56d1e4"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/warm_start_verification.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/warm_start_verification.json",
+      "source_sha256": "dbb521b8757c130e92f8976f16946ce0c55fb5c5f7bfb401e3057506f0d2f4d9",
+      "published_sha256": "dbb521b8757c130e92f8976f16946ce0c55fb5c5f7bfb401e3057506f0d2f4d9"
     },
     {
       "source": "runs/nonllm_grpo_extended_v1/REPORT.md",
@@ -2428,6 +2512,54 @@
       "published": "nonLLM/results/menu_ws_gguf_v2/evaluation_snapshot/splits/hotpotqa/train_extra.txt",
       "source_sha256": "40e2137582ba0e1ed9c6b17d3846a5295d9d11fbfb9881224c45f6ea97391619",
       "published_sha256": "40e2137582ba0e1ed9c6b17d3846a5295d9d11fbfb9881224c45f6ea97391619"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/warm_start_verification.json",
+      "published": "nonLLM/results/menu_ws_grpo_v1/warm_start_verification.json",
+      "source_sha256": "dbb521b8757c130e92f8976f16946ce0c55fb5c5f7bfb401e3057506f0d2f4d9",
+      "published_sha256": "dbb521b8757c130e92f8976f16946ce0c55fb5c5f7bfb401e3057506f0d2f4d9"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/validation_lock.json",
+      "published": "nonLLM/results/menu_ws_grpo_v1/validation_lock.json",
+      "source_sha256": "0fb580e73b7241e3ea9871ceb434de417c167cbf2a3923373c016f1e6da4aae1",
+      "published_sha256": "0fb580e73b7241e3ea9871ceb434de417c167cbf2a3923373c016f1e6da4aae1"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/results.json",
+      "published": "nonLLM/results/menu_ws_grpo_v1/results.json",
+      "source_sha256": "355a6e6be91c6b3779f8e85c2c02c6262f132b55bab6eaabeb59d055a0f9f1c4",
+      "published_sha256": "355a6e6be91c6b3779f8e85c2c02c6262f132b55bab6eaabeb59d055a0f9f1c4"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/verification.json",
+      "published": "nonLLM/results/menu_ws_grpo_v1/verification.json",
+      "source_sha256": "22787bb57a1059ef639802b181e70c689bf59f0d92cf445e04618bf34b56d1e4",
+      "published_sha256": "22787bb57a1059ef639802b181e70c689bf59f0d92cf445e04618bf34b56d1e4"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/REPORT.md",
+      "published": "nonLLM/results/menu_ws_grpo_v1/REPORT.md",
+      "source_sha256": "bd499ba99c1df2b23093d99510690e0e4d6bd8b9762ef9987e2d7bcc0f03babe",
+      "published_sha256": "bd499ba99c1df2b23093d99510690e0e4d6bd8b9762ef9987e2d7bcc0f03babe"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/status.json",
+      "published": "nonLLM/results/menu_ws_grpo_v1/status.json",
+      "source_sha256": "5c29aedd1afba667aedc6a5292ff58c95234130eab94446ae1ca458b17cbe38e",
+      "published_sha256": "3e2faa1d0b472a53b51d5c7950c77748325efb095dcf07fd26ca546065ac4305"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/training_summary.json",
+      "published": "nonLLM/results/menu_ws_grpo_v1/training_summary.json",
+      "source_sha256": "17d6078003be034df94b870ff65db698ab7a561ae6cd5a49b19d51d241e3578c",
+      "published_sha256": "17d6078003be034df94b870ff65db698ab7a561ae6cd5a49b19d51d241e3578c"
+    },
+    {
+      "source": "runs/nonllm_common_ws_grpo_v1/protocol.json",
+      "published": "nonLLM/results/menu_ws_grpo_v1/protocol.json",
+      "source_sha256": "a62060c501694c4fc3aade4d0f72a875f3ba6627ba8436b73e2a2c58e7740c5b",
+      "published_sha256": "ced28966d444474ea00283cc11dd89e2542dea10f4077e430cea27fff6f86956"
     }
   ]
 }

@@ -31,11 +31,22 @@ def main():
   path=ROOT.parents[1]/artifact['published']
   assert path.is_file(),path
   assert hashlib.sha256(path.read_bytes()).hexdigest()==artifact['published_sha256'],path
- rows=list(csv.DictReader((ROOT/'all_results.csv').open()));assert len(rows)==144
+ rows=list(csv.DictReader((ROOT/'all_results.csv').open()));expected_index=144
+ if (ROOT/'menu_ws_grpo_v1/results.json').exists():
+  gd=pd.read_csv(ROOT/'menu_ws_grpo_v1/results.csv.gz');validate(gd);gs=json.loads((ROOT/'menu_ws_grpo_v1/results.json').read_text())['summaries'];expected_index+=len(gs)
+  assert len(gd)==10500 and len(gs)==21
+  for r in gs:
+   chosen=gd[gd.policy==r['policy']];assert len(chosen)==500 and chosen.id.nunique()==500
+   assert math.isclose(chosen.lenient.mean(),r['accuracy'],abs_tol=1e-12)
+   assert math.isclose(chosen.units.mean(),r['units'],abs_tol=1e-8)
+  gr=gd[gd.policy=='grpo-v2-grpo-max_accuracy-learned_only'];assert gr.lenient.sum()==359 and gr.ret_choice.eq(1).all() and gr.qa_choice.eq(1).all()
+  ex=gd[gd.policy=='grpo-v2-exact-max_accuracy-learned_only'];assert ex.lenient.sum()==357 and ex.ret_choice.eq(0).sum()==96
+  assert json.loads((ROOT/'menu_ws_grpo_v1/status.json').read_text())['phase']=='complete'
+ assert len(rows)==expected_index
  for row in rows:
   assert 0<=float(row['accuracy_pct'])<=100
   assert float(row['cost_pct_ss'])>=0
   assert (ROOT/row['source']).is_file()
- print('Verified: 29000 schema-valid test rows, 58 summaries, 54 fixed-SS selections, frozen ruler/splits, artifact hashes and144 cross-cohort index rows.')
+ print(f'Verified classical and available GRPO test records, summaries, route choices, frozen ruler/splits, artifact hashes and {expected_index} cross-cohort index rows.')
 
 if __name__=='__main__':main()

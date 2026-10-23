@@ -1,0 +1,21 @@
+{
+  "schema_rows": 10500,
+  "policies": 21,
+  "streams": 36,
+  "grpo_streams": 24,
+  "exact_control_streams": 12,
+  "all_losses_finite": true,
+  "ss_correct": 359,
+  "grpo_correct": 359,
+  "grpo_all_SS_routes": true,
+  "exact_correct": 357,
+  "exact_weak_retrieval_count": 96,
+  "exact_gains_vs_SS": 4,
+  "exact_losses_vs_SS": 6,
+  "exact_minus_SS_pp": -0.4,
+  "exact_minus_SS_paired_descriptive_95_interval_pp": [
+    -1.6,
+    0.8
+  ],
+  "note": "Previously examined test; multiple validation configurations, descriptive interval, not a formal equivalence or non-inferiority result."
+}

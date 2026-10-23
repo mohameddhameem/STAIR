@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "finite_train_and_val_loss": true,
+  "grpo_updates_policy_weights": true,
+  "checkpoint_and_optimizer_saved": true,
+  "test_features_constructed": false
+}

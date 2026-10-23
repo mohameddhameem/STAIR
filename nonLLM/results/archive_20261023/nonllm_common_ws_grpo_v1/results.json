@@ -1,0 +1,450 @@
+{
+  "scope": "common0.2 test500, GGUF exploratory; NOT common0.3 slr-* golden-set reproduction",
+  "ss": {
+    "policy": "grpo-control-qwen72-llama70",
+    "accuracy": 0.718,
+    "units": 1574.9833333333336,
+    "ms_router": 0.0,
+    "routes": {
+      "qwen7-llama3": 0,
+      "qwen7-llama70": 0,
+      "qwen72-llama3": 0,
+      "qwen72-llama70": 500
+    },
+    "selected": {
+      "type": "fixed",
+      "r": 1,
+      "a": 1
+    }
+  },
+  "summaries": [
+    {
+      "policy": "grpo-control-qwen7-llama3",
+      "accuracy": 0.54,
+      "units": 151.48122916666668,
+      "ms_router": 0.0,
+      "routes": {
+        "qwen7-llama3": 500,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 0
+      },
+      "selected": {
+        "type": "fixed",
+        "r": 0,
+        "a": 0
+      }
+    },
+    {
+      "policy": "grpo-control-qwen7-llama70",
+      "accuracy": 0.622,
+      "units": 198.38403472222225,
+      "ms_router": 0.0,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 500,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 0
+      },
+      "selected": {
+        "type": "fixed",
+        "r": 0,
+        "a": 1
+      }
+    },
+    {
+      "policy": "grpo-control-qwen72-llama3",
+      "accuracy": 0.658,
+      "units": 1531.792625,
+      "ms_router": 0.0,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 500,
+        "qwen72-llama70": 0
+      },
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 0
+      }
+    },
+    {
+      "policy": "grpo-control-qwen72-llama70",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1
+      }
+    },
+    {
+      "policy": "grpo-v2-sft-max_accuracy-learned_only",
+      "accuracy": 0.54,
+      "units": 155.59806597222226,
+      "ms_router": 9.961766431108117,
+      "routes": {
+        "qwen7-llama3": 489,
+        "qwen7-llama70": 11,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 0
+      },
+      "selected": {
+        "type": "learned",
+        "config": "sft",
+        "method": "sft",
+        "lambda_ret": 0.0,
+        "lambda_qa": 1.6,
+        "accuracy": 0.5640000104904175,
+        "units": 158.2663116455078
+      }
+    },
+    {
+      "policy": "grpo-v2-sft-max_accuracy-with_fixed_fallback",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-sft-ss_budget-learned_only",
+      "accuracy": 0.54,
+      "units": 155.59806597222226,
+      "ms_router": 9.895694537088275,
+      "routes": {
+        "qwen7-llama3": 489,
+        "qwen7-llama70": 11,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 0
+      },
+      "selected": {
+        "type": "learned",
+        "config": "sft",
+        "method": "sft",
+        "lambda_ret": 0.0,
+        "lambda_qa": 1.6,
+        "accuracy": 0.5640000104904175,
+        "units": 158.2663116455078
+      }
+    },
+    {
+      "policy": "grpo-v2-sft-ss_budget-with_fixed_fallback",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-sft-cheap95-with_fixed_fallback",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 0.0,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-grpo-max_accuracy-learned_only",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 9.95353433676064,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "learned",
+        "config": "grpo_g8_lambda0.0",
+        "method": "grpo",
+        "lambda_ret": 0.0,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-grpo-max_accuracy-with_fixed_fallback",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 9.949185408651829,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "learned",
+        "config": "grpo_g8_lambda0.0",
+        "method": "grpo",
+        "lambda_ret": 0.0,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-grpo-ss_budget-learned_only",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 9.980880863964558,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "learned",
+        "config": "grpo_g8_lambda0.0",
+        "method": "grpo",
+        "lambda_ret": 0.0,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-grpo-ss_budget-with_fixed_fallback",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 9.915673147886992,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "learned",
+        "config": "grpo_g8_lambda0.0",
+        "method": "grpo",
+        "lambda_ret": 0.0,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-grpo-cheap95-learned_only",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 9.974661365151405,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "learned",
+        "config": "grpo_g8_lambda0.0",
+        "method": "grpo",
+        "lambda_ret": 0.0,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-grpo-cheap95-with_fixed_fallback",
+      "accuracy": 0.718,
+      "units": 1574.9833333333336,
+      "ms_router": 9.898107407614589,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 0,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 500
+      },
+      "selected": {
+        "type": "learned",
+        "config": "grpo_g8_lambda0.0",
+        "method": "grpo",
+        "lambda_ret": 0.0,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4920654296875
+      }
+    },
+    {
+      "policy": "grpo-v2-exact-max_accuracy-learned_only",
+      "accuracy": 0.714,
+      "units": 1319.661951388889,
+      "ms_router": 10.004022108390927,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 96,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 404
+      },
+      "selected": {
+        "type": "learned",
+        "config": "exact_g0_lambda0.05",
+        "method": "exact",
+        "lambda_ret": 0.4,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1320.9095458984375
+      }
+    },
+    {
+      "policy": "grpo-v2-exact-max_accuracy-with_fixed_fallback",
+      "accuracy": 0.714,
+      "units": 1319.661951388889,
+      "ms_router": 10.053595799952745,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 96,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 404
+      },
+      "selected": {
+        "type": "learned",
+        "config": "exact_g0_lambda0.05",
+        "method": "exact",
+        "lambda_ret": 0.4,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1320.9095458984375
+      }
+    },
+    {
+      "policy": "grpo-v2-exact-ss_budget-learned_only",
+      "accuracy": 0.714,
+      "units": 1319.661951388889,
+      "ms_router": 10.254052458330989,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 96,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 404
+      },
+      "selected": {
+        "type": "learned",
+        "config": "exact_g0_lambda0.05",
+        "method": "exact",
+        "lambda_ret": 0.4,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1320.9095458984375
+      }
+    },
+    {
+      "policy": "grpo-v2-exact-ss_budget-with_fixed_fallback",
+      "accuracy": 0.714,
+      "units": 1319.661951388889,
+      "ms_router": 9.926977133378386,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 96,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 404
+      },
+      "selected": {
+        "type": "learned",
+        "config": "exact_g0_lambda0.05",
+        "method": "exact",
+        "lambda_ret": 0.4,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1320.9095458984375
+      }
+    },
+    {
+      "policy": "grpo-v2-exact-cheap95-learned_only",
+      "accuracy": 0.714,
+      "units": 1319.661951388889,
+      "ms_router": 9.947631822898984,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 96,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 404
+      },
+      "selected": {
+        "type": "learned",
+        "config": "exact_g0_lambda0.05",
+        "method": "exact",
+        "lambda_ret": 0.4,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1320.9095458984375
+      }
+    },
+    {
+      "policy": "grpo-v2-exact-cheap95-with_fixed_fallback",
+      "accuracy": 0.714,
+      "units": 1319.661951388889,
+      "ms_router": 9.912967409938574,
+      "routes": {
+        "qwen7-llama3": 0,
+        "qwen7-llama70": 96,
+        "qwen72-llama3": 0,
+        "qwen72-llama70": 404
+      },
+      "selected": {
+        "type": "learned",
+        "config": "exact_g0_lambda0.05",
+        "method": "exact",
+        "lambda_ret": 0.4,
+        "lambda_qa": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1320.9095458984375
+      }
+    }
+  ],
+  "selections_without_feasible_policy": [
+    {
+      "method": "sft",
+      "objective": "cheap95",
+      "mode": "learned_only",
+      "selected": null,
+      "note": "No learned configuration satisfies the validation constraint"
+    }
+  ]
+}

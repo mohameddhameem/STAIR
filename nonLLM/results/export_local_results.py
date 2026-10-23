@@ -5,7 +5,7 @@ REPO=Path(__file__).resolve().parents[2]
 WORK=REPO.parent
 DEST=Path(__file__).resolve().parent
 COMMON_COMMIT='c02b09367718249af962140e605a91ddd392baa0'
-SUMMARY_NAMES={'summary.json','generation_summary.json','token_costs.json','config.json','REPORT.md','METHODS.md','COMPARISON.md','README.md','results.json','comparison.json','verification.json','protocol.json','manifest.json','status.json','source_hashes.json','all_families_test.json','theta_lock.json','validation_lock.json','fit_records.json','training_progress.json','migration.json','concurrency_runtime.json','port_fix.json','RESULTS_INVALIDATED.json','INVALID_RESULTS.md','token_cost_audit.json','frontier_gains.json'}
+SUMMARY_NAMES={'training_summary.json','warm_start_verification.json','summary.json','generation_summary.json','token_costs.json','config.json','REPORT.md','METHODS.md','COMPARISON.md','README.md','results.json','comparison.json','verification.json','protocol.json','manifest.json','status.json','source_hashes.json','all_families_test.json','theta_lock.json','validation_lock.json','fit_records.json','training_progress.json','migration.json','concurrency_runtime.json','port_fix.json','RESULTS_INVALIDATED.json','INVALID_RESULTS.md','token_cost_audit.json','frontier_gains.json'}
 EXCLUDE={'cache','samples','training','routers','checkpoints','data','code','__pycache__','more_samples'}
 
 def scrub(text):
@@ -60,7 +60,7 @@ def main():
   files.append({'source':f'git:{COMMON_COMMIT}:{source}','published':str(target.relative_to(REPO)),'source_sha256':hashlib.sha256(raw).hexdigest(),'published_sha256':hashlib.sha256(target.read_bytes()).hexdigest()})
  (frozen/'SOURCE.md').write_text(f'# Evaluation snapshot\n\nOriginal common implementation at `{COMMON_COMMIT}`. The finished cohort uses common0.2 test500 and token-derived units. Later common0.3 slr-* golden sets and Table5 prices must not be retroactively substituted. This is an audit snapshot, not a separately installed package.\n')
  # Include metric curves and test-policy arrays, never model/optimizer checkpoints.
- for name in ['nonllm_lenient_longer_v1','nonllm_grpo_extended_v1','nonllm_reference_lenient_v1','nonllm_architecture_v1','nonllm_architecture_combined_v1']:
+ for name in ['nonllm_common_ws_grpo_v1','nonllm_lenient_longer_v1','nonllm_grpo_extended_v1','nonllm_reference_lenient_v1','nonllm_architecture_v1','nonllm_architecture_combined_v1']:
   folder=WORK/'runs'/name
   for source in folder.glob('training/*/curve.jsonl'):
    target=archive/name/source.relative_to(folder);target=target.with_suffix('.jsonl.gz');target.parent.mkdir(parents=True,exist_ok=True)
@@ -83,6 +83,17 @@ def main():
  for r in old['results']:rows.append({'cohort':'historical-reconstructed-lenient-test1481','method':r['method'],'n':1481,'accuracy_pct':100*r['accuracy'],'cost_pct_ss':r['cost_pct_SS'],'status':'historical scorer; not author-script common02/03','source':'archive_20261023/nonllm_reference_lenient_v1/results.json'})
  longer=json.loads((WORK/'runs/nonllm_lenient_longer_v1/results.json').read_text())
  for r in longer['results']:rows.append({'cohort':'historical-GRPO-300epoch-test1481','method':r['name'],'n':r['test']['n'],'accuracy_pct':100*r['test']['lenient_accuracy'],'cost_pct_ss':r['test']['cost_pct_of_direct_SS'],'status':'historical scorer; val-selected checkpoint; descriptive','source':'archive_20261023/nonllm_lenient_longer_v1/results.json'})
+ # New corrected-cache GRPO is a separate cohort, not a rewrite of historical results.
+ grpo_run=WORK/'runs/nonllm_common_ws_grpo_v1'
+ if (grpo_run/'results.json').exists():
+  published=DEST/'menu_ws_grpo_v1'
+  for source in grpo_run.iterdir():
+   if source.is_file() and source.name in SUMMARY_NAMES:files.append(copy_text(source,published/source.name))
+  with (grpo_run/'results.csv').open('rb') as raw,(published/'results.csv.gz').open('wb') as stream:
+   with gzip.GzipFile(filename='',mode='wb',fileobj=stream,mtime=0) as compressed:shutil.copyfileobj(raw,compressed)
+  if (grpo_run/'learning_curves.png').exists():shutil.copy2(grpo_run/'learning_curves.png',published/'learning_curves.png')
+  data=json.loads((grpo_run/'results.json').read_text())
+  for r in data['summaries']:rows.append({'cohort':'four-model-GGUF-GRPO-common02-test500','method':r['policy'],'seed':0,'n':500,'accuracy_pct':100*r['accuracy'],'cost_pct_ss':100*r['units']/data['ss']['units'],'units':r['units'],'status':'three-seed ensemble for learned policies; descriptive; not common03 golden','source':'menu_ws_grpo_v1/results.json'})
  with (DEST/'all_results.csv').open('w',newline='') as f:
   writer=csv.DictWriter(f,fieldnames=['cohort','method','seed','n','accuracy_pct','cost_pct_ss','units','status','source'],lineterminator='\n');writer.writeheader();writer.writerows(rows)
  (DEST/'artifact_inventory.json').write_text(json.dumps({'exported_on':'2026-10-23','local_data_and_weights_included':False,'runs':inventory,'files':files},indent=2)+'\n')

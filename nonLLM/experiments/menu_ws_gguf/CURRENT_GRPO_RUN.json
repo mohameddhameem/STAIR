@@ -1,0 +1,18 @@
+{
+  "run": "nonllm_common_ws_grpo_v1",
+  "source_cache": "nonllm_common_ws_gguf_v2",
+  "controller": "nonLLM/experiments/menu_ws_gguf/grpo.py",
+  "maximum_epochs": 300,
+  "grpo_streams": 24,
+  "exact_control_streams": 12,
+  "router_seeds": [
+    0,
+    1,
+    2
+  ],
+  "executor_generation": "frozen corrected K1 cache, no new LLM calls",
+  "protocol": "common0.2 test500, GGUF exploratory; not common0.3 golden-set",
+  "tmux_session": "cs707-ws-grpo",
+  "phase": "complete",
+  "report": "nonLLM/results/menu_ws_grpo_v1/REPORT.md"
+}

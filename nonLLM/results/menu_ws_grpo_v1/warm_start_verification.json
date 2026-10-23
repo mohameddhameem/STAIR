@@ -1,0 +1,17 @@
+[
+  {
+    "seed": 0,
+    "copies": 4,
+    "bitwise_equal": true
+  },
+  {
+    "seed": 1,
+    "copies": 4,
+    "bitwise_equal": true
+  },
+  {
+    "seed": 2,
+    "copies": 4,
+    "bitwise_equal": true
+  }
+]

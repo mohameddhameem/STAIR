@@ -2,6 +2,22 @@
 
 The corrected four-model experiment is complete. Earlier experiments are retained as separate cohorts. Do not pool their accuracy or cost values: models, question IDs, scoring implementations and cost rules differ.
 
+## New corrected-cache GRPO rerun
+
+[Full GRPO report](menu_ws_grpo_v1/REPORT.md) · [summary](menu_ws_grpo_v1/results.json) · [10,500 per-question rows](menu_ws_grpo_v1/results.csv.gz) · [validation lock](menu_ws_grpo_v1/validation_lock.json) · [training curves](menu_ws_grpo_v1/learning_curves.png) · [verification](menu_ws_grpo_v1/verification.json) · [method/code](../experiments/menu_ws_gguf/GRPO.md).
+
+| Policy | Test lenient | Cost / SS | Test routing |
+|---|---:|---:|---|
+| Fixed SS |71.8%|100.00%|500 SS|
+| GRPO, learned policy |71.8%|100.00%|500 SS|
+| Exact expected-reward control |71.4%|83.79%|96 weak retrieval + strong QA;404 SS|
+
+24 GRPO and12 exact-control streams, three seeds0/1/2, maximum300 epochs, validation early stopping. These update small linear TF-IDF/numeric routing heads, not Qwen/Llama weights. G8/G32 and lambda0/.05/.15/.4 were predeclared. The selected GRPO uses G8/lambda0; selected epochs260/260/290. Three-seed ensembles are used at deployment.
+
+**GRPO learned to choose SS for every test question.** This is not the fixed fallback hiding its output: learned-only and fixed-fallback selections are both published. It matches SS without executor savings and adds about10ms CPU decision time. Exact expected reward enumerates the same four actions without route-sampling noise; it saves16.21% executor cost with two fewer correct answers (357 vs359). Four questions improve and six worsen relative to SS. The paired descriptive95% accuracy-difference interval is[-1.6,+0.8]pp; this is not a formal equivalence claim.
+
+All scoring is lenient; "exact" names the training objective, not exact-match grading. The reward subtracts actual chosen-call units normalized by training-mean direct SS. No mandatory weak-first sunk calls are charged. No new LLM outputs were generated. This remains the same common0.2 test500 GGUF cohort, not a common0.3 golden-set result. All selections precede this rerun's test construction, although the test was previously inspected.
+
 ## Corrected four-model experiment
 
 [Full report](menu_ws_gguf_v2/REPORT.md) · [summary JSON](menu_ws_gguf_v2/results.json) · [all 29,000 per-question policy rows](menu_ws_gguf_v2/results.csv.gz) · [validation selections](menu_ws_gguf_v2/validation_lock.json) · [fit records](menu_ws_gguf_v2/fit_records.json) · [protocol](menu_ws_gguf_v2/protocol.json) · [model repositories, revisions and hashes](menu_ws_gguf_v2/model_manifest.json).
@@ -18,7 +34,7 @@ The corrected four-model experiment is complete. Earlier experiments are retaine
 - Author lenient script; actual prompt/generated tokens priced with `stair_common.cost.units`. Direct SS averages **1,574.983 units**. CPU router timing is separate; CPU/training work is excluded from the parameter-FLOP proxy.
 - Six classical families: majority, logistic regression, calibrated linear SVM, multinomial NB, random forest, extra trees. Router seeds0/1/2 give18 two-stage fits. Hyperparameters and operating points are chosen on validation before test scoring.
 - The search includes four fixed-policy fallbacks. **Every validation-selected operating point fell back to fixed SS.** The54 family/seed/objective rows repeat this selected control; they are not54 successful learned routing policies. This experiment shows no routing improvement over SS. It does not publish a separate test table of the unselected raw classifier policies.
-- GRPO has **not** been rerun on this four-model cohort. Published GRPO results below belong to older experiments.
+- A separate corrected-cache GRPO rerun is now complete; see the new section above. The historical GRPO cohort remains separate.
 - GGUF copies and this execution contract are not eligible for pooled BF16/AWQ headline comparisons without team agreement. Matching the model names and scorer alone is insufficient. K=1 is not the original AgentTTS40-answer-sample recipe.
 
 ## Important: upstream common0.3 is a different headline protocol
@@ -29,7 +45,7 @@ The [evaluation snapshot](menu_ws_gguf_v2/evaluation_snapshot/SOURCE.md) preserv
 
 ## Historical methods and results
 
-[Machine-readable result index](all_results.csv) contains144 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps28 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
+[Machine-readable result index](all_results.csv) contains165 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps30 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
 
 | Cohort | What was tested | Baseline / representative result | Primary artifacts |
 |---|---|---|---|
