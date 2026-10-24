@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "real_questions": 300,
+  "outer_holdout": 60,
+  "all_predictions_finite": true,
+  "nested_outer_labels_excluded": true,
+  "test_used": false
+}

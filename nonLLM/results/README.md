@@ -2,6 +2,29 @@
 
 The corrected four-model experiment is complete. Earlier experiments are retained as separate cohorts. Do not pool their accuracy or cost values: models, question IDs, scoring implementations and cost rules differ.
 
+## Four further studies: pairs, OOF stacking, risk calibration, cascades
+
+[Full report](menu_ws_next_v1/REPORT.md) · [accuracy/cost figure](menu_ws_next_v1/accuracy_cost.png) · [57,000 policy/question rows](menu_ws_next_v1/results.csv.gz) · [method table](menu_ws_next_v1/method_summary.csv) · [risk table](menu_ws_next_v1/risk_summary.csv) · [fold audit](menu_ws_next_v1/fold_audits.json) · [code and protocol](../experiments/menu_ws_gguf/NEXT_STUDIES.md).
+
+New models use5125 fitting plus1280 held-out calibration IDs within the original6405; validation500/test500 and the executor outputs remain unchanged. Raw vocabulary-free features avoid any globally fitted vocabulary/scaler. Five outer folds and three inner folds provide strictly isolated base and stacked predictions; the final stack uses the same inner3-fold procedure. All model/weight choices freeze before calibration, and all risk thresholds before test construction. This is a smaller fitting-label budget than earlier experiments.
+
+| Study / validation or OOF selection | Test lenient | Cost % direct SS |
+|---|---:|---:|
+| Direct SS |71.8%|100.00%|
+| Four-path paired classifier, validation max accuracy |71.8%|100.00%|
+| OOF stack, per-family validation max accuracy |72.0%|90.70%|
+| Global OOF cheapest matching OOF SS accuracy |71.8%|89.77%|
+| Stack joint plus alpha0.5% calibration gate |72.0%|91.36%|
+| Weak-first cascade, validation max accuracy |71.8%|98.21%|
+| Weak-first cascade, validation95%-SS target |71.4%|74.13%|
+| Always-escalate cascade, cost control |71.8%|109.61%|
+
+The stack's accuracy improvement is one question (360 vs359), not a stable-gain claim. Pairwise accuracy-focused routing still selects SS throughout test. Global OOF max accuracy selects a cascade at71.8%/95.17%; global validation max accuracy selects another cascade weight at71.8%/98.21%. The89.77% cost row uses the distinct OOF match-SS objective, which selected outcome_joint. All choices are shown, not just the best test row.
+
+Risk calibration targets additional harm relative to SS across all queries, not overall answer error or conditional error among switchers. Calibration criteria pass, but some observed test harm rates exceed nominal alpha; expected-risk criteria are not finite-test caps, and previous use of these calibration examples makes this exploratory, not certified conformal risk control. [All calibration/observed risk rows](menu_ws_next_v1/risk_summary.csv).
+
+Cascade retrieval observes only executed weak retrieval before deciding to upgrade. QA observes the executed weak answer on the chosen retrieval branch. Every weak/strong call is charged; the always-escalate control verifies why a cascade can exceed100% direct SS cost. Full online latency is unmeasured in this cache replay. No new executor inference or cluster job was launched. The57,000 records are114 policies on the same500 questions.
+
 ## Further alternatives: eight completed families
 
 [Full alternatives report](menu_ws_alternatives_v1/REPORT.md) · [accuracy/cost plot](menu_ws_alternatives_v1/accuracy_cost.png) · [compact method table](menu_ws_alternatives_v1/method_summary.csv) · [38,000 policy/question rows](menu_ws_alternatives_v1/results.csv.gz) · [validation lock](menu_ws_alternatives_v1/validation_lock.json) · [method code](../experiments/menu_ws_gguf/ALTERNATIVES.md).
@@ -66,7 +89,7 @@ The [evaluation snapshot](menu_ws_gguf_v2/evaluation_snapshot/SOURCE.md) preserv
 
 ## Historical methods and results
 
-[Machine-readable result index](all_results.csv) contains241 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps32 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
+[Machine-readable result index](all_results.csv) contains355 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps34 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
 
 | Cohort | What was tested | Baseline / representative result | Primary artifacts |
 |---|---|---|---|

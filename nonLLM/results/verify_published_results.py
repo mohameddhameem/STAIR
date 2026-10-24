@@ -54,11 +54,35 @@ def main():
   assert ad[ad.policy=='alternative-exact_augmented-max_accuracy-learned_only'].lenient.sum()==359
   assert ad[ad.policy=='alternative-global-max_accuracy-learned_only'].lenient.sum()==356
   assert json.loads((ROOT/'menu_ws_alternatives_v1/status.json').read_text())['phase']=='complete'
+ if (ROOT/'menu_ws_next_v1/results.json').exists():
+  nd=pd.read_csv(ROOT/'menu_ws_next_v1/results.csv.gz');validate(nd);ns=json.loads((ROOT/'menu_ws_next_v1/results.json').read_text())['summaries'];expected_index+=len(ns)
+  assert len(nd)==57000 and len(ns)==114
+  for r in ns:
+   chosen=nd[nd.policy==r['policy']];assert len(chosen)==500 and chosen.id.nunique()==500
+   assert math.isclose(chosen.lenient.mean(),r['accuracy'],abs_tol=1e-12) and math.isclose(chosen.units.mean(),r['units'],abs_tol=1e-8)
+  controls={(r,a):nd[nd.policy==f'next-control-{rt}-{at}'].set_index('id') for r,rt in enumerate(['qwen7','qwen72']) for a,at in enumerate(['llama3','llama70'])}
+  lookup={qid:([float(controls[(r,0)].loc[qid,'units_retrieve']) for r in range(2)],[[float(controls[(r,a)].loc[qid,'units_answer']) for a in range(2)] for r in range(2)]) for qid in controls[(0,0)].index}
+  for row in nd.itertuples():
+   ret,qa=lookup[row.id];r,a=row.ret_choice,row.qa_choice;cascade=row.execution=='weak_first_cascade'
+   ru=ret[0]+(ret[1] if r else 0) if cascade else ret[r]
+   au=qa[r][0]+(qa[r][1] if a else 0) if cascade else qa[r][a]
+   assert math.isclose(row.units_retrieve,ru,abs_tol=1e-8) and math.isclose(row.units_answer,au,abs_tol=1e-8)
+  folds=json.loads((ROOT/'menu_ws_next_v1/fold_audits.json').read_text())['outer'];all_held=[]
+  for fold in folds:
+   train,held=set(fold['train']),set(fold['heldout']);assert not train&held and train|held==set(range(5125));all_held+=fold['heldout']
+   for inner in fold['inner_folds']:assert not held&(set(inner['train'])|set(inner['heldout']))
+  assert sorted(all_held)==list(range(5125))
+  assert nd[nd.policy=='next-control-qwen72-llama70'].lenient.sum()==359
+  assert nd[nd.policy=='next-stack_joint-max_accuracy-learned_only'].lenient.sum()==360
+  audit=json.loads((ROOT/'menu_ws_next_v1/verification.json').read_text());assert audit['strict_nested_group_isolation'] and audit['cascade_paid_call_cost_parity'] and audit['all_calibration_criteria_met']
+  assert not audit['risk_certified'] and len(audit['risk_test_above_nominal'])>0
+  assert audit['cascade_all_strong_cost_pct_ss']>100
+  assert json.loads((ROOT/'menu_ws_next_v1/status.json').read_text())['phase']=='complete'
  assert len(rows)==expected_index
  for row in rows:
   assert 0<=float(row['accuracy_pct'])<=100
   assert float(row['cost_pct_ss'])>=0
   assert (ROOT/row['source']).is_file()
- print(f'Verified classical, GRPO and available alternative test records, summaries, route choices, frozen ruler/splits, artifact hashes and {expected_index} cross-cohort index rows.')
+ print(f'Verified all published classical, GRPO, alternative and next-study records, summaries, route choices, frozen ruler/splits, artifact hashes and {expected_index} cross-cohort index rows.')
 
 if __name__=='__main__':main()

@@ -1,0 +1,265 @@
+{
+  "rows": 57000,
+  "policies": 114,
+  "outer_folds": 5,
+  "inner_folds": 3,
+  "strict_nested_group_isolation": true,
+  "final_fit_rows": 5125,
+  "calibration_rows": 1280,
+  "all_calibration_criteria_met": true,
+  "cascade_paid_call_cost_parity": true,
+  "cached_answer_parity": true,
+  "cascade_all_strong_cost_pct_ss": 109.61219563169979,
+  "risk_test_above_nominal": [
+    {
+      "policy": "next-risk-pair_joint-cheap95-alpha0.005",
+      "alpha": 0.005,
+      "calibration_n": 1280,
+      "calibration_harm": 5,
+      "calibration_bound": 0.00468384074941452,
+      "calibration_switches": 176,
+      "test_harm": 5,
+      "test_harm_rate": 0.01,
+      "test_rescues": 1,
+      "test_accuracy": 0.71,
+      "cost_pct_ss": 86.81489155969902,
+      "test_rate_above_nominal": true
+    },
+    {
+      "policy": "next-risk-pair_joint-cheap95-alpha0.01",
+      "alpha": 0.01,
+      "calibration_n": 1280,
+      "calibration_harm": 11,
+      "calibration_bound": 0.00936768149882904,
+      "calibration_switches": 238,
+      "test_harm": 9,
+      "test_harm_rate": 0.018,
+      "test_rescues": 3,
+      "test_accuracy": 0.706,
+      "cost_pct_ss": 82.87098893462716,
+      "test_rate_above_nominal": true
+    },
+    {
+      "policy": "next-risk-stack_joint-cheap95-alpha0.005",
+      "alpha": 0.005,
+      "calibration_n": 1280,
+      "calibration_harm": 5,
+      "calibration_bound": 0.00468384074941452,
+      "calibration_switches": 178,
+      "test_harm": 5,
+      "test_harm_rate": 0.01,
+      "test_rescues": 1,
+      "test_accuracy": 0.71,
+      "cost_pct_ss": 86.81489155969902,
+      "test_rate_above_nominal": true
+    },
+    {
+      "policy": "next-risk-stack_joint-cheap95-alpha0.01",
+      "alpha": 0.01,
+      "calibration_n": 1280,
+      "calibration_harm": 11,
+      "calibration_bound": 0.00936768149882904,
+      "calibration_switches": 220,
+      "test_harm": 6,
+      "test_harm_rate": 0.012,
+      "test_rescues": 1,
+      "test_accuracy": 0.708,
+      "cost_pct_ss": 84.17292224432708,
+      "test_rate_above_nominal": true
+    }
+  ],
+  "paired": [
+    {
+      "policy": "next-outcome_joint-max_accuracy-learned_only",
+      "rescues": 5,
+      "harm": 8,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -2.0,
+        0.8
+      ]
+    },
+    {
+      "policy": "next-outcome_joint-match_ss_accuracy-learned_only",
+      "rescues": 5,
+      "harm": 8,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -2.0,
+        0.8
+      ]
+    },
+    {
+      "policy": "next-outcome_staged-max_accuracy-learned_only",
+      "rescues": 6,
+      "harm": 8,
+      "delta_pp": -0.4,
+      "paired_descriptive95_pp": [
+        -2.0,
+        1.0
+      ]
+    },
+    {
+      "policy": "next-outcome_staged-match_ss_accuracy-learned_only",
+      "rescues": 6,
+      "harm": 8,
+      "delta_pp": -0.4,
+      "paired_descriptive95_pp": [
+        -1.7999999999999998,
+        1.0
+      ]
+    },
+    {
+      "policy": "next-gain_joint-max_accuracy-learned_only",
+      "rescues": 1,
+      "harm": 4,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -1.6,
+        0.2
+      ]
+    },
+    {
+      "policy": "next-gain_staged-max_accuracy-learned_only",
+      "rescues": 1,
+      "harm": 4,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -1.6,
+        0.2
+      ]
+    },
+    {
+      "policy": "next-pair_joint-max_accuracy-learned_only",
+      "rescues": 0,
+      "harm": 0,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "policy": "next-pair_joint-match_ss_accuracy-learned_only",
+      "rescues": 0,
+      "harm": 0,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "policy": "next-pair_staged-max_accuracy-learned_only",
+      "rescues": 0,
+      "harm": 0,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "policy": "next-pair_staged-match_ss_accuracy-learned_only",
+      "rescues": 0,
+      "harm": 0,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "policy": "next-stack_joint-max_accuracy-learned_only",
+      "rescues": 1,
+      "harm": 0,
+      "delta_pp": 0.2,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.6
+      ]
+    },
+    {
+      "policy": "next-stack_joint-match_ss_accuracy-learned_only",
+      "rescues": 1,
+      "harm": 0,
+      "delta_pp": 0.2,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.6
+      ]
+    },
+    {
+      "policy": "next-stack_staged-max_accuracy-learned_only",
+      "rescues": 1,
+      "harm": 0,
+      "delta_pp": 0.2,
+      "paired_descriptive95_pp": [
+        0.0,
+        0.6
+      ]
+    },
+    {
+      "policy": "next-cascade-max_accuracy-learned_only",
+      "rescues": 4,
+      "harm": 4,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        -1.2,
+        1.005000000000018
+      ]
+    },
+    {
+      "policy": "next-cascade-match_ss_accuracy-learned_only",
+      "rescues": 5,
+      "harm": 5,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        -1.2,
+        1.2
+      ]
+    },
+    {
+      "policy": "next-global_val-max_accuracy-learned_only",
+      "rescues": 4,
+      "harm": 4,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        -1.2,
+        1.2
+      ]
+    },
+    {
+      "policy": "next-global_val-match_ss_accuracy-learned_only",
+      "rescues": 5,
+      "harm": 8,
+      "delta_pp": -0.6,
+      "paired_descriptive95_pp": [
+        -2.0,
+        0.8
+      ]
+    },
+    {
+      "policy": "next-global_oof-max_accuracy-learned_only",
+      "rescues": 5,
+      "harm": 5,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        -1.2,
+        1.2
+      ]
+    },
+    {
+      "policy": "next-global_oof-match_ss_accuracy-learned_only",
+      "rescues": 1,
+      "harm": 1,
+      "delta_pp": 0.0,
+      "paired_descriptive95_pp": [
+        -0.6,
+        0.6
+      ]
+    }
+  ],
+  "risk_certified": false,
+  "note": "Expected-risk calibration targets are not bounds on each finite test sample; historical reuse and possible distribution differences preclude certified claims."
+}

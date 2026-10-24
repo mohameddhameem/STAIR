@@ -1,0 +1,1038 @@
+{
+  "created_at": 1792851105.4718108,
+  "selections": [
+    {
+      "name": "outcome_joint-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_joint-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_joint-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_joint-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_joint-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_joint-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_joint-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_joint-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "outcome_staged-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "outcome_staged-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "outcome_staged-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "outcome_staged-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "outcome_staged-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "outcome_staged-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "outcome_staged-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "outcome_staged-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1223.4695520833332
+      }
+    },
+    {
+      "name": "gain_joint-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_joint",
+        "weight": 0.0,
+        "accuracy": 0.7559999823570251,
+        "units": 1512.6075972222222
+      }
+    },
+    {
+      "name": "gain_joint-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "gain_joint-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_joint",
+        "weight": 0.0,
+        "accuracy": 0.7559999823570251,
+        "units": 1512.6075972222222
+      }
+    },
+    {
+      "name": "gain_joint-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "gain_joint-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7440000176429749,
+        "units": 1135.4079756944445
+      }
+    },
+    {
+      "name": "gain_joint-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7440000176429749,
+        "units": 1135.4079756944445
+      }
+    },
+    {
+      "name": "gain_joint-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": null
+    },
+    {
+      "name": "gain_joint-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "gain_staged-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 0.0,
+        "accuracy": 0.7559999823570251,
+        "units": 1511.291267361111
+      }
+    },
+    {
+      "name": "gain_staged-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "gain_staged-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 0.0,
+        "accuracy": 0.7559999823570251,
+        "units": 1511.291267361111
+      }
+    },
+    {
+      "name": "gain_staged-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "gain_staged-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7440000176429749,
+        "units": 1133.5754305555556
+      }
+    },
+    {
+      "name": "gain_staged-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7440000176429749,
+        "units": 1133.5754305555556
+      }
+    },
+    {
+      "name": "gain_staged-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": null
+    },
+    {
+      "name": "gain_staged-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7519999742507935,
+        "units": 1278.1833368055554
+      }
+    },
+    {
+      "name": "pair_joint-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7519999742507935,
+        "units": 1278.1833368055554
+      }
+    },
+    {
+      "name": "pair_joint-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_staged-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_staged-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_staged-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_staged-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_staged-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7519999742507935,
+        "units": 1278.1833368055554
+      }
+    },
+    {
+      "name": "pair_staged-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7519999742507935,
+        "units": 1278.1833368055554
+      }
+    },
+    {
+      "name": "pair_staged-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_staged-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "pair_staged",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "stack_joint-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_joint-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_joint-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_joint-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_joint-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7559999823570251,
+        "units": 1178.958736111111
+      }
+    },
+    {
+      "name": "stack_joint-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7559999823570251,
+        "units": 1178.958736111111
+      }
+    },
+    {
+      "name": "stack_joint-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_joint-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_staged-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_staged",
+        "weight": 2e-05,
+        "accuracy": 0.7559999823570251,
+        "units": 1452.5347638888888
+      }
+    },
+    {
+      "name": "stack_staged-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "stack_staged-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_staged",
+        "weight": 2e-05,
+        "accuracy": 0.7559999823570251,
+        "units": 1452.5347638888888
+      }
+    },
+    {
+      "name": "stack_staged-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "stack_staged-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7540000081062317,
+        "units": 1179.9732083333333
+      }
+    },
+    {
+      "name": "stack_staged-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "stack_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7540000081062317,
+        "units": 1179.9732083333333
+      }
+    },
+    {
+      "name": "stack_staged-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": null
+    },
+    {
+      "name": "stack_staged-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "fixed",
+        "r": 1,
+        "a": 1,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "cascade-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "cascade-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "cascade-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "cascade-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "cascade-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 5e-05,
+        "accuracy": 0.7559999823570251,
+        "units": 1195.572715277778
+      }
+    },
+    {
+      "name": "cascade-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 5e-05,
+        "accuracy": 0.7559999823570251,
+        "units": 1195.572715277778
+      }
+    },
+    {
+      "name": "cascade-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 2e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1529.658402777778
+      }
+    },
+    {
+      "name": "cascade-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 2e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1529.658402777778
+      }
+    },
+    {
+      "name": "global_val-max_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "global_val-max_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "global_val-ss_budget-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "global_val-ss_budget-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 1e-05,
+        "accuracy": 0.7639999985694885,
+        "units": 1579.2170347222223
+      }
+    },
+    {
+      "name": "global_val-cheap95-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7440000176429749,
+        "units": 1133.5754305555556
+      }
+    },
+    {
+      "name": "global_val-cheap95-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7440000176429749,
+        "units": 1133.5754305555556
+      }
+    },
+    {
+      "name": "global_val-match_ss_accuracy-learned_only",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "global_val-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "validation",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7599999904632568,
+        "units": 1222.7145694444446
+      }
+    },
+    {
+      "name": "global_oof-max_accuracy-learned_only",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 2e-05,
+        "accuracy": 0.7332683205604553,
+        "units": 1536.695055216802
+      }
+    },
+    {
+      "name": "global_oof-max_accuracy-with_fixed_fallback",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 2e-05,
+        "accuracy": 0.7332683205604553,
+        "units": 1536.695055216802
+      }
+    },
+    {
+      "name": "global_oof-ss_budget-learned_only",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 2e-05,
+        "accuracy": 0.7332683205604553,
+        "units": 1536.695055216802
+      }
+    },
+    {
+      "name": "global_oof-ss_budget-with_fixed_fallback",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "cascade",
+        "weight": 2e-05,
+        "accuracy": 0.7332683205604553,
+        "units": 1536.695055216802
+      }
+    },
+    {
+      "name": "global_oof-cheap95-learned_only",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7168780565261841,
+        "units": 1152.1152184959349
+      }
+    },
+    {
+      "name": "global_oof-cheap95-with_fixed_fallback",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "gain_staged",
+        "weight": 5e-05,
+        "accuracy": 0.7168780565261841,
+        "units": 1152.1152184959349
+      }
+    },
+    {
+      "name": "global_oof-match_ss_accuracy-learned_only",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 1e-05,
+        "accuracy": 0.730731725692749,
+        "units": 1427.609576897019
+      }
+    },
+    {
+      "name": "global_oof-match_ss_accuracy-with_fixed_fallback",
+      "selection_source": "nested_outer_oof",
+      "selected": {
+        "type": "model",
+        "family": "outcome_joint",
+        "weight": 1e-05,
+        "accuracy": 0.730731725692749,
+        "units": 1427.609576897019
+      }
+    }
+  ],
+  "risk_proposers": [
+    {
+      "name": "pair_joint-max_accuracy",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-ss_budget",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "pair_joint-cheap95",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7519999742507935,
+        "units": 1278.1833368055554
+      }
+    },
+    {
+      "name": "pair_joint-match_ss_accuracy",
+      "selected": {
+        "type": "model",
+        "family": "pair_joint",
+        "weight": 0.0,
+        "accuracy": 0.7580000162124634,
+        "units": 1582.4921875
+      }
+    },
+    {
+      "name": "stack_joint-max_accuracy",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_joint-ss_budget",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    },
+    {
+      "name": "stack_joint-cheap95",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 5e-05,
+        "accuracy": 0.7559999823570251,
+        "units": 1178.958736111111
+      }
+    },
+    {
+      "name": "stack_joint-match_ss_accuracy",
+      "selected": {
+        "type": "model",
+        "family": "stack_joint",
+        "weight": 2e-05,
+        "accuracy": 0.7580000162124634,
+        "units": 1451.7557743055554
+      }
+    }
+  ],
+  "note": "Created before calibration-label use; no old trained router/OOF model is reused."
+}

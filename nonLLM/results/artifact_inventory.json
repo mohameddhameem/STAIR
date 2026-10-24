@@ -266,6 +266,33 @@
       "classification": "cohort-specific, not pooled; see report and results/README.md"
     },
     {
+      "run": "nonllm_common_ws_next_smoke_v1",
+      "source_phase": "not recorded",
+      "published_artifacts": [
+        "archive_20261023/nonllm_common_ws_next_smoke_v1/verification.json"
+      ],
+      "classification": "cohort-specific, not pooled; see report and results/README.md"
+    },
+    {
+      "run": "nonllm_common_ws_next_v1",
+      "source_phase": "complete",
+      "published_artifacts": [
+        "archive_20261023/nonllm_common_ws_next_v1/REPORT.md",
+        "archive_20261023/nonllm_common_ws_next_v1/final_meta_crossfit.json",
+        "archive_20261023/nonllm_common_ws_next_v1/fold_audits.json",
+        "archive_20261023/nonllm_common_ws_next_v1/method_summary.csv",
+        "archive_20261023/nonllm_common_ws_next_v1/oof_candidates.csv",
+        "archive_20261023/nonllm_common_ws_next_v1/proposal_lock.json",
+        "archive_20261023/nonllm_common_ws_next_v1/protocol.json",
+        "archive_20261023/nonllm_common_ws_next_v1/results.json",
+        "archive_20261023/nonllm_common_ws_next_v1/risk_summary.csv",
+        "archive_20261023/nonllm_common_ws_next_v1/status.json",
+        "archive_20261023/nonllm_common_ws_next_v1/validation_lock.json",
+        "archive_20261023/nonllm_common_ws_next_v1/verification.json"
+      ],
+      "classification": "cohort-specific, not pooled; see report and results/README.md"
+    },
+    {
       "run": "nonllm_grpo_extended_v1",
       "source_phase": "complete",
       "published_artifacts": [
@@ -1240,6 +1267,84 @@
       "published": "nonLLM/results/archive_20261023/nonllm_common_ws_grpo_v1/warm_start_verification.json",
       "source_sha256": "dbb521b8757c130e92f8976f16946ce0c55fb5c5f7bfb401e3057506f0d2f4d9",
       "published_sha256": "dbb521b8757c130e92f8976f16946ce0c55fb5c5f7bfb401e3057506f0d2f4d9"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_smoke_v1/verification.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_smoke_v1/verification.json",
+      "source_sha256": "efbf51dc9b2124a312207b04f124dbebb01964f51d2848c8e98d8174c02c7dbc",
+      "published_sha256": "efbf51dc9b2124a312207b04f124dbebb01964f51d2848c8e98d8174c02c7dbc"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/REPORT.md",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/REPORT.md",
+      "source_sha256": "7e321d0fa92458817665e66292c79b0c6278eedb35eccb0608f4e3b0b4b9f296",
+      "published_sha256": "7e321d0fa92458817665e66292c79b0c6278eedb35eccb0608f4e3b0b4b9f296"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/final_meta_crossfit.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/final_meta_crossfit.json",
+      "source_sha256": "cb2d08cfc5fd9a46e3de7e90082d7168c18015471b08172bcb9961b7680fe927",
+      "published_sha256": "cb2d08cfc5fd9a46e3de7e90082d7168c18015471b08172bcb9961b7680fe927"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/fold_audits.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/fold_audits.json",
+      "source_sha256": "9ced278e5a6fa5dae3c6751bb426c80c506d12d16d607b69faa2d3f841a71434",
+      "published_sha256": "9ced278e5a6fa5dae3c6751bb426c80c506d12d16d607b69faa2d3f841a71434"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/method_summary.csv",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/method_summary.csv",
+      "source_sha256": "e1132a2638b3093e3554e23f9a127a5bb4fb54277c3f1ad5e73723e1bd4d6094",
+      "published_sha256": "e1132a2638b3093e3554e23f9a127a5bb4fb54277c3f1ad5e73723e1bd4d6094"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/oof_candidates.csv",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/oof_candidates.csv",
+      "source_sha256": "dba94c51f1d0dea4d63145c4614682c3abef9a67e8609a5ff20dc1ee9174e8c1",
+      "published_sha256": "dba94c51f1d0dea4d63145c4614682c3abef9a67e8609a5ff20dc1ee9174e8c1"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/proposal_lock.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/proposal_lock.json",
+      "source_sha256": "51bac9cfcd4d6447d56a18ddf7ba2cba22d25b80c39c37efcd98c21dbd61b004",
+      "published_sha256": "51bac9cfcd4d6447d56a18ddf7ba2cba22d25b80c39c37efcd98c21dbd61b004"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/protocol.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/protocol.json",
+      "source_sha256": "e97f54947053fe34e7edec869e9cf95b1528fbb507504c32a38171749db88354",
+      "published_sha256": "aef63ae380a6ad2c091db401ebac3443c7d31350fc9847472eee4c473cd9fdc3"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/results.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/results.json",
+      "source_sha256": "ad1bf576d81049287b9b46dcb911a56fa7acda0021cbe8352c206afe68ed89fe",
+      "published_sha256": "ad1bf576d81049287b9b46dcb911a56fa7acda0021cbe8352c206afe68ed89fe"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/risk_summary.csv",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/risk_summary.csv",
+      "source_sha256": "64cb35f1e26a17ba18b98fac01334a801be4d74b2988d01abd1c95808527ceda",
+      "published_sha256": "64cb35f1e26a17ba18b98fac01334a801be4d74b2988d01abd1c95808527ceda"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/status.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/status.json",
+      "source_sha256": "a6f41e0e64975d2541ccd3b77c8eb129912c2c300b1779826fda67d1be2c3a87",
+      "published_sha256": "a6f41e0e64975d2541ccd3b77c8eb129912c2c300b1779826fda67d1be2c3a87"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/validation_lock.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/validation_lock.json",
+      "source_sha256": "91b339096724e49d2aa1b02c0e6baf40c9463587b6a9f0730c6c38cd9bbf67c5",
+      "published_sha256": "91b339096724e49d2aa1b02c0e6baf40c9463587b6a9f0730c6c38cd9bbf67c5"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/verification.json",
+      "published": "nonLLM/results/archive_20261023/nonllm_common_ws_next_v1/verification.json",
+      "source_sha256": "97aa8b08b001838fb297cf98e13d998ee6a931052fb051fb8b6bb29f3a7f4ad6",
+      "published_sha256": "97aa8b08b001838fb297cf98e13d998ee6a931052fb051fb8b6bb29f3a7f4ad6"
     },
     {
       "source": "runs/nonllm_grpo_extended_v1/REPORT.md",
@@ -2692,6 +2797,78 @@
       "published": "nonLLM/results/menu_ws_alternatives_v1/protocol.json",
       "source_sha256": "61afe3414f2e81c77dc4d1de33524043893c6a4a18115dd914c707199e0cf348",
       "published_sha256": "231bbc37720900fa7832b300f0d7f1b9b089149969d8765329997115831fd5c6"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/final_meta_crossfit.json",
+      "published": "nonLLM/results/menu_ws_next_v1/final_meta_crossfit.json",
+      "source_sha256": "cb2d08cfc5fd9a46e3de7e90082d7168c18015471b08172bcb9961b7680fe927",
+      "published_sha256": "cb2d08cfc5fd9a46e3de7e90082d7168c18015471b08172bcb9961b7680fe927"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/proposal_lock.json",
+      "published": "nonLLM/results/menu_ws_next_v1/proposal_lock.json",
+      "source_sha256": "51bac9cfcd4d6447d56a18ddf7ba2cba22d25b80c39c37efcd98c21dbd61b004",
+      "published_sha256": "51bac9cfcd4d6447d56a18ddf7ba2cba22d25b80c39c37efcd98c21dbd61b004"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/oof_candidates.csv",
+      "published": "nonLLM/results/menu_ws_next_v1/oof_candidates.csv",
+      "source_sha256": "dba94c51f1d0dea4d63145c4614682c3abef9a67e8609a5ff20dc1ee9174e8c1",
+      "published_sha256": "dba94c51f1d0dea4d63145c4614682c3abef9a67e8609a5ff20dc1ee9174e8c1"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/validation_lock.json",
+      "published": "nonLLM/results/menu_ws_next_v1/validation_lock.json",
+      "source_sha256": "91b339096724e49d2aa1b02c0e6baf40c9463587b6a9f0730c6c38cd9bbf67c5",
+      "published_sha256": "91b339096724e49d2aa1b02c0e6baf40c9463587b6a9f0730c6c38cd9bbf67c5"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/method_summary.csv",
+      "published": "nonLLM/results/menu_ws_next_v1/method_summary.csv",
+      "source_sha256": "e1132a2638b3093e3554e23f9a127a5bb4fb54277c3f1ad5e73723e1bd4d6094",
+      "published_sha256": "e1132a2638b3093e3554e23f9a127a5bb4fb54277c3f1ad5e73723e1bd4d6094"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/results.json",
+      "published": "nonLLM/results/menu_ws_next_v1/results.json",
+      "source_sha256": "ad1bf576d81049287b9b46dcb911a56fa7acda0021cbe8352c206afe68ed89fe",
+      "published_sha256": "ad1bf576d81049287b9b46dcb911a56fa7acda0021cbe8352c206afe68ed89fe"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/verification.json",
+      "published": "nonLLM/results/menu_ws_next_v1/verification.json",
+      "source_sha256": "97aa8b08b001838fb297cf98e13d998ee6a931052fb051fb8b6bb29f3a7f4ad6",
+      "published_sha256": "97aa8b08b001838fb297cf98e13d998ee6a931052fb051fb8b6bb29f3a7f4ad6"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/REPORT.md",
+      "published": "nonLLM/results/menu_ws_next_v1/REPORT.md",
+      "source_sha256": "7e321d0fa92458817665e66292c79b0c6278eedb35eccb0608f4e3b0b4b9f296",
+      "published_sha256": "7e321d0fa92458817665e66292c79b0c6278eedb35eccb0608f4e3b0b4b9f296"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/status.json",
+      "published": "nonLLM/results/menu_ws_next_v1/status.json",
+      "source_sha256": "a6f41e0e64975d2541ccd3b77c8eb129912c2c300b1779826fda67d1be2c3a87",
+      "published_sha256": "a6f41e0e64975d2541ccd3b77c8eb129912c2c300b1779826fda67d1be2c3a87"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/risk_summary.csv",
+      "published": "nonLLM/results/menu_ws_next_v1/risk_summary.csv",
+      "source_sha256": "64cb35f1e26a17ba18b98fac01334a801be4d74b2988d01abd1c95808527ceda",
+      "published_sha256": "64cb35f1e26a17ba18b98fac01334a801be4d74b2988d01abd1c95808527ceda"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/fold_audits.json",
+      "published": "nonLLM/results/menu_ws_next_v1/fold_audits.json",
+      "source_sha256": "9ced278e5a6fa5dae3c6751bb426c80c506d12d16d607b69faa2d3f841a71434",
+      "published_sha256": "9ced278e5a6fa5dae3c6751bb426c80c506d12d16d607b69faa2d3f841a71434"
+    },
+    {
+      "source": "runs/nonllm_common_ws_next_v1/protocol.json",
+      "published": "nonLLM/results/menu_ws_next_v1/protocol.json",
+      "source_sha256": "e97f54947053fe34e7edec869e9cf95b1528fbb507504c32a38171749db88354",
+      "published_sha256": "aef63ae380a6ad2c091db401ebac3443c7d31350fc9847472eee4c473cd9fdc3"
     }
   ]
 }

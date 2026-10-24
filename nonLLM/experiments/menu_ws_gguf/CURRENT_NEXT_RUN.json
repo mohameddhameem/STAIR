@@ -1,0 +1,20 @@
+{
+  "run": "nonllm_common_ws_next_v1",
+  "phase": "complete",
+  "source_cache": "nonllm_common_ws_gguf_v2",
+  "fit": 5125,
+  "calibration": 1280,
+  "val": 500,
+  "test": 500,
+  "outer_folds": 5,
+  "inner_folds": 3,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "policies": 114,
+  "risk_certified": false,
+  "report": "nonLLM/results/menu_ws_next_v1/REPORT.md",
+  "tmux_session": "cs707-ws-next"
+}

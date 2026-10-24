@@ -26,3 +26,5 @@ These results use Q4_K_M GGUF, K=1/greedy/no fusion, common0.2 test IDs and toke
 Large model files, raw caches and checkpoints remain outside Git. No cluster jobs are submitted by this results publication.
 
 Latest exploratory alternatives: a per-family validation-selected success-prediction tree scores72.4% at96.77% SS cost; augmented exact reward preserves71.8% at89.25% SS cost. The global validation-selected family instead scores71.2% at85.61% cost. Small/reused test-set gains are not stable-improvement evidence. [Complete comparison](results/menu_ws_alternatives_v1/REPORT.md).
+
+Further completed studies add four-path paired routing, strict nested OOF stacking, held-out CRC-style gates and fully charged weak-first cascades. OOF stacking scores72.0% at90.70% SS cost; the OOF match-SS selection scores71.8% at89.77%. Weak-first cascade at the validation95% target scores71.4% at74.13%. All-escalate cascade costs109.61%; calibration targets are not per-test guarantees. [Full four-study report](results/menu_ws_next_v1/REPORT.md).
