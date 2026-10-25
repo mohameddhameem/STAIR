@@ -176,13 +176,13 @@ directly comparable with the paper, and no track has trained on a test question.
 | Dataset | Source (pinned) | train | val | test | Notes |
 |---|---|---|---|---|---|
 | HotpotQA | official train file; AgentTTS `hotpotqa-dev.json` (7,405) | 12,000 drawn from the train file; optional `train_extra` = dev[1000:7405] (6,405) | dev[0:500] | **dev[500:1000]**, AgentTTS's 500 | test is exactly what AgentTTS's code scores (`data[500:1000]`) |
-| 2WikiMultiHopQA | AgentTTS `tts_train.json` (official dev, 12,576) | official train file; optional `train_extra` = dev[1000:] (11,576) | dev[0:500] | dev[500:1000] | AgentTTS cuts its test from a `queries.jsonl` it does not publish, so this is the same position, not provably the same questions |
+| 2WikiMultiHopQA | official dev (12,576, all answered): the HF mirror `framolfese/2WikiMultihopQA` @ `fe713bf`, `validation` (saved as `2wikimultihopqa_dev.parquet`) | official train file; optional `train_extra` = the other 11,576 dev questions | 500 dev, by the rule | the next 500 dev, by the rule | **Changed in 0.4.0** (STAIR #9): the source was AgentTTS `tts_train.json`, which is 2Wiki's official *test* set, with every answer empty. AgentTTS's own 2Wiki test comes from a `queries.jsonl` it does not publish, so no comparability is lost |
 | CWQ | AgentTTS `cwq/data_with_ct_0.json` (1,000 with gold triplets) | 350 | 150 | **[0:500]** = AgentTTS's `cwq_500_test500.json` | identical, checked question by question |
 | WebQSP | AgentTTS `webqsp/data_with_ct_0.json` (1,000) | 350 | 150 | **[0:500]** = AgentTTS's `webqsp_500_test500.json` | identical, checked |
 | MedAgentBench | `test_data_v2.json` (300 tasks, 10 categories × 30) | none | 150 `calib` | 150 | 15 / 15 per category |
 
 - **Random parts use one rule:** sort the IDs, shuffle with `numpy.random.default_rng(20260729)`, then cut. These are
-  the HotpotQA train draw, CWQ/WebQSP train/val, and MedAgentBench.
+  the HotpotQA train draw, all three 2Wiki parts, CWQ/WebQSP train/val, and MedAgentBench.
 - **`train_extra`** is for tracks whose labels exist only on dev questions, such as nonLLM's stored outcome grid. Never
   train on `val` or `test`.
 - **nano-jev** (menu B) saw 1,000 HotpotQA dev questions in its own calibration and test, not in its training. 62 of

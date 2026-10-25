@@ -10,8 +10,8 @@
    "sha256": "11ae58cf90a3add9d466f3a73506356369145fc0d7240306366e8aa0183074cf"
   },
   "2wikimultihopqa": {
-   "file": "tts_train.json",
-   "sha256": "4f60ba6a108d3409ee039e0be9af42a6a139174fdc86c7451caca402e953fe7a"
+   "file": "2wikimultihopqa_dev.parquet",
+   "sha256": "408e2dbb28edc6c8b9ca3ba0c94d4fc7bf17ffb923766593a3a7f546ab4cba59"
   },
   "cwq": {
    "file": "cwq_data_with_ct_0.json",
@@ -61,15 +61,15 @@
   },
   "2wikimultihopqa/val": {
    "n": 500,
-   "sha256": "0cf8ca7cd32ffc63176850d33167242eb737255855a7f2894b9b09c2523e0f90"
+   "sha256": "5f88ede8925a99e438c2a99e943cea3b5977fe9f5cb53f737cfb93c9f1f5aaca"
   },
   "2wikimultihopqa/test": {
    "n": 500,
-   "sha256": "70ac899a5f67a7348b5fb680ec53db9da6c4e275cdadeb088044687bf14fb642"
+   "sha256": "3d3c3f2a8ecf755fa6681e250c0368d7941df9f1607820e7bfcb9ada68358b59"
   },
   "2wikimultihopqa/train_extra": {
    "n": 11576,
-   "sha256": "352494047434f0153a10148d942a1be317663265844e35d3bd6974614164c8ae"
+   "sha256": "1dd45bbe6867f82bf432a51ffa959103bd0685ca99e11d4d88453ac879bc721b"
   },
   "cwq/test": {
    "n": 500,
