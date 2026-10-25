@@ -51,10 +51,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="the HotpotQA golden set (stair_common 0.3.0, Jonathan's split): router_train = slr-train, "
                              "calib = slr-val, test = slr-test, all from the dev file; with --router-size / --calib-size "
                              "as caps (test is always whole) and --prefer, ignores the other options")
+    parser.add_argument("--dataset", choices=sorted(MULTIHOP_TRAIN),
+                        help="Jev novelty E2: the pre-registered splits of a prepare-multihop dataset in --data-dir "
+                             "(default data/<dataset>); ignores the HotpotQA options")
+    parser.add_argument("--data-dir", type=Path, help="--dataset: folder with train.parquet and dev.parquet")
     parser.add_argument("--prefer", type=Path, action="append", default=[],
                         help="--slr: ids taken first when a part is capped (.txt one per line, or .parquet `id`), e.g. "
                              "questions already answered; repeatable")
     return parser.parse_args(argv)
+
+
+def parser_default_out() -> Path:
+    return Path("data/hotpotqa/splits.json")
 
 
 def load_common_train() -> list[str]:
@@ -89,6 +97,29 @@ def slr_splits(sizes: dict[str, int] | None = None, prefer: set[str] = frozenset
     return parts
 
 
+MULTIHOP_TRAIN = {"2wikimultihopqa": 4_814, "musique": 4_814}  # router_train, the golden set's slr-train size
+MULTIHOP_CALIB = 500
+
+
+def multihop_splits(dataset: str, data_dir: Path) -> dict[str, list[str]]:
+    """Jev novelty E2's splits (docs/experiments/2026-10-24-jev-preregistration.md), by the team's rule
+    (stair_common.splits.shuffled: sort, then shuffle with its seed):
+        2wikimultihopqa  router_train = the first 4,814 shuffled official train ids; calib / test / test_ext = the
+                         first 500 / next 500 / next 2,000 shuffled official dev ids (not the team's 2Wiki parts:
+                         their questions have no gold answers, see prepare_multihop)
+        musique          router_train / calib = the first 4,814 / next 500 shuffled train ids; test = all 2,417 dev ids"""
+    from stair_common.splits import shuffled
+
+    order = shuffled(pd.read_parquet(data_dir / "train.parquet", columns=["id"])["id"].tolist())
+    n = MULTIHOP_TRAIN[dataset]
+    if dataset == "2wikimultihopqa":
+        dev = shuffled(pd.read_parquet(data_dir / "dev.parquet", columns=["id"])["id"].tolist())
+        return {"router_train": sorted(order[:n]), "calib": sorted(dev[:500]), "test": sorted(dev[500:1000]),
+                "test_ext": sorted(dev[1000:3000])}
+    return {"router_train": sorted(order[:n]), "calib": sorted(order[n:n + MULTIHOP_CALIB]),
+            "test": pd.read_parquet(data_dir / "dev.parquet", columns=["id"])["id"].tolist()}
+
+
 def read_ids(path: Path) -> set[str]:
     if path.suffix == ".parquet":
         return set(pd.read_parquet(path, columns=["id"])["id"])
@@ -98,6 +129,17 @@ def read_ids(path: Path) -> set[str]:
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+    if args.dataset:
+        data_dir = args.data_dir or Path("data") / args.dataset
+        splits = multihop_splits(args.dataset, data_dir)
+        all_ids = [i for ids in splits.values() for i in ids]
+        if len(all_ids) != len(set(all_ids)):
+            raise ValueError("the parts overlap")
+        out = args.out if args.out != parser_default_out() else data_dir / "splits.json"
+        out.write_text(json.dumps({"source": f"stair.make_splits.multihop_splits ({args.dataset})", **splits}, indent=1))
+        log.info(f"{args.dataset}: " + ", ".join(f"{k} {len(v)}" for k, v in splits.items()) + f"; saved {out}")
+        return
 
     if args.slr:
         prefer = set().union(*(read_ids(p) for p in args.prefer))

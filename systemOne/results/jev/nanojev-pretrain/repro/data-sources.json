@@ -1,0 +1,20 @@
+{
+ "train": {
+  "mnli/grounded": 8000,
+  "hotpot/relevance": 23840,
+  "hotpot/sufficient": 11920,
+  "squad2/sufficient": 6000
+ },
+ "calib": {
+  "hotpot/relevance": 1988,
+  "hotpot/sufficient": 994,
+  "squad2/sufficient": 500,
+  "mnli/grounded": 500
+ },
+ "test": {
+  "hotpot/relevance": 1984,
+  "hotpot/sufficient": 992,
+  "squad2/sufficient": 500,
+  "mnli/grounded": 500
+ }
+}

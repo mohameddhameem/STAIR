@@ -1,0 +1,289 @@
+{
+ "n": 2413,
+ "weak_error": 0.39535847492747617,
+ "delta": 0.1,
+ "policies": {
+  "judge/qpa-large-helps-nanojev-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.01893425403968925,
+    "violation_rate": 0.08,
+    "mean_kept": 0.004501242750621375,
+    "mean_cost": 10.454987572493787,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.2368780689029734,
+    "violation_rate": 0.14,
+    "mean_kept": 0.41951532725766366,
+    "mean_cost": 6.304846727423364,
+    "h6a": false,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.3722562239458588,
+    "violation_rate": 0.086,
+    "mean_kept": 0.9361648715824358,
+    "mean_cost": 1.1383512841756422,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "judge/qpa-small-fails-nanojev-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0006448758889865939,
+    "violation_rate": 0.003,
+    "mean_kept": 0.0001275890637945319,
+    "mean_cost": 10.498724109362055,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.08503948368275874,
+    "violation_rate": 0.088,
+    "mean_kept": 0.05758574979287489,
+    "mean_cost": 9.92414250207125,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.2692740035833832,
+    "violation_rate": 0.118,
+    "mean_kept": 0.5582253521126761,
+    "mean_cost": 4.91774647887324,
+    "h6a": false,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.36946847245975917,
+    "violation_rate": 0.086,
+    "mean_kept": 0.9433040596520298,
+    "mean_cost": 1.0669594034797019,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "judge/qpa-large-helps-ms-marco-minilm-l12-v2-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.04170083871807199,
+    "violation_rate": 0.109,
+    "mean_kept": 0.016536868268434132,
+    "mean_cost": 10.33463131731566,
+    "h6a": false,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.29572932503279353,
+    "violation_rate": 0.089,
+    "mean_kept": 0.7037009113504558,
+    "mean_cost": 3.4629908864954433,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "judge/qpa-large-helps-strands-decider-2b-hobson-v21-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.00552073673805099,
+    "violation_rate": 0.01,
+    "mean_kept": 0.013772990886495442,
+    "mean_cost": 10.362270091135045,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.21584475321233804,
+    "violation_rate": 0.093,
+    "mean_kept": 0.6060919635459818,
+    "mean_cost": 4.439080364540182,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.36488466632311006,
+    "violation_rate": 0.086,
+    "mean_kept": 0.9511408450704225,
+    "mean_cost": 0.9885915492957748,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "judge/qpa-large-helps-strands-decider-e4b-gemma4-v1-2610-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.024419804696365212,
+    "violation_rate": 0.048,
+    "mean_kept": 0.06950538525269263,
+    "mean_cost": 9.804946147473075,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.2542531151682207,
+    "violation_rate": 0.057,
+    "mean_kept": 0.7719469759734879,
+    "mean_cost": 2.78053024026512,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.36482308814197445,
+    "violation_rate": 0.086,
+    "mean_kept": 0.9510911350455675,
+    "mean_cost": 0.9890886495443247,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "small-entropy (post)": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.012093871435916205,
+    "violation_rate": 0.049,
+    "mean_kept": 0.0025990057995028994,
+    "mean_cost": 10.47400994200497,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.23271856703586224,
+    "violation_rate": 0.126,
+    "mean_kept": 0.3776238608119304,
+    "mean_cost": 6.723761391880696,
+    "h6a": false,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.3711407001745008,
+    "violation_rate": 0.086,
+    "mean_kept": 0.9422228666114334,
+    "mean_cost": 1.077771333885667,
+    "h6a": true,
+    "posthoc": true
+   }
+  ]
+ }
+}

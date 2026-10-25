@@ -1,0 +1,207 @@
+{
+ "n_test": 2417,
+ "n_boot": 5000,
+ "delta": 0.01,
+ "random_aiq": 0.2689284236657013,
+ "aiq": {
+  "nano-jev qpa (priced)": 0.2859896797110765,
+  "retrieval-trees": 0.27004388065548046,
+  "signal:first-margin": 0.27853466258430265,
+  "signal:hidden-probe": 0.2813241393610163,
+  "signal:mean-logprob": 0.28604745049804275,
+  "signal:msp": 0.28504175877972315,
+  "signal:nli": 0.28025316683000573,
+  "signal:p-true": 0.2721607400463058,
+  "signal:self-consistency": 0.2652046789283339,
+  "signal:semantic-entropy": 0.268044415742392
+ },
+ "tests": {
+  "H3a qpa >= signal:msp - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:msp",
+   "ratio": null,
+   "estimate": 0.0009479209313533743,
+   "ci90": [
+    -0.005733292783085223,
+    0.007697087111452445
+   ],
+   "ci95": [
+    -0.007140593727026574,
+    0.008763667415890465
+   ],
+   "p": 0.0044,
+   "p_holm": 0.0088,
+   "supported": true
+  },
+  "H3a qpa >= signal:mean-logprob - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:mean-logprob",
+   "ratio": null,
+   "estimate": -5.777078696622695e-05,
+   "ci90": [
+    -0.006767794472455538,
+    0.006677651086942522
+   ],
+   "ci95": [
+    -0.008036362298195985,
+    0.007645537109551017
+   ],
+   "p": 0.0078,
+   "p_holm": 0.0088,
+   "supported": true
+  },
+  "H3a qpa >= signal:first-margin - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:first-margin",
+   "ratio": null,
+   "estimate": 0.007455017126773877,
+   "ci90": [
+    0.0006698005932158164,
+    0.013840988822720569
+   ],
+   "ci95": [
+    -0.000684758954806583,
+    0.015124768131014935
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3a qpa >= signal:p-true - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:p-true",
+   "ratio": null,
+   "estimate": 0.013828939664770723,
+   "ci90": [
+    0.006612791726312661,
+    0.019880877450941647
+   ],
+   "ci95": [
+    0.0051784958064374454,
+    0.020980407595794698
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3a qpa >= signal:hidden-probe - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:hidden-probe",
+   "ratio": null,
+   "estimate": 0.004665540350060227,
+   "ci90": [
+    -0.0012705671448564936,
+    0.011200578485784086
+   ],
+   "ci95": [
+    -0.0026601587023260516,
+    0.012457915783720741
+   ],
+   "p": 0.0002,
+   "p_holm": 0.0006000000000000001,
+   "supported": true
+  },
+  "H3a qpa >= retrieval-trees - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "retrieval-trees",
+   "ratio": null,
+   "estimate": 0.015945799055596066,
+   "ci90": [
+    0.010150017985182913,
+    0.021081399651975693
+   ],
+   "ci95": [
+    0.009004096807046495,
+    0.022201279928523956
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3a qpa >= signal:nli - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:nli",
+   "ratio": null,
+   "estimate": 0.005736512881070799,
+   "ci90": [
+    -0.0007355314706991938,
+    0.01230239984530333
+   ],
+   "ci95": [
+    -0.002086906950238361,
+    0.013651823550873106
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3b qpa > signal:self-consistency": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:self-consistency",
+   "ratio": null,
+   "estimate": 0.020785000782742646,
+   "ci90": [
+    0.013422527265913567,
+    0.02740419153791388
+   ],
+   "ci95": [
+    0.012384337743511577,
+    0.028662954362069486
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3b qpa > signal:semantic-entropy": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:semantic-entropy",
+   "ratio": null,
+   "estimate": 0.01794526396868451,
+   "ci90": [
+    0.01128447037715917,
+    0.02508280271468751
+   ],
+   "ci95": [
+    0.010057430826573427,
+    0.026407905137001676
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  }
+ },
+ "all_aiq": {
+  "judge/q-large-helps-nanojev-A": 0.2788741857508027,
+  "judge/qp-large-helps-nanojev-A": 0.28949576254720355,
+  "judge/qpa-large-helps-nanojev-A": 0.2859896797110765,
+  "judge/qp-large-helps-hotpotqa-A": 0.28852846439563723,
+  "judge/qpa-large-helps-hotpotqa-A": 0.28737415648253506,
+  "router:question/large-helps": 0.2779001203803694,
+  "router:question+evidence/large-helps": 0.2834235129025193,
+  "router:evidence/large-helps": 0.2853847299132708,
+  "router:evidence+small/large-helps": 0.28650973041362454,
+  "router:question+evidence+small/large-helps": 0.2843548978143674,
+  "small-entropy (post)": 0.2880995961061491,
+  "signal:msp": 0.28504175877972315,
+  "signal:mean-logprob": 0.28604745049804275,
+  "signal:first-margin": 0.27853466258430265,
+  "signal:p-true": 0.2721607400463058,
+  "signal:self-consistency": 0.2652046789283339,
+  "signal:semantic-entropy": 0.268044415742392,
+  "signal:self-verification": 0.2774886831627709,
+  "signal:hidden-probe": 0.2813241393610163,
+  "retrieval-trees": 0.27004388065548046,
+  "signal:nli": 0.28025316683000573,
+  "nano-jev qpa (priced)": 0.2859896797110765
+ },
+ "opponents": {}
+}

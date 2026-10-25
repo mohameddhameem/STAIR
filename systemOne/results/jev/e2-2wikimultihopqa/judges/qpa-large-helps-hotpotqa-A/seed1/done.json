@@ -1,0 +1,40 @@
+{
+ "judge": "qpa-large-helps-hotpotqa-A",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "runs/slr-judge-models/judges/qpa-large-helps-nanojev-A/seed{seed}/model",
+ "frozen": true,
+ "train_pair": "A",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "init_name": "hotpotqa",
+ "seed": 1,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1
+ },
+ "n_train": 0,
+ "n_dev": 0,
+ "micro_batch": null,
+ "train_label_rate": 0.34690486082260075,
+ "history": [],
+ "train_seconds": 8.752569556236267e-06,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.002260217972099781,
+  "A/test": 0.0022527751661837103,
+  "X/calib": "reused",
+  "X/test": 0.0022686762725934386
+ },
+ "init_revision": "local",
+ "init_path": "runs/slr-judge-models/judges/qpa-large-helps-nanojev-A/seed1/model",
+ "device": "cuda"
+}

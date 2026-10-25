@@ -1,0 +1,17 @@
+{
+ "train": {
+  "squad2/relevance": 24000,
+  "mnli/grounded": 8000,
+  "squad2/sufficient": 18000
+ },
+ "calib": {
+  "squad2/relevance": 2000,
+  "squad2/sufficient": 500,
+  "mnli/grounded": 500
+ },
+ "test": {
+  "squad2/relevance": 2000,
+  "squad2/sufficient": 500,
+  "mnli/grounded": 500
+ }
+}

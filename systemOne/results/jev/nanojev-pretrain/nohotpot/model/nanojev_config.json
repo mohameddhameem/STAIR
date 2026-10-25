@@ -1,0 +1,22 @@
+{
+  "base": "microsoft/MiniLM-L12-H384-uncased",
+  "max_length": 512,
+  "schema_version": "0.1",
+  "decisions": {
+    "relevance": [
+      "irrelevant",
+      "partially relevant",
+      "directly answers"
+    ],
+    "sufficient": [
+      "yes",
+      "no"
+    ],
+    "grounded": [
+      "yes",
+      "no"
+    ]
+  },
+  "epochs_trained": 2,
+  "dev_nll": 0.40988448532422384
+}

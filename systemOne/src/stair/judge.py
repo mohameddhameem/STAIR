@@ -55,6 +55,8 @@ from stair.router import escalation_label, train_routers
 log = logging.getLogger(__name__)
 
 INPUTS = {"q": False, "qp": False, "qpa": True, "qa": True}  # input set -> needs the small expert's answer
+HEADS = ("typed", "plain")  # the option-scoring head (nano-jev's), or the untyped ablation (Judge)
+GRID_KEYS = ("init", "inputs", "head", "budget")  # a [[judges]] entry may list these; load_plan expands the product
 ROUTE = ("Which model should answer this question: {question}", ("small model", "large model"))
 GROUNDED = ("Is this claim supported by the context? Claim: {claim}", ("yes", "no"))  # nano-jev built-in
 CLAIM = 'The answer to "{question}" is {answer}.'
@@ -127,26 +129,36 @@ def route_items(df: pd.DataFrame, inputs: str) -> list[dict]:
 
 
 class Judge:
-    """A cross-encoder with one logit per (question + option, state) pair, softmaxed per item."""
+    """A cross-encoder with one logit per (question + option, state) pair, softmaxed per item.
 
-    def __init__(self, path: str, device: str | None = None, max_length: int = 512, score_batch: int | None = None):
+    `head="plain"` is the untyped ablation on the same backbone: one (question, state) pair per item and a fresh
+    classifier head with one logit per option, so no option text is read and nothing of a typed head is reused.
+    """
+
+    def __init__(self, path: str, device: str | None = None, max_length: int = 512, score_batch: int | None = None,
+                 head: str = "typed", n_options: int = 2):
         import torch
         from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-        self.torch = torch
+        if head not in HEADS:
+            raise ValueError(f"unknown head {head!r}; expected one of {HEADS}")
+        self.torch, self.head = torch, head
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         local = resolve_checkpoint(path)
         self.tokenizer = AutoTokenizer.from_pretrained(local)
         self.model = AutoModelForSequenceClassification.from_pretrained(
-            local, num_labels=1, ignore_mismatched_sizes=True).to(self.device)
+            local, num_labels=1 if head == "typed" else n_options, ignore_mismatched_sizes=True).to(self.device)
         calib = local / "calibration.json"
-        self.temperatures = json.loads(calib.read_text()) if calib.exists() else {}
+        self.temperatures = json.loads(calib.read_text()) if calib.exists() and head == "typed" else {}
         self.max_length = max_length
         self.score_batch = score_batch or (64 if self.device != "cpu" else 16)  # questions per inference batch
 
     def encode(self, items: list[dict]):
-        firsts = [f"question: {it['question']} option: {o}" for it in items for o in it["options"]]
-        seconds = [it["state"] for it in items for _ in it["options"]]
+        if self.head == "plain":
+            firsts, seconds = [it["question"] for it in items], [it["state"] for it in items]
+        else:
+            firsts = [f"question: {it['question']} option: {o}" for it in items for o in it["options"]]
+            seconds = [it["state"] for it in items for _ in it["options"]]
         enc = self.tokenizer(firsts, seconds, truncation="only_second", max_length=self.max_length,
                              padding=True, return_tensors="pt")
         return enc
@@ -156,8 +168,10 @@ class Judge:
         enc = self.encode(items).to(self.device)
         with self.torch.autocast(self.device if self.device != "cpu" else "cpu", dtype=self.torch.bfloat16,
                                  enabled=self.device != "cpu"):
-            flat = self.model(**enc).logits[:, 0].float()
-        return flat.view(len(items), len(items[0]["options"]))
+            out = self.model(**enc).logits.float()
+        if self.head == "plain":
+            return out
+        return out[:, 0].view(len(items), len(items[0]["options"]))
 
     def probabilities(self, items: list[dict], temperature: float = 1.0) -> tuple[np.ndarray, np.ndarray]:
         """[items, options] probabilities and the tokens each item processed (its cost)."""
@@ -173,11 +187,38 @@ class Judge:
         return np.concatenate(probs), np.asarray(tokens)
 
 
-def make_judge(path: str, device: str | None = None, max_length: int = 512, score_batch: int | None = None):
+def make_judge(path: str, device: str | None = None, max_length: int = 512, score_batch: int | None = None,
+               head: str = "typed"):
     """A Strands Decider (experiment 9) or a nano-jev-style cross-encoder, by the checkpoint's name."""
     if is_decider(path):
+        if head != "typed":
+            raise ValueError("a Strands Decider has only its typed (pointer) head")
         return DeciderJudge(path, device, max_length, score_batch)
-    return Judge(path, device, max_length, score_batch)
+    return Judge(path, device, max_length, score_batch, head)
+
+
+def budget_order(y: np.ndarray, seed: int) -> np.ndarray:
+    """A seed's stratified order of the questions: every prefix keeps the label rate, so budgets nest (the 50 labels
+    are inside the 100). Within each class the order is random; classes interleave by rank / class size."""
+    rng = np.random.default_rng(seed)
+    key = np.empty(len(y))
+    for c in np.unique(y):
+        idx = np.flatnonzero(y == c)
+        key[rng.permutation(idx)] = (np.arange(len(idx)) + rng.random(len(idx))) / len(idx)
+    return np.argsort(key, kind="stable")
+
+
+def budget_split(y: np.ndarray, budget: int, dev_fraction: float, seed: int, min_dev: int = 10) -> tuple[np.ndarray, np.ndarray]:
+    """(train, dev) indices for a label budget: the seed's first `budget` questions, `dev_fraction` of them (at least
+    `min_dev`) held out to pick the epoch. Every label the judge sees is inside the budget."""
+    from sklearn.model_selection import train_test_split
+
+    if budget > len(y):
+        raise ValueError(f"budget {budget} > {len(y)} training questions")
+    chosen = budget_order(y, seed)[:budget]
+    n_dev = max(min_dev, int(round(dev_fraction * budget)))
+    tr, dev = train_test_split(chosen, test_size=n_dev, stratify=y[chosen], random_state=seed)
+    return tr, dev
 
 
 def judge_params_b(path: str) -> float:
@@ -218,10 +259,11 @@ def accumulate(judge: Judge, items: list[dict], target, micro_batch: int) -> flo
 
 def fine_tune(judge: Judge, items: list[dict], labels: np.ndarray, dev_items: list[dict], dev_labels: np.ndarray,
               epochs: int, lr: float, weight_decay: float, warmup: float, batch_size: int, seed: int,
-              micro_batch: int | None = None) -> list[dict]:
+              micro_batch: int | None = None, min_steps: int = 0) -> list[dict]:
     """Grouped-softmax cross-entropy; keeps the epoch with the lowest dev NLL. Returns the history.
 
-    `micro_batch` (default: the whole batch on GPU, 2 questions on CPU) only bounds memory.
+    `micro_batch` (default: the whole batch on GPU, 2 questions on CPU) only bounds memory. `min_steps` adds epochs
+    until training takes at least that many optimizer steps (small label budgets: 40 questions are 3 steps an epoch).
     """
     import torch
     from transformers import get_linear_schedule_with_warmup
@@ -231,7 +273,9 @@ def fine_tune(judge: Judge, items: list[dict], labels: np.ndarray, dev_items: li
     model = judge.model
     trainable = [p for p in model.parameters() if p.requires_grad]  # a decider trains only its LoRA and head
     opt = torch.optim.AdamW(trainable, lr=lr, weight_decay=weight_decay)
-    steps = epochs * int(np.ceil(len(items) / batch_size))
+    per_epoch = int(np.ceil(len(items) / batch_size))
+    epochs = max(epochs, int(np.ceil(min_steps / per_epoch)))
+    steps = epochs * per_epoch
     sched = get_linear_schedule_with_warmup(opt, int(warmup * steps), steps)
     target = torch.tensor(np.asarray(labels), dtype=torch.long)
     micro_batch = micro_batch or (batch_size if judge.device != "cpu" else 2)
@@ -262,9 +306,21 @@ def fine_tune(judge: Judge, items: list[dict], labels: np.ndarray, dev_items: li
 # Steps
 
 
+def init_label(spec: dict) -> str:
+    """A judge's starting point as its name shows it: `init_name` (a local folder), "nanojev", or the Hub model name."""
+    return spec.get("init_name") or ("nanojev" if "nano-jev" in spec["init"]
+                                     else spec["init"].split("/")[-1].split("@")[0].lower())
+
+
 def judge_name(spec: dict) -> str:
-    init = "nanojev" if "nano-jev" in spec["init"] else spec["init"].split("/")[-1].split("@")[0].lower()
-    return f"{spec['inputs']}-{spec['label']}-{init}-{spec['train_pair']}"
+    """inputs-label-init-pair, then -plain for the untyped head and -b<budget> for a label budget. `init_name` (from
+    the plan's [init_names]) names a local checkpoint folder."""
+    name = f"{spec['inputs']}-{spec['label']}-{init_label(spec)}-{spec['train_pair']}"
+    if spec.get("head", "typed") != "typed":
+        name += f"-{spec['head']}"
+    if spec.get("budget"):
+        name += f"-b{spec['budget']}"
+    return name
 
 
 def fingerprint(items: list[dict]) -> str:
@@ -341,14 +397,22 @@ def run_train(splits: Splits, spec: dict, seed: int, plan: dict, out: Path, devi
     log.info(f"train {name} seed {seed}")
     df = splits.get(spec["train_pair"], "router_train")
     y = escalation_label(metric_view(df, plan.get("metric", "f1")), plan["tau"], spec["label"])
-    tr, dev = train_test_split(np.arange(len(df)), test_size=hp["dev_fraction"], stratify=y, random_state=seed)
+    if spec.get("budget"):  # a label budget: dev included, nested across budgets for one seed (budget_split)
+        tr, dev = budget_split(y, spec["budget"], hp["dev_fraction"], seed)
+    else:
+        tr, dev = train_test_split(np.arange(len(df)), test_size=hp["dev_fraction"], stratify=y, random_state=seed)
     if hp.get("max_questions") and len(tr) > hp["max_questions"]:  # e.g. the CPU plan: a stratified subsample
         tr, _ = train_test_split(tr, train_size=hp["max_questions"], stratify=y[tr], random_state=seed)
     items = route_items(df, spec["inputs"])
-    judge = make_judge(spec["init"], device, hp["max_length"], score_batch)
+    init = spec["init"].format(seed=seed)  # "{seed}": a frozen judge's per-seed folder
+    judge = make_judge(init, device, hp["max_length"], score_batch, spec.get("head", "typed"))
     start = time.perf_counter()
-    history = fine_tune(judge, [items[i] for i in tr], y[tr], [items[i] for i in dev], y[dev], hp["epochs"], hp["lr"],
-                        hp["weight_decay"], hp["warmup"], hp["batch_size"], seed, micro_batch or hp.get("micro_batch"))
+    if spec.get("frozen"):  # an already fine-tuned judge (e.g. trained on another dataset), only scored here
+        history, tr, dev = [], np.array([], dtype=int), np.array([], dtype=int)
+    else:
+        history = fine_tune(judge, [items[i] for i in tr], y[tr], [items[i] for i in dev], y[dev], hp["epochs"], hp["lr"],
+                            hp["weight_decay"], hp["warmup"], hp["batch_size"], seed, micro_batch or hp.get("micro_batch"),
+                            hp.get("min_steps", 0))
     train_seconds = time.perf_counter() - start
     target.mkdir(parents=True, exist_ok=True)
     scoring, scored = {}, {}  # fingerprint -> scores, reused by pairs whose inputs are identical
@@ -372,7 +436,7 @@ def run_train(splits: Splits, spec: dict, seed: int, plan: dict, out: Path, devi
         "judge": name, **spec, "seed": seed, "tau": plan["tau"], "train": hp, "n_train": len(tr), "n_dev": len(dev),
         "micro_batch": micro_batch or hp.get("micro_batch"),
         "train_label_rate": float(y.mean()), "history": history, "train_seconds": train_seconds,
-        "scoring_seconds_per_question": scoring, "init_revision": provenance.hub_revision(spec["init"]),
+        "scoring_seconds_per_question": scoring, "init_revision": provenance.hub_revision(init), "init_path": init,
         "device": judge.device}, indent=1))
 
 
@@ -505,14 +569,31 @@ def report_curve(curves: pd.DataFrame, policy: str) -> list[dict]:
 # CLI
 
 
+def expand(spec: dict) -> list[dict]:
+    """One [[judges]] entry -> one spec per combination of its list-valued GRID_KEYS (a label-budget grid)."""
+    grid = [[(k, v) for v in spec[k]] for k in GRID_KEYS if isinstance(spec.get(k), list)]
+    out = [dict(spec)]
+    for options in grid:
+        out = [{**s, k: v} for s in out for k, v in options]
+    return out
+
+
 def load_plan(path: Path) -> dict:
     plan = tomllib.loads(path.read_text())
     plan["pairs"] = {k: Path(v) for k, v in plan["pairs"].items()}
+    plan["judges"] = [s for spec in plan["judges"] for s in expand(spec)]
+    names = plan.get("init_names", {})  # local checkpoint folder -> short name (judge_name)
     for spec in plan["judges"]:
+        if spec["init"] in names:
+            spec["init_name"] = names[spec["init"]]
         if spec["inputs"] not in INPUTS:
             raise ValueError(f"unknown inputs {spec['inputs']!r}; expected one of {list(INPUTS)}")
+        if spec.get("head", "typed") not in HEADS:
+            raise ValueError(f"unknown head {spec['head']!r}; expected one of {HEADS}")
         if spec["train_pair"] not in plan["pairs"]:
             raise ValueError(f"judge {spec} trains on unknown pair {spec['train_pair']!r}")
+    if len({judge_name(s) for s in plan["judges"]}) != len(plan["judges"]):
+        raise ValueError("two judges of the plan share a name: give local inits an [init_names] entry")
     return plan
 
 
@@ -524,6 +605,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--out", type=Path, default=Path("runs/system-one"))
     parser.add_argument("--device", help="cuda or cpu (default: cuda if available)")
     parser.add_argument("--only", action="append", default=[], help="train: judge names to run (default all); repeatable")
+    parser.add_argument("--match", action="append", default=[],
+                        help="train: run only judges whose name contains one of these substrings; repeatable")
     parser.add_argument("--save-model", action="store_true", help="train: also save the fine-tuned weights")
     parser.add_argument("--micro-batch", type=int,
                         help="train: questions per forward/backward pass (memory only; default: whole batch on GPU, 2 on CPU)")
@@ -555,7 +638,9 @@ def main(argv: list[str] | None = None) -> None:
         for spec in plan["judges"]:
             if args.only and judge_name(spec) not in args.only:
                 continue
-            for seed in plan["seeds"]:
+            if args.match and not any(m in judge_name(spec) for m in args.match):
+                continue
+            for seed in spec.get("seeds", plan["seeds"]):
                 run_train(splits, spec, seed, plan, args.out, args.device, args.save_model, args.micro_batch,
                           args.score_batch)
     if args.step in ("eval", "all"):

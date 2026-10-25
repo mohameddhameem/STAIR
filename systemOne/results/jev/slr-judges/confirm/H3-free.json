@@ -1,0 +1,123 @@
+{
+ "n_test": 1303,
+ "n_boot": 5000,
+ "delta": 0.01,
+ "random_aiq": 0.63584036838066,
+ "aiq": {
+  "nano-jev qpa (priced)": 0.6704207513809323,
+  "signal:p-true (free)": 0.6431515676251862,
+  "signal:self-consistency (free)": 0.6551982972612412,
+  "signal:self-verification (free)": 0.6612782555776449,
+  "signal:semantic-entropy (free)": 0.6553663541071651
+ },
+ "tests": {
+  "free: qpa > signal:p-true (free)": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:p-true (free)",
+   "ratio": null,
+   "estimate": 0.02726918375574605,
+   "ci90": [
+    0.016971454152385025,
+    0.03564351407070767
+   ],
+   "ci95": [
+    0.015339639802082066,
+    0.037365510401707006
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "free: qpa > signal:self-consistency (free)": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:self-consistency (free)",
+   "ratio": null,
+   "estimate": 0.015222454119691031,
+   "ci90": [
+    0.004563342272541654,
+    0.024745567350347053
+   ],
+   "ci95": [
+    0.002858889850492713,
+    0.02648957343976694
+   ],
+   "p": 0.0078,
+   "p_holm": 0.023399999999999997,
+   "supported": true
+  },
+  "free: qpa > signal:semantic-entropy (free)": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:semantic-entropy (free)",
+   "ratio": null,
+   "estimate": 0.015054397273767117,
+   "ci90": [
+    0.004374816072841437,
+    0.024707549770096704
+   ],
+   "ci95": [
+    0.0026238971056858217,
+    0.026445481548492182
+   ],
+   "p": 0.009,
+   "p_holm": 0.023399999999999997,
+   "supported": true
+  },
+  "free: qpa > signal:self-verification (free)": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:self-verification (free)",
+   "ratio": null,
+   "estimate": 0.00914249580328741,
+   "ci90": [
+    -0.0008330271076760043,
+    0.018689121158484145
+   ],
+   "ci95": [
+    -0.002615549012021856,
+    0.020487178366308485
+   ],
+   "p": 0.0642,
+   "p_holm": 0.0642,
+   "supported": false
+  }
+ },
+ "all_aiq": {
+  "judge/q-large-helps-nanojev-A": 0.6425060447472627,
+  "judge/qp-large-helps-nanojev-A": 0.6700210873088711,
+  "judge/qpa-large-helps-nanojev-A": 0.6704207513809323,
+  "judge/qa-large-helps-nanojev-A": 0.6427412214914467,
+  "judge/qp-small-fails-nanojev-A": 0.6717401734948552,
+  "judge/qpa-small-fails-nanojev-A": 0.6711663964823901,
+  "judge/qp-large-helps-ms-marco-minilm-l12-v2-A": 0.6519187098545141,
+  "judge/qpa-large-helps-ms-marco-minilm-l12-v2-A": 0.6510580683728094,
+  "judge/qp-large-helps-strands-decider-2b-hobson-v21-A": 0.6763334023326321,
+  "judge/qpa-large-helps-strands-decider-2b-hobson-v21-A": 0.6910099586976776,
+  "judge/qp-large-helps-strands-decider-e4b-gemma4-v1-2610-A": 0.6781934280208174,
+  "judge/qpa-large-helps-strands-decider-e4b-gemma4-v1-2610-A": 0.7059044079955136,
+  "router:question/large-helps": 0.6397432388355495,
+  "router:question+evidence/large-helps": 0.6669892850221858,
+  "router:evidence/large-helps": 0.6662735111183239,
+  "router:evidence+small/large-helps": 0.6762374667987744,
+  "router:question+evidence+small/large-helps": 0.6740784821171314,
+  "small-entropy (post)": 0.6611371131956878,
+  "signal:msp": 0.6576118920869944,
+  "signal:mean-logprob": 0.658523295238841,
+  "signal:first-margin": 0.6536911442716276,
+  "signal:p-true": 0.6431515676251862,
+  "signal:self-consistency": 0.6479603500358497,
+  "signal:semantic-entropy": 0.6481279519148039,
+  "signal:self-verification": 0.6569335286920645,
+  "signal:hidden-probe": 0.661402197091154,
+  "retrieval-trees": 0.6429908491436943,
+  "signal:nli": 0.6572543911576533,
+  "nano-jev qpa (priced)": 0.6704207513809323,
+  "signal:p-true (free)": 0.6431515676251862,
+  "signal:self-consistency (free)": 0.6551982972612412,
+  "signal:semantic-entropy (free)": 0.6553663541071651,
+  "signal:self-verification (free)": 0.6612782555776449
+ },
+ "opponents": {}
+}

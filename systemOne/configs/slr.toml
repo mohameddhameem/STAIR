@@ -30,6 +30,8 @@ dev = "data/hotpotqa/distractor_validation.parquet"     # HotpotQA dev in file o
 "jonathan/runs/config_b/sft_router5_qa/val_scores.jsonl" = "3aa57d47b9a0f5eba2366b0d2292156c31ef035ce40bc54cc579cdded78fad36"
 "jonathan/runs/config_b/reward_train_ret/val_scores.jsonl" = "30e6db6d1325cf11ae0e1e2547a632d0b6f4bfe90d0d447da93495e6bb0168fc"
 "jonathan/runs/config_b/reward_train_qa/val_scores.jsonl" = "63d169ea64c5e724baff53503c0d24eb385c18bb1065a732ffc20e14025e565a"
+# his router prompts, to price his routers' calls (exp10_slr.his_router_price reads its literals; never imported)
+"jonathan/lab_package/router_prompts.py" = "b9eebc8623ff6960f6e87c02b300c11dc523a8e05a7dab6517e84e987442af19"
 
 # His certified sealed-test rows (jonathan/README.md). `verify` re-selects each router's thresholds on slr-val with his
 # rule (configb_pair_sweep.py: `peak` or `parity`) from his val scores (`val` = [retrieval, answering] run folders),

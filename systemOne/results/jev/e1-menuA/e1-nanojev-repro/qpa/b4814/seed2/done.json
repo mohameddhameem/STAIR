@@ -1,0 +1,43 @@
+{
+ "judge": "e1-nanojev-repro",
+ "inputs": "qpa",
+ "seed": 2,
+ "init": "runs/nanojev-pretrain/repro/model",
+ "train": {
+  "epochs": 2,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "budget": 4814,
+ "train_scores": [
+  "ret",
+  "qa_W",
+  "qa_S"
+ ],
+ "n_train_questions": 4333,
+ "n_dev_questions": 481,
+ "n_train_items": 12999,
+ "n_dev_items": 1443,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.48432214074249197,
+   "dev_nll": 0.42785412073135376,
+   "seconds": 43.24491226300597
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.39756454770232186,
+   "dev_nll": 0.458990216255188,
+   "seconds": 43.423059079796076
+  }
+ ],
+ "train_seconds": 86.75248671323061,
+ "init_revision": "local",
+ "device": "cuda"
+}

@@ -14,7 +14,9 @@ See `stair_common` 0.3.0 in [common/](../common/README.md) and
 [the write-up](docs/experiments/2026-10-21-slr-standard.md). The earlier settings are kept below as history.
 
 - Results, experiment by experiment: [RESULTS.md](RESULTS.md) (full write-ups in [docs/experiments/](docs/experiments/))
-- The fine-tuned judges and the Hugging Face plan: [MODELS.md](MODELS.md)
+- The judges published on Hugging Face (2026-10-25): [MODELS.md](MODELS.md)
+- What nano-jev's typed decisions add, tested on HotpotQA, MuSiQue and 2WikiMultiHopQA: [the Jev
+  programme](#the-jev-novelty-programme-2026-10-23-to-25)
 - Other team branches:
   - [`jonathan`](https://github.com/mohameddhameem/STAIR/tree/jonathan): Stage-Level Routing; the golden set;
   - [`nonLLM`](https://github.com/mohameddhameem/STAIR/tree/nonLLM): non-LLM stage routers, sampling budgets;
@@ -79,6 +81,27 @@ The labels are his.
   - On pair A, a 4B judge's call costs nearly half the 7B's answer. One 2B judge is the best router once priced.
   - Averaging three seeds never pays there.
 
+## The Jev novelty programme (2026-10-23 to 25)
+
+**What it tested:** what nano-jev's typed-decision pretraining adds to a router. It was pre-registered before any new
+answers existed.
+- **Datasets:** HotpotQA (the golden set) is exploratory. MuSiQue and 2WikiMultiHopQA are confirmatory.
+- **Rule:** a claim is *confirmed* when it holds on both confirmatory datasets.
+- **Results:** [the write-up](docs/experiments/2026-10-25-jev-novelty.md), [the
+  pre-registration](docs/experiments/2026-10-24-jev-preregistration.md), [the files](results/jev/).
+
+| Claim (pair A, δ = 0.010 AIQ) | Status | HotpotQA / MuSiQue / 2Wiki |
+|---|---|---|
+| Starting from nano-jev beats the same 33M MiniLM without decision training (qp) | **Confirmed** | +0.021 / +0.010 / +0.019 |
+| The passages, not the question, decide escalation | **Confirmed** | +0.011 / +0.025 (MuSiQue / 2Wiki) |
+| Non-inferior to entropy, the LR routers and every cheap weak-model signal, including a hidden-state probe | **Confirmed** | non-inferior; better only for qp on 2Wiki |
+| One untrained typed question recovers most of a trained judge's gain | **Confirmed** | 77% / 86% / 83% |
+| The advantage is largest with few labels | Fails | the gap grows with labels |
+| The typed head beats a plain head | Fails | |
+| A question-only judge routes at chance | Fails on both | it beats random |
+| On menu A, one 4-option question beats two stage decisions | Exploratory | +0.004; the first nano-jev judge not significantly below Jonathan's 1.5B router |
+| Speed | Measured | CPU 123 ms against 4.8 s for the 1.5B router; GPU only 1.8× faster |
+
 ## Earlier settings (history)
 
 | Setting | Policy | AIQ | Note |
@@ -104,7 +127,7 @@ Run everything from this folder (`systemOne/`), with [uv](https://docs.astral.sh
 
 ```bash
 uv sync                                   # CPU; GPU runs: uv sync --extra llm --extra decider
-uv run pytest tests                       # 112 tests
+uv run pytest tests                       # 117 tests
 CONFIG=configs/smoke.toml RUN=runs/smoke bash scripts/run_cluster.sh prepare   # data, splits (downloads HotpotQA)
 CONFIG=configs/smoke.toml RUN=runs/smoke bash scripts/run_cluster.sh pilot     # tiny end-to-end CPU check
 ```
@@ -118,12 +141,12 @@ are listed at the top of [scripts/run_cluster.sh](scripts/run_cluster.sh) (for e
 
 | Path | What |
 |---|---|
-| `src/stair/` | The package: `run_experts` (answer with small / large models), `router` + `evaluate_routing` (baselines, AIQ, bootstrap; AgentTTS units or Table 5 prices), `judge` (nano-jev judge: zero-shot, fine-tune, eval), `decider` (Strands Decider wrapper), `exp8_*`, `pools`, `rescore` (LLM grader), `slr` (reads and verifies the golden set at a pinned commit), `exp10_slr` (the judge on menu A), `make_splits` / `subset_cache` / `export_common` (the team's splits and results layout) |
-| `configs/` | One TOML per run: `gpu*.toml` (experts), `system-one*.toml` (experiment 7 / 9 judges), `exp8*.toml` (experiment 8); `*-common.toml` (the 2026-10-18 common standard); `slr.toml`, `*-slr.toml`, `exp10-slr.toml` (the golden set) |
+| `src/stair/` | The package: `run_experts` (answer with small / large models), `router` + `evaluate_routing` (baselines, AIQ, bootstrap; AgentTTS units or Table 5 prices), `judge` (nano-jev judge: zero-shot, fine-tune, eval), `decider` (Strands Decider wrapper), `exp8_*`, `pools`, `rescore` (LLM grader), `slr` (reads and verifies the golden set at a pinned commit), `exp10_slr` (the judge on menu A), `make_splits` / `subset_cache` / `export_common` (the team's splits and results layout); for the Jev programme, `prepare_multihop` (MuSiQue and 2Wiki in the HotpotQA layout), `nanojev_pretrain`, `label_curve`, `signals` (weak-model confidence baselines), `zero_label`, `risk_control`, `latency` and `confirm` (the pre-registered tests) |
+| `configs/` | One TOML per run: `gpu*.toml` (experts), `system-one*.toml` (experiment 7 / 9 judges), `exp8*.toml` (experiment 8); `*-common.toml` (the 2026-10-18 common standard); `slr.toml`, `*-slr.toml`, `exp10-slr.toml` (the golden set); `e1-*`, `e2-*`, `e5-transfer`, `e7-evidence`, `gpu-2wiki`, `gpu-musique`, `gpu-pairD` (the Jev programme) |
 | `scripts/` | `run_cluster.sh` (every step), `omega.pbs` / `omega-cpu.pbs` (PBS wrappers) |
 | `results/` | Each run's `report.json` / `report-clean.json`, curves, configs and per-seed `done.json` (training history). Per-question caches, job logs and provenance records are not included |
 | `docs/` | Method notes and one write-up per experiment |
 | `tests/` | Unit tests (CPU) |
 
-Some code comments and write-ups mention cluster job sheets (`docs/gpu-jobs*.md`) that are kept in the development
-repo; the commands they describe are the `run_cluster.sh` steps above.
+Some code comments and write-ups mention cluster job sheets (`docs/gpu-jobs*.md`), job logs and job-id lists
+(`*-jobs.txt`) that are kept in the development repo; the commands they describe are the `run_cluster.sh` steps above.

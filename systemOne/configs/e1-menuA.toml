@@ -1,0 +1,158 @@
+# Jev novelty E1 on menu A (exploratory, pre-registration H1) and E6 (descriptive): experiment 10's two-stage judges on
+# the HotpotQA golden set, from five 33M starting points at nested label budgets (exp10_slr.run_train: a budget counts
+# slr-train questions, dev hold-out included), qpa, 3 seeds; two nano-jev sets trained on one stage's decisions
+# only, scored on both (stage transfer); and one asking a single 4-option question, which path (E6, joint). His
+# routers are the baselines, priced like ours (benchmark 1); `contrasts` set each E6 judge against the two-stage one.
+#   uv run exp10-slr train --plan configs/e1-menuA.toml --judge e1-nanojev,e1-plain,...   # GPU, resumes
+#   uv run exp10-slr eval --plan configs/e1-menuA.toml                                     # CPU
+slr_plan = "configs/slr.toml"
+out = "runs/e1-menuA"
+bootstrap = 1000
+contrasts = [["e6-joint qpa", "e1-nanojev qpa b4814"], ["e6-joint qp", "e1-nanojev qpa b4814"],
+             ["e6-ret-only qpa", "e1-nanojev qpa b4814"], ["e6-answer-only qpa", "e1-nanojev qpa b4814"]]
+
+[[his_routers]]
+name = "SLR SFT (label)"
+val = ["sft_router5_ret", "sft_router5_qa"]
+test = ["ret_label", "qa_label"]
+
+[[his_routers]]
+name = "SLR SFT (label) + reward"
+val = ["sft_router5_ret", "reward_train_qa"]
+test = ["ret_label", "qa_reward"]
+
+[[judges]]
+name = "e1-nanojev"
+judge_dir = "e1-nanojev"
+init = "sdmlai/nano-jev@v1.0"
+inputs = ["qpa"]
+budgets = [100, 500, 1000, 4814]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]
+name = "e1-plain"
+judge_dir = "e1-plain"
+init = "microsoft/MiniLM-L12-H384-uncased"
+inputs = ["qpa"]
+budgets = [100, 500, 1000, 4814]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]
+name = "e1-msmarco"
+judge_dir = "e1-msmarco"
+init = "cross-encoder/ms-marco-MiniLM-L12-v2"
+inputs = ["qpa"]
+budgets = [100, 500, 1000, 4814]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]
+name = "e1-nanojev-repro"
+judge_dir = "e1-nanojev-repro"
+init = "runs/nanojev-pretrain/repro/model"
+inputs = ["qpa"]
+budgets = [100, 500, 1000, 4814]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]
+name = "e1-nanojev-nohotpot"
+judge_dir = "e1-nanojev-nohotpot"
+init = "runs/nanojev-pretrain/nohotpot/model"
+inputs = ["qpa"]
+budgets = [100, 500, 1000, 4814]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]  # E6: trained on the retrieval decisions only, scored on both stages
+name = "e6-ret-only"
+judge_dir = "e6-ret-only"
+init = "sdmlai/nano-jev@v1.0"
+inputs = ["qpa"]
+train_scores = ["ret"]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]  # E6: trained on the answer decisions only, scored on both stages
+name = "e6-answer-only"
+judge_dir = "e6-answer-only"
+init = "sdmlai/nano-jev@v1.0"
+inputs = ["qpa"]
+train_scores = ["qa_W", "qa_S"]
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]  # E6: one 4-option question (the cheapest correct path), asked once before anything escalates
+name = "e6-joint"
+judge_dir = "e6-joint"
+init = "sdmlai/nano-jev@v1.0"
+inputs = ["qp", "qpa"]
+joint = true
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150

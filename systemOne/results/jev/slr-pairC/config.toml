@@ -1,0 +1,25 @@
+# Experiment 5: gpu.toml with Qwen2.5-3B-Instruct as the small expert (still top-2 paragraphs). Only
+# the small stage differs from runs/gpu, so run it with REUSE=runs/gpu (docs/gpu-jobs.md).
+[scorer]
+# nano-jev v1.0 from the Hub (33M MiniLM): relevance per paragraph, sufficiency over the top 2.
+kind = "cross-encoder"
+path = "sdmlai/nano-jev@v1.0"
+sufficiency_top_k = 2
+params = 0.033  # billions; reported as scorer_cost, not added to the curves
+
+[[experts]]
+name = "small"
+kind = "hf"
+model = "Qwen/Qwen2.5-3B-Instruct"
+params = 3.09
+top_k = 2
+dtype = "bfloat16"
+batch_size = 16  # runtime-only: lower it on an out-of-memory error and rerun
+
+[[experts]]
+name = "large"
+kind = "hf"
+model = "Qwen/Qwen2.5-7B-Instruct"
+params = 7.62
+dtype = "bfloat16"
+batch_size = 8

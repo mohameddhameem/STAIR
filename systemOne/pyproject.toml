@@ -36,6 +36,14 @@ subset-cache = "stair.subset_cache:main"
 export-common = "stair.export_common:main"
 slr = "stair.slr:main"
 exp10-slr = "stair.exp10_slr:main"
+nanojev-pretrain = "stair.nanojev_pretrain:main"
+prepare-multihop = "stair.prepare_multihop:main"
+label-curve = "stair.label_curve:main"
+signals = "stair.signals:main"
+confirm = "stair.confirm:main"
+zero-label = "stair.zero_label:main"
+risk-control = "stair.risk_control:main"
+latency = "stair.latency:main"
 
 [project.optional-dependencies]
 llm = [

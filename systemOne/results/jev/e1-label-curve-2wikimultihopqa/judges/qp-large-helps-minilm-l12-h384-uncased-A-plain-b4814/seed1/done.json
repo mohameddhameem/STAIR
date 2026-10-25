@@ -1,0 +1,53 @@
+{
+ "judge": "qp-large-helps-minilm-l12-h384-uncased-A-plain-b4814",
+ "inputs": "qp",
+ "label": "large-helps",
+ "init": "microsoft/MiniLM-L12-H384-uncased",
+ "head": "plain",
+ "budget": 4814,
+ "train_pair": "A",
+ "seed": 1,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 4333,
+ "n_dev": 481,
+ "micro_batch": null,
+ "train_label_rate": 0.34690486082260075,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.6348728584847327,
+   "dev_nll": 0.600752055644989,
+   "seconds": 9.16904573701322
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.553977754723102,
+   "dev_nll": 0.5658809542655945,
+   "seconds": 9.224138583987951
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.47067483924191816,
+   "dev_nll": 0.5360698103904724,
+   "seconds": 9.186622869223356
+  }
+ ],
+ "train_seconds": 27.741339787840843,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.00106767550483346,
+  "A/test": 0.0010564541667699814
+ },
+ "init_revision": "44acabbec0ef496f6dbc93adadea57f376b7c0ec",
+ "init_path": "microsoft/MiniLM-L12-H384-uncased",
+ "device": "cuda"
+}

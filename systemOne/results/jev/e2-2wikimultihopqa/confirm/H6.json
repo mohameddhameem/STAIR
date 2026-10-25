@@ -1,0 +1,148 @@
+{
+ "n": 1000,
+ "weak_error": 0.642,
+ "delta": 0.1,
+ "policies": {
+  "judge/qpa-large-helps-nanojev-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.0005892857142857143,
+    "violation_rate": 0.001,
+    "mean_kept": 0.000112,
+    "mean_cost": 10.498880000000002,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "judge/qpa-large-helps-hotpotqa-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.01910856294361477,
+    "violation_rate": 0.07,
+    "mean_kept": 0.0028959999999999997,
+    "mean_cost": 10.47104,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.10356543288786813,
+    "violation_rate": 0.028,
+    "mean_kept": 0.022112000000000003,
+    "mean_cost": 10.27888,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.21828717862049754,
+    "violation_rate": 0.079,
+    "mean_kept": 0.059126000000000005,
+    "mean_cost": 9.908740000000002,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "small-entropy (post)": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   }
+  ]
+ }
+}

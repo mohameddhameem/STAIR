@@ -1,0 +1,207 @@
+{
+ "n_test": 500,
+ "n_boot": 5000,
+ "delta": 0.01,
+ "random_aiq": 0.443,
+ "aiq": {
+  "nano-jev qpa (priced)": 0.4946703123193556,
+  "retrieval-trees": 0.45036318407960196,
+  "signal:first-margin": 0.4495308623548922,
+  "signal:hidden-probe": 0.48648098673300166,
+  "signal:mean-logprob": 0.45492998756218905,
+  "signal:msp": 0.45487203980099505,
+  "signal:nli": 0.4730121086235489,
+  "signal:p-true": 0.4640576285240465,
+  "signal:self-consistency": 0.43457699075057404,
+  "signal:semantic-entropy": 0.4360975549823
+ },
+ "tests": {
+  "H3a qpa >= signal:msp - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:msp",
+   "ratio": null,
+   "estimate": 0.039798272518360545,
+   "ci90": [
+    0.02471641100805485,
+    0.05168842263089325
+   ],
+   "ci95": [
+    0.021956318699360364,
+    0.05402913160243147
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3a qpa >= signal:mean-logprob - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:mean-logprob",
+   "ratio": null,
+   "estimate": 0.039740324757166545,
+   "ci90": [
+    0.02467141427869816,
+    0.05056342622285395
+   ],
+   "ci95": [
+    0.02208066269604351,
+    0.05306131103233837
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3a qpa >= signal:first-margin - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:first-margin",
+   "ratio": null,
+   "estimate": 0.045139449964463396,
+   "ci90": [
+    0.027911872165363748,
+    0.056822475004199846
+   ],
+   "ci95": [
+    0.024893535988509845,
+    0.05986805185441839
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3a qpa >= signal:p-true - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:p-true",
+   "ratio": null,
+   "estimate": 0.030612683795309126,
+   "ci90": [
+    0.012185089309405317,
+    0.04477593916410018
+   ],
+   "ci95": [
+    0.008655817646884577,
+    0.047646268488370475
+   ],
+   "p": 0.0002,
+   "p_holm": 0.0004,
+   "supported": true
+  },
+  "H3a qpa >= signal:hidden-probe - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:hidden-probe",
+   "ratio": null,
+   "estimate": 0.008189325586353935,
+   "ci90": [
+    -0.00308881433428097,
+    0.018115877375621765
+   ],
+   "ci95": [
+    -0.005163831939113897,
+    0.020428716108742053
+   ],
+   "p": 0.0032,
+   "p_holm": 0.0032,
+   "supported": true
+  },
+  "H3a qpa >= retrieval-trees - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "retrieval-trees",
+   "ratio": null,
+   "estimate": 0.044307128239753635,
+   "ci90": [
+    0.02802890678350679,
+    0.05701225918265808
+   ],
+   "ci95": [
+    0.02495420324626863,
+    0.059849533407960266
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3a qpa >= signal:nli - delta": {
+   "kind": "noninferiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:nli",
+   "ratio": null,
+   "estimate": 0.021658203695806677,
+   "ci90": [
+    0.006488600472241968,
+    0.03467976496564792
+   ],
+   "ci95": [
+    0.0036664823187633135,
+    0.03724781685737978
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3b qpa > signal:self-consistency": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:self-consistency",
+   "ratio": null,
+   "estimate": 0.060093321568781555,
+   "ci90": [
+    0.04379362071157162,
+    0.07657890762057934
+   ],
+   "ci95": [
+    0.04029406080532904,
+    0.07966676683842397
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H3b qpa > signal:semantic-entropy": {
+   "kind": "superiority",
+   "a": "nano-jev qpa (priced)",
+   "b": "signal:semantic-entropy",
+   "ratio": null,
+   "estimate": 0.05857275733705558,
+   "ci90": [
+    0.04328305550324768,
+    0.07556608809364482
+   ],
+   "ci95": [
+    0.03981029501952293,
+    0.07857999004296315
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  }
+ },
+ "all_aiq": {
+  "judge/q-large-helps-nanojev-A": 0.47272636815920394,
+  "judge/qp-large-helps-nanojev-A": 0.49811044776119406,
+  "judge/qpa-large-helps-nanojev-A": 0.4946703123193556,
+  "judge/qp-large-helps-hotpotqa-A": 0.48765339966832505,
+  "judge/qpa-large-helps-hotpotqa-A": 0.4780047317897691,
+  "router:question/large-helps": 0.47160696517412937,
+  "router:question+evidence/large-helps": 0.48779104477611934,
+  "router:evidence/large-helps": 0.47205472636815926,
+  "router:evidence+small/large-helps": 0.47112663184079606,
+  "router:question+evidence+small/large-helps": 0.48386217247097846,
+  "small-entropy (post)": 0.46281462479270324,
+  "signal:msp": 0.45487203980099505,
+  "signal:mean-logprob": 0.45492998756218905,
+  "signal:first-margin": 0.4495308623548922,
+  "signal:p-true": 0.4640576285240465,
+  "signal:self-consistency": 0.43457699075057404,
+  "signal:semantic-entropy": 0.4360975549823,
+  "signal:self-verification": 0.46225638340464353,
+  "signal:hidden-probe": 0.48648098673300166,
+  "retrieval-trees": 0.45036318407960196,
+  "signal:nli": 0.4730121086235489,
+  "nano-jev qpa (priced)": 0.4946703123193556
+ },
+ "opponents": {}
+}

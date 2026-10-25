@@ -1,0 +1,54 @@
+{
+ "judge": "qpa-large-helps-nanojev-repro-A-plain-b4814",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "runs/nanojev-pretrain/repro/model",
+ "head": "plain",
+ "budget": 4814,
+ "train_pair": "A",
+ "init_name": "nanojev-repro",
+ "seed": 0,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 4333,
+ "n_dev": 481,
+ "micro_batch": null,
+ "train_label_rate": 0.24034067303697548,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.5676796171278091,
+   "dev_nll": 0.5524298548698425,
+   "seconds": 8.82586975209415
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.5511046844874801,
+   "dev_nll": 0.5472162961959839,
+   "seconds": 8.796347049996257
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.5338242331114202,
+   "dev_nll": 0.5498553514480591,
+   "seconds": 8.86675775796175
+  }
+ ],
+ "train_seconds": 26.589096939191222,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0010694361552596092,
+  "A/test": 0.00102851420246376
+ },
+ "init_revision": "local",
+ "init_path": "runs/nanojev-pretrain/repro/model",
+ "device": "cuda"
+}

@@ -1,0 +1,107 @@
+{
+ "judge": "qpa-large-helps-ms-marco-minilm-l12-v2-A-plain-b250",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "cross-encoder/ms-marco-MiniLM-L12-v2",
+ "head": "plain",
+ "budget": 250,
+ "train_pair": "A",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "seed": 6,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 225,
+ "n_dev": 25,
+ "micro_batch": null,
+ "train_label_rate": 0.16971333610303282,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.7076931079228719,
+   "dev_nll": 0.579338014125824,
+   "seconds": 0.45497719570994377
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.5104375839233398,
+   "dev_nll": 0.44514790177345276,
+   "seconds": 0.43492850102484226
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.442608055472374,
+   "dev_nll": 0.4329949915409088,
+   "seconds": 0.4528827890753746
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.42598304748535154,
+   "dev_nll": 0.4233965277671814,
+   "seconds": 0.4337603189051151
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.3673672383030256,
+   "dev_nll": 0.44788914918899536,
+   "seconds": 0.46070247888565063
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.3534757455190023,
+   "dev_nll": 0.41647613048553467,
+   "seconds": 0.43515865691006184
+  },
+  {
+   "epoch": 7,
+   "train_loss": 0.278847469886144,
+   "dev_nll": 0.4358973801136017,
+   "seconds": 0.46129764802753925
+  },
+  {
+   "epoch": 8,
+   "train_loss": 0.2316123311718305,
+   "dev_nll": 0.4575660824775696,
+   "seconds": 0.4593998324126005
+  },
+  {
+   "epoch": 9,
+   "train_loss": 0.21833545416593553,
+   "dev_nll": 0.47579219937324524,
+   "seconds": 0.446297787129879
+  },
+  {
+   "epoch": 10,
+   "train_loss": 0.17982459316651025,
+   "dev_nll": 0.4729873538017273,
+   "seconds": 0.44669976830482483
+  }
+ ],
+ "train_seconds": 4.666037758812308,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0009525981790444873,
+  "A/test": 0.0009561207983076854
+ },
+ "init_revision": "7b0235231ca2674cb8ca8f022859a6eba2b1c968",
+ "init_path": "cross-encoder/ms-marco-MiniLM-L12-v2",
+ "device": "cuda"
+}

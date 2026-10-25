@@ -1,0 +1,43 @@
+{
+ "device": "cuda",
+ "threads": null,
+ "gpu": "NVIDIA L40S",
+ "routers": {
+  "nano-jev judge (33M)": {
+   "batch1_p50_ms": 6.363149732351303,
+   "batch1_p95_ms": 7.9707848839461795,
+   "batch32_ms_per_decision": 2.9305098578333855,
+   "n": 200
+  },
+  "MS MARCO MiniLM-L12 (33M)": {
+   "batch1_p50_ms": 6.255100481212139,
+   "batch1_p95_ms": 7.53000397235155,
+   "batch32_ms_per_decision": 2.064618718577549,
+   "n": 200
+  },
+  "Strands Decider 2B": {
+   "batch1_p50_ms": 38.567693904042244,
+   "batch1_p95_ms": 40.532810986042016,
+   "batch32_ms_per_decision": 51.502160485445835,
+   "n": 200
+  },
+  "Strands Decider E4B": {
+   "batch1_p50_ms": 47.67770040780306,
+   "batch1_p95_ms": 72.3456230945885,
+   "batch32_ms_per_decision": 121.2561981616697,
+   "n": 200
+  },
+  "Qwen2.5-1.5B router": {
+   "batch1_p50_ms": 11.456258594989777,
+   "batch1_p95_ms": 13.96669177338481,
+   "batch32_ms_per_decision": 16.28626369832394,
+   "n": 200
+  },
+  "NLI xsmall (71M)": {
+   "batch1_p50_ms": 7.755018770694733,
+   "batch1_p95_ms": 8.344998024404049,
+   "batch32_ms_per_decision": 4.030545213026926,
+   "n": 200
+  }
+ }
+}

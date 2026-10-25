@@ -1,72 +1,71 @@
-# Fine-tuned judges and the Hugging Face plan
+# The published judges
 
-**Status: weights saved, not published yet.** The judges were retrained with `--save-model` on OMEGA (2026-10-17,
-jobs 42789–42791). That gives 12 models: 4 judges × 3 seeds, 2.4 GB. They are kept on the cluster under
-`runs/judge-models/judges/<judge>/seed<k>/model/`, next to each seed's `done.json` and scores.
+**Status: published on 2026-10-25.** These are two nano-jev judges for pair A on the golden set, with 3 seeds each.
 
-## Check of the retrained weights
+| Router | Hugging Face | Reads | Decides |
+|---|---|---|---|
+| qp | [mohameddhameem/systemone-jev-qp](https://huggingface.co/mohameddhameem/systemone-jev-qp) | the question and the small model's top 2 passages | before the small model runs |
+| qpa | [mohameddhameem/systemone-jev-qpa](https://huggingface.co/mohameddhameem/systemone-jev-qpa) | the same, plus the small model's answer | after the small model answers |
 
-The saved models were re-evaluated on pair A's test set (7,405 questions; job 42797). They match the reported results.
-GPU nondeterminism makes the per-seed scores differ slightly, but the AIQ is unchanged within the seed spread.
+**Where the files are:**
+- **The loading code** is [github.com/mohameddhameem/systemone-jev](https://github.com/mohameddhameem/systemone-jev),
+  a trimmed copy of `src/stair/` for inference (`systemone_jev.route.Router`). The score check, the figures and the
+  card template are there too.
+- **Seeds:** seed 0 is at the root of each Hugging Face repo, and seeds 1 and 2 are in `seed1/` and `seed2/`.
+- **Thresholds:** each folder's `systemone.json` names its input set and its operating threshold, picked on `slr-val`.
 
-| Judge | Reported AIQ | Retrained AIQ (mean of seeds) | With judge cost | Judge cost a question |
-|---|---|---|---|---|
-| nano-jev qp | 0.673 | 0.673 | 0.673 | 32 GFLOPs |
-| nano-jev qpa | — | 0.675 | 0.675 | 33 GFLOPs |
-| decider 2B qpa | 0.708 | 0.709 | 0.702 | 1,250 GFLOPs |
-| decider E4B qpa | 0.713 | 0.712 | 0.699 | 2,461 GFLOPs |
+## What they are
 
-## What to publish
+- **Base:** [`sdmlai/nano-jev`](https://huggingface.co/sdmlai/nano-jev) v1.0, a 33M MiniLM cross-encoder. It is
+  MIT-licensed, and so are the published weights.
+- **Pair A:**
+  - small: Qwen2.5-1.5B-Instruct on nano-jev's top 2 paragraphs;
+  - large: Qwen2.5-7B-Instruct on all 10.
+- **Label:** `large-helps`: the small model is wrong and the large one is right, by the standard lenient ruler.
+- **Training:**
+  - data: the 4,814 `slr-train` questions, with 10% held out to pick the epoch by NLL;
+  - loss: grouped-softmax cross-entropy;
+  - settings: lr 5e-5, batch 16, up to 3 epochs.
+- **Licence of the training data:** HotpotQA is CC BY-SA 4.0. Whether share-alike applies to weights trained on it is
+  not settled, and the cards do not claim that it does not.
+- **Provenance:**
+  - the weights come from OMEGA job 43118 (`judge train ... --save-model`, `configs/system-one-slr.toml`);
+  - job 43119 re-evaluated them.
 
-| Candidate | Base model (licence) | Task | Result | Why |
-|---|---|---|---|---|
-| `stair-judge-nanojev-qp-A` | `sdmlai/nano-jev` v1.0, 33M (Apache-2.0) | Before any answer: will Qwen2.5-7B help over 1.5B? | AIQ 0.673, +0.004 to +0.011 over logistic regression | The report's main judge; 32 GFLOPs a question |
-| `stair-judge-decider2b-qpa-A` | `StrandsAgents/strands-decider-2B-hobson-v21` (Apache-2.0), LoRA + head | After the 1.5B's answer: escalate to 7B? | AIQ 0.708, 0.702 with its cost | Best judge after cost |
-| `stair-judge-decidere4b-qpa-A` | `StrandsAgents/strands-decider-E4B-gemma4-v1-2610` (Apache-2.0), LoRA + head | Same | AIQ 0.713 | Most accurate judge |
-| optional: `stair-judge-nanojev-5opt-graded` | nano-jev | Pick one of 5 answer options (AgentTTS setting) | ties the fixed-policy hull | Only as a reference; not saved yet |
+## Their results on `slr-test`
 
-Training data: HotpotQA (CC BY-SA 4.0) questions and passages, with labels derived from our own expert runs. Each
-candidate ships as 3 seeds (the reported score is their mean), or seed 0 alone with that stated.
+These are on the 1,481 test questions. The 1,303 questions nano-jev never saw are shown in brackets.
 
-## Retraining with weights saved (OMEGA, one L40S)
+| Judge | 3-seed ensemble | Single seeds, mean ± sd | Seed 0 (the Hub root) |
+|---|---|---|---|
+| qp | 0.674 (0.670) | 0.672 ± 0.001 | 0.670 |
+| qpa | 0.674 (0.670) | 0.671 ± 0.002 | 0.668 |
 
-`judge train … --save-model` writes `model/` next to each seed's `done.json`.
-- **nano-jev:** `save_pretrained` writes the weights and the tokenizer.
-- **Decider:** writes its config, `slot_head.pt`, `lora/` and the tokenizer. `StrandsDeciderModel.load` reads them
-  back.
+**Baselines:**
 
-```bash
-# on OMEGA: 3 seeds each; walltimes used for the 2026-10-17 run
-qsub -l walltime=03:00:00 -v "STEP=save-judges,PLAN=configs/system-one.toml,ONLY=--only qp-large-helps-nanojev-A --only qpa-large-helps-nanojev-A" scripts/omega.pbs
-qsub -l walltime=03:00:00 -v "STEP=save-judges,PLAN=configs/system-one-decider.toml,ONLY=--only qpa-large-helps-strands-decider-2b-hobson-v21-A" scripts/omega.pbs
-qsub -l walltime=05:00:00 -v "STEP=save-judges,PLAN=configs/system-one-decider.toml,ONLY=--only qpa-large-helps-strands-decider-e4b-gemma4-v1-2610-A" scripts/omega.pbs
-# then evaluate the saved judges (CPU job)
-uv run judge eval --plan configs/system-one-decider.toml --out runs/judge-models --exclude data/hotpotqa/nanojev_validation_ids.txt
-```
+| Baseline | AIQ |
+|---|---|
+| Entropy | 0.665 |
+| LR router before the answer | 0.669 |
+| LR cascade router | 0.681 |
+| Random | 0.638 |
+| Oracle | 0.758 |
 
-**To do before publishing:**
+**Reading:**
+- None of the judge–baseline differences is significant, so the judges tie the baselines. The cards claim no
+  accuracy gain.
+- [RESULTS.md](RESULTS.md) lists nano-jev qpa at 0.677. That is the experiment 7/9 run, whose weights were not
+  saved. The retrain that saved them scores 0.674, within the seed spread.
+- **Score check:** the saved scores were computed in bf16 on a GPU.
+  - On an L40S, `route.py` reproduces them exactly.
+  - On a CPU in fp32, they differ by up to 7.6e-3, and at most 2 of the 1,481 decisions flip.
 
-- [x] Decider save and load (`StrandsDeciderModel.save_pretrained` / `load`).
-- [x] Check the retrain: AIQ matches (table above).
-- [ ] **Experiment 8 judge:** `exp8-judge` has no `--save-model` yet; add it if that judge is published.
-- [ ] **Usage snippet:** a few lines that load the judge and score one item (`judge.route_items` builds the input).
-- [ ] Copy the weights off the cluster and upload them (`huggingface-cli upload`) with the model card below.
+**What the Jev programme adds beyond the cards** ([write-up](docs/experiments/2026-10-25-jev-novelty.md)): fine-tuning
+from nano-jev gives a better router than starting from the same 33M MiniLM without decision training. This is
+confirmed on MuSiQue and 2WikiMultiHopQA. The cards report only the HotpotQA golden set.
 
-## Model card draft
+## Not published
 
-```markdown
-# stair-judge-nanojev-qp-A
-
-A routing judge for multi-hop question answering. Given a HotpotQA question and its top-2 retrieved passages, it
-outputs P(the large model helps), i.e. the small model (Qwen2.5-1.5B on the top 2 passages) is wrong (F1 < 0.8)
-and the large model (Qwen2.5-7B on all 10) is right. Escalate when the probability exceeds a threshold chosen on
-calibration data.
-
-- Base model: sdmlai/nano-jev v1.0 (33M), fine-tuned with grouped cross-entropy, 3 epochs, lr 5e-5, 3 seeds.
-- Training data: 12,000 HotpotQA train questions (router-train split), labels from our expert runs; 10% dev.
-- Evaluation: 7,405 HotpotQA dev questions. AIQ 0.673 (always-small F1 61.3, always-large 66.9, oracle AIQ 0.755);
-  judge cost 32 GFLOPs a question, 3% of the small model.
-- Limits: trained for one expert pair; other pairs or retrievers need recalibration or retraining. English only.
-  The labels depend on the F1 threshold τ = 0.8.
-- Licence: Apache-2.0 (base model); training data CC BY-SA 4.0.
-```
+- The Strands Decider judges (2B and E4B) and the experiment 8 option judge. Their weights stay on the cluster.
+- **History:** until 2026-10-23 this page planned to publish `stair-judge-*` judges trained on the earlier
+  7,405-question setting. Its note that nano-jev is Apache-2.0 was wrong: nano-jev v1.0 is MIT.

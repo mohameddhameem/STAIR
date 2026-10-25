@@ -1,0 +1,55 @@
+# Jev novelty E2 (pre-registration H2, confirmatory): pair A (Qwen2.5-1.5B on the top 2 / 7B on all) on MuSiQue-Ans v1.0 (test = all 2,417 dev questions).
+# In-domain judges (q = question only, qp, qpa; nano-jev v1.0, full budget, 5 seeds), the HotpotQA golden-set judges
+# frozen (43118's weights, runs/slr-judge-models, scored with no retraining: H2d) and nano-jev's zero-shot typed
+# questions (E4). `judge eval` adds entropy and the logistic-regression routers.
+#   uv run judge all --plan configs/e2-musique.toml --data-dir data/musique --out runs/e2-musique
+metric = "lenient"
+cost = "table5"
+tau = 0.5
+max_drop = 0.01
+seeds = [0, 1, 2, 3, 4]
+zero_shot_judge = "sdmlai/nano-jev@v1.0"
+paired_references = ["judge/qp-large-helps-nanojev-A", "judge/qpa-large-helps-nanojev-A"]
+
+[pairs]
+A = "runs/musique-pairA"
+
+[split_data]
+router_train = "train.parquet"
+calib = "train.parquet"
+test = "dev.parquet"
+
+[init_names]
+"runs/slr-judge-models/judges/qp-large-helps-nanojev-A/seed{seed}/model" = "hotpotqa"
+"runs/slr-judge-models/judges/qpa-large-helps-nanojev-A/seed{seed}/model" = "hotpotqa"
+
+[train]  # nano-jev v1.0's fine-tuning settings, as system-one-slr.toml
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+
+[[judges]]
+inputs = ["q", "qp", "qpa"]
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = "qp"
+label = "large-helps"
+init = "runs/slr-judge-models/judges/qp-large-helps-nanojev-A/seed{seed}/model"
+frozen = true
+train_pair = "A"
+seeds = [0, 1, 2]
+
+[[judges]]
+inputs = "qpa"
+label = "large-helps"
+init = "runs/slr-judge-models/judges/qpa-large-helps-nanojev-A/seed{seed}/model"
+frozen = true
+train_pair = "A"
+seeds = [0, 1, 2]

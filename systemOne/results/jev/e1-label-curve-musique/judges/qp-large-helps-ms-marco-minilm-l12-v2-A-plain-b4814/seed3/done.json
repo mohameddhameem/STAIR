@@ -1,0 +1,53 @@
+{
+ "judge": "qp-large-helps-ms-marco-minilm-l12-v2-A-plain-b4814",
+ "inputs": "qp",
+ "label": "large-helps",
+ "init": "cross-encoder/ms-marco-MiniLM-L12-v2",
+ "head": "plain",
+ "budget": 4814,
+ "train_pair": "A",
+ "seed": 3,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 4333,
+ "n_dev": 481,
+ "micro_batch": null,
+ "train_label_rate": 0.24034067303697548,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.5639458129326795,
+   "dev_nll": 0.5522973537445068,
+   "seconds": 8.755489768460393
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.5523824949106168,
+   "dev_nll": 0.5507550239562988,
+   "seconds": 8.717322405427694
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.543001617837656,
+   "dev_nll": 0.5579505562782288,
+   "seconds": 8.698415532708168
+  }
+ ],
+ "train_seconds": 26.242077162489295,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.001061855971813202,
+  "A/test": 0.001008175160114707
+ },
+ "init_revision": "7b0235231ca2674cb8ca8f022859a6eba2b1c968",
+ "init_path": "cross-encoder/ms-marco-MiniLM-L12-v2",
+ "device": "cuda"
+}

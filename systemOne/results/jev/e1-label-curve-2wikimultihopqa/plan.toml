@@ -1,0 +1,39 @@
+# Jev novelty E1, confirmatory (pre-registration H1) on 2wikimultihopqa: the starting-point x head x inputs grid of
+# e1-label-curve.toml at budgets 100 / 500 / full, 5 seeds.
+#   uv run judge train --plan configs/e1-label-curve-2wikimultihopqa.toml --data-dir data/2wikimultihopqa --out runs/e1-label-curve-2wikimultihopqa
+metric = "lenient"
+cost = "table5"
+tau = 0.5
+max_drop = 0.01
+seeds = [0, 1, 2, 3, 4]
+
+[pairs]
+A = "runs/2wikimultihopqa-pairA"
+
+[split_data]
+router_train = "train.parquet"
+calib = "dev.parquet"
+test = "dev.parquet"
+
+[init_names]
+"runs/nanojev-pretrain/repro/model" = "nanojev-repro"
+"runs/nanojev-pretrain/nohotpot/model" = "nanojev-nohotpot"
+
+[train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]
+inputs = ["qp", "qpa"]
+label = "large-helps"
+init = ["sdmlai/nano-jev@v1.0", "microsoft/MiniLM-L12-H384-uncased", "cross-encoder/ms-marco-MiniLM-L12-v2",
+        "runs/nanojev-pretrain/repro/model", "runs/nanojev-pretrain/nohotpot/model"]
+head = ["typed", "plain"]
+budget = [100, 500, 4814]
+train_pair = "A"

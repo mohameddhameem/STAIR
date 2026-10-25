@@ -31,6 +31,8 @@
 #   bash scripts/run_cluster.sh slr7-prepare   # experiments 7/9 on the golden set: pair A cut from runs/gpu (CPU job)
 #   bash scripts/run_cluster.sh slr7-judges    # ... their judges, J=zeroshot|train, ONLY=... (GPU); slr7-eval: reports (CPU job)
 #   bash scripts/run_cluster.sh exp8s-pools    # experiment 8 on the golden set: split + pools (CPU job); then exp8-score, exp8-answer, exp8-judge with EXP8_OUT/PLAN
+#   bash scripts/run_cluster.sh nanojev-fetch  # Jev novelty E1: nano-jev's recipe + datasets (login node); nanojev-pretrain: its retrains (GPU)
+# The Jev novelty steps (E0-E9) are documented in docs/gpu-jobs-jev.md.
 # The common-setup steps are documented in docs/gpu-jobs-common.md; the golden-set steps in docs/gpu-jobs-slr.md.
 # Experiment 9's steps are documented in docs/gpu-jobs-exp9.md.
 # Where each step runs: login node = `prepare` (downloads + light parquet export), `exp8-prepare` and `slr-fetch`
@@ -228,7 +230,7 @@ EOF
   exp10-train)  # GPU: one judge set of configs/exp10-slr.toml, every (inputs, seed); resumes
     $BIN exp10-slr train --judge "${JUDGE:?JUDGE=nano-jev|decider-2b|decider-e4b}" --plan "${PLAN:-configs/exp10-slr.toml}"
     ;;
-  exp10-eval)  # CPU job: reports for every judge set trained so far, against Jonathan's routers (loads no model)
+  exp10-eval)  # CPU job: reports for every judge set trained so far, against Jonathan's routers (loads only his router's tokenizer, to price its calls)
     $BIN exp10-slr eval --plan "${PLAN:-configs/exp10-slr.toml}"
     ;;
   exp8s-pools)  # CPU job: experiment 8 on the golden set: its split (questions answered before drawn first) and pools
@@ -250,8 +252,147 @@ EOF
   slr7-judges)  # GPU: experiments 7/9's judges on the golden set, J=zeroshot|train (default train), ONLY="--only <judge> ..."
     $BIN judge "${J:-train}" --plan configs/system-one-slr.toml --data-dir "$DATA" --out runs/slr-judges ${ONLY:-}
     ;;
-  slr7-eval)  # CPU job: reports on slr-test, all 1,481 and without nano-jev's questions (loads no model)
-    $BIN judge eval --plan configs/system-one-slr.toml --data-dir "$DATA" --out runs/slr-judges \
+  nanojev-fetch)  # login node: E1's nano-jev recipe at its pinned commit, SQuAD 2.0 / MultiNLI and the bases (downloads only)
+    $BIN nanojev-pretrain fetch --out runs/nanojev-pretrain
+    ;;
+  nanojev-pretrain)  # GPU: E1's retrained nano-jev arms, VARIANT=repro|nohotpot (default both), ~15 min each
+    $BIN nanojev-pretrain train --out runs/nanojev-pretrain ${VARIANT:+--variant "$VARIANT"}
+    ;;
+  e1-curve)  # CPU job: E1's label curves and the pre-registered H1 tests (HotpotQA: all 1,481 and the 1,303 nano-jev
+             # never saw); PLAN / JOUT / DATA for a confirmatory dataset
+    EXCL=$DATA/nanojev_validation_ids.txt
+    $BIN label-curve --plan "${PLAN:-configs/e1-label-curve.toml}" --out "${JOUT:-runs/e1-label-curve}"       $([ -f "$EXCL" ] && echo --exclude "$EXCL") --bootstrap "${BOOT:-1000}"
+    ;;
+  e2-prepare-ext)  # CPU job: 2Wiki's secondary test (test_ext) as pair X of configs/e2-2wikimultihopqa.toml
+    mkdir -p runs/2wikimultihopqa-pairA-ext
+    cp runs/2wikimultihopqa-pairA/{config.toml,router_train.parquet,calib.parquet} runs/2wikimultihopqa-pairA-ext/
+    cp runs/2wikimultihopqa-pairA/test_ext.parquet runs/2wikimultihopqa-pairA-ext/test.parquet
+    ;;
+  e2-judges)  # GPU: E2's judges on DATASET=musique|2wikimultihopqa: nano-jev's zero-shot questions, then in-domain + frozen
+    HF_HUB_OFFLINE=1 $BIN judge zeroshot --plan "configs/e2-${DATASET:?}.toml" --data-dir "data/$DATASET" --out "runs/e2-$DATASET"
+    HF_HUB_OFFLINE=1 $BIN judge train --plan "configs/e2-$DATASET.toml" --data-dir "data/$DATASET" --out "runs/e2-$DATASET"
+    ;;
+  e2-eval)  # CPU job: E2's reports on DATASET (entropy, LR routers, judges, paired bootstrap)
+    $BIN judge eval --plan "configs/e2-${DATASET:?}.toml" --data-dir "data/$DATASET" --out "runs/e2-$DATASET"
+    ;;
+  multihop-prepare)  # login node: E2's DATASET=2wikimultihopqa|musique download + light export, then its pre-registered splits
+    $BIN prepare-multihop --dataset "${DATASET:?DATASET=2wikimultihopqa|musique}"
+    $BIN make-splits --dataset "$DATASET"
+    ;;
+  multihop-pilot|multihop-experts)  # GPU: E2's pair A on DATASET, the pilot (PILOT_N test questions, default 50) or every split
+    case ${DATASET:?DATASET=2wikimultihopqa|musique} in
+      2wikimultihopqa) MCONFIG=configs/gpu-2wiki.toml; SOURCE=(train dev dev dev); PARTS=(router_train calib test test_ext) ;;
+      musique) MCONFIG=configs/gpu-musique.toml; SOURCE=(train train dev); PARTS=(router_train calib test) ;;
+      *) echo "unknown DATASET $DATASET"; exit 1 ;;
+    esac
+    MDATA=data/$DATASET
+    if [ "$STEP" = multihop-pilot ]; then
+      CONFIG=$MCONFIG experts "runs/$DATASET-pilot" pilot "$MDATA/dev.parquet" --splits "$MDATA/splits.json" --split test \
+        --limit "${PILOT_N:-50}" --seed 0
+    else
+      for i in "${!PARTS[@]}"; do
+        CONFIG=$MCONFIG experts "runs/$DATASET-pairA" "${PARTS[$i]}" "$MDATA/${SOURCE[$i]}.parquet" \
+          --splits "$MDATA/splits.json" --split "${PARTS[$i]}"
+      done
+    fi
+    ;;
+  pairD-experts)  # GPU: E5's pair D (Llama-3.2-3B / 3.1-8B) on all 7,405 dev questions; evidence copied from runs/gpu.
+                  # Both are gated: download them on the login node with your own token first (docs/gpu-jobs-jev.md 5.0)
+    HF_HUB_OFFLINE=1 CONFIG=configs/gpu-pairD.toml REUSE=runs/gpu experts runs/gpu-pairD test "$DATA/distractor_validation.parquet"
+    ;;
+  e5-prepare)  # CPU job: E5's pairs B, C, D cut to the golden set's slr-* splits from their dev caches (no model calls)
+    for p in B:runs/gpu-large-14b C:runs/gpu-small-3b D:runs/gpu-pairD; do
+      for split in router_train calib test; do
+        $BIN subset-cache --from "${p#*:}" --splits "$DATA/splits-slr.json" --split "$split" --run "runs/slr-pair${p%%:*}" --name "$split"
+      done
+    done
+    ;;
+  e5-judges)  # GPU: E5's judges, each trained on one pair and scored on every pair (~1-2 h)
+    HF_HUB_OFFLINE=1 $BIN judge train --plan configs/e5-transfer.toml --data-dir "$DATA" --out runs/e5-transfer
+    ;;
+  e5-eval)  # CPU job: E5's reports per pair (all 1,481 and the clean 1,303)
+    $BIN judge eval --plan configs/e5-transfer.toml --data-dir "$DATA" --out runs/e5-transfer       --exclude "$DATA/nanojev_validation_ids.txt"
+    ;;
+  confirm)  # CPU job: the pre-registered confirmatory tests on DATASET: H2 + H3 (musique, 2wikimultihopqa; 2Wiki's
+            # secondary test X: H2), H3 exploratory on the HotpotQA golden set (hotpotqa), or H5 (DATASET=e5)
+    case ${DATASET:?DATASET=musique|2wikimultihopqa|hotpotqa|e5} in
+      hotpotqa) $BIN confirm --family H3 --plan configs/system-one-slr.toml --out runs/slr-judges                   --signals runs/slr-pairA/signals --exclude "$DATA/nanojev_validation_ids.txt" ;;
+      e5) $BIN confirm --family H5 --plan configs/e5-transfer.toml --out runs/e5-transfer --exclude "$DATA/nanojev_validation_ids.txt" ;;
+      *) for fam in H2 H3; do
+           $BIN confirm --family "$fam" --plan "configs/e2-$DATASET.toml" --out "runs/e2-$DATASET" --signals "runs/$DATASET-pairA/signals"
+         done
+         if [ "$DATASET" = 2wikimultihopqa ]; then
+           $BIN confirm --family H2 --plan configs/e2-2wikimultihopqa.toml --out runs/e2-2wikimultihopqa --pair X
+         fi ;;
+    esac
+    ;;
+  confirm-free)  # CPU job: H3's priced signals with their extra calls free, beside the family (descriptive)
+    case ${DATASET:?DATASET=musique|2wikimultihopqa|hotpotqa} in
+      hotpotqa) $BIN confirm --family H3 --free --plan configs/system-one-slr.toml --out runs/slr-judges --signals runs/slr-pairA/signals --exclude "$DATA/nanojev_validation_ids.txt" ;;
+      *) $BIN confirm --family H3 --free --plan "configs/e2-$DATASET.toml" --out "runs/e2-$DATASET" --signals "runs/$DATASET-pairA/signals" ;;
+    esac
+    ;;
+  e4-e8)  # CPU job: E4 (zero / few labels) and E8 (risk control) on DATASET=musique|2wikimultihopqa|hotpotqa
+    case ${DATASET:?DATASET=musique|2wikimultihopqa|hotpotqa} in
+      hotpotqa) EPLAN=configs/system-one-slr.toml; EOUT=runs/slr-judges; EX=(--exclude "$DATA/nanojev_validation_ids.txt") ;;
+      *) EPLAN=configs/e2-$DATASET.toml; EOUT=runs/e2-$DATASET; EX=() ;;
+    esac
+    $BIN zero-label --plan "$EPLAN" --out "$EOUT" "${EX[@]}"
+    if [ "$DATASET" = musique ]; then  # H6b: the HotpotQA judge calibrated on HotpotQA, tested on MuSiQue
+      $BIN risk-control --plan "$EPLAN" --out "$EOUT" --shift-from configs/system-one-slr.toml runs/slr-judge-models
+    else
+      $BIN risk-control --plan "$EPLAN" --out "$EOUT" "${EX[@]}"
+    fi
+    ;;
+  e1-menuA-train)  # GPU: E1 on menu A + E6, JUDGES=<judge sets of configs/e1-menuA.toml, ':'-separated: qsub -v splits
+                   # on commas>; resumes
+    HF_HUB_OFFLINE=1 $BIN exp10-slr train --plan configs/e1-menuA.toml --judge "${JUDGES//:/,}"
+    ;;
+  e1-menuA-eval)  # CPU job: E1 menu A + E6 reports, his routers priced
+    $BIN exp10-slr eval --plan configs/e1-menuA.toml
+    ;;
+  e7-prepare)  # GPU, ~20 min: E7's pools (experiment 8's golden-set test), MS MARCO's scores on them, recall per ranker
+    mkdir -p runs/e7-evidence/pools runs/e7-evidence/scores
+    for d in pools scores; do cp -n runs/exp8-slr/$d/test.parquet runs/e7-evidence/$d/; done
+    cp -n runs/exp8-slr/nanojev_validation_ids.txt runs/e7-evidence/
+    HF_HUB_OFFLINE=1 $BIN pools score --out runs/e7-evidence --name test --scorer cross-encoder/ms-marco-MiniLM-L12-v2 \
+      --kind reranker --column msmarco --device cuda
+    $BIN pools recall --out runs/e7-evidence --name test --exclude runs/e7-evidence/nanojev_validation_ids.txt
+    ;;
+  e7-answer)  # GPU: E7's answers, CELLS=<cells of configs/e7-evidence.toml, ':'-separated> (reused cells cost nothing);
+              # resumes by chunk
+    only=(); for c in ${CELLS//:/ }; do only+=(--only "$c"); done
+    HF_HUB_OFFLINE=1 $BIN pool-answer run --plan configs/e7-evidence.toml --split test "${only[@]}"
+    ;;
+  e7-summary)  # CPU job: E7's table and each cell against nano-jev's 20 fused samples (paired bootstrap)
+    $BIN pool-answer summary --plan configs/e7-evidence.toml
+    $BIN pool-answer compare --plan configs/e7-evidence.toml --split test --base llama3b-s20fuse-top5
+    ;;
+  e9-latency)  # GPU job (DEVICE=cuda) or CPU job (DEVICE=cpu, 8 threads): E9's ms per decision
+    HF_HUB_OFFLINE=1 $BIN latency --device "${DEVICE:-cuda}" --threads 8 --out runs/e9-latency
+    ;;
+  tests)  # CPU job: the test suite where torch is installed, TESTS=<pytest -k expression>; gates a GPU resubmission
+    $BIN python -m pytest -q tests ${TESTS:+-k "$TESTS"}
+    ;;
+  e3-signals)  # GPU: E3's weak-model signals on DATASET=hotpotqa|musique|2wikimultihopqa (pair A's every split), ~1 h
+    case ${DATASET:?DATASET=hotpotqa|musique|2wikimultihopqa} in
+      hotpotqa) SRUN=runs/slr-pairA; SDATA=$DATA; SARGS="--split router_train --split calib --split test"
+        SFILES="--split-data distractor_validation.parquet --split-data distractor_validation.parquet --split-data distractor_validation.parquet" ;;
+      musique) SRUN=runs/musique-pairA; SDATA=data/musique; SARGS="--split router_train --split calib --split test"
+        SFILES="--split-data train.parquet --split-data train.parquet --split-data dev.parquet" ;;
+      2wikimultihopqa) SRUN=runs/2wikimultihopqa-pairA; SDATA=data/2wikimultihopqa
+        SARGS="--split router_train --split calib --split test --split test_ext"
+        SFILES="--split-data train.parquet --split-data dev.parquet --split-data dev.parquet --split-data dev.parquet" ;;
+      *) echo "unknown DATASET $DATASET"; exit 1 ;;
+    esac
+    HF_HUB_OFFLINE=1 $BIN signals --run "$SRUN" --data-dir "$SDATA" $SARGS $SFILES
+    ;;
+  e1-judges)  # GPU: E1's label-budget grid on pair A, MATCH=<name substring> (e.g. qp-large / qpa-large); resumes
+    HF_HUB_OFFLINE=1 $BIN judge train --plan "${PLAN:-configs/e1-label-curve.toml}" --data-dir "$DATA" \
+      --out "${JOUT:-runs/e1-label-curve}" ${MATCH:+--match="$MATCH"}
+    ;;
+  slr7-eval)  # CPU job: reports on slr-test, all 1,481 and without nano-jev's questions (loads no model); JOUT=<judge run>
+    $BIN judge eval --plan configs/system-one-slr.toml --data-dir "$DATA" --out "${JOUT:-runs/slr-judges}" \
       --exclude "$DATA/nanojev_validation_ids.txt"
     ;;
   *)

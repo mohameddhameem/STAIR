@@ -1,0 +1,37 @@
+{
+ "device": "cpu",
+ "threads": 8,
+ "gpu": null,
+ "routers": {
+  "nano-jev judge (33M)": {
+   "batch1_p50_ms": 123.49226418882608,
+   "batch1_p95_ms": 318.9440926536917,
+   "batch32_ms_per_decision": 505.0922448184186,
+   "n": 200
+  },
+  "MS MARCO MiniLM-L12 (33M)": {
+   "batch1_p50_ms": 123.44160210341215,
+   "batch1_p95_ms": 322.2018969245255,
+   "batch32_ms_per_decision": 502.08293116884306,
+   "n": 200
+  },
+  "Strands Decider 2B": {
+   "error": "needs a GPU: its Triton kernels have no CPU driver (job 43240)"
+  },
+  "Strands Decider E4B": {
+   "error": "needs a GPU: its Triton kernels have no CPU driver (job 43240)"
+  },
+  "Qwen2.5-1.5B router": {
+   "batch1_p50_ms": 4787.388879805803,
+   "batch1_p95_ms": 7233.2486325874925,
+   "batch32_ms_per_decision": 11046.102439111564,
+   "n": 50
+  },
+  "NLI xsmall (71M)": {
+   "batch1_p50_ms": 130.5260332301259,
+   "batch1_p95_ms": 325.25178743526334,
+   "batch32_ms_per_decision": 635.0346803762174,
+   "n": 200
+  }
+ }
+}

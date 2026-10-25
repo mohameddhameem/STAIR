@@ -1,0 +1,107 @@
+{
+ "judge": "qp-large-helps-nanojev-A-plain-b250",
+ "inputs": "qp",
+ "label": "large-helps",
+ "init": "sdmlai/nano-jev@v1.0",
+ "head": "plain",
+ "budget": 250,
+ "train_pair": "A",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "seed": 4,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 225,
+ "n_dev": 25,
+ "micro_batch": null,
+ "train_label_rate": 0.16971333610303282,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.6870583732922871,
+   "dev_nll": 0.532551646232605,
+   "seconds": 0.442125778645277
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.4738321820894877,
+   "dev_nll": 0.4406607747077942,
+   "seconds": 0.44241269305348396
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.5478116969267527,
+   "dev_nll": 0.43769168853759766,
+   "seconds": 0.42139132134616375
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.48224913676579795,
+   "dev_nll": 0.5246931910514832,
+   "seconds": 0.43218692392110825
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.410279248158137,
+   "dev_nll": 0.39687591791152954,
+   "seconds": 0.428141538053751
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.29023383955160775,
+   "dev_nll": 0.41448134183883667,
+   "seconds": 0.41824045591056347
+  },
+  {
+   "epoch": 7,
+   "train_loss": 0.2174337218205134,
+   "dev_nll": 0.5356610417366028,
+   "seconds": 0.438662176951766
+  },
+  {
+   "epoch": 8,
+   "train_loss": 0.15126733432213466,
+   "dev_nll": 0.6813398003578186,
+   "seconds": 0.431027315557003
+  },
+  {
+   "epoch": 9,
+   "train_loss": 0.10353064934412638,
+   "dev_nll": 0.6840296983718872,
+   "seconds": 0.4328872989863157
+  },
+  {
+   "epoch": 10,
+   "train_loss": 0.09229683578014374,
+   "dev_nll": 0.676372230052948,
+   "seconds": 0.43617338314652443
+  }
+ ],
+ "train_seconds": 4.472055785357952,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0009312481745272069,
+  "A/test": 0.0009286109204633585
+ },
+ "init_revision": "ffee345e97797bef0948561461ea54fe558588a0",
+ "init_path": "sdmlai/nano-jev@v1.0",
+ "device": "cuda"
+}

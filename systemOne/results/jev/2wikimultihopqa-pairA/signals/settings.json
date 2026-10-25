@@ -1,0 +1,9 @@
+{
+ "k": 10,
+ "k_verify": 8,
+ "temperature": 0.7,
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "params_b": 1.54,
+ "ptrue": "Question: {question}\nProposed answer: {answer}\nIs the proposed answer correct? Reply with only yes or no.",
+ "verify": "{context}\n\nQuestion: {question}\nProposed answer: {answer}\nDoes the context above support the proposed answer? Reply with only yes or no."
+}

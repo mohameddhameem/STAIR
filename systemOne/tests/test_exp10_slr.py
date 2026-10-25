@@ -26,6 +26,18 @@ def test_labels_are_his_targets():
         e.labels(df.assign(y_ret=["W", None]))
 
 
+def test_the_joint_question_learns_his_targets_as_one_path_and_routes_like_the_stages():
+    df = pd.DataFrame({"y_ret": ["W", "W", "S", "S"], "y_qa_W": ["W", "S", "S", "W"], "y_qa_S": ["S", "W", "W", "S"]})
+    assert e.joint_labels(df).tolist() == [0, 1, 2, 3]  # WW, WS, SW, SS: the answer target under his retrieval target
+    p = np.full((4, 4), 0.1) + 0.6 * np.eye(4)  # each question's most likely path, 0.7 against 0.1 for the others
+    s = e.joint_scores(p)
+    assert np.allclose(s["ret"], [0.8, 0.8, 0.2, 0.2]) and np.allclose(s["qa_W"][:2], [0.875, 0.125])
+    assert slr.route(s["ret"], {"W": s["qa_W"], "S": s["qa_S"]}, [0.5, 0.5, 0.5]).tolist() == [0, 1, 2, 3]
+    states = e.joint_items(pd.DataFrame({"question": ["who?"], "sel_W": ["[1] A: a"], "answer_WW": ["Ann\nbecause"]}),
+                           "qpa")
+    assert states[0]["state"] == "Proposed answer: Ann\n[1] A: a" and len(states[0]["options"]) == 4
+
+
 def test_pareto_keeps_the_undominated_thresholds():
     points = [(0.5, 0.1, "a"), (0.6, 0.2, "b"), (0.55, 0.3, "c"), (0.6, 0.25, "d"), (0.7, 0.9, "e")]
     assert e.pareto(points) == [("a",), ("b",), ("e",)]
@@ -36,6 +48,51 @@ def test_router_pays_the_retrieval_call_and_the_answer_call_it_took():
     r = e.Router("ours", {}, {}, price)
     assert r.extra(np.array([1, 3])).tolist() == [3.0, 31.0]  # WS took the weak branch, SS the strong one
     assert e.Router("his", {}, {}).extra(np.array([0, 3])).tolist() == [0.0, 0.0]  # his routers: not charged
+
+
+PROMPTS = '''"""docstring"""
+CHAR_CAP = 5
+MAXLEN   = 12
+WEAK_NAME_DEFAULT   = "w"
+STRONG_NAME_DEFAULT = "s"
+SYS_CASCADE_TEMPLATE = (
+    "route {weak_name} "
+    "or {strong_name}"
+)
+INSTR_RET2 = "R {q} {n_sel}: {selections}"
+INSTR_QA1 = "Q {q} | {evidence} | {weak_answer}"
+def cap(text, n=CHAR_CAP):
+    return text[:n]
+'''
+
+
+class _WordTokenizer:
+    """One token per whitespace-separated word, with the chat template as plain concatenation."""
+
+    def apply_chat_template(self, msgs, tokenize, add_generation_prompt):
+        return " ".join(m["content"] for m in msgs) + " <assistant>"
+
+    def __call__(self, text, add_special_tokens):
+        return {"input_ids": text.split()}
+
+
+def test_his_router_is_priced_on_his_own_prompts(tmp_path):
+    path = tmp_path / "router_prompts.py"
+    path.write_text(PROMPTS)
+    prompts = e.his_prompts(path)
+    assert prompts["SYS_CASCADE_TEMPLATE"] == "route {weak_name} or {strong_name}" and prompts["CHAR_CAP"] == 5
+    assert "cap" not in prompts  # functions are skipped, never run
+    df = pd.DataFrame({"question": ["who?"], "sel_W": ["[1] Alpha beta\n[4] Gamma\n\nSo the answer is A."],
+                       "sel_S": ["[2] Delta"], "answer_WW": ["A"], "answer_SW": ["D"]})
+    system, calls = e.his_router_calls(df, prompts)
+    assert system == "route w or s"
+    assert calls["ret"] == ["R who? 2: [1] Alpha [4] Gamma"]  # capped at 5 characters, the reasoning dropped
+    assert calls["qa_W"] == ["Q who? | [1] Alpha\n[4] Gamma | A"] and calls["qa_S"] == ["Q who? | [2] Delta | D"]
+    tokenizer = _WordTokenizer()
+    price = e.his_router_price(df, prompts, tokenizer)
+    words = len("route w or s".split()) + 1  # the system turn and the opened assistant turn
+    assert price.tolist() == [[e.budget(e.HIS_ROUTER_PARAMS_B, min(words + len(c[0].split()), 12), 0)
+                               for c in (calls["ret"], calls["qa_W"], calls["qa_S"])]]
 
 
 def test_evaluate_compares_ours_with_his_on_his_terms():
@@ -60,5 +117,10 @@ def test_evaluate_compares_ours_with_his_on_his_terms():
     assert report["routers"]["ours#seed0"]["aiq_with_judge_price"] <= report["routers"]["ours#seed0"]["aiq"]
     assert set(report["aiq_diff"]) == {"ours#seed0 - SLR perfect", "ours#seed0 - fixed paths"}
     assert report["aiq_diff"]["ours#seed0 - SLR perfect"]["ci95"][1] < 0
+    assert set(report["aiq_diff_both_priced"]) == {"ours#seed0 +judge - SLR perfect +judge"}
+    priced = e.Router("SLR perfect", oracle_scores(ok_val), oracle_scores(ok_test), np.full((60, 3), 50.0))
+    both = e.evaluate(df, [priced, routers[1]], {"bootstrap": 20})
+    his = both["routers"]["SLR perfect"]
+    assert his["aiq_with_judge_price"] < his["aiq"] and his["peak"]["judge_price"] > 0  # his calls now cost something
     clean = e.evaluate(df, routers, {"bootstrap": 20}, keep=np.arange(60) < 30)
     assert clean["n_test"] == 30

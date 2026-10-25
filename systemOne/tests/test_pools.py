@@ -1,3 +1,4 @@
+import json
 import math
 
 import numpy as np
@@ -109,3 +110,54 @@ def test_h2_block_is_nanojevs_top_k_with_titles():
     df = pd.DataFrame({"question": ["Who?"], "titles": [["A", "B", "C"]], "texts": [["a", "b", "c"]],
                        "nanojev": [[0.1, 0.9, 0.5]]})
     assert pa.passage_blocks(df, {"top_k": 2}) == ["Query: Who?\nSelected references: [1] B: b [2] C: c"]
+
+
+def test_rankers_pick_their_passages_and_pay_their_scoring(tmp_path):
+    from stair import pool_answer as pa
+
+    out = tmp_path / "run"
+    (out / "pools").mkdir(parents=True)
+    (out / "scores").mkdir()
+    pd.DataFrame({"id": ["q0", "q1"], "question": ["a?", "b?"], "answer": ["x", "y"],
+                  "titles": [["A", "B", "C", "D"]] * 2, "texts": [["a", "b", "c", "d"]] * 2,
+                  "gold_idx": [[3, 1], [3, 1]], "bm25": [[4.0, 3.0, 2.0, 1.0]] * 2}).to_parquet(out / "pools" / "test.parquet")
+    pd.DataFrame({"id": ["q0", "q1"], "nanojev": [[0.9, 0.1, 0.8, 0.2]] * 2, "tokens": [100, 100]}).to_parquet(
+        out / "scores" / "test.parquet")
+    pd.DataFrame({"id": ["q1", "q0"], "msmarco": [[0.0, 0.0, 0.0, 1.0], [0.1, 0.2, 0.3, 0.4]], "tokens": [50, 60]}).to_parquet(
+        out / "scores" / "test-msmarco.parquet")
+    nj = 2 * pa.NANOJEV_PARAMS_B * 100
+    picks = {r: pa.load_split(out, "test", 2, None, r) for r in ("nanojev", "bm25", "msmarco", "gold")}
+    assert picks["nanojev"]["passages"][0] == ["a", "c"] and picks["bm25"]["passages"][0] == ["a", "b"]
+    assert picks["msmarco"]["passages"].tolist() == [["d", "c"], ["d", "a"]]  # by id, not by file order
+    assert pa.load_split(out, "test", 3, None, "gold")["passages"][0] == ["d", "b", "a"]  # gold in nano-jev's order, then its top
+    assert picks["nanojev"]["ranker_gflops"].tolist() == [nj, nj] == picks["gold"]["ranker_gflops"].tolist()
+    assert picks["bm25"]["ranker_gflops"].tolist() == [0.0, 0.0]
+    assert picks["msmarco"]["ranker_gflops"].tolist() == pytest.approx([2 * 0.0334 * 60, 2 * 0.0334 * 50])
+    assert (picks["msmarco"]["nanojev_gflops"] == nj).all()  # nano-jev's own cost stays for exp8_eval
+    pd.DataFrame({"id": ["q0"], "msmarco": [[0.1, 0.2, 0.3, 0.4]], "tokens": [60]}).to_parquet(
+        out / "scores" / "test-msmarco.parquet")
+    with pytest.raises(ValueError, match="1 of 2 pools"):
+        pa.load_split(out, "test", 2, None, "msmarco")
+
+
+def test_compare_pairs_every_cell_with_the_base(tmp_path):
+    from stair import pool_answer as pa
+
+    out = tmp_path / "run"
+    (out / "pools").mkdir(parents=True)
+    ids = [f"q{i}" for i in range(4)]
+    pd.DataFrame({"id": ids, "answer": ["Kalo", "Mer", "Ann", "Bo"]}).to_parquet(out / "pools" / "test.parquet")
+    folder = out / "answers" / "test"
+    folder.mkdir(parents=True)
+    pd.DataFrame({"id": ids[::-1], "pred": ["Bo", "no", "no", "Kalo"], "units": 10.0}).to_parquet(folder / "base.parquet")
+    pd.DataFrame({"id": ids, "pred": ["Kalo", "Mer", "Ann", "Bo"], "units": 30.0}).to_parquet(folder / "all.parquet")
+    plan = tmp_path / "plan.toml"
+    plan.write_text(f'out = "{out.as_posix()}"\n[[cells]]\nname = "base"\ntop_k = 5\n[[cells]]\nname = "all"\ntop_k = 5\n'
+                    'ranker = "gold"\nsamples = 20\nfuse = true\n[[cells]]\nname = "unfinished"\ntop_k = 5\n')
+    pa.main(["compare", "--plan", str(plan), "--split", "test", "--base", "base", "--bootstrap", "200"])
+    report = json.loads((out / "answers" / "compare-test.json").read_text())
+    assert set(report["cells"]) == {"base", "all"} and report["n"] == 4
+    assert report["cells"]["base"]["lenient_std"] == 0.5 and report["cells"]["base"]["ci95"] == [0.0, 0.0]
+    a = report["cells"]["all"]
+    assert a["diff"] == 0.5 and a["units"] == 30.0 and a["ranker"] == "gold" and a["samples"] == 20
+    assert 0 <= a["ci95"][0] <= 0.5 <= a["ci95"][1] <= 1

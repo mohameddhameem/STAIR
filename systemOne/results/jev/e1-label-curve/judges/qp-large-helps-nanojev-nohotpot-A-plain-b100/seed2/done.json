@@ -1,0 +1,198 @@
+{
+ "judge": "qp-large-helps-nanojev-nohotpot-A-plain-b100",
+ "inputs": "qp",
+ "label": "large-helps",
+ "init": "runs/nanojev-pretrain/nohotpot/model",
+ "head": "plain",
+ "budget": 100,
+ "train_pair": "A",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "init_name": "nanojev-nohotpot",
+ "seed": 2,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 90,
+ "n_dev": 10,
+ "micro_batch": null,
+ "train_label_rate": 0.16971333610303282,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.6772848467032114,
+   "dev_nll": 0.6104283332824707,
+   "seconds": 0.18137467838823795
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.5617497613032659,
+   "dev_nll": 0.541327953338623,
+   "seconds": 0.18165515549480915
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.493663748105367,
+   "dev_nll": 0.5065200328826904,
+   "seconds": 0.17952227033674717
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.4630974233150482,
+   "dev_nll": 0.5031408667564392,
+   "seconds": 0.17919615283608437
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.4037339463829994,
+   "dev_nll": 0.5284550189971924,
+   "seconds": 0.1747744120657444
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.36140840748945874,
+   "dev_nll": 0.5564756393432617,
+   "seconds": 0.18038171529769897
+  },
+  {
+   "epoch": 7,
+   "train_loss": 0.2558227057258288,
+   "dev_nll": 0.633831262588501,
+   "seconds": 0.18269170261919498
+  },
+  {
+   "epoch": 8,
+   "train_loss": 0.16148577506343523,
+   "dev_nll": 0.5643584132194519,
+   "seconds": 0.16629356145858765
+  },
+  {
+   "epoch": 9,
+   "train_loss": 0.1103705142935117,
+   "dev_nll": 0.6020685434341431,
+   "seconds": 0.17469616420567036
+  },
+  {
+   "epoch": 10,
+   "train_loss": 0.07594992034137249,
+   "dev_nll": 0.6387693881988525,
+   "seconds": 0.17673347145318985
+  },
+  {
+   "epoch": 11,
+   "train_loss": 0.050981499875585236,
+   "dev_nll": 0.675957977771759,
+   "seconds": 0.17880914360284805
+  },
+  {
+   "epoch": 12,
+   "train_loss": 0.03971176532407602,
+   "dev_nll": 0.7087241411209106,
+   "seconds": 0.17796728760004044
+  },
+  {
+   "epoch": 13,
+   "train_loss": 0.033442552822331585,
+   "dev_nll": 0.7384544610977173,
+   "seconds": 0.17470190115273
+  },
+  {
+   "epoch": 14,
+   "train_loss": 0.02851004774371783,
+   "dev_nll": 0.7635420560836792,
+   "seconds": 0.17504879087209702
+  },
+  {
+   "epoch": 15,
+   "train_loss": 0.024700965111454327,
+   "dev_nll": 0.785049557685852,
+   "seconds": 0.17637265287339687
+  },
+  {
+   "epoch": 16,
+   "train_loss": 0.022508756257593632,
+   "dev_nll": 0.802590548992157,
+   "seconds": 0.18007635325193405
+  },
+  {
+   "epoch": 17,
+   "train_loss": 0.020093256297210853,
+   "dev_nll": 0.8174816966056824,
+   "seconds": 0.1679824199527502
+  },
+  {
+   "epoch": 18,
+   "train_loss": 0.01910635797927777,
+   "dev_nll": 0.8280766606330872,
+   "seconds": 0.17665820010006428
+  },
+  {
+   "epoch": 19,
+   "train_loss": 0.017782863539954025,
+   "dev_nll": 0.8388531804084778,
+   "seconds": 0.17691915296018124
+  },
+  {
+   "epoch": 20,
+   "train_loss": 0.01724447092662255,
+   "dev_nll": 0.8453048467636108,
+   "seconds": 0.1750593688338995
+  },
+  {
+   "epoch": 21,
+   "train_loss": 0.01664179532478253,
+   "dev_nll": 0.851824164390564,
+   "seconds": 0.1775144711136818
+  },
+  {
+   "epoch": 22,
+   "train_loss": 0.016118675470352173,
+   "dev_nll": 0.8569111824035645,
+   "seconds": 0.17661262303590775
+  },
+  {
+   "epoch": 23,
+   "train_loss": 0.015587169832239548,
+   "dev_nll": 0.8612598180770874,
+   "seconds": 0.176555797457695
+  },
+  {
+   "epoch": 24,
+   "train_loss": 0.015456479197988907,
+   "dev_nll": 0.8626672625541687,
+   "seconds": 0.17472027987241745
+  },
+  {
+   "epoch": 25,
+   "train_loss": 0.015207185875624418,
+   "dev_nll": 0.8656823039054871,
+   "seconds": 0.17799562774598598
+  }
+ ],
+ "train_seconds": 4.60505205206573,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0009347237294187417,
+  "A/test": 0.0009320581458876215
+ },
+ "init_revision": "local",
+ "init_path": "runs/nanojev-pretrain/nohotpot/model",
+ "device": "cuda"
+}

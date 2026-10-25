@@ -1,0 +1,43 @@
+{
+ "judge": "e1-plain",
+ "inputs": "qpa",
+ "seed": 0,
+ "init": "microsoft/MiniLM-L12-H384-uncased",
+ "train": {
+  "epochs": 2,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "budget": 4814,
+ "train_scores": [
+  "ret",
+  "qa_W",
+  "qa_S"
+ ],
+ "n_train_questions": 4333,
+ "n_dev_questions": 481,
+ "n_train_items": 12999,
+ "n_dev_items": 1443,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.5218603091926153,
+   "dev_nll": 0.5096126794815063,
+   "seconds": 43.441913256421685
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.505252862750091,
+   "dev_nll": 0.5106909871101379,
+   "seconds": 43.20034369267523
+  }
+ ],
+ "train_seconds": 86.70858464762568,
+ "init_revision": "44acabbec0ef496f6dbc93adadea57f376b7c0ec",
+ "device": "cuda"
+}

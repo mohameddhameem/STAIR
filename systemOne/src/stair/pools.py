@@ -10,6 +10,7 @@ candidate with nano-jev, and measures how often a ranker's top k holds the gold 
     pools build  --source train --ids results/gpu/router_train.parquet --count 3000 --name router_train
     pools score  --name test --scorer sdmlai/nano-jev@v1.0 [--device cpu]     # resumable, in chunks
     pools recall --name test --exclude data/hotpotqa/nanojev_validation_ids.txt
+    pools score  --name test --scorer cross-encoder/ms-marco-MiniLM-L12-v2 --kind reranker --column msmarco  # E7
 
 BM25 follows Lucene's formula (Elasticsearch's default: k1 = 1.2, b = 0.75) over lowercase word
 tokens of "title text". AgentTTS used Elasticsearch `multi_match` over the two fields, which scores
@@ -148,19 +149,25 @@ def cmd_build(args) -> None:
                       corpus=len(docs), **provenance.environment())
 
 
+def score_file(out: Path, name: str, column: str = "nanojev") -> Path:
+    """nano-jev's scores are scores/<name>.parquet; another ranker's (Jev novelty E7), scores/<name>-<column>.parquet."""
+    return out / "scores" / (f"{name}.parquet" if column == "nanojev" else f"{name}-{column}.parquet")
+
+
 def cmd_score(args) -> None:
-    from stair.evidence import CrossEncoderScorer
+    from stair.evidence import CrossEncoderScorer, RerankerScorer
 
     pools = pd.read_parquet(args.out / "pools" / f"{args.name}.parquet")
-    parts = args.out / "scores" / f"{args.name}.parts"
+    target = score_file(args.out, args.name, args.column)
+    parts = target.with_suffix(".parts")
     parts.mkdir(parents=True, exist_ok=True)
     chunks = [pools.iloc[i: i + args.chunk_size] for i in range(0, len(pools), args.chunk_size)]
     todo = [c for c in range(len(chunks)) if not (parts / f"{c:05d}.parquet").exists()]
     log.info(f"{args.name}: {len(pools)} pools, {len(chunks)} chunks, {len(todo)} to score")
     if todo:
-        scorer = CrossEncoderScorer(args.scorer, device=args.device)
-        provenance.record(args.out, "pools-score", name=args.name, scorer=args.scorer,
-                          revision=provenance.hub_revision(args.scorer), device=scorer.device,
+        scorer = (RerankerScorer if args.kind == "reranker" else CrossEncoderScorer)(args.scorer, device=args.device)
+        provenance.record(args.out, "pools-score", name=args.name, scorer=args.scorer, kind=args.kind,
+                          column=args.column, revision=provenance.hub_revision(args.scorer), device=scorer.device,
                           **provenance.environment())
     for c in todo:
         rows, start = [], time.perf_counter()
@@ -169,15 +176,15 @@ def cmd_score(args) -> None:
             tokens0, trunc0, t0 = scorer.tokens_seen, scorer.truncated, time.perf_counter()
             s = np.concatenate([scorer.score(p["question"], texts[i: i + args.batch])
                                 for i in range(0, len(texts), args.batch)])  # independent per paragraph
-            rows.append({"id": p["id"], "nanojev": s.astype(float).tolist(), "tokens": scorer.tokens_seen - tokens0,
+            rows.append({"id": p["id"], args.column: s.astype(float).tolist(), "tokens": scorer.tokens_seen - tokens0,
                          "truncated": scorer.truncated - trunc0, "seconds": time.perf_counter() - t0})
         pd.DataFrame(rows).to_parquet(parts / f"{c:05d}.parquet")
         log.info(f"  chunk {c + 1}/{len(chunks)}: {(time.perf_counter() - start) / len(rows):.2f} s/question")
     done = sorted(parts.glob("*.parquet"))
     if len(done) == len(chunks):
         merged = pd.concat([pd.read_parquet(f) for f in done], ignore_index=True)
-        merged.to_parquet(args.out / "scores" / f"{args.name}.parquet")
-        log.info(f"saved {args.out / 'scores' / f'{args.name}.parquet'}")
+        merged.to_parquet(target)
+        log.info(f"saved {target}")
 
 
 def recall_at(scores: list, gold: list, ks=KS) -> dict:
@@ -200,6 +207,11 @@ def cmd_recall(args) -> None:
     pools = pd.read_parquet(args.out / "pools" / f"{args.name}.parquet")
     scores = pd.read_parquet(args.out / "scores" / f"{args.name}.parquet")
     df = pools.merge(scores, on="id", validate="1:1")
+    rankers = [("nanojev", "nanojev"), ("bm25", "bm25")]
+    for extra in sorted((args.out / "scores").glob(f"{args.name}-*.parquet")):  # other rankers (score --column)
+        col = extra.stem[len(args.name) + 1:]
+        df = df.merge(pd.read_parquet(extra, columns=["id", col]), on="id", validate="1:1")
+        rankers.append((col, col))
     exclude = set()
     for path in args.exclude:
         exclude |= {line.strip() for line in path.read_text().splitlines() if line.strip()}
@@ -217,7 +229,7 @@ def cmd_recall(args) -> None:
         if d.empty:
             continue
         report["subsets"][name] = {"n": len(d), **{ranker: recall_at(d[col].tolist(), d["gold_idx"].tolist())
-                                                   for ranker, col in (("nanojev", "nanojev"), ("bm25", "bm25"))}}
+                                                   for ranker, col in rankers}}
     target = args.out / f"recall-{args.name}.json"
     target.write_text(json.dumps(report, indent=1))
     log.info(f"{args.name}: {len(df)} pools of {report['pool_size_mean']:.1f} | nano-jev "
@@ -246,6 +258,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     s = sub.add_parser("score")
     s.add_argument("--name", required=True)
     s.add_argument("--scorer", default="sdmlai/nano-jev@v1.0")
+    s.add_argument("--kind", choices=["cross-encoder", "reranker"], default="cross-encoder",
+                   help="cross-encoder: nano-jev's typed relevance; reranker: one relevance logit (MS MARCO)")
+    s.add_argument("--column", default="nanojev", help="the score column; any other than nanojev is written to "
+                                                       "scores/<name>-<column>.parquet")
     s.add_argument("--device", help="cuda or cpu (default: cuda if available)")
     s.add_argument("--chunk-size", type=int, default=25, help="questions per resumable chunk")
     s.add_argument("--batch", type=int, default=16, help="paragraphs per forward pass (memory only)")

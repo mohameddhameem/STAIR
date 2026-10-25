@@ -1,0 +1,56 @@
+{
+ "judge": "qpa-large-helps-nanojev-C",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "sdmlai/nano-jev@v1.0",
+ "train_pair": "C",
+ "seed": 2,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1
+ },
+ "n_train": 4332,
+ "n_dev": 482,
+ "micro_batch": null,
+ "train_label_rate": 0.14977149979227253,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.45282262756155867,
+   "dev_nll": 0.4013162851333618,
+   "seconds": 14.450965160503983
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.3512250891168399,
+   "dev_nll": 0.41937869787216187,
+   "seconds": 14.529254779219627
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.2657904411318997,
+   "dev_nll": 0.48152273893356323,
+   "seconds": 14.428928937762976
+  }
+ ],
+ "train_seconds": 43.47031479515135,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0021361007799839114,
+  "A/test": 0.0021302971604061963,
+  "B/calib": "reused",
+  "B/test": "reused",
+  "C/calib": 0.0021334964463168436,
+  "C/test": 0.0021238513429228476,
+  "D/calib": 0.002127829027941098,
+  "D/test": 0.0021222545856523158
+ },
+ "init_revision": "ffee345e97797bef0948561461ea54fe558588a0",
+ "init_path": "sdmlai/nano-jev@v1.0",
+ "device": "cuda"
+}

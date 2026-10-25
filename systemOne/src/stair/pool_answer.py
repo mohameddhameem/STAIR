@@ -14,6 +14,10 @@ retriever). Two deliberate deviations:
     pool-answer run --plan configs/exp8.toml --split test [--only llama3b-top5] [--limit 20]
     pool-answer summary --plan configs/exp8.toml
     pool-answer recost --plan configs/exp8.toml --split test   # rewrite a finished split's cost under Eq. 8
+    pool-answer compare --plan configs/e7-evidence.toml --split test --base llama3b-s20fuse-top5   # paired intervals
+
+A cell's `ranker` (Jev novelty E7) picks its passages: nano-jev's scores (the default), `bm25` (the pool's BM25),
+another scored ranker (`msmarco`: pools score --column msmarco), or the `gold` oracle (the gold paragraphs first).
 
 Every call records its prompt and generated tokens. Cost is GFLOPs = 2 x params x tokens as AgentTTS
 counts them (App. A.2, Eq. 8): the samples of one prompt share its prefill, so the prompt counts once
@@ -50,6 +54,7 @@ SYSTEM = "You are a helpful assistant."
 FUSER_SYSTEM = "You are a helpful assistant who fuses multiple answers"
 UNIT_GFLOPS = 2 * 3.0 * (128 + 64)  # AgentTTS's budget unit: one 3B pass on its cheapest task
 NANOJEV_PARAMS_B = 0.0334
+RANKER_PARAMS_B = {"msmarco": 0.0334}  # cross-encoder/ms-marco-MiniLM-L12-v2: nano-jev's MiniLM-L12-H384 architecture
 
 
 def qa_prompt(question: str, passages: list[str]) -> str:
@@ -195,9 +200,14 @@ class Generator:
         return results
 
 
-def top_passages(pool: pd.Series, scores: list[float], k: int) -> list[str]:
-    order = np.argsort(-np.asarray(scores), kind="stable")[:k]
-    return [pool["texts"][i] for i in order]
+def ranked(pool: pd.Series, ranker: str = "nanojev") -> np.ndarray:
+    """A pool's candidates in a ranker's order (Jev novelty E7): its scores' column (nanojev, bm25, or another ranker's
+    scores merged by load_split), or `gold`, an oracle: the gold paragraphs, then the rest in nano-jev's order."""
+    order = np.argsort(-np.asarray(pool["nanojev" if ranker == "gold" else ranker]), kind="stable")
+    if ranker == "gold":
+        gold = set(np.asarray(pool["gold_idx"]).tolist())
+        order = np.array([i for i in order if i in gold] + [i for i in order if i not in gold])
+    return order
 
 
 def answer_chunk(gen: Generator, cell: dict, rows: pd.DataFrame, seed: int) -> pd.DataFrame:
@@ -259,14 +269,24 @@ def reused_answers(plan: dict, cell: str) -> pd.DataFrame:
     return pd.concat(found).drop_duplicates("id").set_index("id") if found else pd.DataFrame()
 
 
-def load_split(out: Path, split: str, k: int, limit: int | None) -> pd.DataFrame:
+def load_split(out: Path, split: str, k: int, limit: int | None, ranker: str = "nanojev") -> pd.DataFrame:
+    """A split's pools with each question's top k passages by `ranker` (see `ranked`) and what ranking cost:
+    ranker_gflops is nano-jev's scoring (also for the gold oracle, whose fill is in nano-jev's order), 0 for BM25, or
+    the other ranker's own scoring (scores/<split>-<ranker>.parquet, pools score --column)."""
     pools = pd.read_parquet(out / "pools" / f"{split}.parquet")
     scores = pd.read_parquet(out / "scores" / f"{split}.parquet", columns=["id", "nanojev", "tokens"])
     df = pools.merge(scores, on="id", validate="1:1")
+    df["nanojev_gflops"] = 2 * NANOJEV_PARAMS_B * df["tokens"]
+    df["ranker_gflops"] = 0.0 if ranker == "bm25" else df["nanojev_gflops"]
+    if ranker not in ("nanojev", "bm25", "gold"):
+        other = pd.read_parquet(out / "scores" / f"{split}-{ranker}.parquet", columns=["id", ranker, "tokens"])
+        df = df.merge(other.rename(columns={"tokens": "ranker_tokens"}), on="id", validate="1:1")
+        if len(df) != len(pools):
+            raise ValueError(f"{split}-{ranker}: scores for {len(df)} of {len(pools)} pools")
+        df["ranker_gflops"] = 2 * RANKER_PARAMS_B[ranker] * df["ranker_tokens"]
     if limit:
         df = df.head(limit)
-    df["passages"] = [top_passages(r, r["nanojev"], k) for _, r in df.iterrows()]
-    df["nanojev_gflops"] = 2 * NANOJEV_PARAMS_B * df["tokens"]
+    df["passages"] = [[r["texts"][i] for i in ranked(r, ranker)[:k]] for _, r in df.iterrows()]
     return df.reset_index(drop=True)
 
 
@@ -275,7 +295,7 @@ def cmd_run(args, plan: dict) -> None:
     for cell in plan["cells"]:
         if args.only and cell["name"] not in args.only:
             continue
-        df = load_split(out, args.split, cell["top_k"], args.limit)
+        df = load_split(out, args.split, cell["top_k"], args.limit, cell.get("ranker", "nanojev"))
         if cell.get("prompt") == "slr":
             df["block"] = passage_blocks(df, cell)
         suffix = f"-limit{args.limit}" if args.limit else ""
@@ -312,8 +332,8 @@ def cmd_run(args, plan: dict) -> None:
             merged = pd.concat([pd.read_parquet(f) for f in files]
                                + ([reused.loc[df["id"][df["id"].isin(reused.index)]].reset_index()] if len(reused) else []),
                                ignore_index=True).set_index("id").loc[df["id"]].reset_index()  # the split's order
-            # from the tokens, so chunks written before the Eq. 8 change merge right; every cell pays nano-jev's scoring
-            merged["gflops"] = token_gflops(merged, cell["params"]) + df["nanojev_gflops"].to_numpy()
+            # from the tokens, so chunks written before the Eq. 8 change merge right; every cell pays its ranker's scoring
+            merged["gflops"] = token_gflops(merged, cell["params"]) + df["ranker_gflops"].to_numpy()
             merged["units"] = merged["gflops"] / UNIT_GFLOPS
             merged.to_parquet(parts.parent / f"{cell['name']}.parquet")
 
@@ -393,15 +413,48 @@ def cmd_summary(args, plan: dict) -> None:
         log.info("\n" + table.round(3).to_string(index=False))
 
 
+def cmd_compare(args, plan: dict) -> None:
+    """Jev novelty E7: each finished cell of the plan against `--base` on all of the split's questions, by the team's
+    lenient ruler, with a paired bootstrap over questions; writes answers/compare-<split>.json."""
+    from stair_common.score import lenient as lenient_std
+
+    out = Path(plan.get("out", "runs/exp8"))
+    gold = pd.read_parquet(out / "pools" / f"{args.split}.parquet", columns=["id", "answer"]).set_index("id")["answer"]
+    folder = out / "answers" / args.split
+    specs = {c["name"]: c for c in plan["cells"] if (folder / f"{c['name']}.parquet").exists()}
+    if args.base not in specs:
+        raise SystemExit(f"{args.base}: no finished answers in {folder}")
+    cells = {k: pd.read_parquet(folder / f"{k}.parquet").set_index("id").loc[gold.index] for k in specs}
+    ok = {k: np.array([lenient_std(str(p), [str(g)]) for p, g in zip(d["pred"], gold)], dtype=float)
+          for k, d in cells.items()}
+    rows = np.random.default_rng(args.seed).integers(0, len(gold), size=(args.bootstrap, len(gold)))
+    report = {"split": args.split, "base": args.base, "n": len(gold), "bootstrap": args.bootstrap, "cells": {}}
+    for k, d in cells.items():
+        diff = ok[k] - ok[args.base]
+        boot = diff[rows].mean(axis=1)
+        report["cells"][k] = {"ranker": specs[k].get("ranker", "nanojev"), "top_k": specs[k]["top_k"],
+                              "samples": specs[k].get("samples", 1), "fuse": specs[k].get("fuse", False),
+                              "lenient_std": float(ok[k].mean()), "units": float(d["units"].mean()),
+                              "diff": float(diff.mean()), "ci95": np.percentile(boot, [2.5, 97.5]).tolist(),
+                              "p_le_0": float((boot <= 0).mean())}
+        lo, hi = report["cells"][k]["ci95"]
+        log.info(f"{k:32s} lenient {ok[k].mean():.3f} at {d['units'].mean():6.1f} units | "
+                 f"vs {args.base} {diff.mean():+.3f} [{lo:+.3f}, {hi:+.3f}]")
+    (folder.parent / f"compare-{args.split}.json").write_text(json.dumps(report, indent=1))
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("step", choices=["run", "summary", "recost"])
+    parser.add_argument("step", choices=["run", "summary", "recost", "compare"])
     parser.add_argument("--plan", type=Path, default=Path("configs/exp8.toml"))
     parser.add_argument("--split", default="test", help="run: pools/<split>.parquet")
     parser.add_argument("--only", action="append", default=[], help="run: cell names (default all); repeatable")
     parser.add_argument("--limit", type=int, help="run: first N questions only (a pilot); written to <split>-limitN")
     parser.add_argument("--chunk-size", type=int, default=50, help="run: questions per resumable chunk")
     parser.add_argument("--device", help="cuda or cpu (default: cuda if available)")
+    parser.add_argument("--base", help="compare: the cell every other is set against")
+    parser.add_argument("--bootstrap", type=int, default=2000, help="compare: paired resamples of the questions")
+    parser.add_argument("--seed", type=int, default=0, help="compare: the bootstrap's seed")
     return parser.parse_args(argv)
 
 
@@ -409,7 +462,7 @@ def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     plan = tomllib.loads(args.plan.read_text())
-    {"run": cmd_run, "summary": cmd_summary, "recost": cmd_recost}[args.step](args, plan)
+    {"run": cmd_run, "summary": cmd_summary, "recost": cmd_recost, "compare": cmd_compare}[args.step](args, plan)
 
 
 if __name__ == "__main__":

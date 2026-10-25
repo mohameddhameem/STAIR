@@ -1,0 +1,186 @@
+{
+ "judge": "qp-large-helps-nanojev-repro-A-plain-b100",
+ "inputs": "qp",
+ "label": "large-helps",
+ "init": "runs/nanojev-pretrain/repro/model",
+ "head": "plain",
+ "budget": 100,
+ "train_pair": "A",
+ "init_name": "nanojev-repro",
+ "seed": 0,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 90,
+ "n_dev": 10,
+ "micro_batch": null,
+ "train_label_rate": 0.34690486082260075,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.6803488632043203,
+   "dev_nll": 0.663838267326355,
+   "seconds": 0.19351408444344997
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.6559465527534485,
+   "dev_nll": 0.5943158268928528,
+   "seconds": 0.19068197533488274
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.6292429268360138,
+   "dev_nll": 0.6498268246650696,
+   "seconds": 0.18180373683571815
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.5963422507047653,
+   "dev_nll": 0.6996796727180481,
+   "seconds": 0.20344547554850578
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.6020653247833252,
+   "dev_nll": 0.7039440870285034,
+   "seconds": 0.1921497993171215
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.5340146869421005,
+   "dev_nll": 0.7190073132514954,
+   "seconds": 0.2028726078569889
+  },
+  {
+   "epoch": 7,
+   "train_loss": 0.48263174792130786,
+   "dev_nll": 0.8075343370437622,
+   "seconds": 0.2023173589259386
+  },
+  {
+   "epoch": 8,
+   "train_loss": 0.4249677509069443,
+   "dev_nll": 0.7596101760864258,
+   "seconds": 0.195823535323143
+  },
+  {
+   "epoch": 9,
+   "train_loss": 0.3774994909763336,
+   "dev_nll": 0.732079803943634,
+   "seconds": 0.1840203907340765
+  },
+  {
+   "epoch": 10,
+   "train_loss": 0.2825980136791865,
+   "dev_nll": 0.9130600690841675,
+   "seconds": 0.18657780066132545
+  },
+  {
+   "epoch": 11,
+   "train_loss": 0.21546488255262375,
+   "dev_nll": 0.8852699995040894,
+   "seconds": 0.1912424210458994
+  },
+  {
+   "epoch": 12,
+   "train_loss": 0.1806255504488945,
+   "dev_nll": 0.9515867233276367,
+   "seconds": 0.19100771099328995
+  },
+  {
+   "epoch": 13,
+   "train_loss": 0.13955956200758615,
+   "dev_nll": 1.0820338726043701,
+   "seconds": 0.18966662138700485
+  },
+  {
+   "epoch": 14,
+   "train_loss": 0.0844029076397419,
+   "dev_nll": 1.206114649772644,
+   "seconds": 0.19885631278157234
+  },
+  {
+   "epoch": 15,
+   "train_loss": 0.06633905631800492,
+   "dev_nll": 1.2274037599563599,
+   "seconds": 0.19771056436002254
+  },
+  {
+   "epoch": 16,
+   "train_loss": 0.05497065186500549,
+   "dev_nll": 1.2925294637680054,
+   "seconds": 0.1890808381140232
+  },
+  {
+   "epoch": 17,
+   "train_loss": 0.045523843417565026,
+   "dev_nll": 1.363982081413269,
+   "seconds": 0.19687857292592525
+  },
+  {
+   "epoch": 18,
+   "train_loss": 0.04075849428772926,
+   "dev_nll": 1.557560920715332,
+   "seconds": 0.19896714761853218
+  },
+  {
+   "epoch": 19,
+   "train_loss": 0.041361892595887184,
+   "dev_nll": 1.6758867502212524,
+   "seconds": 0.19618043676018715
+  },
+  {
+   "epoch": 20,
+   "train_loss": 0.06342671935757001,
+   "dev_nll": 1.6698675155639648,
+   "seconds": 0.19702109321951866
+  },
+  {
+   "epoch": 21,
+   "train_loss": 0.03077382470170657,
+   "dev_nll": 1.6639444828033447,
+   "seconds": 0.20231826230883598
+  },
+  {
+   "epoch": 22,
+   "train_loss": 0.029471533372998238,
+   "dev_nll": 1.644662857055664,
+   "seconds": 0.19118534959852695
+  },
+  {
+   "epoch": 23,
+   "train_loss": 0.02871704784532388,
+   "dev_nll": 1.6580009460449219,
+   "seconds": 0.1910980213433504
+  },
+  {
+   "epoch": 24,
+   "train_loss": 0.028491716211040814,
+   "dev_nll": 1.6661583185195923,
+   "seconds": 0.19092160277068615
+  },
+  {
+   "epoch": 25,
+   "train_loss": 0.02824929232398669,
+   "dev_nll": 1.6558958292007446,
+   "seconds": 0.1889358125627041
+  }
+ ],
+ "train_seconds": 4.967482114210725,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0010743735283613204,
+  "A/test": 0.0010516671612858773
+ },
+ "init_revision": "local",
+ "init_path": "runs/nanojev-pretrain/repro/model",
+ "device": "cuda"
+}

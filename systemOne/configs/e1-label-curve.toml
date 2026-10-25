@@ -1,0 +1,54 @@
+# Jev novelty E1 (docs/experiments/2026-10-24-jev-preregistration.md): decision pretraining x routing-label budget on
+# the HotpotQA golden set, pair A (Qwen2.5-1.5B on the top 2 / 7B on all 10; runs/slr-pairA, as system-one-slr.toml).
+# Five 33M MiniLM-L12 starting points x two heads (typed option scoring / plain untyped classifier) x qp / qpa x seven
+# nested, stratified label budgets (judge.budget_split: a budget counts the dev hold-out too), 10 seeds up to 500
+# labels and 5 above. The local inits come from `nanojev-pretrain` (runs/nanojev-pretrain). Analysis: label-curve.
+#   uv run judge train --plan configs/e1-label-curve.toml --data-dir data/hotpotqa --out runs/e1-label-curve [--match qp-large]
+metric = "lenient"
+cost = "table5"
+tau = 0.5
+max_drop = 0.01
+seeds = [0, 1, 2, 3, 4]
+
+[pairs]
+A = "runs/slr-pairA"
+
+[split_data]  # every golden-set split is dev
+router_train = "distractor_validation.parquet"
+calib = "distractor_validation.parquet"
+test = "distractor_validation.parquet"
+
+[init_names]
+"runs/nanojev-pretrain/repro/model" = "nanojev-repro"
+"runs/nanojev-pretrain/nohotpot/model" = "nanojev-nohotpot"
+
+# nano-jev v1.0's own fine-tuning settings (as system-one-slr.toml); min_steps keeps small budgets trainable
+[train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+min_steps = 150
+
+[[judges]]
+inputs = ["qp", "qpa"]
+label = "large-helps"
+init = ["sdmlai/nano-jev@v1.0", "microsoft/MiniLM-L12-H384-uncased", "cross-encoder/ms-marco-MiniLM-L12-v2",
+        "runs/nanojev-pretrain/repro/model", "runs/nanojev-pretrain/nohotpot/model"]
+head = ["typed", "plain"]
+budget = [50, 100, 250, 500]
+train_pair = "A"
+seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+[[judges]]
+inputs = ["qp", "qpa"]
+label = "large-helps"
+init = ["sdmlai/nano-jev@v1.0", "microsoft/MiniLM-L12-H384-uncased", "cross-encoder/ms-marco-MiniLM-L12-v2",
+        "runs/nanojev-pretrain/repro/model", "runs/nanojev-pretrain/nohotpot/model"]
+head = ["typed", "plain"]
+budget = [1000, 2000, 4814]
+train_pair = "A"
+seeds = [0, 1, 2, 3, 4]

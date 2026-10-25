@@ -1,0 +1,54 @@
+# Jev novelty E5 (pre-registration H5): do the pair-A judges transfer to other model pairs without retraining? Pairs A-D
+# on the HotpotQA golden set (slr-* splits; B, C cut from experiments 4-5's dev caches, D from configs/gpu-pairD.toml).
+# Each judge is trained on one pair and scored on every pair (judge.run_train), so the train_pair = "A" judges are the
+# frozen transfer arm and the others the retrained references.
+#   uv run judge all --plan configs/e5-transfer.toml --out runs/e5-transfer --exclude data/hotpotqa/nanojev_validation_ids.txt
+metric = "lenient"
+cost = "table5"
+tau = 0.5
+max_drop = 0.01
+seeds = [0, 1, 2, 3, 4]
+
+[pairs]
+A = "runs/slr-pairA"   # Qwen2.5-1.5B (top 2) / Qwen2.5-7B (all 10)
+B = "runs/slr-pairB"   # Qwen2.5-1.5B (top 2) / Qwen2.5-14B (all 10)
+C = "runs/slr-pairC"   # Qwen2.5-3B (top 2) / Qwen2.5-7B (all 10)
+D = "runs/slr-pairD"   # Llama-3.2-3B (top 2) / Llama-3.1-8B (all 10)
+
+[split_data]  # every golden-set split is dev
+router_train = "distractor_validation.parquet"
+calib = "distractor_validation.parquet"
+test = "distractor_validation.parquet"
+
+[train]  # nano-jev v1.0's fine-tuning settings, as system-one-slr.toml
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+dev_fraction = 0.1
+
+[[judges]]
+inputs = ["qp", "qpa"]
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "A"
+
+[[judges]]
+inputs = ["qp", "qpa"]
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "B"
+
+[[judges]]
+inputs = ["qp", "qpa"]
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "C"
+
+[[judges]]
+inputs = ["qp", "qpa"]
+label = "large-helps"
+init = "sdmlai/nano-jev@v1.0"
+train_pair = "D"

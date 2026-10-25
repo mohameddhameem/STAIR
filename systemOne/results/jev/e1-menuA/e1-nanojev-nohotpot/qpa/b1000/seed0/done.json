@@ -1,0 +1,43 @@
+{
+ "judge": "e1-nanojev-nohotpot",
+ "inputs": "qpa",
+ "seed": 0,
+ "init": "runs/nanojev-pretrain/nohotpot/model",
+ "train": {
+  "epochs": 2,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "budget": 1000,
+ "train_scores": [
+  "ret",
+  "qa_W",
+  "qa_S"
+ ],
+ "n_train_questions": 900,
+ "n_dev_questions": 100,
+ "n_train_items": 2700,
+ "n_dev_items": 300,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.5177000301653112,
+   "dev_nll": 0.5467870235443115,
+   "seconds": 9.071250848472118
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.4342751730916768,
+   "dev_nll": 0.6033139824867249,
+   "seconds": 9.153375105932355
+  }
+ ],
+ "train_seconds": 18.286470325663686,
+ "init_revision": "local",
+ "device": "cuda"
+}

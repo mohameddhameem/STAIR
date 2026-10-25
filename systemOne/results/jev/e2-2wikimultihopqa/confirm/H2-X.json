@@ -1,0 +1,144 @@
+{
+ "n_test": 2000,
+ "n_boot": 5000,
+ "delta": 0.01,
+ "random_aiq": 0.43625,
+ "aiq": {
+  "judge/q-large-helps-nanojev-A": 0.46312885572139306,
+  "judge/qp-large-helps-hotpotqa-A": 0.47058872305140964,
+  "judge/qp-large-helps-nanojev-A": 0.4833452736318408,
+  "judge/qpa-large-helps-hotpotqa-A": 0.46869575697899385,
+  "judge/qpa-large-helps-nanojev-A": 0.4798712444444444,
+  "opponent-after": 0.4762056471807628,
+  "opponent-before": 0.47270398009950243
+ },
+ "tests": {
+  "H2a qp > q": {
+   "kind": "superiority",
+   "a": "judge/qp-large-helps-nanojev-A",
+   "b": "judge/q-large-helps-nanojev-A",
+   "ratio": null,
+   "estimate": 0.02021641791044776,
+   "ci90": [
+    0.01414718905472635,
+    0.0268251741293533
+   ],
+   "ci95": [
+    0.012933594527363246,
+    0.02803976990049748
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H2b q ~ random": {
+   "kind": "equivalence",
+   "a": "judge/q-large-helps-nanojev-A",
+   "b": null,
+   "ratio": null,
+   "estimate": 0.026878855721393036,
+   "ci90": [
+    0.021874975124378106,
+    0.03352936567164172
+   ],
+   "ci95": [
+    0.020822325870646814,
+    0.03464197139303475
+   ],
+   "p": 1.0,
+   "p_holm": 1.0,
+   "supported": false
+  },
+  "H2c qp >= stronger(entropy, LR before) - delta": {
+   "kind": "noninferiority",
+   "a": "judge/qp-large-helps-nanojev-A",
+   "b": "opponent-before",
+   "ratio": null,
+   "estimate": 0.010641293532338392,
+   "ci90": [
+    0.00600919154228862,
+    0.015326492537313413
+   ],
+   "ci95": [
+    0.005275267412935371,
+    0.01617222014925369
+   ],
+   "p": 0.0,
+   "p_holm": 0.0,
+   "supported": true
+  },
+  "H2c qpa >= stronger(entropy, LR cascade) - delta": {
+   "kind": "noninferiority",
+   "a": "judge/qpa-large-helps-nanojev-A",
+   "b": "opponent-after",
+   "ratio": null,
+   "estimate": 0.003665597263681597,
+   "ci90": [
+    -0.0026604392658729765,
+    0.009688022929400643
+   ],
+   "ci95": [
+    -0.003937190988806055,
+    0.010814411154643442
+   ],
+   "p": 0.0002,
+   "p_holm": 0.0008,
+   "supported": true
+  },
+  "H2d qp: HotpotQA judge keeps >= 75% of the in-domain gain": {
+   "kind": "ratio",
+   "a": "judge/qp-large-helps-hotpotqa-A",
+   "b": "judge/qp-large-helps-nanojev-A",
+   "ratio": 0.75,
+   "estimate": -0.000982732172470982,
+   "ci90": [
+    -0.006741052031509131,
+    0.005277995439469373
+   ],
+   "ci95": [
+    -0.008122572035655203,
+    0.006410432213930306
+   ],
+   "p": 0.571,
+   "p_holm": 1.0,
+   "supported": false
+  },
+  "H2d qpa: HotpotQA judge keeps >= 75% of the in-domain gain": {
+   "kind": "ratio",
+   "a": "judge/qpa-large-helps-hotpotqa-A",
+   "b": "judge/qpa-large-helps-nanojev-A",
+   "ratio": 0.75,
+   "estimate": -0.0002701763543394575,
+   "ci90": [
+    -0.0077642523166903,
+    0.007555060906923703
+   ],
+   "ci95": [
+    -0.009459817102767457,
+    0.009182894384414834
+   ],
+   "p": 0.4924,
+   "p_holm": 1.0,
+   "supported": false
+  }
+ },
+ "all_aiq": {
+  "judge/q-large-helps-nanojev-A": 0.46312885572139306,
+  "judge/qp-large-helps-nanojev-A": 0.4833452736318408,
+  "judge/qpa-large-helps-nanojev-A": 0.4798712444444444,
+  "judge/qp-large-helps-hotpotqa-A": 0.47058872305140964,
+  "judge/qpa-large-helps-hotpotqa-A": 0.46869575697899385,
+  "router:question/large-helps": 0.4625211442786071,
+  "router:question+evidence/large-helps": 0.47270398009950243,
+  "router:evidence/large-helps": 0.45920895522388067,
+  "router:evidence+small/large-helps": 0.4590928233830846,
+  "router:question+evidence+small/large-helps": 0.4762056471807628,
+  "small-entropy (post)": 0.45218664179104473,
+  "opponent-before": 0.47270398009950243,
+  "opponent-after": 0.4762056471807628
+ },
+ "opponents": {
+  "opponent-before": "router:question+evidence/large-helps",
+  "opponent-after": "router:question+evidence+small/large-helps"
+ }
+}

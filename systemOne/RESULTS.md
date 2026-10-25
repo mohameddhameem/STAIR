@@ -158,3 +158,42 @@ top 5.
 - on his 72B's selections, it scores 76.23 (his always-strong is 76.77);
 - on nano-jev's top 5, it scores 69.82: −6.4 points for retrieval;
 - the prompt itself is worth 1.5, which is not significant.
+
+**Published judges (2026-10-25):** nano-jev qp and qpa, retrained with their weights saved. Their AIQ is 0.674 /
+0.674 (3-seed ensembles). The qpa run above (0.677) is the same recipe without saved weights. Links and numbers are
+in [MODELS.md](MODELS.md).
+
+## The Jev novelty programme (2026-10-23 to 25)
+
+**What it tested:** what nano-jev's typed-decision pretraining adds to routing on pair A. The full write-up is
+[here](docs/experiments/2026-10-25-jev-novelty.md).
+- **Pre-registration:** [here](docs/experiments/2026-10-24-jev-preregistration.md). It was committed before any
+  MuSiQue or 2Wiki answers existed. Its dates read 2026-10-24, but it was written on 2026-10-23 (deviation 8).
+- **Datasets:** HotpotQA is exploratory. MuSiQue and 2WikiMultiHopQA are confirmatory, so a claim is *confirmed*
+  when it holds on both.
+- **Tests:** δ = 0.010 AIQ, Holm within each family. Report files are in [results/jev/](results/jev/).
+- **2Wiki split:** the team's 2Wiki val and test parts have no gold answers, so this programme uses 2Wiki's
+  official dev set in the team's order (deviation 1).
+
+| Claim | Status | HotpotQA / MuSiQue / 2Wiki |
+|---|---|---|
+| H1a: starting from nano-jev beats plain MiniLM (label-curve area, qp) | **Confirmed** | +0.021 / +0.010 / +0.019 |
+| H1a, qpa | Replicated | +0.022 / +0.008 / +0.003 |
+| H1b: the advantage is largest with few labels | Fails | the gap grows with labels |
+| H1d: the typed head beats a plain head | Fails | +0.004 / +0.004 / +0.005, none after Holm |
+| H2a: passages beat the question alone | **Confirmed** | MuSiQue +0.011, 2Wiki +0.025 |
+| H2b: question-only routes at chance | Fails | it beats random by +0.010 / +0.030 |
+| H2c: non-inferior to entropy and the LR routers | **Confirmed** | better only for qp on 2Wiki |
+| H2d: a HotpotQA judge keeps 75% of its gain elsewhere | Not shown | 68–108%, wide intervals |
+| H3a: non-inferior to every cheap weak-model signal (MSP, log-prob, margin, P(True), NLI, hidden-state probe) | **Confirmed** | closest is the probe, +0.009 / +0.005 / +0.008 |
+| H3b: beats self-consistency and semantic entropy (10 samples) | Confirmed, priced | with the samples free: +0.015 on HotpotQA, +0.036 on 2Wiki, a tie on MuSiQue |
+| H4a: one untrained typed question closes half the random-to-trained gap | **Confirmed** | 77% / 86% / 83% |
+| H4b: 50 labels close 75% | Fails | 48–65% |
+| H5a: a frozen judge transfers to other model pairs | Exploratory | 2 of 3 pairs, including Llama 3B / 8B |
+| H6: risk-controlled escalation saves cost | Trivial | it keeps 0–0.5% of questions |
+| E6: one 4-option question on menu A | Exploratory | +0.004 [+0.002, +0.007] over two stage decisions; against Jonathan's 1.5B router [−0.009, +0.002] |
+| E7: nano-jev's ranking with 20 fused samples | Descriptive | +0.057 over MS MARCO, +0.122 over BM25 |
+| E9: latency per decision | Measured | CPU 123 ms (1.5B router 4.8 s, 39×); L40S 6.4 ms (11.5 ms, 1.8×) |
+
+**Not run** (the write-up lists every item): the dollar re-pricing, the BERT and kNN question routers, and H3 on
+2Wiki's 2,000-question secondary test.

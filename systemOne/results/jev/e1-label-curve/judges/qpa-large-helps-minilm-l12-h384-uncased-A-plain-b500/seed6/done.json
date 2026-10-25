@@ -1,0 +1,83 @@
+{
+ "judge": "qpa-large-helps-minilm-l12-h384-uncased-A-plain-b500",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "microsoft/MiniLM-L12-H384-uncased",
+ "head": "plain",
+ "budget": 500,
+ "train_pair": "A",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "seed": 6,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 450,
+ "n_dev": 50,
+ "micro_batch": null,
+ "train_label_rate": 0.16971333610303282,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.541958749294281,
+   "dev_nll": 0.442958801984787,
+   "seconds": 0.849189504981041
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.48014602322002936,
+   "dev_nll": 0.4396030902862549,
+   "seconds": 0.8453146852552891
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.4517829531225665,
+   "dev_nll": 0.4406827688217163,
+   "seconds": 0.8333371374756098
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.45032846619342937,
+   "dev_nll": 0.4395310580730438,
+   "seconds": 0.8293816763907671
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.45067849344220656,
+   "dev_nll": 0.43965139985084534,
+   "seconds": 0.8467576093971729
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.47496100797735413,
+   "dev_nll": 0.439706951379776,
+   "seconds": 0.8344253376126289
+  }
+ ],
+ "train_seconds": 5.202053874731064,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0009480595639025843,
+  "A/test": 0.0009480796686444711
+ },
+ "init_revision": "44acabbec0ef496f6dbc93adadea57f376b7c0ec",
+ "init_path": "microsoft/MiniLM-L12-H384-uncased",
+ "device": "cuda"
+}

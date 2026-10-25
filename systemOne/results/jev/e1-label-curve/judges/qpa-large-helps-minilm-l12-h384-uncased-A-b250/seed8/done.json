@@ -1,0 +1,107 @@
+{
+ "judge": "qpa-large-helps-minilm-l12-h384-uncased-A-b250",
+ "inputs": "qpa",
+ "label": "large-helps",
+ "init": "microsoft/MiniLM-L12-H384-uncased",
+ "head": "typed",
+ "budget": 250,
+ "train_pair": "A",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "seed": 8,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 225,
+ "n_dev": 25,
+ "micro_batch": null,
+ "train_label_rate": 0.16971333610303282,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.6931051333745321,
+   "dev_nll": 0.6930519938468933,
+   "seconds": 0.7137382328510284
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.6927855968475342,
+   "dev_nll": 0.6895720958709717,
+   "seconds": 0.7294148914515972
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.5814198086659114,
+   "dev_nll": 0.44090718030929565,
+   "seconds": 0.7412623949348927
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.45108800729115806,
+   "dev_nll": 0.4408366084098816,
+   "seconds": 0.7423807382583618
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.5450284202893575,
+   "dev_nll": 0.449890673160553,
+   "seconds": 0.7158904913812876
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.4747936099767685,
+   "dev_nll": 0.44035035371780396,
+   "seconds": 0.7302826642990112
+  },
+  {
+   "epoch": 7,
+   "train_loss": 0.4457023859024048,
+   "dev_nll": 0.4410039782524109,
+   "seconds": 0.7512267213314772
+  },
+  {
+   "epoch": 8,
+   "train_loss": 0.4461210002501806,
+   "dev_nll": 0.43980610370635986,
+   "seconds": 0.7158817499876022
+  },
+  {
+   "epoch": 9,
+   "train_loss": 0.4389813443024953,
+   "dev_nll": 0.44025811553001404,
+   "seconds": 0.7416321951895952
+  },
+  {
+   "epoch": 10,
+   "train_loss": 0.5366209516922633,
+   "dev_nll": 0.44081398844718933,
+   "seconds": 0.7214183434844017
+  }
+ ],
+ "train_seconds": 7.557858359068632,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0021194313476617273,
+  "A/test": 0.0021165993987789515
+ },
+ "init_revision": "44acabbec0ef496f6dbc93adadea57f376b7c0ec",
+ "init_path": "microsoft/MiniLM-L12-H384-uncased",
+ "device": "cuda"
+}

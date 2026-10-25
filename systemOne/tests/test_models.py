@@ -284,6 +284,80 @@ train_pair = "B"
     assert (out / "judges" / "qpa-small-fails-ce-A" / "seed0" / "done.json").stat().st_mtime == before  # resumes
 
 
+def test_plain_head_reads_no_option_text(tiny_models):
+    from stair.judge import Judge, fine_tune
+
+    items = [{"question": f"Which model should answer this question: q{i}", "options": ("small model", "large model"),
+              "state": "Film: It was directed by Kalo." * (i + 1)} for i in range(6)]
+    plain = Judge(str(tiny_models / "ce"), "cpu", 64, head="plain")
+    assert plain.model.config.num_labels == 2 and plain.temperatures == {}  # a fresh head, no typed calibration
+    enc = plain.encode(items)
+    assert enc["input_ids"].shape[0] == 6  # one pair per item, not one per option
+    assert "option" not in plain.tokenizer.decode(enc["input_ids"][0])
+    probs, tokens = plain.probabilities(items)
+    assert probs.shape == (6, 2) and np.allclose(probs.sum(axis=1), 1) and (tokens > 0).all()
+    history = fine_tune(plain, items[:4], np.array([0, 1, 0, 1]), items[4:], np.array([1, 0]), 1, 1e-3, 0.0, 0.0, 2,
+                        seed=0, min_steps=6)
+    assert len(history) == 3  # 2 steps an epoch: min_steps adds epochs
+
+
+def test_label_budget_grid_end_to_end(tiny_models, tmp_path):
+    from stair import judge
+
+    data = tmp_path / "data"
+    data.mkdir()
+    make_split(160, seed=7, level="hard").to_parquet(data / "distractor_train.parquet")
+    make_split(40, seed=8, start=5_000).to_parquet(data / "distractor_validation.parquet")
+    make_splits.main(["--train", str(data / "distractor_train.parquet"), "--router-size", "100", "--calib-size", "40",
+                      "--out", str(data / "splits.json")])
+    run = tmp_path / "run"
+    common = ["--config", str(CONFIGS / "smoke.toml"), "--run", str(run)]
+    for split in ("router_train", "calib"):
+        run_experts.main(common + ["--data", str(data / "distractor_train.parquet"), "--splits",
+                                   str(data / "splits.json"), "--split", split, "--name", split])
+    run_experts.main(common + ["--data", str(data / "distractor_validation.parquet"), "--name", "test"])
+    ce = (tiny_models / "ce").as_posix()
+    plan = tmp_path / "plan.toml"
+    plan.write_text(f"""
+tau = 0.8
+seeds = [0]
+[pairs]
+A = "{Path(run).as_posix()}"
+[init_names]
+"{ce}" = "tiny"
+[train]
+epochs = 1
+lr = 1e-3
+weight_decay = 0.0
+warmup = 0.0
+batch_size = 8
+max_length = 128
+dev_fraction = 0.1
+min_steps = 4
+[[judges]]
+inputs = "qp"
+label = "small-fails"
+init = "{ce}"
+head = ["typed", "plain"]
+budget = [20, 40]
+train_pair = "A"
+seeds = [0, 1]
+""")
+    out = tmp_path / "out"
+    judge.main(["train", "--plan", str(plan), "--data-dir", str(data), "--out", str(out), "--device", "cpu",
+                "--match=-b20", "--match=-b40"])  # "=": argparse would read "-b20" as an option
+    names = sorted(p.name for p in (out / "judges").iterdir())
+    assert names == ["qp-small-fails-tiny-A-b20", "qp-small-fails-tiny-A-b40",
+                     "qp-small-fails-tiny-A-plain-b20", "qp-small-fails-tiny-A-plain-b40"]
+    for name in names:
+        for seed in (0, 1):
+            done = json.loads((out / "judges" / name / f"seed{seed}" / "done.json").read_text())
+            assert done["n_train"] + done["n_dev"] == done["budget"] and done["n_dev"] == 10
+            assert len(pd.read_parquet(out / "judges" / name / f"seed{seed}" / "A-test.parquet")) == 40
+    judge.main(["train", "--plan", str(plan), "--data-dir", str(data), "--out", str(out), "--device", "cpu",
+                "--match", "nothing"])  # matches no judge: nothing runs, nothing fails
+
+
 def test_micro_batches_give_the_full_batch_gradient(tiny_models):
     import torch
 
@@ -322,6 +396,15 @@ def test_pools_score_and_recall(tiny_models, tmp_path):
     assert report["subsets"]["clean"]["n"] == 3
     assert report["subsets"]["all"]["bm25"]["2"]["all_gold"] == 0.0  # BM25 ranks the distractor second
     assert report["subsets"]["all"]["bm25"]["3"]["all_gold"] == 1.0
+
+    # E7: a second ranker (one relevance logit, as MS MARCO's) beside nano-jev's scores, and in the recall report
+    pools.main(["score", *args, "--scorer", str(tiny_models / "ce"), "--kind", "reranker", "--column", "msmarco",
+                "--device", "cpu", "--chunk-size", "2", "--batch", "2"])
+    other = pd.read_parquet(tmp_path / "scores" / "t-msmarco.parquet")
+    assert len(other) == 5 and all(len(s) == 3 for s in other["msmarco"]) and (other["tokens"] > 0).all()
+    assert pd.read_parquet(tmp_path / "scores" / "t.parquet").equals(scores)  # nano-jev's scores untouched
+    pools.main(["recall", *args])
+    assert "msmarco" in json.loads((tmp_path / "recall-t.json").read_text())["subsets"]["all"]
 
 
 def test_entropy_recorder_matches_raw_logits(tiny_models):
@@ -421,6 +504,20 @@ def test_exp10_judge_trains_and_routes_menu_a(tiny_models, tmp_path):
                                          "tiny qpa#seed1", "tiny qpa"]
     report = exp10_slr.evaluate(df, routers, plan)
     assert 0 <= report["routers"]["tiny qpa"]["aiq"] <= 1 and "tiny qpa - fixed paths" in report["aiq_diff"]
+
+    # E6: the joint 4-option judge, one item a question, swept and priced like the stage judges
+    joint = {**spec, "name": "joint", "judge_dir": "judge-joint", "inputs": ["qpa"], "seeds": [0], "joint": True}
+    plan = {**plan, "judges": [spec, joint], "contrasts": [["joint qpa#seed0", "tiny qpa"], ["absent", "tiny qpa"]]}
+    exp10_slr.run_train(df, plan, joint, "qpa", 0, "cpu")
+    seed_dir = tmp_path / "exp10" / "judge-joint" / "qpa" / "seed0"
+    done = json.loads((seed_dir / "done.json").read_text())
+    assert done["n_train_items"] + done["n_dev_items"] == 30 and done["train_scores"] == ["joint"]
+    test = pd.read_parquet(seed_dir / "test.parquet")
+    assert np.allclose(test[[f"p_{p}" for p in slr.PATHS]].sum(axis=1), 1)
+    assert np.allclose(test["ret"], test["p_WW"] + test["p_WS"]) and (test["tokens_qa_S"] == 0).all()
+    routers = exp10_slr.judge_routers(plan, ids["test"], ids["val"])
+    report = exp10_slr.evaluate(df, routers, plan)
+    assert "joint qpa#seed0" in report["routers"] and list(report["aiq_diff_contrasts"]) == ["joint qpa#seed0 - tiny qpa"]
 
 
 def test_exp8_judge_trains_and_evaluates(tiny_models, tmp_path):
@@ -546,3 +643,28 @@ def test_rescore_validate_commit_and_run(tiny_models, tmp_path):
     s = pd.read_csv(out / "rescore" / "summary.csv").set_index("cell")
     assert s.loc["single", "n"] == 6 and s.loc["single", "answer_units"] == 2.0
     assert s.loc["single", "units"] == pytest.approx(2.0 + d["commit_units"].mean())
+
+
+def test_weak_model_signals(tiny_models):
+    from stair.signals import WeakModel, semantic_entropy, yes_share
+
+    model = WeakModel({"model": str(tiny_models / "chat-lm"), "top_k": 2, "dtype": "float32"}, device="cpu", batch_size=2)
+    prompts = [model.expert._prompt("Who directed it?", ["Film: It was directed by Kalo."]),
+               model.expert._prompt("Is it a film?", ["Film: yes it is.", "Other: no."])]
+    tf = model.teacher_forced(prompts, ["Kalo", "yes"])
+    assert all(0 < r["sig_msp"] <= 1 and r["sig_mean_logprob"] <= 0 and 0 <= r["sig_first_margin"] <= 1 for r in tf)
+    assert tf[0]["hidden"].shape == (2, model.model.config.n_embd)
+    # teacher forcing equals scoring the answer token by token with the full sequence
+    import torch
+    ids = model.tok(prompts[0] + "Kalo", return_tensors="pt", add_special_tokens=False)["input_ids"]
+    p_len = len(model.tok(prompts[0], add_special_tokens=False)["input_ids"])
+    with torch.no_grad():
+        lp = torch.log_softmax(model.model(ids).logits[0].float(), -1)
+    want = sum(lp[j - 1, ids[0, j]].item() for j in range(p_len, ids.shape[1]))
+    assert np.log(tf[0]["sig_msp"]) == pytest.approx(want, abs=1e-4)
+    p, tokens = model.p_yes([model.chat("Is it? Reply yes or no.")] * 3)
+    assert np.allclose(p, p[0]) and 0 <= p[0] <= 1 and (tokens > 0).all()
+    texts, p_tok, g_tok = model.sample(prompts, k=3, temperature=0.7, max_new_tokens=3)
+    assert [len(t) for t in texts] == [3, 3] and (g_tok >= 3).all() and (g_tok <= 9).all()
+    assert semantic_entropy(["Paris", "paris", "the Paris"]) == 0.0 and semantic_entropy(["a", "b"]) == pytest.approx(np.log(2))
+    assert yes_share(["Yes.", "no", "yes", "maybe"]) == pytest.approx(2 / 3)

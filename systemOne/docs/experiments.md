@@ -53,6 +53,20 @@ small model (32 GFLOPs). The qp judge beats the best logistic regression router 
 (AIQ 0.673 against 0.665, paired interval [+0.004, +0.011]) and the entropy baseline, and the qpa judge ties the best
 cascade router (0.672). Like every router so far, none reaches always-large's F1 (66.9) at its operating point.
 
+**The Jev novelty programme** ([results](experiments/2026-10-25-jev-novelty.md), [pre-registration](experiments/2026-10-24-jev-preregistration.md))
+re-tests run 7's judge on the HotpotQA golden set and on two confirmatory datasets, MuSiQue and 2WikiMultiHopQA.
+- **Confirmed on both:**
+  - Fine-tuning from nano-jev beats the same 33M MiniLM without decision training.
+  - The passages, not the question, decide escalation.
+  - The judge is non-inferior to entropy, the LR routers and every cheap weak-model signal, including a
+    hidden-state probe.
+  - One untrained typed question recovers 77–86% of a trained judge's gain.
+- **Fails:**
+  - the few-label advantage;
+  - the typed head;
+  - question-only routing at chance (it beats random on both new datasets);
+  - useful risk control.
+
 ## Experiment 8: the AgentTTS setting (lenient accuracy, 500 test questions)
 
 > **Metric caveat (added 2026-10-15): do not quote these accuracies or the H3 verdict until re-scoring.**

@@ -1,0 +1,148 @@
+{
+ "B": {
+  "n_test": 1303,
+  "n_boot": 5000,
+  "delta": 0.01,
+  "random_aiq": 0.6665387567152724,
+  "aiq": {
+   "judge/qp-large-helps-nanojev-A": 0.7002232962603395,
+   "judge/qp-large-helps-nanojev-B": 0.7013262638671804
+  },
+  "tests": {
+   "H5a B: frozen qp >= retrained qp - delta": {
+    "kind": "noninferiority",
+    "a": "judge/qp-large-helps-nanojev-A",
+    "b": "judge/qp-large-helps-nanojev-B",
+    "ratio": null,
+    "estimate": -0.001102967606840921,
+    "ci90": [
+     -0.0036809790617636784,
+     0.0017828189221480953
+    ],
+    "ci95": [
+     -0.00419881529499726,
+     0.0024373849945013783
+    ],
+    "p": 0.0,
+    "p_holm": 0.0,
+    "supported": true,
+    "p_holm_family": 0.0
+   }
+  },
+  "transfer_ratio": {
+   "qp": 0.9682941464582516
+  }
+ },
+ "C": {
+  "n_test": 1303,
+  "n_boot": 5000,
+  "delta": 0.01,
+  "random_aiq": 0.6450498848810438,
+  "aiq": {
+   "judge/qp-large-helps-nanojev-A": 0.6755209837589217,
+   "judge/qp-large-helps-nanojev-C": 0.6807365523024138,
+   "judge/qpa-large-helps-nanojev-A": 0.6738392736658755,
+   "judge/qpa-large-helps-nanojev-C": 0.6807509327412242
+  },
+  "tests": {
+   "H5a C: frozen qp >= retrained qp - delta": {
+    "kind": "noninferiority",
+    "a": "judge/qp-large-helps-nanojev-A",
+    "b": "judge/qp-large-helps-nanojev-C",
+    "ratio": null,
+    "estimate": -0.005215568543492144,
+    "ci90": [
+     -0.00946945704451278,
+     0.00116820178164457
+    ],
+    "ci95": [
+     -0.010343829740000235,
+     0.0023722060700646645
+    ],
+    "p": 0.0338,
+    "p_holm": 0.0676,
+    "supported": false,
+    "p_holm_family": 0.10139999999999999
+   },
+   "H5b C: qp transfers better than qpa": {
+    "kind": "transfer-gap",
+    "a": "judge/qp-large-helps-nanojev-A",
+    "b": "judge/qp-large-helps-nanojev-C",
+    "ratio": null,
+    "estimate": 0.04744927523223352,
+    "ci90": [
+     -0.14695546143745258,
+     0.26441019989545156
+    ],
+    "ci95": [
+     -0.19145367084188622,
+     0.3063721636204042
+    ],
+    "p": 0.2924,
+    "p_holm": 0.2924,
+    "supported": false,
+    "p_holm_family": 0.5848
+   }
+  },
+  "transfer_ratio": {
+   "qp": 0.8538510620252275,
+   "qpa": 0.806401786792994
+  }
+ },
+ "D": {
+  "n_test": 1303,
+  "n_boot": 5000,
+  "delta": 0.01,
+  "random_aiq": 0.6719109746738298,
+  "aiq": {
+   "judge/qp-large-helps-nanojev-A": 0.7046350916276023,
+   "judge/qp-large-helps-nanojev-D": 0.7077408165233694,
+   "judge/qpa-large-helps-nanojev-A": 0.6975066571786959,
+   "judge/qpa-large-helps-nanojev-D": 0.6994151844772818
+  },
+  "tests": {
+   "H5a D: frozen qp >= retrained qp - delta": {
+    "kind": "noninferiority",
+    "a": "judge/qp-large-helps-nanojev-A",
+    "b": "judge/qp-large-helps-nanojev-D",
+    "ratio": null,
+    "estimate": -0.0031057248957671035,
+    "ci90": [
+     -0.006367104752032044,
+     0.000590531371815296
+    ],
+    "ci95": [
+     -0.006987894307234108,
+     0.0011767351856145024
+    ],
+    "p": 0.0006,
+    "p_holm": 0.0012,
+    "supported": true,
+    "p_holm_family": 0.0024
+   },
+   "H5b D: qp transfers better than qpa": {
+    "kind": "transfer-gap",
+    "a": "judge/qp-large-helps-nanojev-A",
+    "b": "judge/qp-large-helps-nanojev-D",
+    "ratio": null,
+    "estimate": -0.017289468105398442,
+    "ci90": [
+     -0.17276655619221226,
+     0.1671411048955474
+    ],
+    "ci95": [
+     -0.21024043462498257,
+     0.20207047004745407
+    ],
+    "p": 0.5232,
+    "p_holm": 0.5232,
+    "supported": false,
+    "p_holm_family": 0.5848
+   }
+  },
+  "transfer_ratio": {
+   "qp": 0.9133201617576493,
+   "qpa": 0.9306096298630477
+  }
+ }
+}

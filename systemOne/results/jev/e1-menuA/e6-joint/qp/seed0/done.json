@@ -1,0 +1,41 @@
+{
+ "judge": "e6-joint",
+ "inputs": "qp",
+ "seed": 0,
+ "init": "sdmlai/nano-jev@v1.0",
+ "train": {
+  "epochs": 2,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "budget": null,
+ "train_scores": [
+  "joint"
+ ],
+ "n_train_questions": 4310,
+ "n_dev_questions": 504,
+ "n_train_items": 4310,
+ "n_dev_items": 504,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 1.0370571639802721,
+   "dev_nll": 1.029211401939392,
+   "seconds": 31.459301305934787
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.8558377432602423,
+   "dev_nll": 0.9756406545639038,
+   "seconds": 31.186192831024528
+  }
+ ],
+ "train_seconds": 64.51221014373004,
+ "init_revision": "ffee345e97797bef0948561461ea54fe558588a0",
+ "device": "cuda"
+}

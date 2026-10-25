@@ -1,0 +1,190 @@
+{
+ "n": 2917,
+ "weak_error": 0.7908810421666095,
+ "delta": 0.1,
+ "policies": {
+  "judge/qpa-large-helps-nanojev-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "judge/qpa-large-helps-hotpotqa-A": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.0016498212630742751,
+    "violation_rate": 0.003,
+    "mean_kept": 0.0001583276216586703,
+    "mean_cost": 10.498416723783414,
+    "h6a": true,
+    "posthoc": true
+   }
+  ],
+  "small-entropy (post)": [
+   {
+    "alpha": 0.05,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.1,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.2,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": false
+   },
+   {
+    "alpha": 0.3,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   },
+   {
+    "alpha": 0.4,
+    "mean_risk": 0.0,
+    "violation_rate": 0.0,
+    "mean_kept": 0.0,
+    "mean_cost": 10.5,
+    "h6a": true,
+    "posthoc": true
+   }
+  ]
+ },
+ "shift": [
+  {
+   "alpha": 0.05,
+   "risk": 0.0,
+   "kept": 0.0,
+   "cost": 10.5,
+   "violated": false,
+   "posthoc": false
+  },
+  {
+   "alpha": 0.1,
+   "risk": 0.0,
+   "kept": 0.0,
+   "cost": 10.5,
+   "violated": false,
+   "posthoc": false
+  },
+  {
+   "alpha": 0.2,
+   "risk": 0.0,
+   "kept": 0.0,
+   "cost": 10.5,
+   "violated": false,
+   "posthoc": false
+  },
+  {
+   "alpha": 0.3,
+   "risk": 0.5416666666666666,
+   "kept": 0.1092263136119156,
+   "cost": 9.407736863880844,
+   "violated": true,
+   "posthoc": true
+  },
+  {
+   "alpha": 0.4,
+   "risk": 0.757420091324201,
+   "kept": 0.7248655357881671,
+   "cost": 3.2513446421183283,
+   "violated": true,
+   "posthoc": true
+  }
+ ]
+}

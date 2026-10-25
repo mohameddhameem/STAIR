@@ -1,0 +1,43 @@
+{
+ "judge": "e1-msmarco",
+ "inputs": "qpa",
+ "seed": 1,
+ "init": "cross-encoder/ms-marco-MiniLM-L12-v2",
+ "train": {
+  "epochs": 2,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "budget": 4814,
+ "train_scores": [
+  "ret",
+  "qa_W",
+  "qa_S"
+ ],
+ "n_train_questions": 4333,
+ "n_dev_questions": 481,
+ "n_train_items": 12999,
+ "n_dev_items": 1443,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.5105279635037736,
+   "dev_nll": 0.43925338983535767,
+   "seconds": 43.288807060569525
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.4473585208550297,
+   "dev_nll": 0.43260952830314636,
+   "seconds": 43.2803937215358
+  }
+ ],
+ "train_seconds": 86.6653648596257,
+ "init_revision": "7b0235231ca2674cb8ca8f022859a6eba2b1c968",
+ "device": "cuda"
+}

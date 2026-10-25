@@ -1,0 +1,118 @@
+{
+ "n_test": 500,
+ "n_boot": 5000,
+ "delta": 0.01,
+ "random_aiq": 0.443,
+ "aiq": {
+  "few:50": 0.4679255337574255,
+  "judge/qp-large-helps-nanojev-A": 0.49811044776119406,
+  "judge/qpa-large-helps-nanojev-A": 0.4946703123193556,
+  "small-entropy (post)": 0.46281462479270324,
+  "zero:insufficient": 0.48892039800995024
+ },
+ "tests": {
+  "H4a zero:insufficient (best on calib) closes >= 50% of the gap": {
+   "kind": "ratio",
+   "a": "zero:insufficient",
+   "b": "judge/qp-large-helps-nanojev-A",
+   "ratio": 0.5,
+   "estimate": 0.018365174129353207,
+   "ci90": [
+    0.00978584577114429,
+    0.03358174129353253
+   ],
+   "ci95": [
+    0.007673333333333344,
+    0.036161542288557044
+   ],
+   "p": 0.0006,
+   "p_holm": 0.0018,
+   "supported": true
+  },
+  "H4b 50-label combiner closes >= 75% of the gap": {
+   "kind": "ratio",
+   "a": "few:50",
+   "b": "judge/qpa-large-helps-nanojev-A",
+   "ratio": 0.75,
+   "estimate": -0.013827200482091184,
+   "ci90": [
+    -0.023058861099388307,
+    -0.0014235852998507718
+   ],
+   "ci95": [
+    -0.024929887082885783,
+    0.0007375006486049279
+   ],
+   "p": 0.969,
+   "p_holm": 0.969,
+   "supported": false
+  },
+  "H4c zero:insufficient (best pre-answer on calib) > entropy": {
+   "kind": "superiority",
+   "a": "zero:insufficient",
+   "b": "small-entropy (post)",
+   "ratio": null,
+   "estimate": 0.026105773217246997,
+   "ci90": [
+    0.011166929311774501,
+    0.043273251216141485
+   ],
+   "ci95": [
+    0.008518989016228396,
+    0.04618380394661301
+   ],
+   "p": 0.0018,
+   "p_holm": 0.0036,
+   "supported": true
+  }
+ },
+ "all_aiq": {
+  "judge/q-large-helps-nanojev-A": 0.47272636815920394,
+  "judge/qp-large-helps-nanojev-A": 0.49811044776119406,
+  "judge/qpa-large-helps-nanojev-A": 0.4946703123193556,
+  "judge/qp-large-helps-hotpotqa-A": 0.48765339966832505,
+  "judge/qpa-large-helps-hotpotqa-A": 0.4780047317897691,
+  "small-entropy (post)": 0.46281462479270324,
+  "zero:insufficient": 0.48892039800995024,
+  "zero:low-top1": 0.4483233830845771,
+  "zero:low-top2": 0.4682238805970149,
+  "zero:not-grounded": 0.4877521455223881,
+  "zero:not-correct": 0.4826190547263682,
+  "zero:max(pre)": 0.4626517412935323,
+  "zero:product(pre)": 0.46842288557213935,
+  "zero:max(all)": 0.4680390248756218,
+  "zero:mean-rank(all)": 0.48137180099502486,
+  "few:10": 0.46525755115691386,
+  "few:25": 0.4706537899598329,
+  "few:50": 0.4679255337574255
+ },
+ "gap_closed": {
+  "zero:insufficient": 0.8332430578124429,
+  "zero:low-top1": 0.09659480735203779,
+  "zero:low-top2": 0.4576968909110601,
+  "zero:not-grounded": 0.8661094449321537,
+  "zero:not-correct": 0.7667663102459507,
+  "zero:max(pre)": 0.35658830751453363,
+  "zero:product(pre)": 0.46130791174665126,
+  "zero:max(all)": 0.4845920946028857,
+  "zero:mean-rank(all)": 0.7426276186964493,
+  "few:10": 0.43076091778481906,
+  "few:25": 0.5351968803461996,
+  "few:50": 0.48239564729877693
+ },
+ "chosen_on_calib": {
+  "best": "zero:insufficient",
+  "best_pre": "zero:insufficient",
+  "calib_aiq": {
+   "zero:insufficient": 0.4610746268656716,
+   "zero:low-top1": 0.42199999999999993,
+   "zero:low-top2": 0.444139303482587,
+   "zero:not-grounded": 0.4596144941956882,
+   "zero:not-correct": 0.4493885646766169,
+   "zero:max(pre)": 0.4282686567164179,
+   "zero:product(pre)": 0.4325472636815921,
+   "zero:max(all)": 0.4374119499723605,
+   "zero:mean-rank(all)": 0.4516450027137042
+  }
+ }
+}

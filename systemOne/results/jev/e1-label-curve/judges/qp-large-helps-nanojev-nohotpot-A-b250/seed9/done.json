@@ -1,0 +1,108 @@
+{
+ "judge": "qp-large-helps-nanojev-nohotpot-A-b250",
+ "inputs": "qp",
+ "label": "large-helps",
+ "init": "runs/nanojev-pretrain/nohotpot/model",
+ "head": "typed",
+ "budget": 250,
+ "train_pair": "A",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "init_name": "nanojev-nohotpot",
+ "seed": 9,
+ "tau": 0.5,
+ "train": {
+  "epochs": 3,
+  "lr": 5e-05,
+  "weight_decay": 0.01,
+  "warmup": 0.06,
+  "batch_size": 16,
+  "max_length": 512,
+  "dev_fraction": 0.1,
+  "min_steps": 150
+ },
+ "n_train": 225,
+ "n_dev": 25,
+ "micro_batch": null,
+ "train_label_rate": 0.16971333610303282,
+ "history": [
+  {
+   "epoch": 1,
+   "train_loss": 0.803548010190328,
+   "dev_nll": 0.548262894153595,
+   "seconds": 0.7625190541148186
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.43499513268470763,
+   "dev_nll": 0.5239353179931641,
+   "seconds": 0.7429521027952433
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.40868102610111234,
+   "dev_nll": 0.41791579127311707,
+   "seconds": 0.7313858773559332
+  },
+  {
+   "epoch": 4,
+   "train_loss": 0.2845509568850199,
+   "dev_nll": 0.6156117916107178,
+   "seconds": 0.7238143309950829
+  },
+  {
+   "epoch": 5,
+   "train_loss": 0.17827481670926015,
+   "dev_nll": 0.7105794548988342,
+   "seconds": 0.7459557764232159
+  },
+  {
+   "epoch": 6,
+   "train_loss": 0.12867740622411172,
+   "dev_nll": 1.051110863685608,
+   "seconds": 0.7324540931731462
+  },
+  {
+   "epoch": 7,
+   "train_loss": 0.07736524594171594,
+   "dev_nll": 1.15690279006958,
+   "seconds": 0.7401529625058174
+  },
+  {
+   "epoch": 8,
+   "train_loss": 0.06089011745837827,
+   "dev_nll": 1.3896163702011108,
+   "seconds": 0.7288988567888737
+  },
+  {
+   "epoch": 9,
+   "train_loss": 0.0455895149653467,
+   "dev_nll": 1.4683890342712402,
+   "seconds": 0.7678387556225061
+  },
+  {
+   "epoch": 10,
+   "train_loss": 0.046486325251559414,
+   "dev_nll": 1.4879777431488037,
+   "seconds": 0.7256397232413292
+  }
+ ],
+ "train_seconds": 7.558310592547059,
+ "scoring_seconds_per_question": {
+  "A/calib": 0.0021011324901435828,
+  "A/test": 0.0020830613560345753
+ },
+ "init_revision": "local",
+ "init_path": "runs/nanojev-pretrain/nohotpot/model",
+ "device": "cuda"
+}
