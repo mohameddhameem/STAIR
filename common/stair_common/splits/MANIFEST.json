@@ -24,6 +24,10 @@
   "medagentbench": {
    "file": "test_data_v2.json",
    "sha256": "b6e89b2ef82f1bef27c5778a644a8a66c7b25738bbd6a48d03ab3e5182df6ca8"
+  },
+  "hotpotqa_slr": {
+   "file": "slr_splits.json",
+   "sha256": "4ec686a411194467d234938c6d16ce80d11cc8af9306b613ce5bc6cd5035da22"
   }
  },
  "parts": {
@@ -42,6 +46,18 @@
   "hotpotqa/train": {
    "n": 12000,
    "sha256": "dc13f02b0e1a4a7d1a031b6ad13e839522847d551492f01feb3685ae8b766754"
+  },
+  "hotpotqa/slr-train": {
+   "n": 4814,
+   "sha256": "a1435e3bdc4b32e60caf4d63093e28f379bcdb8680a56e647ff4945580c431ed"
+  },
+  "hotpotqa/slr-val": {
+   "n": 1110,
+   "sha256": "77c98ab6e45b51ad8a6caa2fec01649a25c2798aac9a69bfe5b83329c11a2ba4"
+  },
+  "hotpotqa/slr-test": {
+   "n": 1481,
+   "sha256": "5ec2d5f874090b59f109c8c06f37f4fa4f680c27ca0c38a145e2e287bc0d3252"
   },
   "2wikimultihopqa/val": {
    "n": 500,

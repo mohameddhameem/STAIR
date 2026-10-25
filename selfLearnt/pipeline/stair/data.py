@@ -1,9 +1,10 @@
 """Question sets on the team standard (STAIR common/, stair_common.splits, seed 20260729), all in AgentTTS's format:
 {qid, question, answer, type, level, ret_answers, ctxs_candidate}.
 
-  test   : AgentTTS's 500 test questions, dev file [500:1000] (stair_common split `test`) - scored once
-  val    : dev file [0:500] (split `val`) - checkpoint choice (validation loss), probes, rule learning
-  search : the first 50 of val = dev file [0:50], AgentTTS's own search questions (workstream AL-01)
+  test   : the stair_common part `data.test_part`: AgentTTS's 500 (`test`, dev [500:1000]) or the HotpotQA golden set's
+           `slr-test` (1,481, common 0.3.0) - scored once
+  val    : `data.val_part`: dev [0:500] (`val`) or `slr-val` (1,110) - checkpoint choice (validation loss), probes, rule learning
+  search : the first 50 of val, the questions AgentTTS's search scores its settings on (workstream AL-01)
   train  : split `train`, 12,000 questions drawn from the official training file - fine-tuning only
 
 Candidates (as AgentTTS: data/retrieval_QA_data_generator.py): the gold paragraphs + the top-100 BM25 paragraphs of the
@@ -114,7 +115,7 @@ def build(cfg):
     log(f"dev file: {len(dv)} questions, {len(texts)} paragraphs; BM25 over title + text ...")
     bm = BM25([a + " " + b for a, b in zip(titles, texts)])
     rng = random.Random(d["seed"])
-    val_ids, test_ids = _ids(ds, "val"), _ids(ds, "test")
+    val_ids, test_ids = _ids(ds, d.get("val_part", "val")), _ids(ds, d.get("test_part", "test"))
     sets = {"val": _build([by_id[i] for i in val_ids], texts, bm, rng, nr),
             "test": _build([by_id[i] for i in test_ids], texts, bm, rng, nr)}
     lim = d.get("limit") or {}  # dry runs only: keep the first n of a part

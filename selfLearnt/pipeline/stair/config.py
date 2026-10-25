@@ -90,7 +90,7 @@ def load_config(path, seed=None, exp=None):
     cfg = _interp(raw, env)
     if "${" in cfg["paths"]["project_dir"]:
         raise SystemExit("set STAIR_PROJECT_DIR (storage for models, data and runs) before running")
-    if os.environ.get("STAIR_RESULTS_DIR") and cfg.get("run_name") == "full_v1":
+    if os.environ.get("STAIR_RESULTS_DIR") and cfg.get("run_name") not in ("dryrun", "preflight", "smoke"):
         cfg["paths"]["results_dir"] = os.environ["STAIR_RESULTS_DIR"]     # outside the git copy (no clash with committed tables)
     rd = cfg["paths"].get("results_dir", "results/common")
     if not os.path.isabs(rd):   # relative to the STAIR repo root, wherever the command is run from
@@ -152,6 +152,12 @@ def variant(cfg, name):
     else:
         m["serve_path"], m["lora_path"] = m["path"], None
     return m
+
+
+def split_name(cfg, split):
+    """The team split name of one of our question sets: val / test are stair_common parts named in the config
+    (data.val_part / data.test_part: AgentTTS's slices `val` / `test`, or the golden set's `slr-val` / `slr-test`)."""
+    return cfg["data"].get(f"{split}_part", split) if split in ("val", "test") else split
 
 
 def model_tag(m):

@@ -1,0 +1,12 @@
+# The HotpotQA golden set (team standard common 0.3.0, from 21 Oct): Jonathan's Stage-Level Routing split and prices.
+#   train    : the 12,000 from the official train file (unchanged, stair_common `train`) - fine-tuning
+#   slr-val  : 1,110 dev questions - checkpoints (validation loss), probes, rule learning, AgentTTS's search (first 50)
+#   slr-test : 1,481 dev questions - reported once, with the price column (AgentTTS Table 5) next to the measured units
+# Everything is redone in its own run folder (golden_v1): models are fine-tuned again, so that every checkpoint is
+# picked on slr-val as the team rule says. Results: AL-0X-hotpotqa-slr-test-seed<seed>.csv.
+#   python jobs/submit_all.py --config configs/golden.yaml --as-job
+include: default.yaml
+run_name: golden_v1
+data:
+  val_part: slr-val
+  test_part: slr-test

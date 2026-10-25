@@ -11,18 +11,19 @@ import os
 
 from .agenttts import wdir
 from .common import log, read_json
-from .config import workstreams
+from .config import split_name, workstreams
 
 COLS = None
 
 
 def _row(cfg, ws, policy, r):
     W = cfg["workstreams"][ws]
-    return {"dataset": cfg["data"].get("dataset", "hotpotqa"), "split": "test", "id": r["qid"], "track": "selfLearnt", "policy": policy,
+    return {"dataset": cfg["data"].get("dataset", "hotpotqa"), "split": split_name(cfg, "test"), "id": r["qid"], "track": "selfLearnt", "policy": policy,
             "menu": W.get("menu", "A"), "seed": int(cfg.get("seed", 0)), "answer": (r.get("answer") or "")[:2000],
             "lenient": int(round(r["lenient"])), "em": float(r.get("EM", r.get("em", 0.0))), "f1": float(r.get("F1", r.get("f1", 0.0))),
             "units": float(r["units"]), "units_retrieve": float(r.get("units_retrieve", 0.0)), "units_answer": float(r.get("units_answer", 0.0)),
-            "units_fuse": float(r.get("units_fuse", 0.0)), "units_router": 0.0, "ms_router": None, "models": r.get("models", "")}
+            "units_fuse": float(r.get("units_fuse", 0.0)), "units_router": 0.0, "ms_router": None, "models": r.get("models", ""),
+            "price": r.get("price")}
 
 
 def tables(cfg):
@@ -50,9 +51,11 @@ def export(cfg):
     os.makedirs(d, exist_ok=True)
     written = []
     for exp_id, rows in sorted(tables(cfg).items()):
-        df = pd.DataFrame(rows, columns=COLUMNS)
+        df = pd.DataFrame(rows, columns=COLUMNS + ["price"])
+        if df["price"].isna().any():          # rows from before prices were recorded: no price column (it is optional)
+            df = df.drop(columns="price")
         validate(df)
-        p = os.path.join(d, f"{exp_id}-{cfg['data'].get('dataset', 'hotpotqa')}-test-seed{cfg.get('seed', 0)}.csv")
+        p = os.path.join(d, f"{exp_id}-{cfg['data'].get('dataset', 'hotpotqa')}-{split_name(cfg, 'test')}-seed{cfg.get('seed', 0)}.csv")
         df.to_csv(p, index=False)
         written.append(p)
         log(f"{exp_id}: {len(df)} rows, {df['policy'].nunique()} policies -> {p}")

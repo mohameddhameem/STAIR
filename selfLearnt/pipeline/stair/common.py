@@ -275,6 +275,28 @@ def units(params_b, prompt_tokens, out_tokens):
     return _u(float(params_b), int(prompt_tokens), int(out_tokens))
 
 
+TABLE4_LENGTHS = {"retrieve": (2048, 128), "answer": (256, 64)}   # AgentTTS Table 4: prompt / generated tokens per sample
+
+
+def price(cfg, v, stage, samples=1):
+    """The HotpotQA golden set's price of one call (stair_common.cost, common 0.3.0): AgentTTS's Table 5 entry for a listed
+    model and one sample, else cost.budget() at Table 4's lengths (S samples from one prompt are one call). A fine-tuned
+    variant is priced as its base model; the router / rules are not charged."""
+    from stair_common.cost import TABLE5_HOTPOTQA, budget
+    m = cfg["models"][v.split(":")[0]]
+    k = m["label"].replace(" ", "-")
+    if samples == 1 and k in TABLE5_HOTPOTQA[stage]:
+        return float(TABLE5_HOTPOTQA[stage][k])
+    p, g = TABLE4_LENGTHS[stage]
+    return float(budget(float(m["params_b"]), p, g * samples))
+
+
+def price_measured(cfg, v, prompt_tokens, out_tokens):
+    """A call Table 5 does not cover (AgentTTS's fusion): cost.budget() at its measured tokens."""
+    from stair_common.cost import budget
+    return float(budget(float(cfg["models"][v.split(":")[0]]["params_b"]), int(prompt_tokens), int(out_tokens)))
+
+
 def flops(params, prompt_tokens, out_tokens, n=1, shared_prompt=True):
     """2 x params x tokens. n samples of one prompt: the prompt is counted once when shared (prefix cache), else n times."""
     return 2.0 * params * ((prompt_tokens if shared_prompt else n * prompt_tokens) + out_tokens)

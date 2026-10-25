@@ -24,7 +24,7 @@ import re
 import numpy as np
 
 from . import data as D
-from .common import agree, ensemble, units, key, log, lp_, normalize_answer, read_jsonl, seed_of, vote, write_json, write_jsonl
+from .common import agree, ensemble, price, units, key, log, lp_, normalize_answer, read_jsonl, seed_of, vote, write_json, write_jsonl
 from .config import model_tag, serve_entry, variant
 from .engines import free_gpu, make_engine
 from .progress import Tracker, mark_done
@@ -73,6 +73,9 @@ class Env:
         self.names = {v: variant(cfg, v)["label_full"] for v in self.RL + self.AL}
         self.tags = {v: model_tag(variant(cfg, v)) for v in self.RL + self.AL}
         self.nominal = {v: cfg["models"][v.split(":")[0]]["nominal"] for v in self.RL + self.AL}
+        # golden-set prices per call (Table 5 / budget at Table 4 lengths), next to the measured units
+        self.p_ret = {v: price(cfg, v, "retrieve") for v in self.RL}
+        self.p_ans = {v: price(cfg, v, "answer") for v in self.AL}
         self.nd = cfg["workstreams"]["ws1"]["np_nd"] if "ws1" in cfg["workstreams"] else {"Retrieval": [2048, 128], "Question Answering": [256, 64]}
         sig = W.get("signals", "all")
         self.allowed = set(SIGNALS) if sig == "all" else set(sig)
@@ -170,6 +173,7 @@ class Env:
             members.append(nxt)
             sel = self.ens(sp, q, members)
         u_ret = sum(self.R[sp][self.RL[i]][q]["units"] for i in members)
+        p_cost = sum(self.p_ret[self.RL[i]] for i in members)
         u_ans = 0.0
         ret_esc = len(members) > 1
         # ---- answers
@@ -181,6 +185,7 @@ class Env:
             v = self.AL[j]
             a = dict(self.A[v][(q, sel)], model=v)
             u_ans += a["units"]
+            p_cost += self.p_ans[v]
             used[v] = used.get(v, 0) + 1
             hist.append(a)
             if prev_pred is not None and any(agree(a["prediction"], h["prediction"]) for h in hist[:-1]):
@@ -211,13 +216,14 @@ class Env:
                 if sm and nv > 0:
                     ss = [dict(s, model=self.AL[j] + "_sample") for s in sm["samples"][:nv]]
                     u_ans += units(self.nominal[self.AL[j]] / 1e9, 0, sum(s["out_tokens"] for s in ss))   # shared prompt counted once
+                    p_cost += price(self.cfg, self.AL[j], "answer", 1 + len(ss)) - self.p_ans[self.AL[j]]   # samples share the answer's prompt
                     used[self.AL[j]] += len(ss)
                     pool += ss
                 final, sup = vote(pool)
                 support = sup / len(pool)
         fs = self.ans_sig(sp, q, self.AL.index(final["model"].replace("_sample", "")), sel, None, ret_esc) if final["model"] in self.AL else {}
         return {"qid": q, "acc": float(final["acc"]), "lenient": float(final["lenient"]), "EM": float(final["EM"]), "F1": float(final.get("F1", 0.0)),
-                "units": float(u_ret + u_ans), "units_retrieve": float(u_ret), "units_answer": float(u_ans),
+                "units": float(u_ret + u_ans), "units_retrieve": float(u_ret), "units_answer": float(u_ans), "price": float(p_cost),
                 "ret_path": members, "ans_path": [self.AL.index(h["model"]) for h in hist], "ret_esc": float(ret_esc), "ans_esc": float(len(hist) > 1),
                 "top_ret": float(members[-1] == len(self.RL) - 1), "top_ans": float(self.AL[-1] in used), "fired": fired, "answer": final.get("prediction"),
                 "final_model": final["model"], "consensus": float(consensus),
@@ -245,6 +251,7 @@ class Env:
                 continue
             out.append({"qid": q, "acc": a["acc"], "lenient": a["lenient"], "EM": a["EM"], "F1": a.get("F1", 0.0), "answer": a.get("prediction"),
                         "units": r["units"] + a["units"], "units_retrieve": r["units"], "units_answer": a["units"],
+                        "price": self.p_ret[self.RL[i]] + self.p_ans[self.AL[j]],
                         "models": f"retriever={self.tags[self.RL[i]]};answerer={self.tags[self.AL[j]]}"})
         return out
 
@@ -782,7 +789,8 @@ def test(cfg, ws):
         orc.append({"qid": q, "acc": max(a1["acc"], a2["acc"]), "lenient": max(a1["lenient"], a2["lenient"]), "EM": max(a1["EM"], a2["EM"]),
                     "F1": max(a1.get("F1", 0), a2.get("F1", 0)), "answer": (a1 if a1["acc"] else a2).get("prediction"),
                     "units": r["units"] + a1["units"] + (0 if a1["acc"] else a2["units"]), "units_retrieve": r["units"],
-                    "units_answer": a1["units"] + (0 if a1["acc"] else a2["units"]), "models": ""})
+                    "units_answer": a1["units"] + (0 if a1["acc"] else a2["units"]),
+                    "price": E.p_ret[E.RL[0]] + E.p_ans[E.AL[0]] + (0 if a1["acc"] else E.p_ans[E.AL[-1]]), "models": ""})
     add(f"Oracle: {nm[E.AL[0]]} if right, else {nm[E.AL[-1]]} (needs the answer key)", orc, "oracle")
     res = []
     ref = np.array([r["acc"] for r in pols[2]["rows"]])

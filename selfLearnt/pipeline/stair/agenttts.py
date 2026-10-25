@@ -15,8 +15,8 @@ import numpy as np
 
 from . import data as D
 from .common import (ATTS_FUSE_SYSTEM, ATTS_QA_SYSTEM, ATTS_RET_SYSTEM, append_jsonl, atts_budget, atts_fuse_prompt, atts_merge, atts_qa_prompt,
-                     atts_ret_prompt, atts_selected_refs, key, log, scores, units, read_json, read_jsonl, seed_of, write_json)
-from .config import model_tag, serve_entry, variant
+                     atts_ret_prompt, atts_selected_refs, key, log, price, price_measured, scores, units, read_json, read_jsonl, seed_of, write_json)
+from .config import model_tag, serve_entry, split_name, variant
 from .engines import free_gpu, make_engine
 from .progress import Tracker, mark_done
 
@@ -229,8 +229,9 @@ def evaluate(cfg, split, plan=None):
             ur = units(Pr, r["prompt_tokens"], sum(s["out_tokens"] for s in r["samples"][:rk]))     # shared prompt counted once
             ua = units(Pa, a["prompt_tokens"], sum(s["out_tokens"] for s in a["samples"][:ak]))
             uf = units(Pa, f["prompt_tokens"], f["out_tokens"])
+            pc = price(cfg, rm, "retrieve", rk) + price(cfg, am, "answer", ak) + price_measured(cfg, am, f["prompt_tokens"], f["out_tokens"])
             rows.append({"qid": q["qid"], **sc, "ret_f1": f1r, "ret_p": p, "ret_r": rc, "ret_acc": float(rc == 1.0),
-                         "units": ur + ua + uf, "units_retrieve": ur, "units_answer": ua, "units_fuse": uf, "answer": f["text"], "models": tag})
+                         "units": ur + ua + uf, "units_retrieve": ur, "units_answer": ua, "units_fuse": uf, "price": pc, "answer": f["text"], "models": tag})
         if not rows:
             continue
         b = (atts_budget(rk, cfg["models"][rm]["nominal"], *nd["Retrieval"]) + atts_budget(ak, cfg["models"][am]["nominal"], *nd["Question Answering"]))
@@ -455,18 +456,19 @@ def ss_compare(cfg, split="test"):
             continue
         sc = scores(a["text"], q["answer"])
         ur, ua = units(Pr, r["prompt_tokens"], r["out_tokens"]), units(Pa, a["prompt_tokens"], a["out_tokens"])
-        rows.append({"dataset": cfg["data"].get("dataset", "hotpotqa"), "split": split, "id": q["qid"], "track": "selfLearnt",
+        rows.append({"dataset": cfg["data"].get("dataset", "hotpotqa"), "split": split_name(cfg, split), "id": q["qid"], "track": "selfLearnt",
                      "policy": "always-strong-replication", "menu": "A", "seed": int(cfg.get("seed", 0)), "answer": a["text"][:2000],
                      "lenient": int(round(sc["lenient"])), "em": sc["EM"], "f1": sc["F1"], "units": ur + ua, "units_retrieve": ur,
-                     "units_answer": ua, "units_fuse": 0.0, "units_router": 0.0, "ms_router": None, "models": tag})
-    df = pd.DataFrame(rows, columns=COLUMNS)
+                     "units_answer": ua, "units_fuse": 0.0, "units_router": 0.0, "ms_router": None, "models": tag,
+                     "price": price(cfg, rm, "retrieve") + price(cfg, am, "answer")})
+    df = pd.DataFrame(rows, columns=COLUMNS + ["price"])
     validate(df)
-    out = os.path.join(cfg["paths"]["results_dir"], f"AL-02-replication-{cfg['data'].get('dataset', 'hotpotqa')}-{split}-seed{cfg.get('seed', 0)}.csv")
+    out = os.path.join(cfg["paths"]["results_dir"], f"AL-02-replication-{cfg['data'].get('dataset', 'hotpotqa')}-{split_name(cfg, split)}-seed{cfg.get('seed', 0)}.csv")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     df.to_csv(out, index=False)
     log(f"our greedy always-strong: {len(df)} questions, lenient {df.lenient.mean():.3f}, {df.units.mean():.0f} units -> {out}")
     ref_p = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),   # repo root
-                         "results", "common", f"jonathan-ss-hotpotqa-{split}.csv")
+                         "results", "common", f"jonathan-ss-hotpotqa-{split_name(cfg, split)}.csv")
     if not os.path.exists(ref_p):
         log(f"shared rows not found ({ref_p}): git pull, then run --part compare again")
         return
