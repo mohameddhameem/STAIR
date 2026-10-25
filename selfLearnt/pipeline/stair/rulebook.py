@@ -332,16 +332,18 @@ def random_control(E, qids, cur_rows, cand_rows, rb, draws, seed):
     """Same number of extra (or fewer) escalation steps as the candidate, given to random questions instead."""
     rng = np.random.default_rng(seed)
     by, cand = {r["qid"]: r for r in cur_rows}, {r["qid"]: r for r in cand_rows}
+    # retrieval chains are capped like the rulebook's own (only chains of up to max_ret_members retrievers were answered)
+    maxm = min(int(rb["params"].get("max_ret_members", E.cfg["rules"]["max_ret_members"])), int(E.cfg["rules"]["max_ret_members"]))
     out = []
     for _ in range(draws):
         forces = {q: {"ret_path": list(by[q]["ret_path"]), "ans_path": list(by[q]["ans_path"])} for q in qids}
-        for kind, top in (("ret_path", len(E.RL) - 1), ("ans_path", len(E.AL) - 1)):
+        for kind, top, cap in (("ret_path", len(E.RL) - 1, maxm), ("ans_path", len(E.AL) - 1, len(E.AL))):
             d = {q: len(cand[q][kind]) - len(by[q][kind]) for q in qids}
             plus = [d[q] for q in qids if d[q] > 0]
             minus = [d[q] for q in qids if d[q] < 0]
-            pool_p = [q for q in qids if forces[q][kind][-1] < top]
+            pool_p = [q for q in qids if forces[q][kind][-1] < top and len(forces[q][kind]) < cap]
             for q, inc in zip(rng.permutation(pool_p)[:len(plus)], plus):
-                forces[q][kind] = _extend(forces[q][kind], len(forces[q][kind]) + inc, top)
+                forces[q][kind] = _extend(forces[q][kind], min(cap, len(forces[q][kind]) + inc), top)
             pool_m = [q for q in qids if len(forces[q][kind]) > 1]
             for q, dec in zip(rng.permutation(pool_m)[:len(minus)], minus):
                 forces[q][kind] = forces[q][kind][:max(1, len(forces[q][kind]) + dec)]
