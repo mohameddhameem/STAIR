@@ -19,6 +19,23 @@ layout) are in [`results/common/`](../results/common/) on this branch, with the 
 | AL-03 | rulebook, starting rules (hidden-state probes) | 0.512 | 531 |
 | AL-03 | rulebook, learnt rules | 0.566 | 609 |
 | AL-03 | oracle within the rulebook's choices | 0.646 | 243 |
+| AL-04 | fixed: Qwen 7B -> Llama 3B (both fine-tuned) | 0.818 | 175 |
+| AL-04 | fixed: Qwen 7B -> Llama 8B (fine-tuned) | **0.848** | 178 |
+| AL-04 | fixed: Qwen 7B -> Llama 70B (fine-tuned) | **0.854** | 219 |
+| AL-04 | fixed: Qwen 32B -> Llama 3B / 8B / 70B (fine-tuned) | 0.804 / 0.834 / 0.840 | 793 / 796 / 837 |
+| AL-04 | fixed: Qwen 72B -> Llama 3B / 8B / 70B (fine-tuned) | 0.800 / 0.816 / 0.820 | 1,782 / 1,785 / 1,826 |
+| AL-04 | rulebook, starting rules = learnt rules (no change was accepted) | 0.830 | 437 |
+| AL-04 | oracle within the rulebook's choices | 0.894 | 183 |
+
+### Best setting per experiment (cost relative to AgentTTS's paper-best = 100%)
+
+| Experiment | Most accurate setting (oracles excluded) | Accuracy | Relative cost |
+|---|---|---|---|
+| AL-01 | AgentTTS paper-best | 0.744 | 100% |
+| AL-02 | always Qwen 72B -> Llama 70B | 0.692 | 259% |
+| AL-03 | fixed Qwen 72B -> Llama 70B (untrained) | 0.730 | 95% |
+| AL-04 | fixed Qwen 7B -> Llama 70B (fine-tuned) | **0.854** | **11%** |
+| AL-05, AL-06 | still running | | |
 
 ## Fine-tuning so far (early stopping on validation loss, `results/common/history/`)
 
@@ -29,12 +46,13 @@ layout) are in [`results/common/`](../results/common/) on this branch, with the 
 | Qwen2.5 0.5B | retriever | 3 | 2.5 | 0.127 |
 | Qwen3.5 0.8B | retriever | 2 | 1 | 0.044 |
 | Qwen2.5 1.5B / 3B / 7B | retriever | 2 | 2 | 0.058 / 0.034 / 0.024 |
+| Qwen2.5 32B (QLoRA) | retriever | 2 | 1.5 | 0.035 |
 
 Answerers stop improving after one epoch (validation loss rises in the second, so the epoch-1 checkpoint is kept);
-retrievers keep improving through epoch 2. Qwen2.5 32B and 72B (QLoRA) are still training.
+retrievers keep improving through epoch 2 (Qwen2.5 32B: best at 1.5). Qwen2.5 72B (QLoRA) has finished training; its
+curve is added with the AL-05/06 results.
 
-AL-04 .. AL-06 (fine-tuned models + self-learnt rulebook) are still running: they wait for the QLoRA fine-tuning of
-Qwen2.5 32B and 72B; the other nine models are fine-tuned.
+AL-05 and AL-06 (full model ladders) are still running.
 
 ## Reading so far
 
@@ -53,6 +71,14 @@ Qwen2.5 32B and 72B; the other nine models are fine-tuned.
   answers as well as the larger retriever's own list or better: Llama 70B on 7B+32B merged 0.700 vs 32B alone 0.677
   (test; val 0.698 vs 0.667); 7B+72B 0.754 vs 0.735; 7B+32B+72B 0.743 vs 0.735. A passage-level vote adds nothing.
   The rule is kept as designed for AL-04 .. AL-06.
+- **Fine-tuning is the big step (AL-04).** Every fine-tuned pair beats every untrained one, and the fine-tuned
+  Qwen 7B -> Llama 8B reaches 0.848 at 178 units: +10 points over AgentTTS's best setting at 9% of its cost. Larger
+  fine-tuned retrievers add nothing (Qwen 7B 0.848, 32B 0.834, 72B 0.816 with Llama 8B): after fine-tuning the small
+  retriever's shortlist is enough.
+- **AL-04's rulebook learnt nothing.** Over 4 rounds all 72 candidate changes (64 threshold steps, 8 planner
+  proposals) were rejected, mostly as "not better on both validation halves"; the starting rules (0.830 at 437 units)
+  escalate more than they gain and are dominated by the fixed Qwen 7B -> Llama 8B pipeline. The candidates only nudge
+  thresholds (at most 0.05 per round) and none removes a rule, so the learner cannot reach "escalate rarely".
 - **Headroom for switching.** Picking, per question, the cheapest fixed pipeline that answers correctly would reach 0.866
   at 366 units (AL-03 models, test): the target the learnt rules approach as their signals improve (fine-tuned models,
   AL-04 .. AL-06).
