@@ -30,6 +30,13 @@ priced at AgentTTS's Table 5); our rows on it are still to come.
 | AL-04 | fixed: Qwen 72B -> Llama 3B / 8B / 70B (fine-tuned) | 0.800 / 0.816 / 0.820 | 1,782 / 1,785 / 1,826 |
 | AL-04 | rulebook, starting rules = learnt rules (no change was accepted) | 0.830 | 437 |
 | AL-04 | oracle within the rulebook's choices | 0.894 | 183 |
+| AL-05 | fixed: nano-jev 33M -> Llama 1B / 3B / 8B (fine-tuned answerers) | 0.616 / 0.698 / 0.722 | 4 / 6 / 12 |
+| AL-05 | fixed: Qwen2.5 0.5B -> Llama 3B / 8B (fine-tuned) | 0.730 / 0.766 | 14 / 18 |
+| AL-05 | fixed: Qwen3.5 0.8B -> Llama 3B / 8B / 70B (fine-tuned) | 0.796 / 0.826 / 0.842 | 22 / 25 / 65 |
+| AL-05 | fixed: Qwen 7B -> Llama 8B / 70B (fine-tuned; also in AL-04) | 0.848 / 0.854 | 178 / 219 |
+| AL-05 | rulebook, starting rules (8 retrievers from nano-jev, 4 answerers from Llama 1B) | 0.672 | 12 |
+| AL-05 | rulebook, learnt rules | 0.710 | 13 |
+| AL-05 | oracle within the rulebook's choices | 0.794 | 36 |
 
 ### Best setting per experiment (cost relative to AgentTTS's paper-best = 100%)
 
@@ -39,7 +46,53 @@ priced at AgentTTS's Table 5); our rows on it are still to come.
 | AL-02 | always Qwen 72B -> Llama 70B (team reference) | 0.776 | 92% |
 | AL-03 | fixed Qwen 72B -> Llama 70B (untrained) | 0.730 | 95% |
 | AL-04 | fixed Qwen 7B -> Llama 70B (fine-tuned) | **0.854** | **11%** |
-| AL-05, AL-06 | still running | | |
+| AL-05 | the same pair (AL-05's ladders contain AL-04's models) | **0.854** | **11%** |
+| AL-06 | still running | | |
+
+Each experiment scores every fixed retriever -> answerer pair on its ladders as reference points, next to its own
+method, the learnt rulebook. The rulebook rows are: AL-03 0.566 (31% cost), AL-04 0.830 (22%), AL-05 0.710 (0.6%).
+AL-05's full table (35 policies) is in [`AL-05-hotpotqa-test-seed0.csv`](../results/common/AL-05-hotpotqa-test-seed0.csv).
+
+### Accuracy or savings: the cost-accuracy curve (AL-05)
+
+AL-05 has the longest ladders (8 fine-tuned retrievers from nano-jev 33M to Qwen 72B, 4 answerers from Llama 1B to
+70B), so its fixed pairs trace the whole trade-off. These are the pairs no other pair beats on both accuracy and cost
+(the efficient frontier); every other pair is both less accurate and no cheaper than one of them.
+
+| Pair (fine-tuned) | Accuracy | Units / question | vs AgentTTS cost | vs always-strong |
+|---|---|---|---|---|
+| nano-jev 33M -> Llama 1B | 0.616 | 4 | 0.2% | -16.0 pt |
+| nano-jev 33M -> Llama 3B | 0.698 | 6 | 0.3% | -7.8 pt |
+| nano-jev 33M -> Llama 8B | 0.722 | 12 | 0.6% | -5.4 pt |
+| Qwen2.5 0.5B -> Llama 3B | 0.730 | 14 | 0.7% | -4.6 pt |
+| Qwen2.5 0.5B -> Llama 8B | 0.766 | 18 | 0.9% | -1.0 pt |
+| Qwen3.5 0.8B -> Llama 3B | 0.796 | 22 | 1.1% | +2.0 pt |
+| **Qwen3.5 0.8B -> Llama 8B** | **0.826** | **25** | **1.3%** | **+5.0 pt** |
+| **Qwen3.5 0.8B -> Llama 70B** | **0.842** | **65** | **3.3%** | **+6.6 pt** |
+| Qwen 7B -> Llama 8B | 0.848 | 178 | 9.0% | +7.2 pt |
+| Qwen 7B -> Llama 70B | 0.854 | 219 | 11.0% | +7.8 pt |
+
+For reference: AgentTTS paper-best 0.744 at 1,984 units (100%); always-strong 0.776 at 1,829 (92%).
+
+- **Which point to use depends on the budget.** Going down the curve saves a lot of cost for a modest loss: from the
+  most accurate pair to Qwen 0.8B -> Llama 70B costs 70% less for 1.2 points; Qwen 0.8B -> Llama 8B costs 89% less
+  for 2.8 points and still beats always-strong by 5 points at 1.3% of its cost.
+- **What the extra small models add over AL-04.** At AL-04's accuracy (0.848-0.854) nothing is cheaper: the same Qwen
+  7B pairs are the cheapest. The saving is below it: AL-04's smallest retriever is Qwen 7B, so its cheapest pair costs
+  175 units, while AL-05 reaches 0.826-0.842 for 25-65 units.
+- **The learnt rules are not on the curve.** They reach 0.710 at 13 units, about where the frontier is (nano-jev ->
+  Llama 8B, 0.722 at 12; paired on the same questions 38 right only for the rules, 44 only for the pair, so no
+  better). The rules stop at the bottom rungs on almost every question instead of escalating where it pays.
+- **Switching has to beat the curve to earn its place.** Per-question switching is worth it only if it reaches a point
+  above the frontier, e.g. about 0.84 for well under 65 units by using the large models only on hard questions. Not
+  shown yet: the oracle row (0.794 at 36 units) only switches answerers on nano-jev's shortlist, and it lands on the
+  frontier rather than above it (Qwen 0.8B -> Llama 3B: 0.796 at 22). Whether switching retrievers per question can
+  beat the curve is the open question.
+- **Caveat.** These pairs were read off the test results. A pair claimed as a result must be chosen on validation
+  first (e.g. the cheapest pair within 1 point of the best on val) and then reported once on test; the golden-set run
+  (slr-val / slr-test) will do that. nano-jev saw 62 of these test questions in its own calibration; without them
+  (438 questions) the picture is the same (nano-jev -> Llama 8B 0.715, learnt rules 0.708, Qwen 0.8B -> Llama 70B
+  0.831, Qwen 7B -> Llama 70B 0.845).
 
 ## Fine-tuning so far (early stopping on validation loss, `results/common/history/`)
 
@@ -56,7 +109,7 @@ Answerers stop improving after one epoch (validation loss rises in the second, s
 retrievers keep improving through epoch 2 (Qwen2.5 32B: best at 1.5). Qwen2.5 72B (QLoRA) has finished training; its
 curve is added with the AL-05/06 results.
 
-AL-05 and AL-06 (full model ladders) are still running.
+AL-05 is done; AL-06 (the same ladders from Qwen 0.5B, without nano-jev) is still running.
 
 ## Reading so far
 
