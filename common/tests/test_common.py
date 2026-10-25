@@ -1,5 +1,7 @@
 import hashlib
 import json
+import os
+from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -47,6 +49,29 @@ def test_rule_is_deterministic_and_order_free():
     assert splits.shuffled(ids) == splits.shuffled(list(reversed(ids)))
     parts = splits.cut(ids, {"train": 65, "val": 15, "test": 20})
     assert [len(p) for p in parts.values()] == [65, 15, 20]
+
+
+def test_twowiki_needs_answered_questions():
+    ids = [f"q{i:05d}" for i in range(12576)]
+    parts = splits.twowiki(ids, ["an answer"] * len(ids))
+    assert {k: len(v) for k, v in parts.items()} == {"val": 500, "test": 500, "train_extra": 11576}
+    assert parts["val"] + parts["test"] + parts["train_extra"] == splits.shuffled(ids)  # the rule, then cut
+    with pytest.raises(ValueError, match="no gold answer"):
+        splits.twowiki(ids, ["an answer"] * (len(ids) - 1) + [" "])
+
+
+def test_twowiki_source_is_the_answered_dev_set():
+    # tts_train.json, the source until 0.4.0, is 2Wiki's official test set: every answer is empty (STAIR #9)
+    source = json.loads((splits.SPLITS_DIR / "MANIFEST.json").read_text())["sources"]["2wikimultihopqa"]
+    assert source == {"file": splits.TWOWIKI_DEV,
+                      "sha256": "408e2dbb28edc6c8b9ca3ba0c94d4fc7bf17ffb923766593a3a7f546ab4cba59"}
+
+
+@pytest.mark.skipif(not os.environ.get("STAIR_2WIKI_DEV"), reason="set STAIR_2WIKI_DEV to the pinned dev parquet")
+def test_committed_twowiki_parts_rebuild_from_the_dev_file():
+    ids, answers = splits._twowiki_dev(Path(os.environ["STAIR_2WIKI_DEV"]))
+    for part, rebuilt in splits.twowiki(ids, answers).items():
+        assert splits.load_split("2wikimultihopqa", part) == rebuilt
 
 
 def test_medagentbench_is_stratified():

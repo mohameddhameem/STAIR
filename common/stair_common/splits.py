@@ -12,10 +12,12 @@ are disjoint within a scheme.
 
     python -m stair_common.splits build --sources <dir with the files below> --out common/splits
 
-Sources (pinned): AgentTTS @ 3f0c2df (data/HotpotQA/hotpotqa-dev.json, data/2wikimultihopqa/tts_train.json,
-data/cwq/data_with_ct_0.json, data/webqsp/data_with_ct_0.json); HotpotQA train (hotpot_train_v1.1.json, or the HF
-`hotpot_qa` distractor train split, same IDs); MedAgentBench @ 9926011 (data/medagentbench/test_data_v2.json);
-STAIR branch `jonathan` @ 5b69cce (jonathan/lab_package/splits.json, saved as slr_splits.json).
+Sources (pinned): AgentTTS @ 3f0c2df (data/HotpotQA/hotpotqa-dev.json, data/cwq/data_with_ct_0.json,
+data/webqsp/data_with_ct_0.json); HotpotQA train (hotpot_train_v1.1.json, or the HF `hotpot_qa` distractor train split,
+same IDs); 2WikiMultiHopQA's official dev set, the HF mirror `framolfese/2WikiMultihopQA` @ fe713bf
+(data/validation-00000-of-00001.parquet, saved as 2wikimultihopqa_dev.parquet); MedAgentBench @ 9926011
+(data/medagentbench/test_data_v2.json); STAIR branch `jonathan` @ 5b69cce (jonathan/lab_package/splits.json, saved as
+slr_splits.json).
 """
 
 import argparse
@@ -29,6 +31,7 @@ import numpy as np
 SEED = 20260729
 SPLITS_DIR = Path(__file__).resolve().parent / "splits"  # shipped inside the package
 HOTPOTQA_TRAIN_DRAW = 12_000  # fine-tuning / router-training questions drawn from the official train file
+TWOWIKI_DEV = "2wikimultihopqa_dev.parquet"  # the mirror's validation split, 12,576 answered questions
 
 
 def shuffled(ids, seed: int = SEED) -> list[str]:
@@ -76,11 +79,17 @@ def scheme(part: str) -> str:
     return part.split("-")[0] if "-" in part else ""
 
 
-def twowiki(dev_ids: list[str]) -> dict[str, list[str]]:
-    """Official dev (AgentTTS's tts_train.json, file order), the same slices as HotpotQA."""
+def twowiki(dev_ids: list[str], answers: list[str]) -> dict[str, list[str]]:
+    """Official dev, cut with the rule: val = the first 500, test = the next 500, train_extra = the other 11,576.
+    Every question must have a gold answer. Until 0.4.0 the source was AgentTTS's tts_train.json, which is 2Wiki's
+    official test set: all 12,576 answers are empty, so nothing on it could be scored."""
     if len(dev_ids) != 12576:
         raise ValueError(f"expected 12,576 questions, got {len(dev_ids)}")
-    return {"val": dev_ids[:500], "test": dev_ids[500:1000], "train_extra": dev_ids[1000:]}
+    unanswered = [i for i, a in zip(dev_ids, answers, strict=True) if not str(a or "").strip()]
+    if unanswered:
+        raise ValueError(f"{len(unanswered)} questions have no gold answer (first: {unanswered[0]}); "
+                         "this is not the answered dev set")
+    return cut(dev_ids, {"val": 500, "test": 500, "train_extra": len(dev_ids) - 1000})
 
 
 def kgqa(ids: list[str]) -> dict[str, list[str]]:
@@ -126,13 +135,19 @@ def _hotpotqa_train_ids(path: Path) -> list[str]:
     return [e["_id"] for e in _json(path)]
 
 
+def _twowiki_dev(path: Path) -> tuple[list[str], list[str]]:
+    import pandas as pd
+    dev = pd.read_parquet(path, columns=["id", "answer"])  # the mirror names 2Wiki's `_id` column `id`
+    return dev["id"].tolist(), dev["answer"].tolist()
+
+
 def build(sources: Path, out: Path) -> dict:
     train = next((sources / n for n in ("hotpot_train_v1.1.json", "distractor_train.parquet") if (sources / n).exists()),
                  sources / "hotpot_train_v1.1.json")
     files = {
         "hotpotqa_dev": sources / "hotpotqa-dev.json",
         "hotpotqa_train": train,
-        "2wikimultihopqa": sources / "tts_train.json",
+        "2wikimultihopqa": sources / TWOWIKI_DEV,
         "cwq": sources / "cwq_data_with_ct_0.json",
         "webqsp": sources / "webqsp_data_with_ct_0.json",
         "medagentbench": sources / "test_data_v2.json",
@@ -142,7 +157,7 @@ def build(sources: Path, out: Path) -> dict:
     splits = {
         "hotpotqa": hotpotqa(dev_ids, _hotpotqa_train_ids(files["hotpotqa_train"]))
                     | hotpotqa_slr(dev_ids, _json(files["hotpotqa_slr"])),
-        "2wikimultihopqa": twowiki([e["_id"] for e in _json(files["2wikimultihopqa"])]),
+        "2wikimultihopqa": twowiki(*_twowiki_dev(files["2wikimultihopqa"])),
         "cwq": kgqa([e["ID"] for e in _json(files["cwq"])]),
         "webqsp": kgqa([e["QuestionId"] for e in _json(files["webqsp"])]),
         "medagentbench": medagentbench([e["id"] for e in _json(files["medagentbench"])]),
