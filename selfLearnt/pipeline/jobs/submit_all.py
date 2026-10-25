@@ -15,6 +15,7 @@ Usage (from STAIR/selfLearnt/pipeline, after jobs/install_env.sh and jobs/setup_
   python jobs/submit_all.py --smoke         # only the 1-GPU smoke test (run this first)
   python jobs/submit_all.py --continue logs/plan_<time>.json   # resume submitting after a disconnect
   python jobs/submit_all.py --as-job        # run the submitter itself as a small CPU job (no tmux needed)
+  python jobs/submit_all.py --ss --as-job   # AL-02 replication only: greedy always-strong on our stack, then the comparison
 The cluster limits how many jobs one user may have queued (MAX_JOBS in cluster.env, default 15): this script submits
 the jobs in order as earlier ones finish, so leave it running in tmux until it prints "all ... jobs submitted".
 Every job resumes from its saved outputs, so re-submitting a phase after a failure is safe (finished work is skipped)."""
@@ -278,6 +279,7 @@ def main():
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--after", default="", help="job id(s), comma-separated, the first jobs wait for")
     ap.add_argument("--continue", dest="cont", default="", help="resume submitting from a saved plan (logs/plan_*.json)")
+    ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
@@ -337,6 +339,18 @@ def main():
         return
     W = cfg["workstreams"]
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
+    if a.ss:
+        rm, am = (W.get("ws2", {}).get("config") or ["q72", 1, "l70", 1])[0::2]
+        P.prefix = "ss-"
+        r = P.add(f"ret-{rm}", f"--stage ss_greedy --part retrieve-{rm}", tp(rm), 12)
+        n = P.add(f"ans-{am}", f"--stage ss_greedy --part answer-{am}", tp(am), 12, [r])
+        P.add("compare", "--stage ss_greedy --part compare", 0, 1, [n], cpu_only=True)
+        if a.dry:
+            print(f"\n{len(P.jobs)} jobs (dry run, nothing submitted)")
+            return
+        out = os.path.join(ROOT, "logs", f"plan_ss_{time.strftime('%Y%m%d_%H%M%S')}.json")
+        submit_loop(P, out, max_jobs, poll, cfg, int(env.get("WAIT_SLOTS", 6)))
+        return
     pb = lambda v: float(variant(cfg, v)["params_b"])
     sm_inf = lambda v: pb(v) <= 7          # vLLM inference fits a 24 GB GPU up to 7B (Llama 8B's 64k-token context does not)
     sm_tr = lambda k: pb(k) <= 3           # LoRA training with long retrieval prompts: up to 3B on 24 GB

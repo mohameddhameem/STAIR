@@ -375,3 +375,112 @@ def _done(cfg, stage, p):
 
 
 _ = itertools  # (kept for readability of plan construction elsewhere)
+
+
+# ==================================================================================
+# AL-02 replication: the team's always-strong baseline (Jonathan's protocol), on our own stack
+# ==================================================================================
+# One greedy pass (temperature 0) of the strong retriever with AgentTTS's retrieval prompt, the shortlist parsed as
+# AgentTTS's Merge does for one sample, one greedy pass of the strong answerer with AgentTTS's answer prompt, K = 1, no
+# fuser. Prompts are AgentTTS's byte for byte (stair.common.atts_*; checked against archon_hotpotqa.py). Saved apart from
+# WS1's sampled outputs. The result is compared question by question with the shared rows
+# (results/common/jonathan-ss-hotpotqa-test.csv).
+SS_PRICE = 814 + 115     # AgentTTS Table 5: Qwen2.5-72B retrieval + Llama-3.1-70B answer (the golden set's always-strong)
+
+
+def f_ss(cfg, split, kind, m):
+    return os.path.join(wdir(cfg, "ss_greedy"), f"{split}_{kind}_{m}.jsonl")
+
+
+def ss_models(cfg):
+    c = cfg["workstreams"].get("ws2", {}).get("config") or ["q72", 1, "l70", 1]
+    return c[0], c[2]
+
+
+def run_ss(cfg, part, split="test"):
+    rm, am = ss_models(cfg)
+    qs = D.load(cfg, split)
+    if part.startswith("retrieve"):
+        path = f_ss(cfg, split, "ret", rm)
+        have = {r["qid"] for r in read_jsonl(path)}
+        todo = [q for q in qs if q["qid"] not in have]
+        log(f"always-strong (greedy) retrieval with {rm}: {len(todo)} of {len(qs)} questions to do")
+        if todo:
+            eng = make_engine(cfg, serve_entry(variant(cfg, rm)))
+            chunk = cfg["gpu"]["chunk"]
+            for c in range(0, len(todo), chunk):
+                part_q = todo[c:c + chunk]
+                prompts = [eng.encode(ATTS_RET_SYSTEM, atts_ret_prompt(q)) for q in part_q]
+                outs = eng.generate(prompts, 1, 0.0, 512, [0] * len(part_q),
+                                    [{"kind": "ret_atts", "gt": q["ret_answers"], "n_refs": len(q["ctxs_candidate"])} for q in part_q])
+                append_jsonl(path, [{"qid": q["qid"], "prompt_tokens": len(p), "text": o[0][0], "out_tokens": o[0][1]}
+                                    for q, p, o in zip(part_q, prompts, outs)])
+            free_gpu(eng)
+    elif part.startswith("answer"):
+        R = {r["qid"]: r for r in read_jsonl(f_ss(cfg, split, "ret", rm))}
+        path = f_ss(cfg, split, "ans", am)
+        have = {r["qid"] for r in read_jsonl(path)}
+        todo = [q for q in qs if q["qid"] in R and q["qid"] not in have]
+        log(f"always-strong (greedy) answers with {am}: {len(todo)} of {len(qs)} questions to do ({len(R)} shortlists)")
+        if todo:
+            eng = make_engine(cfg, serve_entry(variant(cfg, am)))
+            chunk = cfg["gpu"]["chunk"]
+            for c in range(0, len(todo), chunk):
+                part_q = todo[c:c + chunk]
+                ids = [atts_merge([R[q["qid"]]["text"]]) for q in part_q]
+                prompts = [eng.encode(ATTS_QA_SYSTEM, atts_qa_prompt(q["question"], atts_selected_refs(q, s))) for q, s in zip(part_q, ids)]
+                outs = eng.generate(prompts, 1, 0.0, 512, [0] * len(part_q),
+                                    [{"kind": "qa_free", "gold": q["answer"], "has_gold": _has_gold(q, key(s))} for q, s in zip(part_q, ids)])
+                append_jsonl(path, [{"qid": q["qid"], "sel": s, "prompt_tokens": len(p), "text": o[0][0], "out_tokens": o[0][1]}
+                                    for q, s, p, o in zip(part_q, ids, prompts, outs)])
+            free_gpu(eng)
+    else:
+        ss_compare(cfg, split)
+    mark_done(cfg, "ss_greedy", part)
+
+
+def ss_compare(cfg, split="test"):
+    """Our greedy always-strong rows (team schema) and the question-by-question comparison with the shared rows."""
+    import pandas as pd
+    from stair_common.schema import COLUMNS, validate
+    rm, am = ss_models(cfg)
+    R = {r["qid"]: r for r in read_jsonl(f_ss(cfg, split, "ret", rm))}
+    A = {r["qid"]: r for r in read_jsonl(f_ss(cfg, split, "ans", am))}
+    Pr, Pa = cfg["models"][rm]["params_b"], cfg["models"][am]["params_b"]
+    tag = f"retriever={model_tag(variant(cfg, rm))};answerer={model_tag(variant(cfg, am))}"
+    rows = []
+    for q in D.load(cfg, split):
+        r, a = R.get(q["qid"]), A.get(q["qid"])
+        if not (r and a):
+            continue
+        sc = scores(a["text"], q["answer"])
+        ur, ua = units(Pr, r["prompt_tokens"], r["out_tokens"]), units(Pa, a["prompt_tokens"], a["out_tokens"])
+        rows.append({"dataset": cfg["data"].get("dataset", "hotpotqa"), "split": split, "id": q["qid"], "track": "selfLearnt",
+                     "policy": "always-strong-replication", "menu": "A", "seed": int(cfg.get("seed", 0)), "answer": a["text"][:2000],
+                     "lenient": int(round(sc["lenient"])), "em": sc["EM"], "f1": sc["F1"], "units": ur + ua, "units_retrieve": ur,
+                     "units_answer": ua, "units_fuse": 0.0, "units_router": 0.0, "ms_router": None, "models": tag})
+    df = pd.DataFrame(rows, columns=COLUMNS)
+    validate(df)
+    out = os.path.join(cfg["paths"]["results_dir"], f"AL-02-replication-{cfg['data'].get('dataset', 'hotpotqa')}-{split}-seed{cfg.get('seed', 0)}.csv")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    df.to_csv(out, index=False)
+    log(f"our greedy always-strong: {len(df)} questions, lenient {df.lenient.mean():.3f}, {df.units.mean():.0f} units -> {out}")
+    ref_p = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),   # repo root
+                         "results", "common", f"jonathan-ss-hotpotqa-{split}.csv")
+    if not os.path.exists(ref_p):
+        log(f"shared rows not found ({ref_p}): git pull, then run --part compare again")
+        return
+    ref = pd.read_csv(ref_p).set_index("id")
+    j = df.set_index("id").join(ref, rsuffix="_ref", how="inner")
+    same = (j.lenient == j.lenient_ref).mean()
+    same_ans = (j.answer.fillna("").str.strip() == j.answer_ref.fillna("").str.strip()).mean()
+    gap = 100 * (j.lenient.mean() - j.lenient_ref.mean())
+    verdict = ("REPLICATED" if abs(gap) <= 2 and same >= 0.90 else "NOT REPLICATED - serving differs; do not mix the two baselines")
+    msg = (f"replication check on {len(j)} shared questions: ours {j.lenient.mean():.3f} vs shared {j.lenient_ref.mean():.3f} "
+           f"({gap:+.1f} pt); same verdict on {100 * same:.1f}% of questions; identical answer text on {100 * same_ans:.1f}%; "
+           f"ours right only {int(((j.lenient == 1) & (j.lenient_ref == 0)).sum())}, shared right only "
+           f"{int(((j.lenient == 0) & (j.lenient_ref == 1)).sum())}; units {j.units.mean():.0f} vs {j.units_ref.mean():.0f} -> {verdict}")
+    log(msg)
+    write_json(os.path.join(wdir(cfg, "ss_greedy"), f"{split}_replication.json"),
+               {"n": len(j), "ours": j.lenient.mean(), "shared": j.lenient_ref.mean(), "same_verdict": same,
+                "same_answer": same_ans, "units_ours": j.units.mean(), "units_shared": j.units_ref.mean(), "verdict": verdict})

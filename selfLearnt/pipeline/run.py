@@ -18,6 +18,8 @@ Stages, in the order the job chain runs them (WS1-2 first, then the fine-tuning 
   test        WS3-5: the learnt rulebook once on the test questions (--ws ..., or all)
   report      comparison of all experiments, charts, status page, and the team results tables (results/common/)
   export      only the team results tables: one CSV per experiment and seed, checked by stair_common.schema
+  ss_greedy   AL-02 replication: the team's always-strong (greedy Qwen 72B -> Llama 70B, AgentTTS's prompts, no fuser) on
+              our stack, compared question by question with the shared rows (--part retrieve | answer | compare)
   status      rebuild the status page and push it to GitHub now
   all         everything above in order (the CPU dry run)
 """
@@ -124,7 +126,7 @@ def _parts_or(arg, parts):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
-    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "export", "all"])
+    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "export", "ss_greedy", "all"])
     ap.add_argument("--part", default="")
     ap.add_argument("--model", default="")
     ap.add_argument("--ws", default="")
@@ -212,6 +214,9 @@ def main():
             export(cfg)
         elif st == "status":
             maybe_push(cfg, force=True)
+        elif st == "ss_greedy":
+            for p in _parts_or(a.part, ["retrieve", "answer", "compare"]):
+                AT.run_ss(cfg, p)
         maybe_push(cfg, force=st not in ("status",))
     mins = (time.time() - t0) / 60
     log(f"done in {mins:.1f} min")

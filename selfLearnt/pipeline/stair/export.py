@@ -2,7 +2,7 @@
 experiment and seed, checked with stair_common.schema.validate before it is written.
 
     results/common/AL-01-hotpotqa-test-seed0.csv   AgentTTS (searched setting; its paper's best setting)
-    results/common/AL-02-hotpotqa-test-seed0.csv   strongest models
+    results/common/jonathan-ss-hotpotqa-test.csv   AL-02: the team's shared always-strong run (not written here)
     results/common/AL-03 .. AL-06-...              every fixed retriever -> answerer pair, starting and learnt rulebooks, oracle
 
 Rules and probes add no per-question model calls, so units_router = 0 and ms_router is empty. The planner (AgentTTS's
@@ -31,7 +31,7 @@ def tables(cfg):
     ws1 = read_json(os.path.join(wdir(cfg), "test_results.json")) or []
     for res in ws1:
         for tag in (res["policy"] or "").split(" = "):
-            ws, pol = (("ws2", "always-strongest") if tag.startswith("Baseline 2") else
+            ws, pol = ((None, None) if tag.startswith("Baseline 2") else   # AL-02 is the team's shared run (withdrawn here)
                        ("ws1", "agenttts-searched") if tag.startswith("Baseline 1") else
                        ("ws1", "agenttts-paper-best") if tag.startswith("AgentTTS") else (None, None))
             if ws and ws in cfg["workstreams"]:
