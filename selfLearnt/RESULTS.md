@@ -6,11 +6,15 @@ with 500 questions an accuracy carries about ±2 points of sampling noise. The p
 layout) are in [`results/common/`](../results/common/) on this branch, with the fine-tuning loss curves in
 [`results/common/history/`](../results/common/history/).
 
+These are on AgentTTS's 500 test questions (`test` = dev[500:1000]), which the team keeps for comparing with the paper.
+Since 21 Oct (`common` 0.3.0) the team's HotpotQA headline is Jonathan's golden set (`slr-test`, 1,481 questions,
+priced at AgentTTS's Table 5); our rows on it are still to come.
+
 | Experiment | Policy | Accuracy | Units / question |
 |---|---|---|---|
 | AL-01 AgentTTS | **paper-best** (their reported setting: Qwen2.5 72B x1 -> Llama 3.2 3B x40 + fusion) | **0.744** | 1,984 |
 | AL-01 AgentTTS | searched (their search re-run, Qwen2.5 72B as planner instead of o3-mini) | 0.638 | 3,790 |
-| AL-02 | always-strongest (Qwen2.5 72B x1 -> Llama 3.1 70B x1 + fusion, AgentTTS's pipeline) | 0.692 | 5,142 |
+| AL-02 | always-strong, the team's shared reference (Qwen2.5 72B -> Llama 3.1 70B, one greedy pass each, AWQ 4-bit, AgentTTS's prompts, no fuser; Jonathan's stored run, `jonathan-ss-hotpotqa-test.csv`) | 0.776 | 1,829 |
 | AL-03 | fixed: Qwen 7B -> Llama 3B (untrained, our prompts, one pass) | 0.400 | 181 |
 | AL-03 | fixed: Qwen 7B -> Llama 8B | 0.494 | 190 |
 | AL-03 | fixed: Qwen 7B -> Llama 70B | 0.584 | 276 |
@@ -32,7 +36,7 @@ layout) are in [`results/common/`](../results/common/) on this branch, with the 
 | Experiment | Most accurate setting (oracles excluded) | Accuracy | Relative cost |
 |---|---|---|---|
 | AL-01 | AgentTTS paper-best | 0.744 | 100% |
-| AL-02 | always Qwen 72B -> Llama 70B | 0.692 | 259% |
+| AL-02 | always Qwen 72B -> Llama 70B (team reference) | 0.776 | 92% |
 | AL-03 | fixed Qwen 72B -> Llama 70B (untrained) | 0.730 | 95% |
 | AL-04 | fixed Qwen 7B -> Llama 70B (fine-tuned) | **0.854** | **11%** |
 | AL-05, AL-06 | still running | | |
@@ -59,8 +63,11 @@ AL-05 and AL-06 (full model ladders) are still running.
 - **Reproduction.** AgentTTS's reported best setting scores 0.744 here (paper: 0.742), so the pipeline, data and ruler
   reproduce their setup. Their search re-run with an open planner and a 50-question score table picks a worse, costlier
   setting (0.638 at 3,790 units).
-- **Our single-pass pipeline is efficient.** Qwen 72B -> Llama 70B with our prompts, one answer: 0.730 at 1,875 units,
-  against 0.692 at 5,142 for the same two models in AgentTTS's pipeline.
+- **Always-strong is the team's shared run.** AL-02 now uses Jonathan's stored greedy always-strong outputs on the same
+  500 test questions (0.776 at 1,829 units; 0.788 on val), so every HotpotQA track compares against one baseline. Our
+  own first AL-02 run (0.692 at 5,142) sampled at temperature 0.9 / 0.7 and ran AgentTTS's fuser on a single answer,
+  which only rewrote it and cost 3,290 of its units; it is withdrawn. Untrained, our short-answer prompts do worse than
+  AgentTTS's with the same two models (0.730 vs 0.776, AL-03 fixed Qwen 72B -> Llama 70B).
 - **AL-03's rulebook does not yet beat fixed pipelines.** The learnt rules (0.566 at 609 units) are dominated by the fixed
   Qwen 7B -> Llama 70B pipeline (0.584 at 276). They escalate too rarely: 41% of test questions stop at the cheapest pair
   (Qwen 7B -> Llama 3B, 0.400 when used alone), because the untrained models' probe signals flag few wrong answers.
@@ -72,7 +79,10 @@ AL-05 and AL-06 (full model ladders) are still running.
   (test; val 0.698 vs 0.667); 7B+72B 0.754 vs 0.735; 7B+32B+72B 0.743 vs 0.735. A passage-level vote adds nothing.
   The rule is kept as designed for AL-04 .. AL-06.
 - **Fine-tuning is the big step (AL-04).** Every fine-tuned pair beats every untrained one, and the fine-tuned
-  Qwen 7B -> Llama 8B reaches 0.848 at 178 units: +10 points over AgentTTS's best setting at 9% of its cost. Larger
+  Qwen 7B -> Llama 8B reaches 0.848 at 178 units: +10 points over AgentTTS's best setting at 9% of its cost, and +7
+  over always-strong at 10% of its cost (paired on the same 500 questions: 53 right only for ours, 17 only for
+  always-strong). Our recipe changes the prompts as well as the models (short direct answers, fine-tuned), so the
+  comparison is our whole recipe against the shared baseline. Larger
   fine-tuned retrievers add nothing (Qwen 7B 0.848, 32B 0.834, 72B 0.816 with Llama 8B): after fine-tuning the small
   retriever's shortlist is enough.
 - **AL-04's rulebook learnt nothing.** Over 4 rounds all 72 candidate changes (64 threshold steps, 8 planner
