@@ -56,6 +56,6 @@ for name, idmap in splits.items():
             f1_   = score.f1(ans, gold[idx])
             n_ok += len_
             w.writerow(["hotpotqa", name, id_, "jonathan", "always-strong", "A", 0, ans,
-                        len_, em_, f1_, round(u_ret + u_qa, 2), round(u_ret, 2), round(u_qa, 2),
+                        len_, em_, f1_, round(round(u_ret, 2) + round(u_qa, 2), 2), round(u_ret, 2), round(u_qa, 2),
                         0, 0, "", MODELS, PRICE_SS])
     print(f"{name}: n={len(idmap)}  lenient={100.0 * n_ok / len(idmap):.2f}  ->  {out}")
