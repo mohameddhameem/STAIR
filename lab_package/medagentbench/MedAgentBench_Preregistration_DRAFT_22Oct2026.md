@@ -472,3 +472,14 @@ Run: training3_router (log training3_full.log; table sha 4eff23f3...; bar = alwa
 - DECLARED OPERATING POINT: theta = 0.50 only (the trained greedy policy; T3's probabilities are saturated and no cost-match secondary point was swept or declared). Both readout tallies reported as registered (without guardrail / with tau >= 0.8 forced strong) — expected to coincide, since the val policy escalates the entire high tier; reported regardless.
 - COSTS: Training 3's true deployment economics (deliver = full cw; escalate = cw2 + cs). Reported two ways: % of always-escalate under round-2 accounting (its own economy) AND % of the board's full-episode always-escalate (cross-row comparability).
 - PREDICTION (before the read): the policy is type-level and saturated, so test should land near val: ~63-65% accuracy (test task10 strong is weaker than val's 3/6 — the main downside risk), at ~78-82% of full-episode always-escalate cost.
+
+## TRAINING 3 — CALIBRATION AUDIT + GITHUB SNAPSHOT (26 Oct 2026, 22:44 SGT)
+- T3 calibration (round-2 views; store runs/mab/training3_calibration.json): after training AUC 0.907, ECE 0.0396, saturation 80%, latency 19.7 ms. Top bin = task1 only (6 @ mean 0.959, empirical weak success 1.00). THE THREE-POINT PATTERN: both escalate-the-unfinished policies (T2, T3) produce literally-calibrated confidence (ECE 0.03-0.04); Training 1's confident hopeless-delivery makes its confidence an action score (ECE 0.34) — same AUC class in all three.
+- GITHUB SNAPSHOT: branch jonathan @ 446c3d4 — lab_package/medagentbench/ with all ten campaign scripts + this registration + README. No episode stores, adapters, or credentials committed.
+- MID-EPISODE LIVE-ROLLOUT VARIANT (bucket-2b) SCOPED AS THE NEXT CHAPTER, not runnable from replay: strong CONTINUES from the weak model's partial state (handoff) instead of restarting — needs new live episodes (both models served), a handoff protocol, and its own cost accounting; registered as future work with the round-2 restart results (T3) as its baseline.
+
+## TRAINING 3 — CALIBRATION AUDIT (26 Oct 2026, 22:46 SGT)
+Store: runs/mab/training3_calibration.json (round-2 views; before = base model on the same views).
+- After training: ECE 0.0396, AUC 0.907, saturation 80%, latency ~20 ms. Top bin = 6 @ 0.959 with empirical weak success 1.00 (task1's finished answers); the stray weak-correct task4 instance sits escalated in the low bin (the AUC cost).
+- Pattern across the three routers: T2 and T3 (escalate-everything-uncertain) both achieve honest literal probabilities (ECE 0.03-0.04); T1 alone trades literal calibration (ECE 0.34) for cost-efficiency via confident hopeless deliveries. Calibration honesty and cost-efficiency trade off through the hopeless set.
+- Note: the base model under ROUND-2 views ranks worse than under full views (before-AUC 0.908 vs 0.981) — the finished attempt carries ranking signal the partial view lacks; training recovers the decisions type-level anyway.
