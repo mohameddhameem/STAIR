@@ -81,11 +81,18 @@
   },
   "medagentbench/calib": {
    "n": 150,
-   "sha256": "949c71003f002aece2f3626d4d7f190c351d7a484b0646f4318c4c69ea964f78"
+   "sha256": "a2f0e5691f8aebe2412b18a7cfa08341fb30027d09761bcb3c6d28d325551102",
+   "note": "PATIENT-DISJOINT replacement (26 Oct 2026, seed 20260729): calib/test share zero patients; 15/category per side. Supersedes the instance-random split (68 overlapping patients)."
   },
   "medagentbench/test": {
    "n": 150,
-   "sha256": "404435827e39614f8e75b24c2b5d36a72b8904f98ef5ee123000c9b6f9901374"
+   "sha256": "fedca64d981b37369233512b28508086f3ed91e803010e49ac0842713d570754",
+   "note": "PATIENT-DISJOINT replacement (26 Oct 2026, seed 20260729)."
+  },
+  "medagentbench/calib_sweep": {
+   "n": 60,
+   "sha256": "d037276c4ea3f1fec58ff47135e653c202579205aa54d5a96ae0c59b16257285",
+   "note": "Subset of calib (6/category) for threshold sweeps, pilots, audits."
   }
  }
 }
