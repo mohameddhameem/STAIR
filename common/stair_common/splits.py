@@ -10,6 +10,11 @@ HotpotQA also carries the golden set the team follows (Jonathan's Stage-Level Ro
 splits.json. It is a second scheme over the same dev questions, so it overlaps the dev slices above by design; parts
 are disjoint within a scheme.
 
+MedAgentBench is split by patient (from 0.5.0): all of a patient's tasks sit in `calib` or all in `test`, 15 tasks per
+category on each side, and `calib_sweep` is a subset of calib. The split is Jonathan's, found by a seeded search on
+his branch (`jonathan` @ 2a35c9b), so it is frozen in the committed files: `build` keeps them, after checking them
+against test_data_v2.json.
+
     python -m stair_common.splits build --sources <dir with the files below> --out common/splits
 
 Sources (pinned): AgentTTS @ 3f0c2df (data/HotpotQA/hotpotqa-dev.json, data/cwq/data_with_ct_0.json,
@@ -23,7 +28,7 @@ slr_splits.json).
 import argparse
 import hashlib
 import json
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -75,7 +80,10 @@ def hotpotqa_slr(dev_ids: list[str], slr: dict) -> dict[str, list[str]]:
 
 
 def scheme(part: str) -> str:
-    """The scheme a part belongs to: "slr" for slr-*, "" for the rest. Parts are disjoint within a scheme."""
+    """The scheme a part belongs to: "slr" for slr-*, "calib_sweep" for MedAgentBench's subset of calib, "" for the
+    rest. Parts are disjoint within a scheme."""
+    if part == "calib_sweep":
+        return part
     return part.split("-")[0] if "-" in part else ""
 
 
@@ -100,22 +108,37 @@ def kgqa(ids: list[str]) -> dict[str, list[str]]:
     return {"test": ids[:500], **cut(ids[500:], {"train": 350, "val": 150})}
 
 
-def medagentbench(ids: list[str]) -> dict[str, list[str]]:
-    """300 tasks, 10 categories of 30: per category 15 calibration / 15 test, with the rule. Too few to fine-tune."""
-    by_task = defaultdict(list)
-    for i in ids:
-        by_task[i.rsplit("_", 1)[0]].append(i)
-    out = {"calib": [], "test": []}
-    for task in sorted(by_task):
-        parts = cut(by_task[task], {"calib": len(by_task[task]) // 2, "test": len(by_task[task]) - len(by_task[task]) // 2})
-        out["calib"] += parts["calib"]
-        out["test"] += parts["test"]
-    return out
+MEDAGENTBENCH_PER_CATEGORY = {"calib": 15, "test": 15, "calib_sweep": 6}  # tasks of each of the 10 categories
+
+
+def medagentbench(tasks: list[dict], parts: dict[str, list[str]]) -> dict[str, list[str]]:
+    """300 tasks, 10 categories of 30, split by patient (`eval_MRN`; two task1 items name none): each patient's tasks
+    sit all in calib or all in test, 15 per category on each side. calib_sweep is 6 per category inside calib, for
+    threshold sweeps and pilots. The split is Jonathan's, frozen in the committed files, so this checks `parts`
+    against the tasks and returns them unchanged. Until 0.5.0 each category was cut with the rule, which put 68 of
+    the 98 patients on both sides. Too few to fine-tune."""
+    patient = {t["id"]: t.get("eval_MRN") for t in tasks}
+    if len(patient) != 300:
+        raise ValueError(f"expected 300 tasks, got {len(patient)}")
+    if set(parts) != set(MEDAGENTBENCH_PER_CATEGORY):
+        raise ValueError(f"expected the parts {sorted(MEDAGENTBENCH_PER_CATEGORY)}, got {sorted(parts)}")
+    if sorted(parts["calib"] + parts["test"]) != sorted(patient):
+        raise ValueError("calib and test must hold each of the 300 tasks once")
+    if not set(parts["calib_sweep"]) <= set(parts["calib"]):
+        raise ValueError("calib_sweep must lie inside calib")
+    for part, n in MEDAGENTBENCH_PER_CATEGORY.items():
+        per = Counter(i.rsplit("_", 1)[0] for i in parts[part])
+        if len(per) != 10 or set(per.values()) != {n}:
+            raise ValueError(f"{part} must hold {n} tasks of each of the 10 categories, got {dict(per)}")
+    shared = ({patient[i] for i in parts["calib"]} & {patient[i] for i in parts["test"]}) - {None}
+    if shared:
+        raise ValueError(f"{len(shared)} patients have tasks in both calib and test")
+    return parts
 
 
 def load_split(dataset: str, part: str, splits_dir: Path = SPLITS_DIR) -> list[str]:
-    """IDs of one part (train, train_extra, val, calib, test; HotpotQA also slr-train, slr-val, slr-test) of a dataset,
-    in the committed order."""
+    """IDs of one part (train, train_extra, val, calib, test; HotpotQA also slr-train, slr-val, slr-test;
+    MedAgentBench also calib_sweep) of a dataset, in the committed order."""
     return (splits_dir / dataset / f"{part}.txt").read_text().split()
 
 
@@ -160,7 +183,8 @@ def build(sources: Path, out: Path) -> dict:
         "2wikimultihopqa": twowiki(*_twowiki_dev(files["2wikimultihopqa"])),
         "cwq": kgqa([e["ID"] for e in _json(files["cwq"])]),
         "webqsp": kgqa([e["QuestionId"] for e in _json(files["webqsp"])]),
-        "medagentbench": medagentbench([e["id"] for e in _json(files["medagentbench"])]),
+        "medagentbench": medagentbench(_json(files["medagentbench"]),  # frozen: the committed parts, checked
+                                       {p: load_split("medagentbench", p) for p in MEDAGENTBENCH_PER_CATEGORY}),
     }
     manifest = {"seed": SEED, "sources": {k: {"file": v.name, "sha256": _sha(v)} for k, v in files.items()}, "parts": {}}
     for dataset, parts in splits.items():
