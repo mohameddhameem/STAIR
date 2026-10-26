@@ -179,19 +179,10 @@ directly comparable with the paper, and no track has trained on a test question.
 | 2WikiMultiHopQA | official dev (12,576, all answered): the HF mirror `framolfese/2WikiMultihopQA` @ `fe713bf`, `validation` (saved as `2wikimultihopqa_dev.parquet`) | official train file; optional `train_extra` = the other 11,576 dev questions | 500 dev, by the rule | the next 500 dev, by the rule | **Changed in 0.4.0** (STAIR #9): the source was AgentTTS `tts_train.json`, which is 2Wiki's official *test* set, with every answer empty. AgentTTS's own 2Wiki test comes from a `queries.jsonl` it does not publish, so no comparability is lost |
 | CWQ | AgentTTS `cwq/data_with_ct_0.json` (1,000 with gold triplets) | 350 | 150 | **[0:500]** = AgentTTS's `cwq_500_test500.json` | identical, checked question by question |
 | WebQSP | AgentTTS `webqsp/data_with_ct_0.json` (1,000) | 350 | 150 | **[0:500]** = AgentTTS's `webqsp_500_test500.json` | identical, checked |
-| MedAgentBench | `test_data_v2.json` (300 tasks, 10 categories × 30, 98 patients) | none | 150 `calib`, with `calib_sweep` (6 per category) inside it | 150 | 15 / 15 per category, split by patient. **Changed in 0.5.0**: Jonathan's patient-disjoint split replaces a per-category random cut that put 68 of the 98 patients on both sides |
+| MedAgentBench | `test_data_v2.json` (300 tasks, 10 categories × 30) | none | 150 `calib` | 150 | 15 / 15 per category |
 
 - **Random parts use one rule:** sort the IDs, shuffle with `numpy.random.default_rng(20260729)`, then cut. These are
-  the HotpotQA train draw, all three 2Wiki parts, and CWQ/WebQSP train/val.
-- **MedAgentBench is split by patient** (from 0.5.0). Each patient (`eval_MRN`) has up to 6 tasks, one per category,
-  and the instructions name the patient. So all of a patient's tasks sit in `calib` or all in `test`, and nothing
-  learnt on calib has seen a test patient's records.
-  - The split is Jonathan's, found by a seeded search on his branch. It is frozen in the committed files: `build`
-    checks them against `test_data_v2.json` (no patient on both sides, 15 / 15 per category, `calib_sweep` inside
-    calib) and keeps them.
-  - `calib_sweep` (60, 6 per category) is the part of calib for threshold sweeps and pilots.
-  - Each side holds 49 patients, up to 6 tasks each, so tasks are not independent: resample by patient, not by task,
-    for intervals.
+  the HotpotQA train draw, all three 2Wiki parts, CWQ/WebQSP train/val, and MedAgentBench.
 - **`train_extra`** is for tracks whose labels exist only on dev questions, such as nonLLM's stored outcome grid. Never
   train on `val` or `test`.
 - **nano-jev** (menu B) saw 1,000 HotpotQA dev questions in its own calibration and test, not in its training. 62 of
