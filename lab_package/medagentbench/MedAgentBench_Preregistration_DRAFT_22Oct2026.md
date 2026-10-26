@@ -496,3 +496,13 @@ Manifest: training3_router/test_read_manifest.json; table sha 4eff23f3...; tau s
 - Both tallies identical (high tier fully escalated) — the guardrail is satisfied at zero extra cost, as predicted.
 - PREDICTION HELD: 63.33 in the declared 63-65 band, at the bottom edge for the foreseen reason (test task10 harder than val's 3/6; escalation absorbed it).
 - THE FINAL FRONTIER (held-out test, both routers read once each): Training 1 — 61.33 @ 54.1% of always-escalate (the cost point); Training 3 — 63.33 (oracle) @ 81.5% (the accuracy point). Training 2 remains validation-only and dominated. CAMPAIGN COMPLETE.
+
+## PROTOCOL AMENDMENT — COMPLETENESS READ FOR TRAINING 2 (26 Oct 2026, 22:58 SGT, approved by Jonathan)
+- AMENDMENT: every trained router is reported on the held-out test exactly once (apples-to-apples board). Training 2's read is added for comparability only — its policy has been frozen since the 21:00 result (lambda_t three-way tie, identical policies; lt0.5 adapter read; no selection is possible), and the original condition ("material validation win") remains the rule for any PROMOTION decision. This read reports, it does not promote.
+- SETUP: Training 1's table (full-attempt views = what T2 was trained on; full-episode escalation costs = T2's real economics), single declared point theta = 0.50, both tallies, run-once guard in training2_router_lt0.5/.
+- PREDICTION (before the read): T2's decisions = deliver task1 only (the same decision set as Training 3), so test accuracy should land at exactly 63.33 (the oracle), at ~94-95% of always-escalate cost — placing the T3-dominates-T2 claim on the held-out test itself (same accuracy, ~13 points more cost).
+
+## TRAINING 2 — COMPLETENESS READ RESULT (26 Oct 2026, 23:02 SGT) — PREDICTION EXACT
+- Manifest: training2_router_lt0.5/test_read_manifest.json (training2_test_read v1.0; T1 table sha 186545f0...).
+- RESULT: 63.33 accuracy @ 1,481.2 mean units = 94.5% of always-escalate; R' 0.2778; deliver 15/150 (task1); both tallies identical (high tier fully escalated). The registered prediction ("exactly 63.33 at ~94-95%") landed exactly.
+- THE BOARD IS NOW APPLES-TO-APPLES: all three trained routers read once each on the held-out test. T1: 61.33 @ 54.1% (cost point). T2: 63.33 @ 94.5%. T3: 63.33 @ 81.5% (accuracy point). THE DOMINANCE IS A TEST FACT: T3 = T2 accuracy at 13.0 points less cost. Verdict unchanged and now test-grounded: early escalation, not a risk term, wins the accuracy corner; risk belongs at the decision layer.
