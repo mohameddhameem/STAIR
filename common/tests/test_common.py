@@ -14,7 +14,7 @@ EXPECTED = {
     "2wikimultihopqa/val": 500, "2wikimultihopqa/test": 500, "2wikimultihopqa/train_extra": 11576,
     "cwq/test": 500, "cwq/train": 350, "cwq/val": 150,
     "webqsp/test": 500, "webqsp/train": 350, "webqsp/val": 150,
-    "medagentbench/calib": 150, "medagentbench/test": 150,
+    "medagentbench/calib": 150, "medagentbench/test": 150, "medagentbench/calib_sweep": 60,
 }
 
 
@@ -84,9 +84,45 @@ def test_committed_twowiki_parts_rebuild_from_the_dev_file():
 
 
 def test_medagentbench_is_stratified():
-    test = splits.load_split("medagentbench", "test")
-    tasks = pd.Series([i.rsplit("_", 1)[0] for i in test]).value_counts()
-    assert len(tasks) == 10 and (tasks == 15).all()
+    for part, n in splits.MEDAGENTBENCH_PER_CATEGORY.items():
+        tasks = pd.Series([i.rsplit("_", 1)[0] for i in splits.load_split("medagentbench", part)]).value_counts()
+        assert len(tasks) == 10 and (tasks == n).all(), part
+    calib = set(splits.load_split("medagentbench", "calib"))
+    assert set(splits.load_split("medagentbench", "calib_sweep")) <= calib
+
+
+def _medagentbench_tasks():
+    """Synthetic stand-in for test_data_v2.json: patient k has task k of every category; task1_15 (calib) and task1_30
+    (test) name no patient, as two task1 items there do, which is not a shared patient."""
+    tasks = [{"id": f"task{c}_{k}", "eval_MRN": f"p{k}"} for c in range(1, 11) for k in range(1, 31)]
+    for i in (14, 29):
+        del tasks[i]["eval_MRN"]
+    parts = {"calib": [t["id"] for t in tasks if int(t["id"].split("_")[1]) <= 15],
+             "test": [t["id"] for t in tasks if int(t["id"].split("_")[1]) > 15],
+             "calib_sweep": [t["id"] for t in tasks if int(t["id"].split("_")[1]) <= 6]}
+    return tasks, parts
+
+
+def test_medagentbench_split_keeps_each_patient_on_one_side():
+    tasks, parts = _medagentbench_tasks()
+    assert splits.medagentbench(tasks, parts) == parts  # frozen: returned unchanged
+    leaky = {**parts, "calib": [i if i != "task1_10" else "task1_16" for i in parts["calib"]],
+             "test": [i if i != "task1_16" else "task1_10" for i in parts["test"]]}  # p10 and p16 on both sides
+    with pytest.raises(ValueError, match="2 patients have tasks in both"):
+        splits.medagentbench(tasks, leaky)
+    with pytest.raises(ValueError, match="calib_sweep must lie inside calib"):
+        splits.medagentbench(tasks, {**parts, "calib_sweep": parts["calib_sweep"][:-1] + ["task10_30"]})
+    with pytest.raises(ValueError, match="calib_sweep must hold 6"):
+        splits.medagentbench(tasks, {**parts, "calib_sweep": parts["calib_sweep"][:-1]})
+
+
+@pytest.mark.skipif(not os.environ.get("STAIR_MEDAGENTBENCH"), reason="set STAIR_MEDAGENTBENCH to test_data_v2.json")
+def test_committed_medagentbench_split_is_patient_disjoint():
+    path = Path(os.environ["STAIR_MEDAGENTBENCH"])
+    manifest = json.loads((splits.SPLITS_DIR / "MANIFEST.json").read_text())
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == manifest["sources"]["medagentbench"]["sha256"]
+    committed = {p: splits.load_split("medagentbench", p) for p in splits.MEDAGENTBENCH_PER_CATEGORY}
+    assert splits.medagentbench(splits._json(path), committed) == committed
 
 
 def test_ruler_is_the_certified_file():
