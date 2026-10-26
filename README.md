@@ -13,8 +13,9 @@ This branch (`systemOne`) holds the System One judge line of work: see [systemOn
 
 ## Side by side: AgentTTS and the STAIR lines
 
-**Snapshot 2026-10-23.** Each column is quoted from its own branch at the commit listed under [Sources](#sources), or
-from the paper. Read the notes before comparing numbers across columns: test sets, rulers and cost scales differ.
+**Snapshot 2026-10-23; the systemOne and selfLearnt columns refreshed on 2026-10-26.** Each column is quoted from its
+own branch at the commit listed under [Sources](#sources), or from the paper. Read the notes before comparing numbers
+across columns: test sets, rulers and cost scales differ.
 
 | | **AgentTTS** (baseline) | **jonathan** (SLR) | **systemOne** (this branch) | **nonLLM** | **selfLearnt** |
 |---|---|---|---|---|---|
@@ -25,8 +26,8 @@ from the paper. Read the notes before comparing numbers across columns: test set
 | Test set | AgentTTS's 500 (dev [500:1000]) | **Golden set: `slr-test`**, 1,481 of the 7,405 dev questions | **`slr-test`** since 2026-10-21; AgentTTS's 500 kept as history | A 1,481-question test split of the same sizes (routers); a 500-question training cohort (sampling study) | AgentTTS's 500 (cluster); 400 (Colab) |
 | Metric | Gold contained in the response (lenient) | The standard lenient ruler | The standard lenient ruler | The grid's stored lenient + strict; EM/F1 after extraction | Lenient + EM / F1 (cluster); "corrected" EM / F1 ≥ 0.5 / contained (Colab) |
 | Cost | Its normalised budget (Table 5) | B: Table 5 prices per call, weak-first, strong-everything 929, router not charged. A: its own token-normalised scale | As jonathan's B, plus each judge's own price | Pipeline units 2.0 / 5.7 / 5.7 / 9.4 (routers); parameters × tokens (sampling) | AgentTTS units (cluster); a cost index (Colab) |
-| Best result so far | Qwen 72B ×1 → Llama 3B ×40 + fusion: 0.742 reported, **0.746** lenient in the team's re-score, at a price of **859** (92% of strong-everything) | B: SFT (label) **76.70 at 835** and + reward 75.96 at 665, against always-strong 76.77 at 929. A: 59.55 at 182.3 against always-strong 59.55 at 250.1 | nano-jev top 5 → 3B ×20 fused **75.08 at 31.6** (3.4% of 929), tied with always-strong. E4B decider routing menu A: AIQ **0.736** against jonathan's 0.724 / 0.726 (better before its price, tied with it) | Routers +0.85 to +1.30 points over a cost-matched mix of fixed policies (best: 41.66% at 51% of SS's cost). Sampling cohort, gold-assisted oracle (not deployable): 82.8% against SS ×40's 37.8% at 46–58% less cost | Colab: fine-tuned 0.8B retriever → Qwen 32B 84.0% at cost index 43.5 (an AgentTTS-style pick = 100) |
-| Status | Published | Done. B's rows reproduce exactly (checked by systemOne); A's router rows need files still on the lab box | Done (exp. 1–10 and the Jev programme); nano-jev qp / qpa [published on Hugging Face](systemOne/MODELS.md) | Full sampling run stopped at the user's request on 2026-10-18, progress saved | Cluster run (AL-01 … AL-06, on AgentTTS's 500) not started: GPU smoke test pending |
+| Best result so far | Qwen 72B ×1 → Llama 3B ×40 + fusion: 0.742 reported, **0.746** lenient in the team's re-score, at a price of **859** (92% of strong-everything) | B: SFT (label) **76.70 at 835** and + reward 75.96 at 665, against always-strong 76.77 at 929. A: 59.55 at 182.3 against always-strong 59.55 at 250.1 | nano-jev top 5 → 3B ×20 fused **75.08 at 31.6** (3.4% of 929), tied with always-strong. E4B decider routing menu A: AIQ **0.736** against jonathan's 0.724 / 0.726 (better before its price, tied with it) | Routers +0.85 to +1.30 points over a cost-matched mix of fixed policies (best: 41.66% at 51% of SS's cost). Sampling cohort, gold-assisted oracle (not deployable): 82.8% against SS ×40's 37.8% at 46–58% less cost | Cluster (AgentTTS's 500, seed 0): fine-tuned Qwen 7B → Llama 70B **0.854** at 219 units, 11% of AgentTTS's paper-best cost (whose 0.744 it reproduces); always-strong 0.776 at 1,829. The pairs are read off test, and the learnt rulebook is not yet above them (AL-05: 0.710 at 13 units). Colab: fine-tuned 0.8B retriever → Qwen 32B 84.0% at cost index 43.5 (an AgentTTS-style pick = 100) |
+| Status | Published | Done. B's rows reproduce exactly (checked by systemOne); A's router rows need files still on the lab box | Done (exp. 1–10 and the Jev programme). [Published on Hugging Face](systemOne/MODELS.md): nano-jev qp / qpa, and the Strands Decider 2B / E4B judges for pair A and menu A | Full sampling run stopped at the user's request on 2026-10-18, progress saved | Cluster run on AgentTTS's 500, seed 0: AL-01 … AL-05 done, AL-06 running; rows on the golden set still to come |
 
 ### On the golden set (`slr-test`, 1,481 questions, standard lenient ruler, Table 5 prices)
 
@@ -82,7 +83,7 @@ The only test set two lines share today: jonathan's routers and systemOne's expe
 
 - **Test sets:**
   - jonathan and systemOne share `slr-test`.
-  - AgentTTS and selfLearnt's cluster plan use AgentTTS's 500. systemOne's earlier experiment 8 did too; see
+  - AgentTTS and selfLearnt's cluster run use AgentTTS's 500. systemOne's earlier experiment 8 did too; see
     [its write-up](systemOne/docs/experiments/2026-10-18-common-redo.md).
   - nonLLM's routers use a 1,481-question split of the same sizes. Whether it is the same split was not checked here.
 - **Rulers:** lenient, strict, graded and "corrected" accuracy differ by up to ~0.14 on the same answers (systemOne
@@ -100,5 +101,6 @@ The only test set two lines share today: jonathan's routers and systemOne's expe
   - [routers](https://github.com/mohameddhameem/STAIR/blob/f48aeae/nonLLM/results/measured_v1/REPORT.md);
   - [sampling cohort](https://github.com/mohameddhameem/STAIR/blob/f48aeae/nonLLM/results/adaptive_sampling40_instruct_gguf/cohort_500/oracle_cost/comparison.md).
 - **selfLearnt:**
-  - [README at `c53035c`](https://github.com/mohameddhameem/STAIR/blob/c53035c/selfLearnt/README.md);
+  - [README](https://github.com/mohameddhameem/STAIR/blob/a02d9fd/selfLearnt/README.md) and
+    [cluster results](https://github.com/mohameddhameem/STAIR/blob/a02d9fd/selfLearnt/RESULTS.md) at `a02d9fd`;
   - [Colab results at `0aa1743`](https://github.com/mohameddhameem/STAIR/blob/0aa1743/selfLearnt/colab_dev/README.md).

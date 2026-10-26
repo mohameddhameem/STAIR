@@ -156,6 +156,44 @@ the 2B in job 43098 (eval 43100), the E4B in 43114 (eval 43115).
 - **Why, most likely:** his routers are Qwen2.5-1.5B with LoRA, about 45 times nano-jev's size. The size-matched 2B
   decider (above) closes the gap and edges ahead on AIQ, and the E4B goes past them.
 
+**Published weights (2026-10-26).** The decider runs above saved no weights. So the four decider judges were retrained
+with the same plan and seeds, keeping their weights (jobs 43345 / 43346, eval 43347; output:
+[results/decider-release](../../results/decider-release/exp10-slr-models/eval/report.json)). That retrain is what
+Hugging Face holds: `mohameddhameem/systemone-decider-{2b,e4b}-{qp,qpa}-menu-a`, three seeds each. The table above
+stays this experiment's result, and the retrain is a second draw of it.
+- **It lands within the seed spread.** Seed means are within 0.0013 of the ones above, and ensembles within 0.0022.
+  His routers and the fixed paths are unchanged.
+
+  | Retrained router | AIQ [95% CI] | With its own price | One seed |
+  |---|---|---|---|
+  | Decider E4B qpa | 0.739 [0.718, 0.761] | 0.732 | 0.732, 0.733, 0.735 |
+  | Decider 2B qpa | 0.731 [0.711, 0.752] | 0.730 | 0.728, 0.727, 0.726 |
+  | Decider E4B qp | 0.722 [0.702, 0.744] | 0.716 | 0.718, 0.720, 0.721 |
+  | Decider 2B qp | 0.722 [0.701, 0.743] | 0.720 | 0.719, 0.719, 0.721 |
+- **One verdict moves: the E4B qpa ensemble with its price.**
+  - Above, it tied his routers ([−0.002, +0.015], [−0.003, +0.013]).
+  - The retrain beats both: [+0.001, +0.016] against his label router, and [+0.0002, +0.014] against his reward
+    router. With his router's own price charged as well, the intervals are [+0.002, +0.016] and [+0.001, +0.015].
+  - Both lower ends sit at the edge of zero, so the two draws together support "ties or narrowly beats". They do not
+    support "beats".
+  - **One seed with its price:** above, seed 1 beat his label router. Here seed 2 beats both, and seeds 0 and 1 tie.
+- **Unchanged:**
+  - before its price, the E4B qpa ensemble beats both his routers ([+0.007, +0.022], [+0.007, +0.021]);
+  - the 2B qpa ensemble beats his label router before its price ([+0.001, +0.014]) and ties both with it;
+  - the qp judges tie his routers before their price. With it, the E4B qp is worse than both, and the 2B qp is worse
+    than his reward router.
+- **His operating rules:** the retrained E4B qpa ensemble again finds real points.
+  - Peak is 76.77 at 755.5 (always-strong's accuracy).
+  - Parity is 76.70 at 708.6, each plus 20.2 for its three passes. His label router reaches 76.70 at 834.8.
+  - The 2B and the qp judges still escalate everything.
+- **The published default rule is `near_strong`, not his.** It is the cheapest point of his sweep within 1% (relative)
+  of always-strong's accuracy on `slr-val`, and his peak and parity rules ship alongside it.
+  - Seed 0 on test lands at 74.81 / 75.76 / 75.08 / 75.62 (2B qp / 2B qpa / E4B qp / E4B qpa). That is 1.3–2.6%
+    below always-strong's 76.77, at 60–71% of its 929 with the judge's calls included.
+  - So the 1% holds on validation only.
+- **The Hub folders reproduce these scores.** Job 44210 loaded every published folder as a user would, and matched each
+  seed's saved test scores exactly on a GPU ([score_check.json](../../results/decider-release/score_check.json)).
+
 ## Experiments 7 and 9 on the golden set (pair A)
 
 **Setup.** Experiment 7's pair A is not menu A: Qwen2.5-1.5B reads the top 2 of the 10 distractor passages, and
@@ -238,6 +276,34 @@ price range, and its AIQ floors at always-small's 0.609, for qp and qpa alike.
   the 7B here reads all 10 passages. A judge has no Table 5 entry, so it is priced at its measured tokens. Relative to
   the experts, judges are therefore dearer here than in measured AgentTTS units. There, the E4B zero-shot with its cost
   tied the LR cascade router ([2026-10-18](2026-10-18-common-redo.md)).
+
+**Published weights (2026-10-26).** The fine-tuned decider runs above saved no weights. So they were retrained with
+the same plan and seeds, keeping their weights (jobs 43342 / 43343, eval 43344; output:
+[results/decider-release](../../results/decider-release/slr-decider-models/eval/A/report.json)). That retrain is
+what Hugging Face holds: `mohameddhameem/systemone-decider-{2b,e4b}-{qp,qpa}`, three seeds each. The table above
+stays this experiment's result, and the retrain is a second draw of it.
+- **It lands within the seed spread.** Seed means are within 0.002 of the ones above, and ensembles within 0.0034.
+  The baselines are identical.
+
+  | Retrained decider | AIQ [95% CI] (mean of 3 seeds) | One judge with its price |
+  |---|---|---|
+  | E4B fine-tuned, qpa | 0.710 [0.689, 0.729] | 0.655, 0.656, 0.652 |
+  | 2B fine-tuned, qpa | 0.697 [0.676, 0.718] | **0.682, 0.681, 0.681** |
+  | E4B fine-tuned, qp | 0.682 [0.663, 0.704] | 0.645, 0.646, 0.645 |
+  | 2B fine-tuned, qp | 0.682 [0.661, 0.704] | 0.666, 0.672, 0.670 |
+- **The headline holds.** One fine-tuned 2B qpa judge with its price beats entropy for all three seeds
+  ([+0.005, +0.028], [+0.006, +0.028], [+0.004, +0.027]) and ties the LR cascade router.
+- **Three verdicts at the edge of zero move:**
+
+  | Comparison | Above | Retrain |
+  |---|---|---|
+  | E4B qp ensemble − LR cascade, before its price | [+0.000, +0.019] | [−0.002, +0.016] |
+  | One E4B qpa judge (seed 2) with its price − entropy | [−0.024, +0.000] | [−0.026, −0.002] |
+  | One 2B qp judge (seed 0) with its price − LR cascade | [−0.021, −0.002] | [−0.018, +0.001] |
+- **The published threshold** is chosen on `slr-val`: the cheapest point within 1% (relative) of always-large's
+  accuracy. Seed 0 on test lands 1.4–2.7% below always-large, at 24–56% of its cost with the judge's call.
+- **The Hub folders reproduce these scores.** Job 44210 matched every seed's saved test scores exactly on a GPU
+  ([score_check.json](../../results/decider-release/score_check.json)).
 
 ## Experiment 8 on the golden set: cheap retrieval, sampled answers
 

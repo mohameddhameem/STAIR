@@ -227,11 +227,13 @@ EOF
   slr-ladder)  # CPU job: verify the golden set and write results/slr (seconds)
     $BIN slr all --plan "${SLR_PLAN:-configs/slr.toml}"
     ;;
-  exp10-train)  # GPU: one judge set of configs/exp10-slr.toml, every (inputs, seed); resumes
-    $BIN exp10-slr train --judge "${JUDGE:?JUDGE=nano-jev|decider-2b|decider-e4b}" --plan "${PLAN:-configs/exp10-slr.toml}"
+  exp10-train)  # GPU: one judge set of configs/exp10-slr.toml, every (inputs, seed); resumes. A retrain that keeps the
+                # weights: EXP10_OUT=<new run folder> SAVE=1
+    $BIN exp10-slr train --judge "${JUDGE:?JUDGE=nano-jev|decider-2b|decider-e4b}" --plan "${PLAN:-configs/exp10-slr.toml}" \
+      ${EXP10_OUT:+--out "$EXP10_OUT"} ${SAVE:+--save-model}
     ;;
   exp10-eval)  # CPU job: reports for every judge set trained so far, against Jonathan's routers (loads only his router's tokenizer, to price its calls)
-    $BIN exp10-slr eval --plan "${PLAN:-configs/exp10-slr.toml}"
+    $BIN exp10-slr eval --plan "${PLAN:-configs/exp10-slr.toml}" ${EXP10_OUT:+--out "$EXP10_OUT"}
     ;;
   exp8s-pools)  # CPU job: experiment 8 on the golden set: its split (questions answered before drawn first) and pools
     $BIN make-splits --slr --router-size "${EXP8_TRAIN:-1000}" --calib-size "${EXP8_CALIB:-500}" \

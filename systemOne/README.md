@@ -14,7 +14,8 @@ See `stair_common` 0.3.0 in [common/](../common/README.md) and
 [the write-up](docs/experiments/2026-10-21-slr-standard.md). The earlier settings are kept below as history.
 
 - Results, experiment by experiment: [RESULTS.md](RESULTS.md) (full write-ups in [docs/experiments/](docs/experiments/))
-- The judges published on Hugging Face (2026-10-25): [MODELS.md](MODELS.md)
+- The judges published on Hugging Face: nano-jev (2026-10-25), and the Strands Decider 2B / E4B on pair A and
+  menu A (2026-10-26): [MODELS.md](MODELS.md)
 - What nano-jev's typed decisions add, tested on HotpotQA, MuSiQue and 2WikiMultiHopQA: [the Jev
   programme](#the-jev-novelty-programme-2026-10-23-to-25)
 - Other team branches:

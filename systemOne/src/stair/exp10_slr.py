@@ -24,6 +24,7 @@ our own routers.
 
     exp10-slr train --judge nano-jev --plan configs/exp10-slr.toml   # one judge set, every (inputs, seed); resumes
     exp10-slr eval --plan configs/exp10-slr.toml                     # every judge set trained so far, his routers
+    exp10-slr train --judge decider-2b --out runs/exp10-slr-models --save-model   # a retrain that keeps the weights
 
 Eval: for each router (each seed of each judge, the seeds' mean, and his two routers) the 9,261-point threshold sweep on
 slr-val picks the peak and parity points, which are applied to slr-test. AIQ is over the test points of the val-Pareto
@@ -159,11 +160,12 @@ def run_dir(plan: dict, spec: dict, inputs: str, seed: int, budget: int | None =
 
 
 def run_train(df: pd.DataFrame, plan: dict, spec: dict, inputs: str, seed: int, device: str | None,
-              budget: int | None = None) -> None:
+              budget: int | None = None, save_model: bool = False) -> None:
     """One judge seed. `budget` (Jev novelty E1, menu A) trains on that many questions, its dev hold-out included, nested
     and stratified by his retrieval label (judge.budget_split); a set's `train_scores` (E6) trains on those stages'
     items only, while every stage is still scored; a `joint` set (E6) asks the one 4-option question instead, one call
-    a question (its tokens in tokens_ret, so the router pays that call once)."""
+    a question (its tokens in tokens_ret, so the router pays that call once). `save_model` keeps the weights in
+    <seed>/model/, as judge.run_train does."""
     target = run_dir(plan, spec, inputs, seed, budget)
     tag = f"b{budget} " if budget else ""
     if (target / "done.json").exists():
@@ -209,6 +211,9 @@ def run_train(df: pd.DataFrame, plan: dict, spec: dict, inputs: str, seed: int, 
                 p, tokens = judge.probabilities(its_k)
                 cols[k], cols[f"tokens_{k}"] = p[:, 0], tokens
         pd.DataFrame(cols).to_parquet(target / f"{split}.parquet", index=False)
+    if save_model:
+        judge.model.save_pretrained(target / "model")
+        judge.tokenizer.save_pretrained(target / "model")
     (target / "done.json").write_text(json.dumps({
         "judge": spec["name"], "inputs": inputs, "seed": seed, "init": spec["init"], "train": hp, "budget": budget,
         "train_scores": list(stages), "n_train_questions": int(tr_q.sum()), "n_dev_questions": int(dev_q.sum()),
@@ -421,6 +426,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--plan", type=Path, default=Path("configs/exp10-slr.toml"))
     parser.add_argument("--judge", help="train: the judge set (a [[judges]] name; several, comma-separated)")
     parser.add_argument("--device", help="cuda or cpu (default: cuda if available)")
+    parser.add_argument("--out", type=Path, help="the run folder instead of the plan's `out` (train and eval)")
+    parser.add_argument("--save-model", action="store_true", help="train: also save the fine-tuned weights")
     return parser.parse_args(argv)
 
 
@@ -428,9 +435,12 @@ def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     plan = tomllib.loads(args.plan.read_text(encoding="utf-8"))
+    if args.out:
+        plan["out"] = str(args.out)
     df = load(plan)
     out = Path(plan["out"])
-    provenance.record(out, f"exp10-slr {args.step}", plan=str(args.plan), judge=args.judge, **provenance.environment())
+    provenance.record(out, f"exp10-slr {args.step}", plan=str(args.plan), judge=args.judge, save_model=args.save_model,
+                      **provenance.environment())
     if args.step == "train":
         if not args.judge:
             raise SystemExit("train needs --judge <name>")
@@ -438,7 +448,7 @@ def main(argv: list[str] | None = None) -> None:
             for inputs in spec["inputs"]:
                 for b in spec.get("budgets", [None]):
                     for seed in spec["seeds"]:
-                        run_train(df, plan, spec, inputs, seed, args.device, b)
+                        run_train(df, plan, spec, inputs, seed, args.device, b, args.save_model)
     else:
         run_eval(df, plan)
 

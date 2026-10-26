@@ -163,6 +163,14 @@ top 5.
 0.674 (3-seed ensembles). The qpa run above (0.677) is the same recipe without saved weights. Links and numbers are
 in [MODELS.md](MODELS.md).
 
+**Published judges (2026-10-26):** the fine-tuned Strands Decider 2B and E4B, qp and qpa, on pair A (experiment 9) and
+menu A (experiment 10).
+- They too are retrains with their weights saved, and land within 0.002 of the experiment runs' seed means.
+- On menu A, the E4B qpa ensemble scores 0.739, and 0.732 with its price. With its price it narrowly beats both of
+  jonathan's routers, where the experiment run tied them, so the two draws together read "ties or narrowly beats".
+- Their reports are in [results/decider-release/](results/decider-release/), and links and numbers in
+  [MODELS.md](MODELS.md).
+
 ## The Jev novelty programme (2026-10-23 to 25)
 
 **What it tested:** what nano-jev's typed-decision pretraining adds to routing on pair A. The full write-up is

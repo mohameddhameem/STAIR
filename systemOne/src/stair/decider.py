@@ -2,8 +2,8 @@
 
 A Strands Decider (github.com/strands-labs/strands-decider, Apache-2.0) is an LLM torso (Qwen3.5-2B, or
 Gemma 4) whose text head is replaced by a pointer head. The head scores each option of a typed question
-from that option's own hidden state against the `<answer>` position. A rank-16 LoRA adapts the torso,
-and one temperature per question kind calibrates it.
+from that option's own hidden state against the `<answer>` position. A LoRA (rank 16 in the 2B
+checkpoint, 48 in the E4B) adapts the torso, and one temperature per question kind calibrates it.
 
 `DeciderJudge` has the interface of `judge.Judge`: `logits(items)` (differentiable) and
 `probabilities(items, temperature)`. So experiment 7's `judge.run_zeroshot` / `run_train` and experiment
@@ -16,7 +16,7 @@ package's own engine does (`SystemOneEngine._fit`: the question keeps its tokens
 logits carry the checkpoint's calibrated `choice` temperature, so the zero-shot probabilities are the
 model's own calibrated ones.
 
-    pip install "routellm[decider]"   # or: uv sync --extra decider
+    uv sync --extra decider   # or: pip install -e ".[decider]" (the package is `stair`)
 """
 
 import logging

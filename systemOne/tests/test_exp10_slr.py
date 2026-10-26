@@ -38,6 +38,40 @@ def test_the_joint_question_learns_his_targets_as_one_path_and_routes_like_the_s
     assert states[0]["state"] == "Proposed answer: Ann\n[1] A: a" and len(states[0]["options"]) == 4
 
 
+def test_a_retrain_can_keep_its_weights(tmp_path, monkeypatch):
+    class Saved:
+        def __init__(self, name):
+            self.name = name
+
+        def save_pretrained(self, path):
+            path.mkdir(parents=True, exist_ok=True)
+            (path / self.name).write_text("saved")
+
+    class FakeJudge:
+        device = "cpu"
+        model, tokenizer = Saved("weights"), Saved("tokenizer")
+
+        def probabilities(self, its):
+            return np.full((len(its), 2), 0.5), np.full(len(its), 7)
+
+    monkeypatch.setattr(e, "make_judge", lambda *a, **k: FakeJudge())
+    monkeypatch.setattr(e, "fine_tune", lambda *a, **k: [{"epoch": 1}])
+    monkeypatch.setattr(e.provenance, "hub_revision", lambda init: "rev")
+    n = 12
+    df = pd.DataFrame({"idx": range(n), "split": ["train"] * 8 + ["val"] * 2 + ["test"] * 2,
+                       "question": [f"q{i}?" for i in range(n)], "sel_W": "[1] A: a", "sel_S": "[2] B: b",
+                       "answer_WW": "x", "answer_SW": "y", "y_ret": ["W", "S"] * 6, "y_qa_W": "W", "y_qa_S": "S"})
+    plan = {"out": str(tmp_path)}
+    spec = {"name": "decider-2b", "judge_dir": "judge-decider-2b", "init": "strands-decider-2B",
+            "train": {"dev_fraction": 0.25, "epochs": 1, "lr": 1e-4, "weight_decay": 0.0, "warmup": 0.0, "batch_size": 4}}
+    e.run_train(df, plan, spec, "qpa", 0, "cpu", save_model=True)
+    seed = tmp_path / "judge-decider-2b" / "qpa" / "seed0"
+    assert (seed / "model" / "weights").exists() and (seed / "model" / "tokenizer").exists()
+    assert (seed / "done.json").exists() and len(pd.read_parquet(seed / "test.parquet")) == 2
+    e.run_train(df, plan, spec, "qp", 0, "cpu")  # without it, nothing is saved
+    assert not (tmp_path / "judge-decider-2b" / "qp" / "seed0" / "model").exists()
+
+
 def test_pareto_keeps_the_undominated_thresholds():
     points = [(0.5, 0.1, "a"), (0.6, 0.2, "b"), (0.55, 0.3, "c"), (0.6, 0.25, "d"), (0.7, 0.9, "e")]
     assert e.pareto(points) == [("a",), ("b",), ("e",)]
