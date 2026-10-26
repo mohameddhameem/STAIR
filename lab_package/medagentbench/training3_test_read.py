@@ -40,7 +40,7 @@ OUTDIR  = "/mnt/hdd/jonathan/runs/mab/training3_router"
 MODEL   = "Qwen/Qwen2.5-1.5B-Instruct"
 WEAK_NAME, STRONG_NAME = "Qwen2.5-7B-Instruct", "Qwen2.5-72B-Instruct"
 LAMBDA  = 0.10
-OPS     = {"OP-A (primary, theta=0.50)": 0.50, "OP-B (cost-match, theta=0.20)": 0.20}
+OPS     = {"OP-A (primary, theta=0.50)": 0.50}
 TAU_GATE = 0.80
 
 # ---- prompt: IDENTICAL to training1_trainer.py v1.0 (same self-check) -------

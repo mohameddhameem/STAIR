@@ -483,3 +483,16 @@ Store: runs/mab/training3_calibration.json (round-2 views; before = base model o
 - After training: ECE 0.0396, AUC 0.907, saturation 80%, latency ~20 ms. Top bin = 6 @ 0.959 with empirical weak success 1.00 (task1's finished answers); the stray weak-correct task4 instance sits escalated in the low bin (the AUC cost).
 - Pattern across the three routers: T2 and T3 (escalate-everything-uncertain) both achieve honest literal probabilities (ECE 0.03-0.04); T1 alone trades literal calibration (ECE 0.34) for cost-efficiency via confident hopeless deliveries. Calibration honesty and cost-efficiency trade off through the hopeless set.
 - Note: the base model under ROUND-2 views ranks worse than under full views (before-AUC 0.908 vs 0.981) — the finished attempt carries ranking signal the partial view lacks; training recovers the decisions type-level anyway.
+
+## FUTURE CHAPTER SCOPED — MID-EPISODE HANDOFF (live rollouts) (26 Oct 2026, 22:47 SGT)
+- QUESTION: does CONTINUING the strong model from the weak model's partial state (handoff) beat restarting it (our round-2 architecture), net of the contaminated-context risk?
+- WHY IT CANNOT BE REPLAYED: every stored strong episode starts from scratch; a handoff's trajectory depends on the weak prefix, so outcomes require NEW live episodes (both models served, harness support for mid-episode context transfer). Cost class: real episodes, not lookups.
+- WHAT IS ALREADY IN HAND: the per-round cost store (weak_costs_by_round.csv), the round-2 decision architecture (Training 3), and the measured restart baseline it must beat (65.0 @ 1,278 val).
+- STATUS: scoped, not scheduled. Any execution begins with its own registration (design, budget, predictions).
+
+## TRAINING 3 — HELD-OUT TEST READ (26 Oct 2026, 22:50 SGT) — ONE READ, COMPLETE
+Manifest: training3_router/test_read_manifest.json; table sha 4eff23f3...; tau sha 2d971783... (version string cosmetically says training1_test_read — the delta missed the VERSION line; paths/hashes identify the run).
+- RESULT (OP-A theta 0.50, the only declared point): accuracy 63.33 = THE TEST ORACLE, at 1,276.3 mean units = 81.5% of full-episode always-escalate (1,566.6) and 93.7% of round-2 always-escalate (1,361.7). R' 0.4588 vs bar 0.345. Deliver 15/150 (task1; all correct).
+- Both tallies identical (high tier fully escalated) — the guardrail is satisfied at zero extra cost, as predicted.
+- PREDICTION HELD: 63.33 in the declared 63-65 band, at the bottom edge for the foreseen reason (test task10 harder than val's 3/6; escalation absorbed it).
+- THE FINAL FRONTIER (held-out test, both routers read once each): Training 1 — 61.33 @ 54.1% of always-escalate (the cost point); Training 3 — 63.33 (oracle) @ 81.5% (the accuracy point). Training 2 remains validation-only and dominated. CAMPAIGN COMPLETE.
