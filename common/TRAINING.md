@@ -13,7 +13,10 @@ select checkpoints and thresholds on `val`; touch `test` once.
 - HotpotQA: the 12,000 are `stair_common/splits/hotpotqa/train.txt`, drawn from the official train file with the team's seed; a
   2,000-question run takes its first 2,000 lines.
 - CWQ / WebQSP: only 350 training questions carry gold triplets (`stair_common/splits/<dataset>/train.txt`).
-- MedAgentBench: no fine-tuning (300 tasks).
+- MedAgentBench: no fine-tuning of the task models (300 tasks). Router training (the RightRoute track) is separate:
+  a 1.5B LoRA router is trained on `calib` minus `calib_sweep` (90), checkpoints and thresholds are selected on
+  `calib_sweep` (60), and `test` (150) is read once per trained router. All three groups are patient-disjoint;
+  `python common/tools/medagentbench_patient_split.py --check` verifies this.
 - Run seeds 0, 1, 2; report the mean and the range.
 
 ## Loss curves: stop at the elbow on val
@@ -45,6 +48,7 @@ or judge training has its own schedule and is recorded here too.
 |---|---|---|---|---|---|---|---|
 | systemOne | HotpotQA | nano-jev judge (33M) | full fine-tune | 10,107: `train` minus nano-jev's 769 training questions, less the hold-out | 3; best at epoch 1 (the qa judge: 2) | lowest NLL on a 10% hold-out of train (1,124) | 0, 1, 2 |
 | systemOne | HotpotQA | Strands Decider 2B / E4B judge | LoRA + head | 10,107 (same) | 2; best at epoch 1 | the same hold-out | 0, 1, 2 |
+| RightRoute | MedAgentBench | Qwen2.5-1.5B router (LoRA, fresh) | GRPO(Reward), label-free | 90 (`calib` minus `calib_sweep`) | 40; best checkpoint kept | validation objective on `calib_sweep` (60) | 17 (single run; seed repeats are a declared follow-up) |
 | | | | | | | | |
 
 systemOne's common redo (18 Oct): 9 of its 10 judges have their lowest val loss at epoch 1, and val loss rises after

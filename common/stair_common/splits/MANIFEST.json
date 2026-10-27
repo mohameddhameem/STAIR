@@ -82,17 +82,17 @@
   "medagentbench/calib": {
    "n": 150,
    "sha256": "a2f0e5691f8aebe2412b18a7cfa08341fb30027d09761bcb3c6d28d325551102",
-   "note": "PATIENT-DISJOINT replacement (26 Oct 2026, seed 20260729): calib/test share zero patients; 15/category per side. Supersedes the instance-random split (68 overlapping patients)."
+   "note": "PATIENT-DISJOINT replacement (26 Oct 2026): seeded randomized assignment, seed 20260729; the generator script was not preserved, so these files are the frozen artifact. Properties verified independently by common/tools/medagentbench_patient_split.py --check (train/val/test patient-disjoint at every boundary; 9/6/15 per task type). Supersedes the instance-random split (68 overlapping patients). calib = train + calib_sweep."
   },
   "medagentbench/test": {
    "n": 150,
    "sha256": "fedca64d981b37369233512b28508086f3ed91e803010e49ac0842713d570754",
-   "note": "PATIENT-DISJOINT replacement (26 Oct 2026, seed 20260729)."
+   "note": "PATIENT-DISJOINT replacement (26 Oct 2026): seeded randomized assignment, seed 20260729; the generator script was not preserved, so these files are the frozen artifact. Properties verified independently by common/tools/medagentbench_patient_split.py --check (train/val/test patient-disjoint at every boundary; 9/6/15 per task type). Supersedes the instance-random split (68 overlapping patients)."
   },
   "medagentbench/calib_sweep": {
    "n": 60,
    "sha256": "d037276c4ea3f1fec58ff47135e653c202579205aa54d5a96ae0c59b16257285",
-   "note": "Subset of calib (6/category) for threshold sweeps, pilots, audits."
+   "note": "Subset of calib (6/category): the validation group for threshold sweeps, pilots and checkpoint selection; patient-disjoint from calib minus calib_sweep (train)."
   }
  }
 }

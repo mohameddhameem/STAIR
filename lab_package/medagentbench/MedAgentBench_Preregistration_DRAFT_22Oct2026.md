@@ -168,6 +168,13 @@ and no cached grid** — and test two registered claims:
   and the pW calibration audit — so no selection ever touches the test side. Construction deterministic
   (seed 20261023, randomized search + hill-climb; deviation 0 at both stages). The test split is read only
   at declared readouts.
+  **[CORRECTION, 27 Oct 2026]** The 150/150 split named above (`medagentbench_split_150_150.json`, seed 20261023)
+  was never materialized under that name; seed 20261023 produced only the three-way 150/60/90 draw of 23 Oct,
+  retained on the lab as `medagentbench_split_20261023.json`. The split actually frozen and used by all trainings is
+  the 26 Oct assignment, seed 20260729, STAIR commit 2a35c9b (`calib.txt` / `test.txt` / `calib_sweep.txt`,
+  hashes in MANIFEST.json). Its generator was not preserved; its properties (150/150, 15 per type per side,
+  calib_sweep 6 per type, patient-disjoint at the train/val, train/test and val/test boundaries) are verified by
+  `common/tools/medagentbench_patient_split.py --check`. Provenance correction only; no design change.
 
 ## 7b. Code-verification record (22 Oct — repo, harness and graders read before any run)
 
