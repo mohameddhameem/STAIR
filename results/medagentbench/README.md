@@ -39,3 +39,11 @@ method are chosen on calib_sweep first. Intervals: resample by patient (49 patie
 MedAgentBench patient profiles are de-identified real records publicly released by the authors
 (Stanford STARR de-identified warehouse; patient-level date jittering; generated MRNs, names and contacts;
 arXiv 2501.14654 §2.2; data and FHIR image on GitHub and Docker Hub). `view` text derives from that data.
+
+## weak_exposure_high_tier.json (28 Oct 2026)
+Weak wrong-action rate on the 60 high-risk (τ ≥ 0.8) instances, from a read-only replay of the canonical
+weak store (sha256 db008f80…) with lab_package/medagentbench/weak_exposure_measure.py. Categories per
+instance: correct / no_action / rejected_post / other_post / wrong_order ("accepted POST" per refsol.extract_posts).
+Result: e_accepted = 0 on all 60 (task 5: no POST ever attempted, 30/30; task 9: every POST rejected by the
+harness, 30/30, 189 attempts); e_attempted = 0 (task 5) / 1.0 (task 9). See the pre-registration entry of 28 Oct.
+
