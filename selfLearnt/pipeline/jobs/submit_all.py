@@ -165,6 +165,14 @@ def _nothing_to_do(cfg, args):
     t = args.split()
     st = t[t.index("--stage") + 1] if "--stage" in t else None
     v = t[t.index("--model") + 1] if "--model" in t else None
+    if st == "ws1_test" and "--part" in t:   # AgentTTS's test settings: a model none of them uses has nothing to run
+        try:
+            from stair import agenttts as AT
+            kind, _, m = t[t.index("--part") + 1].partition("-")
+            plan = AT.test_plan(cfg)
+            return bool(plan) and not any((c[0] if kind == "retrieve" else c[2]) == m for c in plan)
+        except Exception:  # noqa: BLE001
+            return False
     if st not in ("answer", "sample") or not v:
         return False
     try:
