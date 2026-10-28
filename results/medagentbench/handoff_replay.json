@@ -1,0 +1,180 @@
+{
+ "inputs": {
+  "table": {
+   "path": "results/medagentbench/training1_table.json",
+   "sha256": "186545f07ddf68c2f0362d090bc4e1ff9a1f996cd8d17ea6875374cbdf04a071"
+  },
+  "tau": {
+   "path": "results/medagentbench/tau_scores_v2.json",
+   "sha256": "2d971783ad37916d53b641f9af9d24bd86dfe0e76dbdeccff0632a63080b0bde"
+  },
+  "t1": {
+   "path": "results/medagentbench/training1_test_scores.jsonl",
+   "sha256": "c0155f5000acf0f1a248153e77c233f932f9df8dd8717ae2faaccc77344ee1ff"
+  },
+  "t3": {
+   "path": "results/medagentbench/training3_test_scores.jsonl",
+   "sha256": "252abc19417e241bf83446665b2ebd9824b4e743157c4c19c3608c1fc2a7556c"
+  },
+  "table3": {
+   "path": "results/medagentbench/training3_table.json",
+   "sha256": "4eff23f3cf86fcaeb7bb8c03b9cc7b23244dc08baf58bf1e6c7909cb6e256da2"
+  }
+ },
+ "definition": {
+  "escalated": "router chose S",
+  "strong_failed_to_person": "S chosen and qs == 0",
+  "delivered_wrong_no_person": "W chosen and qw == 0",
+  "cost": "weak-first: W pays cw, S pays cw + cs; % of always-strong uses the all-150 SS mean"
+ },
+ "always_strong_mean_cost_150": 1566.6,
+ "policies": {
+  "T1": {
+   "high_risk_30": {
+    "n": 30,
+    "escalated": 15,
+    "strong_failed_to_person": 6,
+    "delivered_wrong_no_person": 15,
+    "correct": 9,
+    "accuracy_pct": 30.0,
+    "mean_cost_units": 1029.2
+   },
+   "all_150": {
+    "n": 150,
+    "escalated": 90,
+    "strong_failed_to_person": 13,
+    "delivered_wrong_no_person": 45,
+    "correct": 92,
+    "accuracy_pct": 61.33,
+    "mean_cost_units": 847.7,
+    "cost_pct_of_SS": 54.1
+   }
+  },
+  "T1_lean": {
+   "high_risk_30": {
+    "n": 30,
+    "escalated": 8,
+    "strong_failed_to_person": 1,
+    "delivered_wrong_no_person": 22,
+    "correct": 7,
+    "accuracy_pct": 23.33,
+    "mean_cost_units": 803.2
+   },
+   "all_150": {
+    "n": 150,
+    "escalated": 83,
+    "strong_failed_to_person": 8,
+    "delivered_wrong_no_person": 52,
+    "correct": 90,
+    "accuracy_pct": 60.0,
+    "mean_cost_units": 802.5,
+    "cost_pct_of_SS": 51.2
+   }
+  },
+  "T2": {
+   "high_risk_30": {
+    "n": 30,
+    "escalated": 30,
+    "strong_failed_to_person": 21,
+    "delivered_wrong_no_person": 0,
+    "correct": 9,
+    "accuracy_pct": 30.0,
+    "mean_cost_units": 3134.4
+   },
+   "all_150": {
+    "n": 150,
+    "escalated": 135,
+    "strong_failed_to_person": 55,
+    "delivered_wrong_no_person": 0,
+    "correct": 95,
+    "accuracy_pct": 63.33,
+    "mean_cost_units": 1481.2,
+    "cost_pct_of_SS": 94.5
+   }
+  },
+  "T3": {
+   "high_risk_30": {
+    "n": 30,
+    "escalated": 30,
+    "strong_failed_to_person": 21,
+    "delivered_wrong_no_person": 0,
+    "correct": 9,
+    "accuracy_pct": 30.0,
+    "mean_cost_units": 2672.3
+   },
+   "all_150": {
+    "n": 150,
+    "escalated": 135,
+    "strong_failed_to_person": 55,
+    "delivered_wrong_no_person": 0,
+    "correct": 95,
+    "accuracy_pct": 63.33,
+    "mean_cost_units": 1276.3,
+    "cost_pct_of_SS": 81.5
+   }
+  },
+  "gate0.8": {
+   "high_risk_30": {
+    "n": 30,
+    "escalated": 30,
+    "strong_failed_to_person": 21,
+    "delivered_wrong_no_person": 0,
+    "correct": 9,
+    "accuracy_pct": 30.0,
+    "mean_cost_units": 3134.4
+   },
+   "all_150": {
+    "n": 150,
+    "escalated": 105,
+    "strong_failed_to_person": 28,
+    "delivered_wrong_no_person": 30,
+    "correct": 92,
+    "accuracy_pct": 61.33,
+    "mean_cost_units": 1268.7,
+    "cost_pct_of_SS": 81.0
+   }
+  },
+  "gate0.5": {
+   "high_risk_30": {
+    "n": 30,
+    "escalated": 30,
+    "strong_failed_to_person": 21,
+    "delivered_wrong_no_person": 0,
+    "correct": 9,
+    "accuracy_pct": 30.0,
+    "mean_cost_units": 3134.4
+   },
+   "all_150": {
+    "n": 150,
+    "escalated": 120,
+    "strong_failed_to_person": 40,
+    "delivered_wrong_no_person": 15,
+    "correct": 95,
+    "accuracy_pct": 63.33,
+    "mean_cost_units": 1394.4,
+    "cost_pct_of_SS": 89.0
+   }
+  },
+  "SS": {
+   "high_risk_30": {
+    "n": 30,
+    "escalated": 30,
+    "strong_failed_to_person": 21,
+    "delivered_wrong_no_person": 0,
+    "correct": 9,
+    "accuracy_pct": 30.0,
+    "mean_cost_units": 3134.4
+   },
+   "all_150": {
+    "n": 150,
+    "escalated": 150,
+    "strong_failed_to_person": 69,
+    "delivered_wrong_no_person": 0,
+    "correct": 81,
+    "accuracy_pct": 54.0,
+    "mean_cost_units": 1566.6,
+    "cost_pct_of_SS": 100.0
+   }
+  }
+ }
+}

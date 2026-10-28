@@ -47,3 +47,10 @@ instance: correct / no_action / rejected_post / other_post / wrong_order ("accep
 Result: e_accepted = 0 on all 60 (task 5: no POST ever attempted, 30/30; task 9: every POST rejected by the
 harness, 30/30, 189 attempts); e_attempted = 0 (task 5) / 1.0 (task 9). See the pre-registration entry of 28 Oct.
 
+## handoff_replay.json (28 Oct 2026)
+Human hand-off counts per routing policy on the held-out test, by replay of the committed per-instance scores
+(lab_package/medagentbench/handoff_replay.py; lab run 28 Oct 21:49 identical). Per policy, on the 30 high-risk
+instances and on all 150: escalated; escalated AND the strong model failed (→ a person in deployment); delivered from
+the weak attempt AND wrong (never reaches a person). T1 90/13/45 · T2 135/55/0 · T3 135/55/0 · gate0.8 105/28/30 ·
+gate0.5 120/40/15 · SS 150/69/0 (all 150). Accuracy/cost columns reproduce the board.
+
