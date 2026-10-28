@@ -20,14 +20,14 @@
 # The router's input is the task text + weak attempt only (the "view" field).
 #
 # Usage (lab, slr-env, GPU free):
-#   python3 training5_test_read.py --run-dir /mnt/hdd/jonathan/runs/mab/training5v11_router_lt0 --theta-h 0.50
+#   python3 training5_test_read.py --run-dir /mnt/hdd/jonathan/runs/mab/training5v12_router_lt0 --theta-h 0.50
 # =============================================================================
 import os, json, hashlib, argparse
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 
-VERSION = "training5_test_read v1.1 2026-10-28 (H rewarded iff both models fail; no human price)"
+VERSION = "training5_test_read v1.2 2026-10-28 (H = +1 if both fail / -1 if strong succeeds; no human price)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 MODEL   = "Qwen/Qwen2.5-1.5B-Instruct"
@@ -54,14 +54,14 @@ assert USER_TAIL_3.count("\n") == USER_TAIL_2.count("\n") + 1
 print("[test read prompt] matches the trained router's prompt", flush=True)
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--run-dir", required=True, help="training5v11_router_lt<lt> (holds best_adapter)")
+ap.add_argument("--run-dir", required=True, help="training5v12_router_lt<lt> (holds best_adapter)")
 ap.add_argument("--theta-h", type=float, required=True, dest="theta_h",
                 help="Point B threshold on P(H), chosen on validation before this read")
 a = ap.parse_args()
 ADAPTER = os.path.join(a.run_dir, "best_adapter")
 OUTDIR = a.run_dir
 man = json.load(open(os.path.join(a.run_dir, "manifest.json")))
-assert man["stage"] == "training5_three_way_router" and "v1.1" in man["version"], \
+assert man["stage"] == "training5_three_way_router" and "v1.2" in man["version"], \
     f"run dir manifest: stage={man.get('stage')}, version={man.get('version')}"
 assert not man.get("smoke"), "refusing to read a smoke run"
 
@@ -135,7 +135,7 @@ def outcome(t, c):
     if c == "S":
         xs = (t["cw"] + t["cs"]) / t["cs"]
         return t["qs"], t["cw"] + t["cs"], 0.0, t["qs"] - LAMBDA * xs - hinge(xs)
-    return Q_H, t["cw"], 0.0, (1.0 if t["both_fail"] else 0.0) - LAMBDA * xw
+    return Q_H, t["cw"], 0.0, (1.0 if t["both_fail"] else 0.0) - (1.0 if t["qs"] else 0.0) - LAMBDA * xw
 
 def tally(dec):
     n = len(table); acc = ai_n = ai_acc = 0; ai_cost = hum_cost = rsum = 0.0

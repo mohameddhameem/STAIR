@@ -8,15 +8,18 @@
 #     two options (H is masked out of the softmax), and a failure there is
 #     accepted. The ROUTER decides H from the task text + weak attempt only; no
 #     outcome information is ever in its input.
-#   * Replayed reward of H — v1.1 (28 Oct 23:08, Jonathan): NO human price. A
-#     hand-off is "correct" exactly when the AI would have failed:
-#       R'(H) = 1[qw == 0 and qs == 0] - LAMBDA * C_weak/C_SS_i
-#     (weak-first: the weak attempt already ran, so H pays C_weak; no hinge, no
-#     risk penalty). So H out-scores S only where the strong model fails, and the
-#     router learns "will the strong model fail?" from the same replayed outcomes
-#     that price W and S. The person is the fallback for AI failure, not a cheaper
-#     competitor. (v1.0 priced a person at k*C_SS_i, k in {6, 8, 9}; those runs are
-#     kept as an exploratory sweep — k = 9 reproduces this separation.)
+#   * Replayed reward of H — v1.2 (28 Oct 23:40, Jonathan): NO human price; the
+#     hand-off is judged purely on whether the strong model would fail:
+#       R'(H) = 1[qw == 0 and qs == 0] - 1[qs == 1] - LAMBDA * C_weak/C_SS_i
+#     +1 when the AI would have failed (a needed hand-off), -1 when the strong
+#     model would have succeeded (an unnecessary hand-off wastes a correct answer
+#     and a person's time); weak-first, so H also pays the spent C_weak; no hinge,
+#     no risk penalty. The router therefore hands over iff it judges failure more
+#     likely than not (break-even at P = 0.5).
+#     History: v1.0 priced a person at k*C_SS_i (k in {6, 8, 9}; exploratory sweep,
+#     k = 9 separated the tasks); v1.1 rewarded only needed hand-offs with no
+#     penalty for unnecessary ones (break-even ~5%), so the router handed over the
+#     whole tier — rejected 23:40 on the validation arithmetic.
 #     W and S rewards unchanged from Training 1/2; the risk term (--lambda-t,
 #     deliver branch, tau >= TAU_GATE) is kept: --lambda-t 0 = risk-free run
 #     (5a), --lambda-t 1 = risk-aware run (5b).
@@ -60,7 +63,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 
-VERSION = "training5_trainer v1.1 2026-10-28 (three-way router W/S/H, H on the high tier only, H rewarded iff both models fail; delta on training2_trainer v1.0)"
+VERSION = "training5_trainer v1.2 2026-10-28 (three-way router W/S/H, H on the high tier only, H = +1 if both fail / -1 if strong succeeds; delta on training2_trainer v1.0)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 TAU_GATE = 0.80
@@ -141,7 +144,7 @@ def build_rows():
              "both_fail": (t["qw"] == 0 and t["qs"] == 0),
              "tau": taus[t["tid"]]}
         if high:                          # H exists only on the high tier
-            r["rp"]["H"] = (1.0 if r["both_fail"] else 0.0) - LAMBDA * xw   # v1.1: no price
+            r["rp"]["H"] = (1.0 if r["both_fail"] else 0.0) - (1.0 if t["qs"] else 0.0) - LAMBDA * xw   # v1.2
             r["acc"]["H"] = Q_H
             r["cost"]["H"] = t["cw"]      # AI cost (the weak attempt already ran)
         rows[t["split"]].append(r)
@@ -155,7 +158,7 @@ def build_rows():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--outdir", default=None,
-                    help="default: runs/mab/training5v11_router_lt<lambda_t>")
+                    help="default: runs/mab/training5v12_router_lt<lambda_t>")
     ap.add_argument("--lambda-t", type=float, default=0.0, dest="lambda_t",
                     help="risk-penalty weight on the deliver branch: 0 = risk-free run (5a); 1 = risk-aware run (5b)")
 
@@ -168,7 +171,7 @@ def main():
     ap.add_argument("--seed", type=int, default=SEED)
     a = ap.parse_args()
     if a.outdir is None:
-        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v11_router_lt{a.lambda_t:g}"
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v12_router_lt{a.lambda_t:g}"
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
     os.makedirs(a.outdir, exist_ok=True)
@@ -338,13 +341,13 @@ def main():
                                  "pHuman": (round(pr[2], 6) if r["high"] else None)}) + "\n")
 
     manifest = {"stage": "training5_three_way_router", "version": VERSION,
-                "lambda_t": a.lambda_t, "H_reward": "1[both models fail] - lambda*C_weak/C_SS_i (v1.1, no human price)", "Q_H": Q_H,
+                "lambda_t": a.lambda_t, "H_reward": "1[both models fail] - 1[strong succeeds] - lambda*C_weak/C_SS_i (v1.2, no human price)", "Q_H": Q_H,
                 "tau_file": TAU, "tau_sha256": sha256(TAU), "tau_gate": TAU_GATE,
                 "H_available_on": "tau >= tau_gate only",
                 "objective": (f"GRPO (A1): G={a.G} sampled rollouts/instance over the allowed actions "
                               f"(W=deliver weak attempt, S=escalate, H=hand to a person), outcomes replayed, "
                               f"three actions on tau >= {TAU_GATE} (W/S/H), two elsewhere (W/S); "
-                              f"R'(W), R'(S) as Training 1; R'(H) = 1[qw==0 and qs==0] - {LAMBDA}*C_weak/C_SS_i (no price, no hinge, no risk term); "
+                              f"R'(W), R'(S) as Training 1; R'(H) = 1[qw==0 and qs==0] - 1[qs==1] - {LAMBDA}*C_weak/C_SS_i (no price, no hinge, no risk term); "
                               f"risk term {a.lambda_t}*max(0, tau - c) on the DELIVER branch only, "
                               f"dormant below tau {TAU_GATE}; tau frozen (rubric v2). "
                               f"MEAN-BASELINE advantage, + {BETA}*entropy."),
