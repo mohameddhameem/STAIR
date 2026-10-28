@@ -150,6 +150,38 @@ def _already_done(cfg, args):
     return False
 
 
+_NT_CACHE = {}
+
+
+def _nothing_to_do(cfg, args):
+    """An answer / sample job whose every shortlist is already answered (another experiment's job of the same model did
+    them): True, so it is not left waiting days for big GPUs only to find nothing to do. Read from the saved outputs on
+    CPU; only asked once the job's own dependencies have finished (so its experiment's shortlists are known)."""
+    t = args.split()
+    st = t[t.index("--stage") + 1] if "--stage" in t else None
+    v = t[t.index("--model") + 1] if "--model" in t else None
+    if st not in ("answer", "sample") or not v:
+        return False
+    try:
+        from stair import states as S
+        from stair.common import key, read_jsonl
+        need = S.needs(cfg, v, samples=(st == "sample"))
+        path = S.f_ans(cfg, v) if st == "answer" else S.f_smp(cfg, v)
+        if not need:
+            return False                  # nothing known to be needed yet: let the job decide
+        if not os.path.exists(path):
+            return False
+        ck = (path, os.path.getmtime(path))
+        if ck not in _NT_CACHE:
+            n = int(cfg["rules"]["answer_samples"])
+            _NT_CACHE.clear()
+            _NT_CACHE[ck] = {(r["qid"], key(r["sel"])) for r in read_jsonl(path) if st == "answer" or len(r.get("samples", [])) >= n}
+        have = _NT_CACHE[ck]
+        return all(k in have for k in need)
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def submit_loop(P, state_path, max_jobs, poll, cfg=None, wait_slots=6):
     """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
     # jobs of this plan already in the queue (from an earlier submitter): adopt them instead of submitting twice
@@ -183,8 +215,12 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None, wait_slots=6):
 
         if cfg is not None:
             for j in P.jobs:               # finished work: no job needed (also clears a queued or cancelled job that would only skip)
-                if j["id"] == "done" or not _already_done(cfg, j["args"]):
+                if j["id"] in ("done", "blocked"):
                     continue
+                if not _already_done(cfg, j["args"]):
+                    deps_done = all(d in real and st(real[d]) == "COMPLETED" for d in j["deps"])
+                    if not (deps_done and _nothing_to_do(cfg, j["args"])):
+                        continue
                 if j["id"] and j["id"] in q:
                     if q[j["id"]] != "PENDING":
                         continue
