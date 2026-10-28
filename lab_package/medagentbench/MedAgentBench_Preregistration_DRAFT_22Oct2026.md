@@ -548,3 +548,9 @@ Manifest: training3_router/test_read_manifest.json; table sha 4eff23f3...; tau s
 - PREDICTIONS (v1.1, on the 30 high-risk test instances): Point A hands over all 15 task-9 instances and few task-5; needed ≥ 15, unnecessary ≤ 2, fails with no human ≤ 6 (the task-5 both-fail cases are the hard ones: the router must tell them from the 9 task-5 cases the strong model solves, from the weak transcript alone); tier accuracy with H ≥ 0.80; 5b (risk-aware) ≥ 5a on needed hand-offs. Oracle: 21 / 0 / 0.
 - Kill bar unchanged (+0.1890). One test read per variant.
 
+## TRAINING 5 v1.0 SWEEP — ALL SIX RUNS COMPLETE (28 Oct 2026, 23:30 SGT; exploratory, none read on test)
+Validation high tier (12 instances, 8 both-fail): to person / needed / unnecessary / escalated / fails with no human —
+- λt = 0: k 6 → 12 / 8 / 4 / 0 / 0 (R′ 0.4333); k 8 → 12 / 8 / 4 / 0 / 0 (0.3933); k 9 → 6 / 6 / 0 / 6 / 2 (0.3767).
+- λt = 1: identical at every k (12 / 12 / 6 hand-offs; precision 0.67 / 0.67 / 1.00; recall 1.0 / 1.0 / 0.75).
+- Reading: the risk term (deliver-branch penalty) is inert once a hand-off option exists — the router never delivers on the high tier, so there is nothing to penalise. Prediction (3) of the v1.0 entry (5b ≥ 5a on hand-offs) is met trivially (equal). The lab file for these runs predates the manifest-wording fix of 41c8e43 (logic identical; the objective string reads "2-action space").
+
