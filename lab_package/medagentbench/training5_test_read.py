@@ -54,7 +54,7 @@ assert USER_TAIL_3.count("\n") == USER_TAIL_2.count("\n") + 1
 print("[test read prompt] matches the trained router's prompt", flush=True)
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--run-dir", required=True, help="training5v13b_router_lt<lt> (holds best_adapter)")
+ap.add_argument("--run-dir", required=True, help="training5v13c_router_lt<lt> (holds best_adapter)")
 ap.add_argument("--theta-h", type=float, required=True, dest="theta_h",
                 help="Point B threshold on P(H), chosen on validation before this read")
 a = ap.parse_args()

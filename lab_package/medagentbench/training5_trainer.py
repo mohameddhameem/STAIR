@@ -29,13 +29,15 @@
 #     break-even moves from P(fail) = 0.5 (lambda_t = 0) to 1/(2 + lambda_t*tau):
 #     0.36 at lambda_t = 1, 0.28 at lambda_t = 2 — a governance dial, never
 #     touching low-risk work.
-#   * WARM START (v1.3b, 29 Oct 00:05): --warm-start <adapter dir>. From a fresh
+#   * EXPLORATION WARM-UP (v1.3c, 29 Oct 00:10): --explore-epochs N. From a fresh
 #     LoRA the v1.3 reward never discovered H (hand-offs 0 at every evaluation,
-#     epochs 0-39, both lambda_t): a sampled H on a task-5 row scores -1.05 and
-#     that negative signal suppresses the shared H logit faster than the +0.96 on
-#     task-9 rows can raise it. Curriculum fix: start from the v1.1 router
-#     (training5v11_router_lt0/best_adapter — hands over the whole tier) and let
-#     the v1.3 reward pull task 5 back to escalation. Manifest records the start.
+#     epochs 0-39, both lambda_t): H starts at ~1 % probability, so it is sampled
+#     rarely, and the first -1.05 on a task-5 draw suppresses the shared H logit
+#     before the +0.96 on task-9 rows can build it. For the first N epochs the G
+#     rollouts are drawn UNIFORMLY over the allowed actions (W/S/H on the high
+#     tier, W/S elsewhere) instead of from the policy; from epoch N on, from the
+#     policy as usual. Same fresh adapter, same reward, same objective; only the
+#     sampling distribution of the first N epochs changes. Recorded in the manifest.
 #     W and S rewards unchanged from Training 1/2; the risk term (--lambda-t,
 #     deliver branch, tau >= TAU_GATE) is kept: --lambda-t 0 = risk-free run
 #     (5a), --lambda-t 1 = risk-aware run (5b).
@@ -71,15 +73,15 @@
 #
 # Usage (lab, slr-env):
 #   python3 training5_trainer.py --lambda-t 0 --smoke
-#   python3 training5_trainer.py --lambda-t 0 --baseline 0.1890   # 5a (break-even P(fail) = 0.50)
-#   python3 training5_trainer.py --lambda-t 1 --baseline 0.1890   # 5b (risk-averse, break-even 0.36)
+#   python3 training5_trainer.py --lambda-t 0 --explore-epochs 10 --baseline 0.1890   # 5a (break-even P(fail) = 0.50)
+#   python3 training5_trainer.py --lambda-t 1 --explore-epochs 10 --baseline 0.1890   # 5b (risk-averse, break-even 0.36)
 # =============================================================================
 import os, sys, json, time, random, argparse, hashlib
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 
-VERSION = "training5_trainer v1.3b 2026-10-29 (three-way router W/S/H on the high tier; H = +1 if both fail / -1 if strong succeeds; risk = lambda_t*tau on any AI failure at tau>=gate; delta on training2_trainer v1.0)"
+VERSION = "training5_trainer v1.3c 2026-10-29 (three-way router W/S/H on the high tier; H = +1 if both fail / -1 if strong succeeds; risk = lambda_t*tau on any AI failure at tau>=gate; delta on training2_trainer v1.0)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 TAU_GATE = 0.80
@@ -185,11 +187,11 @@ def main():
     ap.add_argument("--baseline", type=float, default=None,
                     help="kill-criterion bar: always-escalate val mean-R' (+0.1890)")
     ap.add_argument("--seed", type=int, default=SEED)
-    ap.add_argument("--warm-start", default=None, dest="warm_start",
-                    help="adapter dir to start from (v1.3b: training5v11_router_lt0/best_adapter); default = fresh LoRA")
+    ap.add_argument("--explore-epochs", type=int, default=0, dest="explore_epochs",
+                    help="v1.3c: epochs during which rollouts are sampled uniformly over the allowed actions (default 0 = policy sampling throughout)")
     a = ap.parse_args()
     if a.outdir is None:
-        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v13{'b' if a.warm_start else ''}_router_lt{a.lambda_t:g}"
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v13c_router_lt{a.lambda_t:g}"
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
     os.makedirs(a.outdir, exist_ok=True)
@@ -203,7 +205,7 @@ def main():
     else:
         eval_every, max_steps = EVAL_EVERY, None
     print(f"{VERSION}  lambda_t={a.lambda_t}  G={a.G}  train={len(rows['train'])}  val={len(rows['val'])}  "
-          f"epochs={a.epochs}  warm_start={a.warm_start or 'FRESH (LoRA shape from ' + LORA_SHAPE_FROM + ')'}",
+          f"epochs={a.epochs}  warm_start=FRESH (LoRA shape from {LORA_SHAPE_FROM})",
           flush=True)
 
     tok = AutoTokenizer.from_pretrained(MODEL)
@@ -215,15 +217,10 @@ def main():
 
     base = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16,
                                                 device_map="cuda")
-    if a.warm_start:                                     # v1.3b: continue from an existing router
-        assert os.path.isdir(a.warm_start), f"warm-start adapter not found: {a.warm_start}"
-        model = PeftModel.from_pretrained(base, a.warm_start, is_trainable=True)
-        print(f"warm start from {a.warm_start}", flush=True)
-    else:
-        cfg = PeftConfig.from_pretrained(LORA_SHAPE_FROM)   # SAME LoRA shape as SFT
-        cfg.inference_mode = False
-        model = get_peft_model(base, LoraConfig(**{k: v for k, v in cfg.to_dict().items()
-                                                   if k in LoraConfig.__dataclass_fields__}))
+    cfg = PeftConfig.from_pretrained(LORA_SHAPE_FROM)   # SAME LoRA shape as SFT
+    cfg.inference_mode = False
+    model = get_peft_model(base, LoraConfig(**{k: v for k, v in cfg.to_dict().items()
+                                               if k in LoraConfig.__dataclass_fields__}))
     model.gradient_checkpointing_enable()
     model.enable_input_require_grads()
     model.config.use_cache = False
@@ -307,6 +304,8 @@ def main():
             # ---- one GRPO group: G rollouts over the allowed actions ---------
             lp = logprobs(r)
             probs = lp.exp().detach().tolist()      # sampling distribution (no grad)
+            if ep < a.explore_epochs:               # v1.3c warm-up: uniform over allowed actions
+                probs = [1.0 / len(probs)] * len(probs)
             draws = []
             for _ in range(a.G):
                 c = random.choices(ACT[:len(probs)], weights=probs)[0]
@@ -373,10 +372,10 @@ def main():
                               f"risk term {a.lambda_t}*tau*1[AI action failed] on W and S, "
                               f"dormant below tau {TAU_GATE}; tau frozen (rubric v2). "
                               f"MEAN-BASELINE advantage, + {BETA}*entropy."),
-                "base_model": MODEL, "warm_start": (a.warm_start or f"FRESH (LoRA shape from {LORA_SHAPE_FROM})"),
+                "base_model": MODEL, "warm_start": f"FRESH (LoRA shape from {LORA_SHAPE_FROM})",
                 "table_file": TABLE, "table_sha256": sha256(TABLE),
                 "router_prompt_sys": SYS,
-                "lr": LR, "epochs": a.epochs, "accum": ACCUM, "seed": a.seed,
+                "lr": LR, "epochs": a.epochs, "explore_epochs": a.explore_epochs, "accum": ACCUM, "seed": a.seed,
                 "lambda": LAMBDA, "beta": BETA, "G": a.G, "smoke": a.smoke,
                 "kill_baseline": a.baseline,
                 "final_fullval": final, "fresh_start_eval": ev0}
