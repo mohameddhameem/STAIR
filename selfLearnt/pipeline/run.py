@@ -119,6 +119,31 @@ def stage_setup(cfg, only):
         mark_done(cfg, "setup")
 
 
+def _claim_training(cfg, k):
+    """One job trains a model at a time: a 2 x H100 copy may race the 4-GPU job for the same model (jobs/submit_all.py
+    --twin). The first to start takes the lock; a job that finds it held by a running job goes back to the queue. A lock
+    left by a pre-empted job (not running any more) is taken over; a requeued job keeps its id, so it gets its own back."""
+    import subprocess
+    me = os.environ.get("SLURM_JOB_ID", "local")
+    d = os.path.join(cfg["run_dir"], "locks", f"train-{k}")
+    try:
+        os.makedirs(d)
+    except FileExistsError:
+        try:
+            owner = open(os.path.join(d, "owner")).read().strip()
+        except OSError:
+            owner = ""
+        if owner and owner != me:
+            try:
+                state = subprocess.run(["squeue", "-h", "-j", owner, "-o", "%T"], capture_output=True, text=True).stdout.strip()
+            except OSError:
+                state = ""
+            if state in ("RUNNING", "COMPLETING", "CONFIGURING"):
+                return False
+    open(os.path.join(d, "owner"), "w").write(me)
+    return True
+
+
 def _parts_or(arg, parts):
     return [arg] if arg else parts
 
@@ -175,10 +200,15 @@ def main():
                 if is_done(cfg, "train", k) and not a.force:
                     continue
                 if not T.trained(cfg, k):
+                    if not _claim_training(cfg, k):
+                        log(f"{k}: another job is training this model right now; this job goes back to the queue")
+                        sys.exit(3)             # requeued (jobs/job.sbatch); it finds the model trained when it runs again
                     if not T.train(cfg, k, tr_q, va_q, time_limit_min=float(os.environ.get("TIME_LIMIT_MIN", 0))):
                         maybe_push(cfg, force=True)
                         sys.exit(3)             # not finished: submit the job again
                 T.merge(cfg, k)
+                import shutil
+                shutil.rmtree(os.path.join(cfg["run_dir"], "locks", f"train-{k}"), ignore_errors=True)
         elif st == "retrieve":
             for v in _parts_or(a.model, S.ret_variants(cfg)):
                 if a.force or not is_done(cfg, "retrieve", v):

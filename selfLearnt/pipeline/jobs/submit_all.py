@@ -16,6 +16,9 @@ Usage (from STAIR/selfLearnt/pipeline, after jobs/install_env.sh and jobs/setup_
   python jobs/submit_all.py --continue logs/plan_<time>.json   # resume submitting after a disconnect
   python jobs/submit_all.py --as-job        # run the submitter itself as a small CPU job (no tmux needed)
   python jobs/submit_all.py --ss --as-job   # AL-02 replication only: greedy always-strong on our stack, then the comparison
+  python jobs/submit_all.py --config configs/golden.yaml --twin q72   # a 2 x H100 copy of a waiting training job
+      (whichever starts first trains; the other goes back to the queue, and the submitter withdraws the 4-GPU job once
+      the model is trained; cancel a left-over copy by hand)
 The cluster limits how many jobs one user may have queued (MAX_JOBS in cluster.env, default 15): this script submits
 the jobs in order as earlier ones finish, so leave it running in tmux until it prints "all ... jobs submitted".
 Every job resumes from its saved outputs, so re-submitting a phase after a failure is safe (finished work is skipped)."""
@@ -44,7 +47,7 @@ def read_env(path):
         if v.startswith('"'):
             v = v[1:v.index('"', 1)]
         else:
-            v = re.split(r"\s+#", v)[0].strip()
+            v = "" if v.startswith("#") else re.split(r"\s+#", v)[0].strip()
         env[k.strip()] = os.path.expandvars(v)
     return env
 
@@ -93,6 +96,8 @@ class Plan:
         if e.get("MAIL"):
             cmd += [f"--mail-user={e['MAIL']}", "--mail-type=FAIL"]      # an e-mail only when a job fails
         gpus, con = j["gpus"], (e.get("CONSTRAINT_SMALL") if j["small"] and e.get("CONSTRAINT_SMALL") else e.get("CONSTRAINT"))
+        if j.get("constraint"):                # a job pinned to particular cards (the --twin copy on H100s)
+            con = j["constraint"]
         if gpus >= 2 and not j["name"].startswith("train-") and e.get("BIG_GPUS"):
             # models split over several GPUs (32B / 70B / 72B inference): the model is spread over however many GPUs the job
             # gets (vLLM tensor parallel = visible GPUs), so 4 smaller cards work as well as 2 large ones
@@ -182,6 +187,20 @@ def _nothing_to_do(cfg, args):
         return False
 
 
+def _repoint(P, real, q):
+    """Queued jobs that waited on a job withdrawn because its work was already done: make them wait only on the jobs
+    they need that are still queued (a cancelled dependency would otherwise never be satisfied)."""
+    for x in P.jobs:
+        if x["id"] in (None, "done", "blocked") or q.get(x["id"]) != "PENDING":
+            continue
+        if not any(real.get(d) == "done" for d in x["deps"]):
+            continue
+        keep = [real[d] for d in x["deps"] if real.get(d) not in (None, "done", "blocked") and real[d] in q]
+        rc, _, err = _sh(["scontrol", "update", f"JobId={x['id']}", "Dependency=" + ("afterok:" + ":".join(keep) if keep else "")])
+        print(f"{time.strftime('%H:%M')}  {x['name']} ({x['id']}) now waits on {', '.join(keep) or 'nothing'}"
+              + (f" (scontrol: {err})" if rc else ""), flush=True)
+
+
 def submit_loop(P, state_path, max_jobs, poll, cfg=None, wait_slots=6):
     """Submit P.jobs in order with real dependency ids, never more than max_jobs of yours in the queue."""
     # jobs of this plan already in the queue (from an earlier submitter): adopt them instead of submitting twice
@@ -213,6 +232,7 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None, wait_slots=6):
                 states[rid] = _final_state(rid)
             return states[rid]
 
+        withdrew = False
         if cfg is not None:
             for j in P.jobs:               # finished work: no job needed (also clears a queued or cancelled job that would only skip)
                 if j["id"] in ("done", "blocked"):
@@ -227,6 +247,9 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None, wait_slots=6):
                     _sh(["scancel", j["id"]])
                 print(f"{time.strftime('%H:%M')}  already done, not submitted: {j['name']}", flush=True)
                 j["id"] = real[j["key"]] = "done"
+                withdrew = True
+        if withdrew:
+            _repoint(P, real, q)
         cands = []
         for k, j in enumerate(P.jobs):
             if j["id"] or any(d not in real for d in j["deps"]):
@@ -279,6 +302,10 @@ def submit_loop(P, state_path, max_jobs, poll, cfg=None, wait_slots=6):
         for jid, name in _never_satisfied():   # queued jobs whose dependency failed: cancel, set aside
             for j in P.jobs:
                 if j["id"] == jid:
+                    failed = [d for d in j["deps"] if real.get(d) != "done" and real.get(d) not in q and st(real.get(d, "blocked")) != "COMPLETED"]
+                    if not failed:             # what it waited on was withdrawn as already done, nothing failed
+                        _repoint(P, real, q)
+                        continue
                     _sh(["scancel", jid])
                     j["id"] = real[j["key"]] = "blocked"
                     print(f"{time.strftime('%H:%M')}  set aside {j['name']} ({jid}): a job it needs failed", flush=True)
@@ -315,6 +342,9 @@ def main():
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--after", default="", help="job id(s), comma-separated, the first jobs wait for")
     ap.add_argument("--continue", dest="cont", default="", help="resume submitting from a saved plan (logs/plan_*.json)")
+    ap.add_argument("--twin", default="", help="model key (e.g. q72): a copy of its training job on --twin-gpus x --twin-cards")
+    ap.add_argument("--twin-gpus", type=int, default=2)
+    ap.add_argument("--twin-cards", default="h100|h100nvl", help="Slurm features the copy may run on (80 GB+ cards)")
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
@@ -375,6 +405,18 @@ def main():
         return
     W = cfg["workstreams"]
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
+    if a.twin:
+        j = {"key": "T", "id": None, "name": f"train-{a.twin}-{a.twin_cards.split('|')[0]}", "args": f"--stage train --model {a.twin}" + sd,
+             "gpus": a.twin_gpus, "hours": 96, "deps": [], "cpu_only": False, "small": False, "no24": False, "constraint": a.twin_cards}
+        if _already_done(cfg, j["args"]):
+            sys.exit(f"{a.twin} is already trained: no copy needed")
+        cmd = P._cmd(j, [])
+        print(" ".join(cmd))
+        if not a.dry:
+            rc, out, err = _sh(cmd)
+            sys.exit(f"sbatch failed: {err}" if rc else f"submitted {out.split(';')[0]}  stair-{P.prefix}{j['name']}: whichever of it and the "
+                     f"4-GPU job starts first trains {a.twin}")
+        return
     if a.ss:
         rm, am = (W.get("ws2", {}).get("config") or ["q72", 1, "l70", 1])[0::2]
         P.prefix = "ss-"
