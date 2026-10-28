@@ -1,0 +1,367 @@
+#!/usr/bin/env python3
+# =============================================================================
+# training5_trainer.py — VERSION: v1.0 2026-10-28
+# "Training 5 — the three-way router: deliver / escalate / hand to a person."
+# DELTA over the validated training2_trainer.py v1.0 (everything else identical):
+#   * THIRD ACTION H = hand the task to a person, AVAILABLE ONLY ON HIGH-RISK
+#     INSTANCES (tau >= TAU_GATE). On the other instances the router keeps its
+#     two options (H is masked out of the softmax), and a failure there is
+#     accepted. The ROUTER decides H from the task text + weak attempt only; no
+#     outcome information is ever in its input.
+#   * Replayed reward of H (declared assumptions, no execution):
+#       R'(H) = Q_H - LAMBDA * (C_weak/C_SS_i + k)   with Q_H = 1 (the person
+#       completes the task correctly) and C_H = k * C_SS_i (k = --human-cost,
+#       candidate set {6, 8, 9}, selected on VALIDATION mean delivered R'. The set
+#       is fixed by the data: k > 1 + 10*C_weak/C_SS_i (max 5.51 on the high tier)
+#       so a person is never preferred to a SUCCESSFUL strong call, and k < 1/lambda
+#       = 10 so a person is always preferred to a silently delivered wrong answer.
+#       Weak-first: the weak attempt has already run, so H pays C_weak in AI cost
+#       plus the human cost k*C_SS_i (a different currency, reported apart).
+#       No budget hinge and no risk penalty on H.
+#     W and S rewards unchanged from Training 1/2; the risk term (--lambda-t,
+#     deliver branch, tau >= TAU_GATE) is kept: --lambda-t 0 = risk-free run
+#     (5a), --lambda-t 1 = risk-aware run (5b).
+#   * evaluate() adds the human-load metrics on the high tier: hand-offs, their
+#     precision/recall against the both-fail set, AI-subset accuracy, human cost.
+#   * Prompt: ONE added option line ("H) Hand the task to a person"); the
+#     objective sentence is verbatim; no principles. Self-check guards both.
+#
+# MedAgentBench variant of the audited grpo_trainer.py (v1.2, HotpotQA):
+# SAME mechanics kept line-for-line in spirit —
+#   * GRPO with AMENDMENT A1 advantage = R' - group mean (NO /std),
+#   * entropy bonus BETA, LR 1e-5, grad clip 1.0, accum 8, seed 17,
+#   * non-finite-loss skip, checkpoint by THE OBJECTIVE (val mean-R'),
+#   * manifest discipline, smoke mode first.
+# STRUCTURAL CHANGES (and nothing else):
+#   1) ONE router, ONE decision per instance: W = DELIVER the weak attempt,
+#      S = ESCALATE to the strong model (weak-first cascade; the weak attempt
+#      already exists for every instance).
+#   2) Outcomes REPLAYED from the Training 1 table (both paths measured for
+#      all 300 instances — training is execution-free):
+#        R'(W) = qw - LAMBDA*(cw/cs)        - max(0, cw/cs - 1)
+#        R'(S) = qs - LAMBDA*((cw+cs)/cs)   - max(0, (cw+cs)/cs - 1)
+#      pass/fail correctness; per-instance C_SS_i = cs (measured strong cost);
+#      weak-first costs: deliver pays cw, escalate pays cw + cs.
+#   3) Router prompt = the validated MedAgentBench prompt (registered 26 Oct):
+#      task-definition wrapper + the HotpotQA champion's objective sentence
+#      VERBATIM; no principles. Self-check below refuses to run on drift.
+#   4) Fresh LoRA only (no MedAgentBench warm start exists); adapter SHAPE
+#      copied from the HotpotQA SFT ret adapter's own adapter_config.json —
+#      same lineage rule as the audited --from-scratch path.
+# NO risk anywhere in this file: tau and the guardrail live in the readout
+# tally, never in training.
+#
+# Usage (lab, slr-env):
+#   python3 training5_trainer.py --human-cost 5 --lambda-t 0 --smoke
+#   python3 training5_trainer.py --human-cost 5 --lambda-t 0 --baseline 0.1890   # 5a
+#   python3 training5_trainer.py --human-cost 5 --lambda-t 1 --baseline 0.1890   # 5b
+# =============================================================================
+import os, sys, json, time, random, argparse, hashlib
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
+
+VERSION = "training5_trainer v1.0 2026-10-28 (three-way router W/S/H, H on the high tier only; delta on training2_trainer v1.0)"
+TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
+TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
+TAU_GATE = 0.80
+Q_H = 1.0            # declared: a person completes the task correctly
+K_HUMAN = None       # set from --human-cost before build_rows() runs
+MODEL   = "Qwen/Qwen2.5-1.5B-Instruct"
+LORA_SHAPE_FROM = "/mnt/hdd/jonathan/runs/config_b/sft_router5_ret/best_adapter"
+WEAK_NAME, STRONG_NAME = "Qwen2.5-7B-Instruct", "Qwen2.5-72B-Instruct"
+LR, ACCUM, SEED, BETA, LAMBDA = 1e-5, 8, 17, 0.03, 0.10
+EVAL_EVERY = 10              # optimizer steps (90 rows / accum 8 ~ 11 steps/epoch)
+
+# ---- the registered router prompt (validated by Jonathan, 26 Oct) -----------
+SYS = ("You route a medical record-system task. The weak model {weak_name} has "
+       "already attempted it; choose whether to deliver its result or escalate "
+       "to {strong_name}. Your objective: the task should be completed correctly "
+       "while spending as little compute as possible - correctness first, cost "
+       "second. Based on the information shown below, choose one option."
+       ).format(weak_name=WEAK_NAME, strong_name=STRONG_NAME)
+USER_TAIL_2 = ("\n\nOptions:\nW) Deliver the weak model's result\n"
+               "S) Escalate to the strong model\nAnswer with a single letter: W or S.")
+USER_TAIL_3 = ("\n\nOptions:\nW) Deliver the weak model's result\n"
+               "S) Escalate to the strong model\n"
+               "H) Hand the task to a person\nAnswer with a single letter: W, S or H.")
+
+def _prompt_selfcheck():
+    assert ("Your objective: the task should be completed correctly while "
+            "spending as little compute as possible - correctness first, cost "
+            "second.") in SYS, "objective sentence drifted"
+    assert "Based on the information shown below, choose one option." in SYS
+    for banned in ("Routing principles", "only when needed", "(1)", "(2)", "(3)",
+                   "cheap)", "expensive)"):
+        assert banned not in SYS, f"banned (principle-flavored) phrase: {banned}"
+    assert USER_TAIL_3.count("\n") == USER_TAIL_2.count("\n") + 1, "H adds exactly one option line"
+    assert "H) Hand the task to a person" in USER_TAIL_3
+    print("[training5 prompt] self-check OK", flush=True)
+_prompt_selfcheck()
+
+
+def sha256(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def hinge(x): return max(0.0, x - 1.0)
+
+
+def risk_penalty(tau, c, lambda_t):
+    """The registered gradient-level term, DELIVER branch only:
+    lambda_t * max(0, tau - c), dormant below the tau gate."""
+    if tau < TAU_GATE:
+        return 0.0
+    return lambda_t * max(0.0, tau - c)
+
+
+def build_rows():
+    """One row per instance: the router input (task text + weak-attempt view,
+    from the registered table — never the grader's verdict) + the two replayed
+    branch rewards. Correctness is consumed HERE, into R' — it never appears
+    in any router input."""
+    table = json.load(open(TABLE))
+    tauj = json.load(open(TAU))
+    taus = {s["tid"]: s["tau"] for s in tauj["scores"]}
+    rows = {"train": [], "val": []}
+    for t in table:
+        if t["split"] not in rows:
+            continue                      # test stays sealed
+        xw = t["cw"] / t["cs"]
+        xs = (t["cw"] + t["cs"]) / t["cs"]
+        high = taus[t["tid"]] >= TAU_GATE
+        r = {"idx": t["idx"], "tid": t["tid"], "high": high,
+             "user": t["view"] + (USER_TAIL_3 if high else USER_TAIL_2),
+             "rp": {"W": t["qw"] - LAMBDA * xw - hinge(xw),
+                    "S": t["qs"] - LAMBDA * xs - hinge(xs)},
+             "acc": {"W": t["qw"], "S": t["qs"]},
+             "cost": {"W": t["cw"], "S": t["cw"] + t["cs"]},
+             "both_fail": (t["qw"] == 0 and t["qs"] == 0),
+             "tau": taus[t["tid"]]}
+        if high:                          # H exists only on the high tier
+            r["rp"]["H"] = Q_H - LAMBDA * (xw + K_HUMAN)
+            r["acc"]["H"] = Q_H
+            r["cost"]["H"] = t["cw"]      # AI cost (the weak attempt already ran)
+            r["c_ss"] = t["cs"]           # for the human-cost report: C_H = k * C_SS_i
+        rows[t["split"]].append(r)
+    for split, rs in rows.items():
+        hi = [r for r in rs if r["high"]]
+        print(f"[training5] {split}: n={len(rs)}, high-tier (H available)={len(hi)}, "
+              f"both-fail on high tier={sum(r['both_fail'] for r in hi)}", flush=True)
+    return rows
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--outdir", default=None,
+                    help="default: runs/mab/training5_router_k<k>_lt<lambda_t>")
+    ap.add_argument("--lambda-t", type=float, default=0.0, dest="lambda_t",
+                    help="risk-penalty weight on the deliver branch: 0 = risk-free run (5a); 1 = risk-aware run (5b)")
+    ap.add_argument("--human-cost", type=float, required=True, dest="k",
+                    help="C_H as a multiple k of C_SS_i; declared candidate set {6, 8, 9}")
+    ap.add_argument("--G", type=int, default=8, help="rollouts per instance")
+    ap.add_argument("--epochs", type=int, default=40,
+                    help="small train set (90) -> more epochs than HotpotQA's 6")
+    ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--baseline", type=float, default=None,
+                    help="kill-criterion bar: always-escalate val mean-R' (+0.1890)")
+    ap.add_argument("--seed", type=int, default=SEED)
+    a = ap.parse_args()
+    if a.outdir is None:
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5_router_k{a.k:g}_lt{a.lambda_t:g}"
+    global K_HUMAN
+    K_HUMAN = a.k
+    if a.smoke:
+        a.outdir = a.outdir.rstrip("/") + "_smoke"
+    os.makedirs(a.outdir, exist_ok=True)
+
+    random.seed(a.seed); torch.manual_seed(a.seed)
+    rows = build_rows()
+    if a.smoke:
+        rows["train"] = rows["train"][:20]
+        rows["val"] = rows["val"][:30]
+        a.G, eval_every, max_steps = 4, 2, 6
+    else:
+        eval_every, max_steps = EVAL_EVERY, None
+    print(f"{VERSION}  k={a.k}  lambda_t={a.lambda_t}  G={a.G}  train={len(rows['train'])}  val={len(rows['val'])}  "
+          f"epochs={a.epochs}  warm_start=FRESH (LoRA shape from {LORA_SHAPE_FROM})",
+          flush=True)
+
+    tok = AutoTokenizer.from_pretrained(MODEL)
+    def one_id(s):
+        ids = tok.encode(s, add_special_tokens=False)
+        assert len(ids) == 1, f"letter {s!r} is not a single token: {ids}"
+        return ids[0]
+    idW, idS, idH = one_id("W"), one_id("S"), one_id("H")
+
+    base = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16,
+                                                device_map="cuda")
+    cfg = PeftConfig.from_pretrained(LORA_SHAPE_FROM)   # SAME LoRA shape as SFT
+    cfg.inference_mode = False
+    model = get_peft_model(base, LoraConfig(**{k: v for k, v in cfg.to_dict().items()
+                                               if k in LoraConfig.__dataclass_fields__}))
+    model.gradient_checkpointing_enable()
+    model.enable_input_require_grads()
+    model.config.use_cache = False
+    n_train = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(f"fresh router: trainable params = {n_train:,} "
+          f"(must match the HotpotQA fresh runs' count)", flush=True)
+    params = [p for p in model.parameters() if p.requires_grad]
+    opt = torch.optim.AdamW(params, lr=LR)
+
+    ACT = ["W", "S", "H"]
+    def logprobs(r):
+        """log-probabilities over the allowed actions: [W, S] on low-risk rows,
+        [W, S, H] on high-risk rows (H is masked out of the softmax elsewhere)."""
+        msgs = [{"role": "system", "content": SYS},
+                {"role": "user", "content": r["user"]}]
+        ids = tok.apply_chat_template(msgs, add_generation_prompt=True,
+                                      return_tensors="pt")
+        if not torch.is_tensor(ids):
+            ids = ids["input_ids"]
+        ids = ids.to("cuda")
+        out = model(input_ids=ids, logits_to_keep=1).logits[0, -1]
+        logits = [out[idW], out[idS]] + ([out[idH]] if r["high"] else [])
+        return torch.log_softmax(torch.stack(logits), 0)
+
+    # ---- evaluation: greedy decision, delivered-path R' ----------------------
+    def evaluate(vrows):
+        """Greedy decision = argmax over the allowed actions. Accuracy counts H as
+        correct (Q_H = 1); ai_acc is the accuracy of what the AI handled; human
+        metrics are on the high tier, where H exists."""
+        model.eval()
+        tot_r, tot_acc, tot_cost, pws = 0.0, 0, 0.0, []
+        ai_n = ai_acc = 0
+        hi = {"n": 0, "W": 0, "S": 0, "H": 0, "H_on_both_fail": 0, "both_fail": 0,
+              "acc": 0, "ai_cost": 0.0, "human_cost_units": 0.0}
+        with torch.no_grad():
+            for r in vrows:
+                lp = logprobs(r)
+                pW = float(lp[0].exp()); pws.append(pW)
+                c = ACT[int(lp.argmax())]
+                pen = risk_penalty(r["tau"], pW, a.lambda_t) if c == "W" else 0.0
+                tot_r += r["rp"][c] - pen
+                tot_acc += r["acc"][c]; tot_cost += r["cost"][c]
+                if c != "H":
+                    ai_n += 1; ai_acc += r["acc"][c]
+                if r["high"]:
+                    hi["n"] += 1; hi[c] += 1; hi["acc"] += r["acc"][c]
+                    hi["both_fail"] += r["both_fail"]
+                    hi["H_on_both_fail"] += (c == "H" and r["both_fail"])
+                    hi["ai_cost"] += r["cost"][c]
+                    hi["human_cost_units"] += (K_HUMAN * r["c_ss"]) if c == "H" else 0.0
+        model.train()
+        n = len(vrows)
+        H = hi["H"]
+        return {"val_meanR_delivered": round(tot_r / n, 4),
+                "val_acc": round(tot_acc / n, 4),
+                "val_ai_acc": (round(ai_acc / ai_n, 4) if ai_n else None),
+                "val_mean_ai_cost": round(tot_cost / n, 1),
+                "mean_pDeliver": round(sum(pws) / len(pws), 4),
+                "high_tier": {"n": hi["n"], "deliver": hi["W"], "escalate": hi["S"], "to_person": H,
+                              "human_load": (round(H / hi["n"], 4) if hi["n"] else None),
+                              "H_precision": (round(hi["H_on_both_fail"] / H, 4) if H else None),
+                              "H_recall": (round(hi["H_on_both_fail"] / hi["both_fail"], 4) if hi["both_fail"] else None),
+                              "acc": (round(hi["acc"] / hi["n"], 4) if hi["n"] else None),
+                              "mean_ai_cost": (round(hi["ai_cost"] / hi["n"], 1) if hi["n"] else None),
+                              "mean_human_cost_units": (round(hi["human_cost_units"] / hi["n"], 1) if hi["n"] else None)}}
+
+    ev0 = evaluate(rows["val"])
+    print(json.dumps({"step": 0, "FRESH_START_EVAL": True, **ev0,
+                      "baseline": a.baseline}), flush=True)
+
+    curve = open(os.path.join(a.outdir, "curve.jsonl"), "a")
+    best_obj, step, t0, stop = -1e9, 0, time.time(), False
+    order = rows["train"][:]
+    for ep in range(a.epochs):
+        if stop:
+            break
+        random.shuffle(order); opt.zero_grad()
+        for k, r in enumerate(order):
+            # ---- one GRPO group: G rollouts over the allowed actions ---------
+            lp = logprobs(r)
+            probs = lp.exp().detach().tolist()      # sampling distribution (no grad)
+            pW_now = probs[0]                       # c in the risk penalty: the router's
+            draws = []                              # own deliver-probability, detached
+            for _ in range(a.G):
+                c = random.choices(ACT[:len(probs)], weights=probs)[0]
+                rew = r["rp"][c]
+                if c == "W":
+                    rew -= risk_penalty(r["tau"], pW_now, a.lambda_t)
+                draws.append((c, rew))
+            rewards = [d[1] for d in draws]
+            mu = sum(rewards) / a.G
+            adv = [x - mu for x in rewards]          # AMENDMENT A1: no /std
+            pg = 0.0
+            for (c, _), A in zip(draws, adv):
+                if A == 0.0:
+                    continue
+                pg = pg + A * lp[ACT.index(c)]
+            ent = -(lp.exp() * lp).sum()
+            loss = (-(pg / a.G) - BETA * ent) / ACCUM
+            if not torch.isfinite(loss):
+                print(f"skipped non-finite loss (epoch {ep}, row {k})", flush=True)
+                continue
+            loss.backward()
+            if (k + 1) % ACCUM == 0:
+                torch.nn.utils.clip_grad_norm_(params, 1.0)
+                opt.step(); opt.zero_grad(); step += 1
+                if step % eval_every == 0:
+                    ev = evaluate(rows["val"])
+                    line = {"step": step, "epoch": ep, **ev, "baseline": a.baseline,
+                            "beats_baseline": (None if a.baseline is None
+                                               else ev["val_meanR_delivered"] > a.baseline),
+                            "min": round((time.time() - t0) / 60, 1)}
+                    print(json.dumps(line), flush=True)
+                    curve.write(json.dumps(line) + "\n"); curve.flush()
+                    if ev["val_meanR_delivered"] > best_obj:
+                        best_obj = ev["val_meanR_delivered"]
+                        model.save_pretrained(os.path.join(a.outdir, "best_adapter"))
+                if max_steps and step >= max_steps:
+                    stop = True
+                    break
+
+    model.save_pretrained(os.path.join(a.outdir, "last_adapter"))
+
+    # ---- final: reload BEST, score val, write per-instance scores ------------
+    del model; torch.cuda.empty_cache()
+    base = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16,
+                                                device_map="cuda")
+    model = PeftModel.from_pretrained(base, os.path.join(a.outdir, "best_adapter")).eval()
+    final = evaluate(rows["val"])
+    with torch.no_grad(), \
+         open(os.path.join(a.outdir, "val_scores.jsonl"), "w") as fv:
+        for r in rows["val"]:
+            pr = logprobs(r).exp().tolist()
+            fv.write(json.dumps({"idx": r["idx"], "tid": r["tid"], "high": r["high"],
+                                 "pDeliver": round(pr[0], 6), "pEscalate": round(pr[1], 6),
+                                 "pHuman": (round(pr[2], 6) if r["high"] else None)}) + "\n")
+
+    manifest = {"stage": "training5_three_way_router", "version": VERSION,
+                "lambda_t": a.lambda_t, "human_cost_k": a.k, "Q_H": Q_H,
+                "tau_file": TAU, "tau_sha256": sha256(TAU), "tau_gate": TAU_GATE,
+                "H_available_on": "tau >= tau_gate only",
+                "objective": (f"GRPO (A1): G={a.G} sampled rollouts/instance over the allowed actions "
+                              f"(W=deliver weak attempt, S=escalate, H=hand to a person), outcomes replayed, "
+                              f"three actions on tau >= {TAU_GATE} (W/S/H), two elsewhere (W/S); "
+                              f"R'(W), R'(S) as Training 1; R'(H) = {Q_H} - {LAMBDA}*(C_weak/C_SS_i + {a.k}) (no hinge, no risk term); "
+                              f"risk term {a.lambda_t}*max(0, tau - c) on the DELIVER branch only, "
+                              f"dormant below tau {TAU_GATE}; tau frozen (rubric v2). "
+                              f"MEAN-BASELINE advantage, + {BETA}*entropy."),
+                "base_model": MODEL, "warm_start": f"FRESH (LoRA shape from {LORA_SHAPE_FROM})",
+                "table_file": TABLE, "table_sha256": sha256(TABLE),
+                "router_prompt_sys": SYS,
+                "lr": LR, "epochs": a.epochs, "accum": ACCUM, "seed": a.seed,
+                "lambda": LAMBDA, "beta": BETA, "G": a.G, "smoke": a.smoke,
+                "kill_baseline": a.baseline,
+                "final_fullval": final, "fresh_start_eval": ev0}
+    json.dump(manifest, open(os.path.join(a.outdir, "manifest.json"), "w"), indent=2)
+    print(json.dumps({"FINAL": True, **manifest}), flush=True)
+
+
+if __name__ == "__main__":
+    main()
