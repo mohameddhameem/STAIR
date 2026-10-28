@@ -37,6 +37,11 @@ priced at AgentTTS's Table 5); our rows on it are still to come.
 | AL-05 | rulebook, starting rules (8 retrievers from nano-jev, 4 answerers from Llama 1B) | 0.672 | 12 |
 | AL-05 | rulebook, learnt rules | 0.710 | 13 |
 | AL-05 | oracle within the rulebook's choices | 0.794 | 36 |
+| AL-06 | fixed: Qwen2.5 0.5B -> Llama 1B / 3B / 8B (fine-tuned) | 0.672 / 0.730 / 0.766 | 13 / 14 / 18 |
+| AL-06 | fixed: Qwen3.5 0.8B -> Llama 3B / 8B / 70B (fine-tuned) | 0.796 / 0.826 / 0.842 | 22 / 25 / 65 |
+| AL-06 | rulebook, starting rules (7 retrievers from Qwen 0.5B, 4 answerers from Llama 1B) | 0.724 | 21 |
+| AL-06 | rulebook, learnt rules | 0.756 | 22 |
+| AL-06 | oracle within the rulebook's choices | 0.830 | 28 |
 
 ### Best setting per experiment (cost relative to AgentTTS's paper-best = 100%)
 
@@ -47,10 +52,11 @@ priced at AgentTTS's Table 5); our rows on it are still to come.
 | AL-03 | fixed Qwen 72B -> Llama 70B (untrained) | 0.730 | 95% |
 | AL-04 | fixed Qwen 7B -> Llama 70B (fine-tuned) | **0.854** | **11%** |
 | AL-05 | the same pair (AL-05's ladders contain AL-04's models) | **0.854** | **11%** |
-| AL-06 | still running | | |
+| AL-06 | the same pair (no nano-jev; otherwise AL-05's ladders) | **0.854** | **11%** |
 
 Each experiment scores every fixed retriever -> answerer pair on its ladders as reference points, next to its own
-method, the learnt rulebook. The rulebook rows are: AL-03 0.566 (31% cost), AL-04 0.830 (22%), AL-05 0.710 (0.6%).
+method, the learnt rulebook. The rulebook rows are: AL-03 0.566 (31% cost), AL-04 0.830 (22%), AL-05 0.710 (0.6%),
+AL-06 0.756 (1.1%).
 AL-05's full table (35 policies) is in [`AL-05-hotpotqa-test-seed0.csv`](../results/common/AL-05-hotpotqa-test-seed0.csv).
 
 ### Accuracy or savings: the cost-accuracy curve (AL-05)
@@ -94,6 +100,24 @@ For reference: AgentTTS paper-best 0.744 at 1,984 units (100%); always-strong 0.
   (438 questions) the picture is the same (nano-jev -> Llama 8B 0.715, learnt rules 0.708, Qwen 0.8B -> Llama 70B
   0.831, Qwen 7B -> Llama 70B 0.845).
 
+### AL-06: the same ladders from Qwen 0.5B (no nano-jev)
+
+| | AL-05 (from nano-jev 33M) | AL-06 (from Qwen2.5 0.5B) |
+|---|---|---|
+| Starting rules | 0.672 at 12 units | 0.724 at 21 |
+| Learnt rules | 0.710 at 13 | **0.756 at 22** |
+| Gain from learning | +3.8 pt | +3.2 pt |
+| Oracle within the rulebook's choices | 0.794 at 36 | 0.830 at 28 |
+
+- **A stronger first rung helps the rules:** +4.6 points over AL-05's learnt rules for 9 more units (about 1% of
+  AgentTTS's cost). Learning again improves on the starting rules by about 3 points.
+- **Still below the fixed-pair curve.** Fixed Qwen 0.8B -> Llama 3B reaches 0.796 at 21.8 units: 4 points more than
+  the learnt rules at slightly lower cost (paired: 41 questions right only for the pair, 21 only for the rules). The
+  rules start at the weakest retriever (Qwen 0.5B) and escalate too rarely to the much better Qwen 0.8B one rung up.
+- AL-06's fixed pairs are a subset of AL-05's, so the curve above Qwen 0.5B is the same (best: Qwen 7B -> Llama 70B
+  0.854; best cheap: Qwen 0.8B -> Llama 8B 0.826 at 25 units). Its oracle (0.830 at 28) is only just above that curve,
+  so at this end there is little room for per-question switching to win.
+
 ## Fine-tuning so far (early stopping on validation loss, `results/common/history/`)
 
 | Model | Role | Epochs run | Best epoch (kept) | Val loss |
@@ -109,7 +133,7 @@ Answerers stop improving after one epoch (validation loss rises in the second, s
 retrievers keep improving through epoch 2 (Qwen2.5 32B: best at 1.5). Qwen2.5 72B (QLoRA) has finished training; its
 curve is added with the AL-05/06 results.
 
-AL-05 is done; AL-06 (the same ladders from Qwen 0.5B, without nano-jev) is still running.
+AL-05 and AL-06 are done (seed 0, AgentTTS's 500).
 
 ## Reading so far
 
