@@ -8,7 +8,11 @@ layout) are in [`results/common/`](../results/common/) on this branch, with the 
 
 These are on AgentTTS's 500 test questions (`test` = dev[500:1000]), which the team keeps for comparing with the paper.
 Since 21 Oct (`common` 0.3.0) the team's HotpotQA headline is Jonathan's golden set (`slr-test`, 1,481 questions,
-priced at AgentTTS's Table 5); our rows on it are still to come.
+priced at AgentTTS's Table 5). The golden-set runs have their own experiment IDs, sheets and files, so the two are never
+mixed: AL-07 = AL-01 (AgentTTS), AL-08 = AL-02 (always-strong, Jonathan's rows, already in:
+[`jonathan-ss-hotpotqa-slr-test.csv`](../results/common/jonathan-ss-hotpotqa-slr-test.csv), 0.7677), AL-09 / AL-10 /
+AL-11 = AL-04 / AL-05 / AL-06 (results `AL-09`..`AL-11-hotpotqa-slr-test-seed0.csv`, curves
+`history/selfLearnt-golden-*`). They are running; results expected early November. AL-03 is not repeated.
 
 | Experiment | Policy | Accuracy | Units / question |
 |---|---|---|---|
