@@ -399,11 +399,13 @@ def write_history(cfg, key, role, T, st):
     m = cfg["models"][key]
     recs = [{"epoch": r["epoch"], "train_loss": r["train_loss"], "val_loss": r["val_loss"], "step": r["step"],
              **({"val_metric": r["val_metric"]} if r.get("val_metric") is not None else {})} for r in st["curve"]]
-    df = from_records(recs, track="selfLearnt", model=f"{m['label']} {role}", run=f"{T['method']}-r{T['r']}", seed=int(cfg.get("seed", 0)))
+    tag = cfg.get("history_tag", "")      # a second run of the same models (golden set) keeps its own curves
+    df = from_records(recs, track="selfLearnt", model=f"{m['label']} {role}", run=f"{tag + '-' if tag else ''}{T['method']}-r{T['r']}",
+                      seed=int(cfg.get("seed", 0)))
     validate_history(df)
     d = os.path.join(cfg["paths"]["results_dir"], "history")
     os.makedirs(d, exist_ok=True)
-    df.to_csv(os.path.join(d, f"selfLearnt-{key}-{role}-seed{cfg.get('seed', 0)}.csv"), index=False)
+    df.to_csv(os.path.join(d, f"selfLearnt-{tag + '-' if tag else ''}{key}-{role}-seed{cfg.get('seed', 0)}.csv"), index=False)
 
 
 def merge(cfg, key):

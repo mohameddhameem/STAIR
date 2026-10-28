@@ -43,20 +43,21 @@ priced at AgentTTS's Table 5); our rows on it are still to come.
 | AL-06 | rulebook, learnt rules | 0.756 | 22 |
 | AL-06 | oracle within the rulebook's choices | 0.830 | 28 |
 
-### Best setting per experiment (cost relative to AgentTTS's paper-best = 100%)
+### Each experiment's own method and its best fixed pair (cost relative to AgentTTS's paper-best = 100%)
 
-| Experiment | Most accurate setting (oracles excluded) | Accuracy | Relative cost |
-|---|---|---|---|
-| AL-01 | AgentTTS paper-best | 0.744 | 100% |
-| AL-02 | always Qwen 72B -> Llama 70B (team reference) | 0.776 | 92% |
-| AL-03 | fixed Qwen 72B -> Llama 70B (untrained) | 0.730 | 95% |
-| AL-04 | fixed Qwen 7B -> Llama 70B (fine-tuned) | **0.854** | **11%** |
-| AL-05 | the same pair (AL-05's ladders contain AL-04's models) | **0.854** | **11%** |
-| AL-06 | the same pair (no nano-jev; otherwise AL-05's ladders) | **0.854** | **11%** |
+AL-03 .. AL-06 each test a learnt rulebook (the method) and also score every fixed retriever -> answerer pair on their
+ladders as reference points. AL-05's and AL-06's ladders contain AL-04's fine-tuned models, so the same best pair tops
+all three; what differs is the rulebook.
 
-Each experiment scores every fixed retriever -> answerer pair on its ladders as reference points, next to its own
-method, the learnt rulebook. The rulebook rows are: AL-03 0.566 (31% cost), AL-04 0.830 (22%), AL-05 0.710 (0.6%),
-AL-06 0.756 (1.1%).
+| Experiment | Method | Accuracy | Relative cost | Best fixed pair (oracles excluded) | Accuracy | Relative cost |
+|---|---|---|---|---|---|---|
+| AL-01 | AgentTTS paper-best | 0.744 | 100% | - | | |
+| AL-02 | always-strong, Qwen 72B -> Llama 70B (team reference) | 0.776 | 92% | - | | |
+| AL-03 | learnt rules, untrained models | 0.566 | 31% | Qwen 72B -> Llama 70B (untrained) | 0.730 | 95% |
+| AL-04 | learnt rules, fine-tuned 3 + 3 models | **0.830** | 22% | Qwen 7B -> Llama 70B (fine-tuned) | **0.854** | 11% |
+| AL-05 | learnt rules, ladders from nano-jev 33M | 0.710 | **0.6%** | the same pair | 0.854 | 11% |
+| AL-06 | learnt rules, ladders from Qwen 0.5B | 0.756 | 1.1% | the same pair | 0.854 | 11% |
+
 AL-05's full table (35 policies) is in [`AL-05-hotpotqa-test-seed0.csv`](../results/common/AL-05-hotpotqa-test-seed0.csv).
 
 ### Accuracy or savings: the cost-accuracy curve (AL-05)

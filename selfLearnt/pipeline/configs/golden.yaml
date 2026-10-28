@@ -5,15 +5,24 @@
 # AL-03 (untrained models + probes) is not redone on the golden set (Andy's choice, 25 Oct): ws3 is dropped below.
 # AL-02 on slr-test is the team's shared always-strong rows (Jonathan's run), not a job here.
 # Everything else is redone in its own run folder (golden_v1): models are fine-tuned again, so that every checkpoint is
-# picked on slr-val as the team rule says. Results: AL-0X-hotpotqa-slr-test-seed<seed>.csv.
+# picked on slr-val as the team rule says.
 #   python jobs/submit_all.py --config configs/golden.yaml --as-job
 include: default.yaml
 run_name: golden_v1
+# Its own experiment IDs and file names, so nothing can be mixed up with the first run on AgentTTS's 500:
+#   AL-07 = AL-01 (AgentTTS), AL-08 = AL-02 (always-strong, Jonathan's rows), AL-09 / AL-10 / AL-11 = AL-04 / AL-05 / AL-06.
+#   Results: AL-07 .. AL-11-hotpotqa-slr-test-seed0.csv; training curves: history/selfLearnt-golden-<model>-...csv
+history_tag: golden
 data:
   val_part: slr-val
   test_part: slr-test
 workstreams:
+  ws1: {exp_id: AL-07}
+  ws2: null          # AL-08 (always-strong) is Jonathan's stored rows: no AgentTTS-pipeline run of it here
   ws3: null
+  ws4: {exp_id: AL-09}
+  ws5: {exp_id: AL-10}
+  ws6: {exp_id: AL-11}
 # Qwen 72B's QLoRA run is pre-empted on the shared partition (28 Oct: after 5 h, at step ~68 of 500): save every
 # 96 questions (12 steps, ~50 min) instead of 500, so a pre-emption loses under an hour. Resumes from the last save.
 finetune:
