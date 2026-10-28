@@ -560,3 +560,10 @@ Validation high tier (12 instances, 8 both-fail): to person / needed / unnecessa
 - PREDICTIONS (30 high-risk test instances, Point A): task 9 handed over (needed 15), task 5 escalated; unnecessary ≤ 1; fails with no human = the task-5 both-fail cases (≈ 6) unless the router can tell them apart from the weak transcript; tier accuracy with H ≈ 0.80; 5b = 5a (risk term inert once H exists). Oracle 21 / 0 / 0.
 - Two runs (λt 0, 1); kill bar +0.1890; one read each; θ_H rule as in v1.1.
 
+## TRAINING 5 — AMENDMENT v1.3 (28 Oct 2026, 23:48 SGT, before launch): RISK AS A RISK-WEIGHTED FAILURE PENALTY ON EVERY AI ACTION
+- Decision (Jonathan, 23:42): apply risk to all high-risk instances regardless of the action, not as a confidence proxy on deliver. New risk term: − λt·τᵢ·𝟙[τᵢ ≥ 0.8]·𝟙[the chosen AI action (W or S) failed]. H carries no risk penalty (never an AI failure); its reward is v1.2's (+1 needed / −1 unnecessary − spent weak cost). The Training 2 confidence term is withdrawn from Training 5.
+- Meaning: an AI failure on a high-risk instance costs 1 + λt·τ instead of 1, so the hand-off break-even moves from P(strong fails) = 0.50 (λt = 0) to 1/(2 + λt·τ) = 0.36 at λt = 1 (τ = 0.8), 0.28 at λt = 2 — a governance dial that never touches low-risk work. Type-level check on the committed tables: task 5 → escalate at both λt (val margin +0.54 → −1.06 vs hand-over-all −2.26), task 9 → person.
+- v1.2 was registered 23:45 and NOT launched (superseded by this amendment before any run). The v1.1 λt = 1 run (old confidence term) is aborted/ignored if still running — recorded as superseded; its λt = 0 result (12/8/4/0) stands as the v1.1 record.
+- Trainer v1.3 / read script v1.3 (risk_penalty(tau, failed, lambda_t); the read recomputes the same term for the R′ column). Offline-validated 23:47.
+- Runs: λt = 0 (5a) and λt = 1 (5b). Kill bar +0.1890. One read each; θ_H rule unchanged. PREDICTIONS as v1.2 for 5a (task 9 → person; unnecessary ≤ 1; fails with no human ≈ the task-5 both-fail cases); for 5b: hand-offs ≥ 5a's, fails with no human ≤ 5a's, unnecessary hand-offs ≤ 3 (the dial trades a few unnecessary hand-offs for fewer silent failures).
+

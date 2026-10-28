@@ -20,6 +20,15 @@
 #     k = 9 separated the tasks); v1.1 rewarded only needed hand-offs with no
 #     penalty for unnecessary ones (break-even ~5%), so the router handed over the
 #     whole tier — rejected 23:40 on the validation arithmetic.
+#   * RISK TERM — v1.3 (28 Oct 23:43, Jonathan): the confidence proxy of Training 2
+#     (lambda_t * max(0, tau - c) on deliver) is replaced by a RISK-WEIGHTED
+#     FAILURE penalty on every AI action at tau >= TAU_GATE:
+#       - lambda_t * tau_i * 1[the chosen AI action (W or S) failed]
+#     H is never an AI failure and carries no risk penalty. Effect: an AI failure
+#     on a high-risk instance costs 1 + lambda_t*tau instead of 1, so the hand-off
+#     break-even moves from P(fail) = 0.5 (lambda_t = 0) to 1/(2 + lambda_t*tau):
+#     0.36 at lambda_t = 1, 0.28 at lambda_t = 2 — a governance dial, never
+#     touching low-risk work.
 #     W and S rewards unchanged from Training 1/2; the risk term (--lambda-t,
 #     deliver branch, tau >= TAU_GATE) is kept: --lambda-t 0 = risk-free run
 #     (5a), --lambda-t 1 = risk-aware run (5b).
@@ -55,15 +64,15 @@
 #
 # Usage (lab, slr-env):
 #   python3 training5_trainer.py --lambda-t 0 --smoke
-#   python3 training5_trainer.py --lambda-t 0 --baseline 0.1890   # 5a (risk-free)
-#   python3 training5_trainer.py --lambda-t 1 --baseline 0.1890   # 5b (risk-aware)
+#   python3 training5_trainer.py --lambda-t 0 --baseline 0.1890   # 5a (break-even P(fail) = 0.50)
+#   python3 training5_trainer.py --lambda-t 1 --baseline 0.1890   # 5b (risk-averse, break-even 0.36)
 # =============================================================================
 import os, sys, json, time, random, argparse, hashlib
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 
-VERSION = "training5_trainer v1.2 2026-10-28 (three-way router W/S/H, H on the high tier only, H = +1 if both fail / -1 if strong succeeds; delta on training2_trainer v1.0)"
+VERSION = "training5_trainer v1.3 2026-10-28 (three-way router W/S/H on the high tier; H = +1 if both fail / -1 if strong succeeds; risk = lambda_t*tau on any AI failure at tau>=gate; delta on training2_trainer v1.0)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 TAU_GATE = 0.80
@@ -112,12 +121,12 @@ def sha256(path):
 def hinge(x): return max(0.0, x - 1.0)
 
 
-def risk_penalty(tau, c, lambda_t):
-    """The registered gradient-level term, DELIVER branch only:
-    lambda_t * max(0, tau - c), dormant below the tau gate."""
-    if tau < TAU_GATE:
+def risk_penalty(tau, failed, lambda_t):
+    """v1.3: risk-weighted failure, any AI action (W or S), high tier only:
+    lambda_t * tau if the chosen AI action failed, else 0."""
+    if tau < TAU_GATE or not failed:
         return 0.0
-    return lambda_t * max(0.0, tau - c)
+    return lambda_t * tau
 
 
 def build_rows():
@@ -158,9 +167,9 @@ def build_rows():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--outdir", default=None,
-                    help="default: runs/mab/training5v12_router_lt<lambda_t>")
+                    help="default: runs/mab/training5v13_router_lt<lambda_t>")
     ap.add_argument("--lambda-t", type=float, default=0.0, dest="lambda_t",
-                    help="risk-penalty weight on the deliver branch: 0 = risk-free run (5a); 1 = risk-aware run (5b)")
+                    help="risk-weighted failure penalty lambda_t*tau on any AI failure at tau>=gate: 0 = plain (5a), 1 = risk-averse (5b)")
 
     ap.add_argument("--G", type=int, default=8, help="rollouts per instance")
     ap.add_argument("--epochs", type=int, default=40,
@@ -171,7 +180,7 @@ def main():
     ap.add_argument("--seed", type=int, default=SEED)
     a = ap.parse_args()
     if a.outdir is None:
-        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v12_router_lt{a.lambda_t:g}"
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v13_router_lt{a.lambda_t:g}"
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
     os.makedirs(a.outdir, exist_ok=True)
@@ -240,7 +249,7 @@ def main():
                 lp = logprobs(r)
                 pW = float(lp[0].exp()); pws.append(pW)
                 c = ACT[int(lp.argmax())]
-                pen = risk_penalty(r["tau"], pW, a.lambda_t) if c == "W" else 0.0
+                pen = risk_penalty(r["tau"], r["acc"][c] == 0, a.lambda_t) if c != "H" else 0.0
                 tot_r += r["rp"][c] - pen
                 tot_acc += r["acc"][c]; tot_cost += r["cost"][c]
                 if c != "H":
@@ -284,13 +293,12 @@ def main():
             # ---- one GRPO group: G rollouts over the allowed actions ---------
             lp = logprobs(r)
             probs = lp.exp().detach().tolist()      # sampling distribution (no grad)
-            pW_now = probs[0]                       # c in the risk penalty: the router's
-            draws = []                              # own deliver-probability, detached
+            draws = []
             for _ in range(a.G):
                 c = random.choices(ACT[:len(probs)], weights=probs)[0]
                 rew = r["rp"][c]
-                if c == "W":
-                    rew -= risk_penalty(r["tau"], pW_now, a.lambda_t)
+                if c != "H":
+                    rew -= risk_penalty(r["tau"], r["acc"][c] == 0, a.lambda_t)
                 draws.append((c, rew))
             rewards = [d[1] for d in draws]
             mu = sum(rewards) / a.G
@@ -341,14 +349,14 @@ def main():
                                  "pHuman": (round(pr[2], 6) if r["high"] else None)}) + "\n")
 
     manifest = {"stage": "training5_three_way_router", "version": VERSION,
-                "lambda_t": a.lambda_t, "H_reward": "1[both models fail] - 1[strong succeeds] - lambda*C_weak/C_SS_i (v1.2, no human price)", "Q_H": Q_H,
+                "lambda_t": a.lambda_t, "H_reward": "1[both models fail] - 1[strong succeeds] - lambda*C_weak/C_SS_i (v1.2+, no human price)", "risk_term": "lambda_t*tau*1[AI action failed], W and S, tau>=gate (v1.3)", "Q_H": Q_H,
                 "tau_file": TAU, "tau_sha256": sha256(TAU), "tau_gate": TAU_GATE,
                 "H_available_on": "tau >= tau_gate only",
                 "objective": (f"GRPO (A1): G={a.G} sampled rollouts/instance over the allowed actions "
                               f"(W=deliver weak attempt, S=escalate, H=hand to a person), outcomes replayed, "
                               f"three actions on tau >= {TAU_GATE} (W/S/H), two elsewhere (W/S); "
                               f"R'(W), R'(S) as Training 1; R'(H) = 1[qw==0 and qs==0] - 1[qs==1] - {LAMBDA}*C_weak/C_SS_i (no price, no hinge, no risk term); "
-                              f"risk term {a.lambda_t}*max(0, tau - c) on the DELIVER branch only, "
+                              f"risk term {a.lambda_t}*tau*1[AI action failed] on W and S, "
                               f"dormant below tau {TAU_GATE}; tau frozen (rubric v2). "
                               f"MEAN-BASELINE advantage, + {BETA}*entropy."),
                 "base_model": MODEL, "warm_start": f"FRESH (LoRA shape from {LORA_SHAPE_FROM})",
