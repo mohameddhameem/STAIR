@@ -8,16 +8,15 @@
 #     two options (H is masked out of the softmax), and a failure there is
 #     accepted. The ROUTER decides H from the task text + weak attempt only; no
 #     outcome information is ever in its input.
-#   * Replayed reward of H (declared assumptions, no execution):
-#       R'(H) = Q_H - LAMBDA * (C_weak/C_SS_i + k)   with Q_H = 1 (the person
-#       completes the task correctly) and C_H = k * C_SS_i (k = --human-cost,
-#       candidate set {6, 8, 9}, selected on VALIDATION mean delivered R'. The set
-#       is fixed by the data: k > 1 + 10*C_weak/C_SS_i (max 5.51 on the high tier)
-#       so a person is never preferred to a SUCCESSFUL strong call, and k < 1/lambda
-#       = 10 so a person is always preferred to a silently delivered wrong answer.
-#       Weak-first: the weak attempt has already run, so H pays C_weak in AI cost
-#       plus the human cost k*C_SS_i (a different currency, reported apart).
-#       No budget hinge and no risk penalty on H.
+#   * Replayed reward of H — v1.1 (28 Oct 23:08, Jonathan): NO human price. A
+#     hand-off is "correct" exactly when the AI would have failed:
+#       R'(H) = 1[qw == 0 and qs == 0] - LAMBDA * C_weak/C_SS_i
+#     (weak-first: the weak attempt already ran, so H pays C_weak; no hinge, no
+#     risk penalty). So H out-scores S only where the strong model fails, and the
+#     router learns "will the strong model fail?" from the same replayed outcomes
+#     that price W and S. The person is the fallback for AI failure, not a cheaper
+#     competitor. (v1.0 priced a person at k*C_SS_i, k in {6, 8, 9}; those runs are
+#     kept as an exploratory sweep — k = 9 reproduces this separation.)
 #     W and S rewards unchanged from Training 1/2; the risk term (--lambda-t,
 #     deliver branch, tau >= TAU_GATE) is kept: --lambda-t 0 = risk-free run
 #     (5a), --lambda-t 1 = risk-aware run (5b).
@@ -52,21 +51,20 @@
 # tally, never in training.
 #
 # Usage (lab, slr-env):
-#   python3 training5_trainer.py --human-cost 5 --lambda-t 0 --smoke
-#   python3 training5_trainer.py --human-cost 5 --lambda-t 0 --baseline 0.1890   # 5a
-#   python3 training5_trainer.py --human-cost 5 --lambda-t 1 --baseline 0.1890   # 5b
+#   python3 training5_trainer.py --lambda-t 0 --smoke
+#   python3 training5_trainer.py --lambda-t 0 --baseline 0.1890   # 5a (risk-free)
+#   python3 training5_trainer.py --lambda-t 1 --baseline 0.1890   # 5b (risk-aware)
 # =============================================================================
 import os, sys, json, time, random, argparse, hashlib
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 
-VERSION = "training5_trainer v1.0 2026-10-28 (three-way router W/S/H, H on the high tier only; delta on training2_trainer v1.0)"
+VERSION = "training5_trainer v1.1 2026-10-28 (three-way router W/S/H, H on the high tier only, H rewarded iff both models fail; delta on training2_trainer v1.0)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 TAU_GATE = 0.80
-Q_H = 1.0            # declared: a person completes the task correctly
-K_HUMAN = None       # set from --human-cost before build_rows() runs
+Q_H = 1.0            # a person completes the task correctly (used for accuracy-with-H)
 MODEL   = "Qwen/Qwen2.5-1.5B-Instruct"
 LORA_SHAPE_FROM = "/mnt/hdd/jonathan/runs/config_b/sft_router5_ret/best_adapter"
 WEAK_NAME, STRONG_NAME = "Qwen2.5-7B-Instruct", "Qwen2.5-72B-Instruct"
@@ -143,10 +141,9 @@ def build_rows():
              "both_fail": (t["qw"] == 0 and t["qs"] == 0),
              "tau": taus[t["tid"]]}
         if high:                          # H exists only on the high tier
-            r["rp"]["H"] = Q_H - LAMBDA * (xw + K_HUMAN)
+            r["rp"]["H"] = (1.0 if r["both_fail"] else 0.0) - LAMBDA * xw   # v1.1: no price
             r["acc"]["H"] = Q_H
             r["cost"]["H"] = t["cw"]      # AI cost (the weak attempt already ran)
-            r["c_ss"] = t["cs"]           # for the human-cost report: C_H = k * C_SS_i
         rows[t["split"]].append(r)
     for split, rs in rows.items():
         hi = [r for r in rs if r["high"]]
@@ -158,11 +155,10 @@ def build_rows():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--outdir", default=None,
-                    help="default: runs/mab/training5_router_k<k>_lt<lambda_t>")
+                    help="default: runs/mab/training5v11_router_lt<lambda_t>")
     ap.add_argument("--lambda-t", type=float, default=0.0, dest="lambda_t",
                     help="risk-penalty weight on the deliver branch: 0 = risk-free run (5a); 1 = risk-aware run (5b)")
-    ap.add_argument("--human-cost", type=float, required=True, dest="k",
-                    help="C_H as a multiple k of C_SS_i; declared candidate set {6, 8, 9}")
+
     ap.add_argument("--G", type=int, default=8, help="rollouts per instance")
     ap.add_argument("--epochs", type=int, default=40,
                     help="small train set (90) -> more epochs than HotpotQA's 6")
@@ -172,9 +168,7 @@ def main():
     ap.add_argument("--seed", type=int, default=SEED)
     a = ap.parse_args()
     if a.outdir is None:
-        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5_router_k{a.k:g}_lt{a.lambda_t:g}"
-    global K_HUMAN
-    K_HUMAN = a.k
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v11_router_lt{a.lambda_t:g}"
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
     os.makedirs(a.outdir, exist_ok=True)
@@ -187,7 +181,7 @@ def main():
         a.G, eval_every, max_steps = 4, 2, 6
     else:
         eval_every, max_steps = EVAL_EVERY, None
-    print(f"{VERSION}  k={a.k}  lambda_t={a.lambda_t}  G={a.G}  train={len(rows['train'])}  val={len(rows['val'])}  "
+    print(f"{VERSION}  lambda_t={a.lambda_t}  G={a.G}  train={len(rows['train'])}  val={len(rows['val'])}  "
           f"epochs={a.epochs}  warm_start=FRESH (LoRA shape from {LORA_SHAPE_FROM})",
           flush=True)
 
@@ -237,7 +231,7 @@ def main():
         tot_r, tot_acc, tot_cost, pws = 0.0, 0, 0.0, []
         ai_n = ai_acc = 0
         hi = {"n": 0, "W": 0, "S": 0, "H": 0, "H_on_both_fail": 0, "both_fail": 0,
-              "acc": 0, "ai_cost": 0.0, "human_cost_units": 0.0}
+              "acc": 0, "ai_cost": 0.0, "fail_no_human": 0}
         with torch.no_grad():
             for r in vrows:
                 lp = logprobs(r)
@@ -253,7 +247,8 @@ def main():
                     hi["both_fail"] += r["both_fail"]
                     hi["H_on_both_fail"] += (c == "H" and r["both_fail"])
                     hi["ai_cost"] += r["cost"][c]
-                    hi["human_cost_units"] += (K_HUMAN * r["c_ss"]) if c == "H" else 0.0
+                    if c != "H":
+                        hi["fail_no_human"] += (1 - r["acc"][c])
         model.train()
         n = len(vrows)
         H = hi["H"]
@@ -267,8 +262,9 @@ def main():
                               "H_precision": (round(hi["H_on_both_fail"] / H, 4) if H else None),
                               "H_recall": (round(hi["H_on_both_fail"] / hi["both_fail"], 4) if hi["both_fail"] else None),
                               "acc": (round(hi["acc"] / hi["n"], 4) if hi["n"] else None),
-                              "mean_ai_cost": (round(hi["ai_cost"] / hi["n"], 1) if hi["n"] else None),
-                              "mean_human_cost_units": (round(hi["human_cost_units"] / hi["n"], 1) if hi["n"] else None)}}
+                              "to_person_needed": hi["H_on_both_fail"], "to_person_unnecessary": H - hi["H_on_both_fail"],
+                              "fail_with_no_human": hi["fail_no_human"],
+                              "mean_ai_cost": (round(hi["ai_cost"] / hi["n"], 1) if hi["n"] else None)}}
 
     ev0 = evaluate(rows["val"])
     print(json.dumps({"step": 0, "FRESH_START_EVAL": True, **ev0,
@@ -342,13 +338,13 @@ def main():
                                  "pHuman": (round(pr[2], 6) if r["high"] else None)}) + "\n")
 
     manifest = {"stage": "training5_three_way_router", "version": VERSION,
-                "lambda_t": a.lambda_t, "human_cost_k": a.k, "Q_H": Q_H,
+                "lambda_t": a.lambda_t, "H_reward": "1[both models fail] - lambda*C_weak/C_SS_i (v1.1, no human price)", "Q_H": Q_H,
                 "tau_file": TAU, "tau_sha256": sha256(TAU), "tau_gate": TAU_GATE,
                 "H_available_on": "tau >= tau_gate only",
                 "objective": (f"GRPO (A1): G={a.G} sampled rollouts/instance over the allowed actions "
                               f"(W=deliver weak attempt, S=escalate, H=hand to a person), outcomes replayed, "
                               f"three actions on tau >= {TAU_GATE} (W/S/H), two elsewhere (W/S); "
-                              f"R'(W), R'(S) as Training 1; R'(H) = {Q_H} - {LAMBDA}*(C_weak/C_SS_i + {a.k}) (no hinge, no risk term); "
+                              f"R'(W), R'(S) as Training 1; R'(H) = 1[qw==0 and qs==0] - {LAMBDA}*C_weak/C_SS_i (no price, no hinge, no risk term); "
                               f"risk term {a.lambda_t}*max(0, tau - c) on the DELIVER branch only, "
                               f"dormant below tau {TAU_GATE}; tau frozen (rubric v2). "
                               f"MEAN-BASELINE advantage, + {BETA}*entropy."),
