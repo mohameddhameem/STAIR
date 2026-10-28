@@ -118,6 +118,47 @@ For reference: AgentTTS paper-best 0.744 at 1,984 units (100%); always-strong 0.
   0.854; best cheap: Qwen 0.8B -> Llama 8B 0.826 at 25 units). Its oracle (0.830 at 28) is only just above that curve,
   so at this end there is little room for per-question switching to win.
 
+### Against the two baselines (AgentTTS's 500 test questions, seed 0)
+
+Cost = measured AgentTTS units per question. Differences in bold are clear when the two policies are paired on the same
+questions; "n.s." = within the noise of 500 questions.
+
+| Setting | Accuracy | Units | vs AgentTTS cost | vs AgentTTS (0.744) | vs always-strong (0.776) |
+|---|---|---|---|---|---|
+| AgentTTS paper-best (AL-01) | 0.744 | 1,984 | 100% | - | -3.2 |
+| Always-strong, team reference (AL-02) | 0.776 | 1,829 | 92% | +3.2 | - |
+| AL-04 learnt rules | 0.830 | 437 | 22% | **+8.6** | **+5.4** |
+| AL-06 learnt rules | 0.756 | 22 | 1.1% | +1.2 (n.s.) | -2.0 (n.s.) |
+| AL-05 learnt rules | 0.710 | 13 | 0.6% | -3.4 (n.s.) | **-6.6** |
+| Fixed Qwen 7B -> Llama 70B (fine-tuned) | 0.854 | 219 | 11% | **+11.0** | **+7.8** |
+| Fixed Qwen 0.8B -> Llama 70B | 0.842 | 65 | 3.3% | **+9.8** | **+6.6** |
+| Fixed Qwen 0.8B -> Llama 8B | 0.826 | 25 | 1.3% | **+8.2** | **+5.0** |
+| Fixed Qwen 0.8B -> Llama 3B | 0.796 | 22 | 1.1% | **+5.2** | +2.0 (n.s.) |
+
+Under AgentTTS's Table 5 prices (the golden set's convention) settings with Llama 70B look less cheap: fixed Qwen 7B ->
+Llama 70B is 192 against 929 for always-strong (21%). The golden-set rows report both.
+
+### Why AL-05 and AL-06's rules lose to AL-04's (same fine-tuned models)
+
+The models are fine-tuned identically; what differs is the ladder the rules choose from. The rules start every question
+at the smallest model and escalate only on a doubtful signal, and they escalate rarely in all three experiments. The
+retriever each question ended on (learnt rules, test):
+
+| Experiment | Ladder starts at | Stayed on the first retriever | The rest ended on |
+|---|---|---|---|
+| AL-04 | Qwen 7B (fine-tuned) | 414 of 500 | Qwen 32B / 72B |
+| AL-05 | nano-jev 33M | 411 | Qwen 0.5B / 0.8B; never the 7B |
+| AL-06 | Qwen 0.5B | 430 | Qwen 0.8B / 1.5B / 3B; never the 7B |
+
+- In AL-04 staying put means the fine-tuned 7B, a strong retriever; in AL-05/06 it means a 33M or 0.5B retriever that
+  misses more of the needed passages. Answers follow the same pattern (AL-05: 299 of 500 answered by Llama 1B).
+- The rules move one or two rungs at a time and run at most 3 retrievers per question, so on an 8-rung ladder the 7B
+  (5 rungs above nano-jev) is out of reach.
+- Pairwise against AL-04's rules: AL-05 15 questions right only for it vs 75 only for AL-04; AL-06 13 vs 50. The long
+  ladders bought 20-30x lower cost (3-5% of AL-04's) for 7-12 points, not the same accuracy for less.
+- What this suggests: let the rules jump up the ladder (e.g. straight to Qwen 0.8B or 7B when the first retriever is
+  unsure), or start the long ladders at Qwen 0.8B, the efficient point of the fixed-pair curve.
+
 ## Fine-tuning so far (early stopping on validation loss, `results/common/history/`)
 
 | Model | Role | Epochs run | Best epoch (kept) | Val loss |
