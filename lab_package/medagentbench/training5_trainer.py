@@ -29,6 +29,13 @@
 #     break-even moves from P(fail) = 0.5 (lambda_t = 0) to 1/(2 + lambda_t*tau):
 #     0.36 at lambda_t = 1, 0.28 at lambda_t = 2 — a governance dial, never
 #     touching low-risk work.
+#   * WARM START (v1.3b, 29 Oct 00:05): --warm-start <adapter dir>. From a fresh
+#     LoRA the v1.3 reward never discovered H (hand-offs 0 at every evaluation,
+#     epochs 0-39, both lambda_t): a sampled H on a task-5 row scores -1.05 and
+#     that negative signal suppresses the shared H logit faster than the +0.96 on
+#     task-9 rows can raise it. Curriculum fix: start from the v1.1 router
+#     (training5v11_router_lt0/best_adapter — hands over the whole tier) and let
+#     the v1.3 reward pull task 5 back to escalation. Manifest records the start.
 #     W and S rewards unchanged from Training 1/2; the risk term (--lambda-t,
 #     deliver branch, tau >= TAU_GATE) is kept: --lambda-t 0 = risk-free run
 #     (5a), --lambda-t 1 = risk-aware run (5b).
@@ -72,7 +79,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 
-VERSION = "training5_trainer v1.3 2026-10-28 (three-way router W/S/H on the high tier; H = +1 if both fail / -1 if strong succeeds; risk = lambda_t*tau on any AI failure at tau>=gate; delta on training2_trainer v1.0)"
+VERSION = "training5_trainer v1.3b 2026-10-29 (three-way router W/S/H on the high tier; H = +1 if both fail / -1 if strong succeeds; risk = lambda_t*tau on any AI failure at tau>=gate; delta on training2_trainer v1.0)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 TAU_GATE = 0.80
@@ -178,9 +185,11 @@ def main():
     ap.add_argument("--baseline", type=float, default=None,
                     help="kill-criterion bar: always-escalate val mean-R' (+0.1890)")
     ap.add_argument("--seed", type=int, default=SEED)
+    ap.add_argument("--warm-start", default=None, dest="warm_start",
+                    help="adapter dir to start from (v1.3b: training5v11_router_lt0/best_adapter); default = fresh LoRA")
     a = ap.parse_args()
     if a.outdir is None:
-        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v13_router_lt{a.lambda_t:g}"
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training5v13{'b' if a.warm_start else ''}_router_lt{a.lambda_t:g}"
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
     os.makedirs(a.outdir, exist_ok=True)
@@ -194,7 +203,7 @@ def main():
     else:
         eval_every, max_steps = EVAL_EVERY, None
     print(f"{VERSION}  lambda_t={a.lambda_t}  G={a.G}  train={len(rows['train'])}  val={len(rows['val'])}  "
-          f"epochs={a.epochs}  warm_start=FRESH (LoRA shape from {LORA_SHAPE_FROM})",
+          f"epochs={a.epochs}  warm_start={a.warm_start or 'FRESH (LoRA shape from ' + LORA_SHAPE_FROM + ')'}",
           flush=True)
 
     tok = AutoTokenizer.from_pretrained(MODEL)
@@ -206,10 +215,15 @@ def main():
 
     base = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16,
                                                 device_map="cuda")
-    cfg = PeftConfig.from_pretrained(LORA_SHAPE_FROM)   # SAME LoRA shape as SFT
-    cfg.inference_mode = False
-    model = get_peft_model(base, LoraConfig(**{k: v for k, v in cfg.to_dict().items()
-                                               if k in LoraConfig.__dataclass_fields__}))
+    if a.warm_start:                                     # v1.3b: continue from an existing router
+        assert os.path.isdir(a.warm_start), f"warm-start adapter not found: {a.warm_start}"
+        model = PeftModel.from_pretrained(base, a.warm_start, is_trainable=True)
+        print(f"warm start from {a.warm_start}", flush=True)
+    else:
+        cfg = PeftConfig.from_pretrained(LORA_SHAPE_FROM)   # SAME LoRA shape as SFT
+        cfg.inference_mode = False
+        model = get_peft_model(base, LoraConfig(**{k: v for k, v in cfg.to_dict().items()
+                                                   if k in LoraConfig.__dataclass_fields__}))
     model.gradient_checkpointing_enable()
     model.enable_input_require_grads()
     model.config.use_cache = False
@@ -359,7 +373,7 @@ def main():
                               f"risk term {a.lambda_t}*tau*1[AI action failed] on W and S, "
                               f"dormant below tau {TAU_GATE}; tau frozen (rubric v2). "
                               f"MEAN-BASELINE advantage, + {BETA}*entropy."),
-                "base_model": MODEL, "warm_start": f"FRESH (LoRA shape from {LORA_SHAPE_FROM})",
+                "base_model": MODEL, "warm_start": (a.warm_start or f"FRESH (LoRA shape from {LORA_SHAPE_FROM})"),
                 "table_file": TABLE, "table_sha256": sha256(TABLE),
                 "router_prompt_sys": SYS,
                 "lr": LR, "epochs": a.epochs, "accum": ACCUM, "seed": a.seed,
