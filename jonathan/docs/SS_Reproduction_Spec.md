@@ -27,17 +27,29 @@ Always-strong, two stages, no router, no weak draft, K = 1:
   (team pins incl. revisions: `common/stair_common/models.toml`, menu A).
 - Generated July 2026 on the SMU cluster; stores copied to the lab (`configb_stores.tgz`).
 - dtype fp16 family; pool prompts up to ~14K tokens (measured per call in the meta stores); greedy decoding.
-- **TO CONFIRM from the July cluster run logs: quantization of the two large models (AWQ-4bit — the models.toml
-  pin and the 2-GPU-limit default — vs bf16).** Flagged rather than assumed: a quantization difference moved a
+- **UNCONFIRMED (checked 28 Oct): quantization of the two large models in the July cluster run.** The lab holds no
+  record of it (the store archive has answers and per-call token counts only); the lab-side scripts load the strong
+  models with bitsandbytes 4-bit, the team pin (`models.toml`) is the AWQ copies. A reproduction on the AWQ pins
+  with the corrected answering prompt that lands within ±0.5 of 76.77 settles it; a residual gap points here.
+  Flagged rather than assumed: a quantization difference moved a
   comparable benchmark by ~5 points in our 24 Oct MedAgentBench audit, so a reproduction must pin it.
 
 ## 5 · Decoding
 Greedy, temperature 0, K = 1 (deterministic; our repeat check was byte-identical 60/60).
 
 ## 6 · Prompts
-AgentTTS's executor prompts, **byte-verbatim** — the single most important faithfulness condition.
-Committed references: `agenttts_archon_hotpotqa_reference.py` (the pipeline/prompt reference) and
-`verify_prompt_bytes.py` (the byte-equality check against AgentTTS's own code). Run the checker; do not re-type prompts.
+**CORRECTION (28 Oct 2026, after Andy's rerun found 0.716 and no textual matches):** the two stages differ.
+- **Retrieval prompt: AgentTTS's, byte-verbatim** (system line + selection instruction), as in
+  `agenttts_archon_hotpotqa_reference.py`; `verify_prompt_bytes.py` is the byte-equality check.
+- **Answering prompt: AgentTTS's answer prompt PLUS one added instruction** —
+  "Answer with ONLY the exact answer phrase - no explanation, no full sentence." — i.e. `qa_prompt()` in
+  `lab_package/run_labels4.py`. Evidence: the July strong answers are ~2 output tokens each
+  (`meta_qa_strong.jsonl`, `n_out`), the fingerprint of that instruction; AgentTTS's prompt yields sentence-length
+  answers. The July cluster script itself was not preserved; the stores and meta records are the artifact.
+  A reproduction must include the added instruction or it will not match the 76.77 (nor the stored answers).
+- The earlier wording "executor prompts byte-verbatim" was wrong for the answering stage and is withdrawn.
+  Every row on our HotpotQA boards shares this answering prompt, so comparisons among our rows are unaffected;
+  comparisons with AgentTTS's published numbers carry it as a stated difference.
 
 ## 7 · Scoring
 `stair_common.score.lenient` — the certified standard ruler (identical to `lenient_match_agenttts.py`,
