@@ -1,0 +1,150 @@
+{
+  "version": "training5_test_read v1.3 2026-10-28 (H = +1 if both fail / -1 if strong succeeds; risk = lambda_t*tau on any AI failure, high tier)",
+  "run_dir": "/mnt/hdd/jonathan/runs/mab/training5v13c_router_lt0",
+  "adapter": "/mnt/hdd/jonathan/runs/mab/training5v13c_router_lt0/best_adapter",
+  "H_reward": "1[both models fail] - 1[strong succeeds] - lambda*C_weak/C_SS_i (v1.2+, no human price)",
+  "lambda_t": 0.0,
+  "theta_h": 0.3,
+  "Q_H": 1.0,
+  "table_sha256": "186545f07ddf68c2f0362d090bc4e1ff9a1f996cd8d17ea6875374cbdf04a071",
+  "tau_sha256": "2d971783ad37916d53b641f9af9d24bd86dfe0e76dbdeccff0632a63080b0bde",
+  "tau_scorer": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+  "tau_gate": 0.8,
+  "router_prompt_sys": "You route a medical record-system task. The weak model Qwen2.5-7B-Instruct has already attempted it; choose whether to deliver its result or escalate to Qwen2.5-72B-Instruct. Your objective: the task should be completed correctly while spending as little compute as possible - correctness first, cost second. Based on the information shown below, choose one option.",
+  "references_on_test": {
+    "always_deliver": {
+      "acc_pct_with_H": 12.0,
+      "ai_subset_acc_pct": 12.0,
+      "ai_handled": 150,
+      "mean_ai_cost": 293.3,
+      "mean_Rprime": 0.0949,
+      "high_tier": {
+        "n": 30,
+        "deliver": 30,
+        "escalate": 0,
+        "to_person": 0,
+        "to_person_needed": 0,
+        "to_person_unnecessary": 0,
+        "human_load": 0.0,
+        "H_precision": null,
+        "H_recall": 0.0,
+        "fail_with_no_human": 30,
+        "acc_pct_with_H": 0.0,
+        "ai_subset_acc_pct": 0.0,
+        "mean_ai_cost": 560.0
+      }
+    },
+    "always_escalate": {
+      "acc_pct_with_H": 54.0,
+      "ai_subset_acc_pct": 54.0,
+      "ai_handled": 150,
+      "mean_ai_cost": 1566.6,
+      "mean_Rprime": 0.164,
+      "high_tier": {
+        "n": 30,
+        "deliver": 0,
+        "escalate": 30,
+        "to_person": 0,
+        "to_person_needed": 0,
+        "to_person_unnecessary": 0,
+        "human_load": 0.0,
+        "H_precision": null,
+        "H_recall": 0.0,
+        "fail_with_no_human": 21,
+        "acc_pct_with_H": 30.0,
+        "ai_subset_acc_pct": 30.0,
+        "mean_ai_cost": 3134.4
+      }
+    },
+    "oracle_two_way": {
+      "acc_pct_with_H": 63.33,
+      "ai_subset_acc_pct": 63.33,
+      "ai_handled": 150,
+      "mean_ai_cost": 1463.6,
+      "mean_Rprime": 0.285,
+      "high_tier": {
+        "n": 30,
+        "deliver": 0,
+        "escalate": 30,
+        "to_person": 0,
+        "to_person_needed": 0,
+        "to_person_unnecessary": 0,
+        "human_load": 0.0,
+        "H_precision": null,
+        "H_recall": 0.0,
+        "fail_with_no_human": 21,
+        "acc_pct_with_H": 30.0,
+        "ai_subset_acc_pct": 30.0,
+        "mean_ai_cost": 3134.4
+      }
+    },
+    "oracle_three_way": {
+      "acc_pct_with_H": 77.33,
+      "ai_subset_acc_pct": 73.64,
+      "ai_handled": 129,
+      "mean_ai_cost": 1003.4,
+      "mean_Rprime": 0.4734,
+      "high_tier": {
+        "n": 30,
+        "deliver": 0,
+        "escalate": 9,
+        "to_person": 21,
+        "to_person_needed": 21,
+        "to_person_unnecessary": 0,
+        "human_load": 0.7,
+        "H_precision": 1.0,
+        "H_recall": 1.0,
+        "fail_with_no_human": 0,
+        "acc_pct_with_H": 100.0,
+        "ai_subset_acc_pct": 100.0,
+        "mean_ai_cost": 833.1
+      }
+    }
+  },
+  "results": {
+    "point_A_greedy": {
+      "acc_pct_with_H": 65.33,
+      "ai_subset_acc_pct": 61.48,
+      "ai_handled": 135,
+      "mean_ai_cost": 753.9,
+      "mean_Rprime": 0.4701,
+      "high_tier": {
+        "n": 30,
+        "deliver": 15,
+        "escalate": 0,
+        "to_person": 15,
+        "to_person_needed": 15,
+        "to_person_unnecessary": 0,
+        "human_load": 0.5,
+        "H_precision": 1.0,
+        "H_recall": 0.7143,
+        "fail_with_no_human": 15,
+        "acc_pct_with_H": 50.0,
+        "ai_subset_acc_pct": 0.0,
+        "mean_ai_cost": 560.0
+      }
+    },
+    "point_B_thetaH_0.3": {
+      "acc_pct_with_H": 65.33,
+      "ai_subset_acc_pct": 61.48,
+      "ai_handled": 135,
+      "mean_ai_cost": 753.9,
+      "mean_Rprime": 0.4701,
+      "high_tier": {
+        "n": 30,
+        "deliver": 15,
+        "escalate": 0,
+        "to_person": 15,
+        "to_person_needed": 15,
+        "to_person_unnecessary": 0,
+        "human_load": 0.5,
+        "H_precision": 1.0,
+        "H_recall": 0.7143,
+        "fail_with_no_human": 15,
+        "acc_pct_with_H": 50.0,
+        "ai_subset_acc_pct": 0.0,
+        "mean_ai_cost": 560.0
+      }
+    }
+  }
+}
