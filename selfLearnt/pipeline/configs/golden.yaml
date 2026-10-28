@@ -14,3 +14,8 @@ data:
   test_part: slr-test
 workstreams:
   ws3: null
+# Qwen 72B's QLoRA run is pre-empted on the shared partition (28 Oct: after 5 h, at step ~68 of 500): save every
+# 96 questions (12 steps, ~50 min) instead of 500, so a pre-emption loses under an hour. Resumes from the last save.
+finetune:
+  retrievers:
+    q72: {save_every_questions: 96}
