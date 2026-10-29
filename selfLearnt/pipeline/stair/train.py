@@ -145,7 +145,9 @@ def load_lm(path, qlora=False):
     if qlora:
         kw["quantization_config"] = T.BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
                                                          bnb_4bit_compute_dtype=torch.bfloat16)
-        kw["device_map"] = "auto"
+        # "balanced": the same share of layers on every GPU. "auto" fills GPU 0 first: on 4 x 40 GB that ends up spread
+        # anyway, but on 2 x 80 GB (H100) it put nearly all of Qwen 72B on GPU 0 and ran out while converting to 4-bit.
+        kw["device_map"] = "balanced" if torch.cuda.device_count() == 2 else "auto"   # 4 GPUs: unchanged (worked for 32B / 70B / 72B)
     errs = []
     for cls in ("AutoModelForCausalLM", "AutoModelForImageTextToText"):
         if not hasattr(T, cls):

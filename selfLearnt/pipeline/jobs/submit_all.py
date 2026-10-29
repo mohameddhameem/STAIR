@@ -89,7 +89,8 @@ class Plan:
         e, mins = self.env, int(j["hours"] * 60)
         t = f"{mins // 1440}-{(mins % 1440) // 60:02d}:{mins % 60:02d}:00"
         cmd = ["sbatch", "--parsable", f"--job-name=stair-{self.prefix}{j['name']}", f"--time={t}",
-               f"--cpus-per-task={e.get('CPUS', '8') if not j['cpu_only'] else '4'}", f"--mem={e.get('MEM', '120G') if not j['cpu_only'] else '48G'}"]
+               f"--cpus-per-task={e.get('CPUS', '8') if not j['cpu_only'] else '4'}",
+               f"--mem={j.get('mem') or (e.get('MEM', '120G') if not j['cpu_only'] else '48G')}"]
         for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos")):
             if e.get(k) and not e[k].startswith("EDIT"):
                 cmd.append(f"{flag}={e[k]}")
@@ -353,6 +354,7 @@ def main():
     ap.add_argument("--twin", default="", help="model key (e.g. q72): a copy of its training job on --twin-gpus x --twin-cards")
     ap.add_argument("--twin-gpus", type=int, default=2)
     ap.add_argument("--twin-cards", default="h100|h100nvl", help="Slurm features the copy may run on (80 GB+ cards)")
+    ap.add_argument("--twin-mem", default="240G", help="CPU memory of the copy (loading a 72B model for QLoRA used ~119 GB)")
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
@@ -415,7 +417,8 @@ def main():
     tp = lambda v: int(variant(cfg, v).get("tensor_parallel", 1))
     if a.twin:
         j = {"key": "T", "id": None, "name": f"train-{a.twin}-{a.twin_cards.split('|')[0]}", "args": f"--stage train --model {a.twin}" + sd,
-             "gpus": a.twin_gpus, "hours": 96, "deps": [], "cpu_only": False, "small": False, "no24": False, "constraint": a.twin_cards}
+             "gpus": a.twin_gpus, "hours": 96, "deps": [], "cpu_only": False, "small": False, "no24": False, "constraint": a.twin_cards,
+             "mem": a.twin_mem}
         if _already_done(cfg, j["args"]):
             sys.exit(f"{a.twin} is already trained: no copy needed")
         cmd = P._cmd(j, [])
