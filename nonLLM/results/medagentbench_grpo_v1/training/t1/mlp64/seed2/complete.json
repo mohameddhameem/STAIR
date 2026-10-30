@@ -1,0 +1,17 @@
+{
+  "setting": 1,
+  "architecture": "mlp64",
+  "seed": 2,
+  "best_step": 10,
+  "best_epoch_zero_based": 0,
+  "last_step": 440,
+  "epochs": 40,
+  "best_val_reward": 0.1929,
+  "fresh_start_eval": {
+    "val_meanR_delivered": 0.1929,
+    "val_acc": 0.5667,
+    "val_mean_cost": 1499.5,
+    "mean_pDeliver": 0.462
+  },
+  "seconds": 1.7848360361531377
+}

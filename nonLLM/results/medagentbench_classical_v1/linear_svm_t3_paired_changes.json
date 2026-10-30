@@ -1,0 +1,167 @@
+[
+  {
+    "tid": "task7_3",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.76,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_4",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.76,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_5",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.52,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_6",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 599.26,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_7",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.39,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_12",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.14,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_13",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.76,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_15",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.76,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_17",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.76,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_18",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 594.02,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_19",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.52,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_20",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.14,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_21",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.26,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_23",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.39,
+    "tau": 0.1
+  },
+  {
+    "tid": "task7_27",
+    "task_type": "task7",
+    "old_action": 1,
+    "new_action": 0,
+    "qw": 0,
+    "qs": 0,
+    "correctness_difference": 0,
+    "cost_saved": 593.76,
+    "tau": 0.1
+  }
+]

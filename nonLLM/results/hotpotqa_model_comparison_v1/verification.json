@@ -1,0 +1,11 @@
+{
+  "additional_mlp_fits": 36,
+  "tested_model_recipe_pairs": 9,
+  "test_n": 1481,
+  "audited_prediction_rows": 13329,
+  "linear_reuse_matches_prior_verified_run": true,
+  "reference_grid_and_all_weak_call_costs_match": true,
+  "source_protocol_and_feature_hashes_unchanged": true,
+  "all_checkpoint_epoch_and_validation_criterion_matches": true,
+  "independent_mlp_architecture_shapes_verified": true
+}

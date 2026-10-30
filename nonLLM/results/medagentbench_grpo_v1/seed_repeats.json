@@ -1,0 +1,254 @@
+[
+  {
+    "setting": 1,
+    "architecture": "linear",
+    "point": "OP_A_fixed_050",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.3511111111111111,
+    "accuracy_min": 0.31333333333333335,
+    "accuracy_max": 0.3933333333333333,
+    "cost_pct_mean": 53.3593342479003
+  },
+  {
+    "setting": 1,
+    "architecture": "linear",
+    "point": "OP_B_fixed_020",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.12,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.12,
+    "cost_pct_mean": 18.71956482079578
+  },
+  {
+    "setting": 1,
+    "architecture": "linear",
+    "point": "val_reward_selected",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.48888888888888893,
+    "accuracy_min": 0.31333333333333335,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 72.56685205251515
+  },
+  {
+    "setting": 1,
+    "architecture": "mlp64",
+    "point": "OP_A_fixed_050",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.5333333333333333,
+    "accuracy_min": 0.52,
+    "accuracy_max": 0.54,
+    "cost_pct_mean": 80.08509640394634
+  },
+  {
+    "setting": 1,
+    "architecture": "mlp64",
+    "point": "OP_B_fixed_020",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.12,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.12,
+    "cost_pct_mean": 18.71956482079578
+  },
+  {
+    "setting": 1,
+    "architecture": "mlp64",
+    "point": "val_reward_selected",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.4755555555555555,
+    "accuracy_min": 0.3,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 55.36138112237256
+  },
+  {
+    "setting": 1,
+    "architecture": "mlp128_64",
+    "point": "OP_A_fixed_050",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.42444444444444446,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 57.60996418118617
+  },
+  {
+    "setting": 1,
+    "architecture": "mlp128_64",
+    "point": "OP_B_fixed_020",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.12,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.12,
+    "cost_pct_mean": 18.71956482079578
+  },
+  {
+    "setting": 1,
+    "architecture": "mlp128_64",
+    "point": "val_reward_selected",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.5644444444444444,
+    "accuracy_min": 0.54,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 84.70344257425424
+  },
+  {
+    "setting": 3,
+    "architecture": "linear",
+    "point": "OP_A_fixed_050",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.4777777777777778,
+    "accuracy_min": 0.41333333333333333,
+    "accuracy_max": 0.5666666666666667,
+    "cost_pct_mean": 62.28116952510337
+  },
+  {
+    "setting": 3,
+    "architecture": "linear",
+    "point": "OP_B_fixed_020",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.12,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.12,
+    "cost_pct_mean": 18.71956482079578
+  },
+  {
+    "setting": 3,
+    "architecture": "linear",
+    "point": "val_reward_selected",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.5466666666666667,
+    "accuracy_min": 0.5333333333333333,
+    "accuracy_max": 0.5666666666666667,
+    "cost_pct_mean": 74.91195729006007
+  },
+  {
+    "setting": 3,
+    "architecture": "mlp64",
+    "point": "OP_A_fixed_050",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.4711111111111111,
+    "accuracy_min": 0.3333333333333333,
+    "accuracy_max": 0.54,
+    "cost_pct_mean": 68.3503130520157
+  },
+  {
+    "setting": 3,
+    "architecture": "mlp64",
+    "point": "OP_B_fixed_020",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.12,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.12,
+    "cost_pct_mean": 18.71956482079578
+  },
+  {
+    "setting": 3,
+    "architecture": "mlp64",
+    "point": "val_reward_selected",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.58,
+    "accuracy_min": 0.54,
+    "accuracy_max": 0.6266666666666667,
+    "cost_pct_mean": 67.63738090568174
+  },
+  {
+    "setting": 3,
+    "architecture": "mlp128_64",
+    "point": "OP_A_fixed_050",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.43111111111111117,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 54.69748527843503
+  },
+  {
+    "setting": 3,
+    "architecture": "mlp128_64",
+    "point": "OP_B_fixed_020",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.12,
+    "accuracy_min": 0.12,
+    "accuracy_max": 0.12,
+    "cost_pct_mean": 18.71956482079578
+  },
+  {
+    "setting": 3,
+    "architecture": "mlp128_64",
+    "point": "val_reward_selected",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.5711111111111111,
+    "accuracy_min": 0.54,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 69.75929855263827
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "candidate": 0,
+    "parameter": {
+      "C": 0.1
+    },
+    "val_reward_fixed050": 0.48496379265661965,
+    "val_accuracy_fixed050": 0.65,
+    "val_cost_fixed050": 1004.7108333333333,
+    "seconds": 0.035872673615813255
+  },
+  {
+    "candidate": 1,
+    "parameter": {
+      "C": 1.0
+    },
+    "val_reward_fixed050": 0.46783835060633233,
+    "val_accuracy_fixed050": 0.6,
+    "val_cost_fixed050": 776.8556666666668,
+    "seconds": 0.07077604159712791
+  },
+  {
+    "candidate": 2,
+    "parameter": {
+      "C": 10.0
+    },
+    "val_reward_fixed050": 0.46783835060633233,
+    "val_accuracy_fixed050": 0.6,
+    "val_cost_fixed050": 776.8556666666668,
+    "seconds": 0.09779749345034361
+  }
+]

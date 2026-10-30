@@ -1,0 +1,223 @@
+{
+  "comparison_point": "seed17; nonLLM validation-selected threshold; LLM fixed.50; all common tau>=.8 gate",
+  "data": [
+    {
+      "key": "jonathan",
+      "model": "Jonathan LLM",
+      "recipe": "GRPO (A1)",
+      "description": "Qwen2.5-1.5B + LoRA; pretrained backbone.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 80.98735784291674,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 81.46788637110383,
+      "repeat_range": null
+    },
+    {
+      "key": "linear",
+      "model": "Linear Softmax",
+      "recipe": "GRPO (A1)",
+      "description": "Linear softmax on TF-IDF + view statistics.",
+      "t1_accuracy": 44.0,
+      "t1_cost": 71.72442457667303,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 81.46788637110383,
+      "t1_threshold": 0.49,
+      "t3_threshold": 0.53,
+      "repeat_range": [
+        53.333333333333336,
+        56.666666666666664
+      ]
+    },
+    {
+      "key": "mlp64",
+      "model": "MLP \u00b7 64",
+      "recipe": "GRPO (A1)",
+      "description": "One ReLU hidden layer with 64 units.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 80.98735784291674,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 81.46788637110383,
+      "t1_threshold": 0.5,
+      "t3_threshold": 0.52,
+      "repeat_range": [
+        54.0,
+        62.66666666666667
+      ]
+    },
+    {
+      "key": "mlp128_64",
+      "model": "MLP \u00b7 128 \u2192 64",
+      "recipe": "GRPO (A1)",
+      "description": "Two ReLU hidden layers: 128 then 64 units.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 80.98735784291674,
+      "t3_accuracy": 61.33333333333333,
+      "t3_cost": 71.39339229973875,
+      "t1_threshold": 0.51,
+      "t3_threshold": 0.5,
+      "repeat_range": [
+        54.0,
+        63.33333333333333
+      ]
+    },
+    {
+      "key": "random_forest",
+      "model": "Random Forest",
+      "recipe": "Supervised",
+      "description": "Average 300 bootstrapped decision trees.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 80.98735784291674,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 81.46788637110383,
+      "t1_threshold": 0.31,
+      "t3_threshold": 0.7000000000000001,
+      "repeat_range": [
+        63.33333333333333,
+        63.33333333333333
+      ]
+    },
+    {
+      "key": "extra_trees",
+      "model": "Extra Trees",
+      "recipe": "Supervised",
+      "description": "Average 300 trees with randomized splits.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 80.98735784291674,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 81.46788637110383,
+      "t1_threshold": 0.31,
+      "t3_threshold": 0.46,
+      "repeat_range": [
+        63.33333333333333,
+        63.33333333333333
+      ]
+    },
+    {
+      "key": "decision_tree",
+      "model": "Decision Tree",
+      "recipe": "Supervised",
+      "description": "One tree of learned feature-split rules.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 80.98735784291674,
+      "t3_accuracy": 61.33333333333333,
+      "t3_cost": 71.39339229973875,
+      "t1_threshold": 0.06,
+      "t3_threshold": 0.03,
+      "repeat_range": [
+        61.33333333333333,
+        61.33333333333333
+      ]
+    },
+    {
+      "key": "linear_svm",
+      "model": "Linear SVM",
+      "recipe": "Supervised",
+      "description": "Maximum-margin linear decision boundary.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 81.57903617430537,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 77.67656271137942,
+      "t1_threshold": 0.48,
+      "t3_threshold": 0.52,
+      "repeat_range": [
+        63.33333333333333,
+        63.33333333333333
+      ]
+    },
+    {
+      "key": "rbf_svm",
+      "model": "RBF SVM",
+      "recipe": "Supervised",
+      "description": "Maximum-margin boundary with an RBF kernel.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 81.57903617430537,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 77.67656271137942,
+      "t1_threshold": 0.38,
+      "t3_threshold": 0.27,
+      "repeat_range": [
+        63.33333333333333,
+        63.33333333333333
+      ]
+    },
+    {
+      "key": "logistic_regression",
+      "model": "Logistic Regression",
+      "recipe": "Supervised",
+      "description": "Linear classifier fitted by weighted logistic loss.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 81.57903617430537,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 77.67656271137942,
+      "t1_threshold": 0.44,
+      "t3_threshold": 0.35000000000000003,
+      "repeat_range": [
+        63.33333333333333,
+        63.33333333333333
+      ]
+    },
+    {
+      "key": "multinomial_nb",
+      "model": "Naive Bayes",
+      "recipe": "Supervised",
+      "description": "Class-conditional token likelihoods; text only.",
+      "t1_accuracy": 61.33333333333333,
+      "t1_cost": 80.98735784291674,
+      "t3_accuracy": 63.33333333333333,
+      "t3_cost": 81.46788637110383,
+      "t1_threshold": 0.02,
+      "t3_threshold": 0.45,
+      "repeat_range": [
+        63.33333333333333,
+        63.33333333333333
+      ]
+    }
+  ],
+  "published_llm_ungated": [
+    {
+      "setting": 1,
+      "point": "OP_A_fixed_050",
+      "threshold": 0.5,
+      "risk_gate": false,
+      "n": 150,
+      "correct": 92,
+      "accuracy": 0.6133333333333333,
+      "mean_cost": 847.6894,
+      "total_cost": 127153.41,
+      "cost_pct_always_escalate": 54.11032772276271,
+      "mean_reward": 0.376594749616074,
+      "deliver": 60,
+      "escalate": 90,
+      "high_n": 30,
+      "high_accuracy": 0.3,
+      "high_delivered": 15,
+      "high_wrong_delivered": 15
+    },
+    {
+      "setting": 3,
+      "point": "OP_A_fixed_050",
+      "threshold": 0.5,
+      "risk_gate": false,
+      "n": 150,
+      "correct": 95,
+      "accuracy": 0.6333333333333333,
+      "mean_cost": 1276.2714,
+      "total_cost": 191440.71000000002,
+      "cost_pct_always_escalate": 81.46788637110383,
+      "mean_reward": 0.45881950830884694,
+      "deliver": 15,
+      "escalate": 135,
+      "high_n": 30,
+      "high_accuracy": 0.3,
+      "high_delivered": 0,
+      "high_wrong_delivered": 0
+    }
+  ],
+  "source_hashes": {
+    "runs/nonllm_medagentbench_replay_v1/results.json": "ebe1ba814303ad0ec6366361c10716328cd79bd6ce639c1596e9d4aea6b05773",
+    "runs/nonllm_medagentbench_replay_v1/llm_reference.json": "b5fdfd7110c2e26ed7fe49fb0b447c8e3775394f3c3cd1374b0664116f29151f",
+    "runs/nonllm_medagentbench_classical_v1/results.json": "4bdf30f87fb3f0e832124eaff3f3af0e866991941f240a25ef03bedc28f22356"
+  },
+  "rendering": "Deterministic matplotlib, exact source metrics",
+  "size": "3840x2880"
+}

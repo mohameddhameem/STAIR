@@ -1,0 +1,31 @@
+{
+  "source_commit": "3ac054d1d72994cab5e8927c6cdba1449371aba4",
+  "split_sizes": {
+    "train": 90,
+    "val": 60,
+    "test": 150
+  },
+  "patients_per_split": {
+    "train": 30,
+    "val": 19,
+    "test": 49
+  },
+  "all_three_patient_boundaries_disjoint": true,
+  "split_files_match_manifest": true,
+  "author_reward_builder_parity_rows": 300,
+  "two_replay_table_hashes_verified": true,
+  "task_instruction_prefix_matches_official_dataset": true,
+  "selected_classifiers": 56,
+  "hyperparameter_candidate_fits": 200,
+  "selected_svm_patient_folds": 48,
+  "test_inference_scores": 8400,
+  "audited_policy_rows": 50400,
+  "all_per_task_rewards_and_costs_match_reference": true,
+  "all_model_hashes_match_pretest_lock": true,
+  "all_hyperparameters_selected_on_validation_only": true,
+  "all_56_feature_pipelines_match_train_only_source": true,
+  "svm_fold_patient_disjointness_independently_verified": 48,
+  "all_336_aggregate_rows_verified": true,
+  "paired_patient_bootstrap_contrasts": 56,
+  "svm_cost_saving_explained_by_15_both_fail_tasks": true
+}

@@ -1,0 +1,34 @@
+{
+  "source_run": "<WORKSPACE>/runs/nonllm_medagentbench_replay_v1",
+  "source_protocol_sha256": "c36247701a61c5735f49013598da0e711399115e4fdb153d3129ee70570a1cc3",
+  "source_table_hashes": {
+    "1": "186545f07ddf68c2f0362d090bc4e1ff9a1f996cd8d17ea6875374cbdf04a071",
+    "3": "4eff23f3cf86fcaeb7bb8c03b9cc7b23244dc08baf58bf1e6c7909cb6e256da2"
+  },
+  "families": [
+    "random_forest",
+    "extra_trees",
+    "decision_tree",
+    "linear_svm",
+    "rbf_svm",
+    "logistic_regression",
+    "multinomial_nb"
+  ],
+  "seeds": [
+    17,
+    0,
+    1,
+    2
+  ],
+  "primary_seed": 17,
+  "split": "90 train / 60 validation / 150 test, same patient-disjoint frozen split",
+  "input": "Only exact view field, same as LLM/GRPO. TF-IDF+10 deterministic text statistics; NB text-only to ensure nonnegative features.",
+  "training": "Supervised cost-sensitive action imitation, not GRPO. y=argmax action reward; ties W. Weight=abs(RW-RS), normalized by train mean. Reward exactly same as replay/LLM recipe.",
+  "svm_calibration": "3-fold patient-grouped out-of-fold margins; entire feature pipeline refitted inside each fold. Logistic calibration C1 fitted on OOF margins with train-only regret weights, then base refit on90 train. No outer-val/test calibration and no SVC probability=True.",
+  "selection": "Per family/seed select hyperparameters by fixed theta.50 validation mean reward, then lower cost, then earlier candidate. Lock fixed theta.50/.20 and validation-reward-selected threshold0:.01:1 before all test inference.",
+  "evaluation": "Actual trained classifier reads test view once per selected model, then same frozen weak/strong outcomes/costs are replayed. Both no risk gate and same frozen tau>=.8 forced-escalation gate.",
+  "comparison": "Identical task executor outputs, observable inputs, split, objective, cost units and readout; different router training algorithm and architecture. No claim of same GRPO training.",
+  "scope": "Training1 complete weak attempt, Training3 round2; no human Training5 and no fresh executor episodes.",
+  "test_disclosure": "Previously inspected public test, exploratory/descriptive repeated-method comparison; no new secret holdout or test-based model selection.",
+  "cost": "sum selected measured costs / sum full cw+cs for same150 tasks. Router CPU work and cached tau generation excluded consistently; timing recorded separately."
+}

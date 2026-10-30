@@ -2,7 +2,18 @@
 
 The routing decisions use classical or small finite-action models; retrieval and answering still use LLM executors.
 
-**Start with the [complete results index](results/README.md)** (updated24 October2026). It links the corrected four-model experiment, historical GRPO/multi-sample/architecture experiments, per-question outputs, protocols and invalidated runs.
+**Start with the [complete results index](results/README.md)** (updated31 October2026):914 explicitly separated result rows, code, validation locks, per-task decisions, audits and English reporting figures.
+
+## Latest: MedAgentBench and Jonathan-cache HotpotQA comparisons
+
+- [MedAgentBench English reporting figure](results/figures/medagentbench/medagentbench_nonllm_vs_jonathan.png) and [PDF](results/figures/medagentbench/medagentbench_nonllm_vs_jonathan.pdf): three GRPO architectures plus seven supervised classical families, compared with Jonathan's LLM router.
+- [MedAgentBench classical report](results/medagentbench_classical_v1/REPORT.md): Linear/RBF SVM and logistic regression reach63.33% task success at77.68% full weak-first cost in the gated, validation-selected round2 setting; Jonathan is63.33%/81.47%. Fifteen both-fail tasks avoid ineffective escalation; failures remain. Seeds0/1/2 agree on this fixed replay. This is supervised reward-weighted classification, **not GRPO**.
+- [MedAgentBench GRPO report](results/medagentbench_grpo_v1/REPORT.md):24 fresh fits on the same patient-disjoint90/60/150 split and cached views/outcomes; A1 reward-minus-group-mean update, no std/KL/PPO. Seed17 MLP64 reproduces T1's decisions, but repeat seeds vary substantially. [Training protocol/code](experiments/medagentbench/README.md).
+- [HotpotQA English reporting figure](results/figures/hotpotqa_v2/nonllm_jonathan_aligned_comparison_v2.png): frozen Jonathan output cache, shared4814/1110/1481 split, standard lenient and Table5 budget. SS76.77%; MLP128→64 SFT matches that accuracy at98.18% cost at the validation-budget point. [Alignment report](results/hotpotqa_jonathan_aligned_v1/REPORT.md). Source executor quantization is unconfirmed; this is not independent executor reproduction.
+
+All these tests actually run the trained router and replay frozen task-executor outcomes; no new medical episodes are generated. Costs exclude decision-model/risk-scorer compute consistently with the reference readout. Test sets were previously inspected; results are exploratory. [Minimal record-free audit data](results/medagentbench_replay_inputs/README.md) supports patient-group, cost and pass/fail checks without raw clinical views or patient identifiers.
+
+## Earlier independently generated GGUF cohort
 
 The corrected HotpotQA500-question GGUF experiment is complete: direct SS is **71.8% lenient accuracy**. Six classical router families with three seeds trained successfully, but all validation-selected operating points fell back to fixed SS. No improvement from dynamic routing is claimed. The new corrected-cache GRPO rerun also reaches71.8% at100% SS cost by learning to choose SS for every test question. Its exact expected-reward control reaches71.4% at83.79% SS cost. [GRPO report](results/menu_ws_grpo_v1/REPORT.md). Historical GRPO results remain separately labeled.
 

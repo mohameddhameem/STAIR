@@ -1,0 +1,240 @@
+{
+  "selections": [
+    {
+      "architecture": "linear",
+      "training": "SFT",
+      "method": "sft",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.6000000000000001,
+        0.35000000000000003,
+        0.55
+      ],
+      "validation_correct": 852,
+      "validation_cost": 1005.963063063063
+    },
+    {
+      "architecture": "linear",
+      "training": "SFT",
+      "method": "sft",
+      "objective": "ss_budget",
+      "threshold": [
+        0.5,
+        0.55,
+        0.55
+      ],
+      "validation_correct": 790,
+      "validation_cost": 462.56306306306305
+    },
+    {
+      "architecture": "linear",
+      "training": "SFT + Reward",
+      "method": "exact",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.6000000000000001,
+        0.30000000000000004,
+        0.55
+      ],
+      "validation_correct": 852,
+      "validation_cost": 1006.0666666666667
+    },
+    {
+      "architecture": "linear",
+      "training": "SFT + Reward",
+      "method": "exact",
+      "objective": "ss_budget",
+      "threshold": [
+        0.5,
+        0.55,
+        0.55
+      ],
+      "validation_correct": 797,
+      "validation_cost": 550.6666666666666
+    },
+    {
+      "architecture": "linear",
+      "training": "GRPO",
+      "method": "grpo",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.65,
+        0.65,
+        0.7000000000000001
+      ],
+      "validation_correct": 852,
+      "validation_cost": 998.7333333333333
+    },
+    {
+      "architecture": "linear",
+      "training": "GRPO",
+      "method": "grpo",
+      "objective": "ss_budget",
+      "threshold": [
+        0.6000000000000001,
+        0.7000000000000001,
+        0.65
+      ],
+      "validation_correct": 843,
+      "validation_cost": 892.6153153153153
+    },
+    {
+      "architecture": "mlp64",
+      "training": "SFT",
+      "method": "sft",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.75,
+        0.55,
+        0.6000000000000001
+      ],
+      "validation_correct": 852,
+      "validation_cost": 991.4
+    },
+    {
+      "architecture": "mlp64",
+      "training": "SFT",
+      "method": "sft",
+      "objective": "ss_budget",
+      "threshold": [
+        0.65,
+        0.55,
+        0.6000000000000001
+      ],
+      "validation_correct": 845,
+      "validation_cost": 870.7189189189189
+    },
+    {
+      "architecture": "mlp64",
+      "training": "SFT + Reward",
+      "method": "exact",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.75,
+        0.4,
+        0.45
+      ],
+      "validation_correct": 852,
+      "validation_cost": 992.7954954954955
+    },
+    {
+      "architecture": "mlp64",
+      "training": "SFT + Reward",
+      "method": "exact",
+      "objective": "ss_budget",
+      "threshold": [
+        0.65,
+        0.45,
+        0.45
+      ],
+      "validation_correct": 849,
+      "validation_cost": 902.0693693693694
+    },
+    {
+      "architecture": "mlp64",
+      "training": "GRPO",
+      "method": "grpo",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.9500000000000001,
+        0.0,
+        0.9500000000000001
+      ],
+      "validation_correct": 852,
+      "validation_cost": 1004.8153153153153
+    },
+    {
+      "architecture": "mlp64",
+      "training": "GRPO",
+      "method": "grpo",
+      "objective": "ss_budget",
+      "threshold": [
+        0.9,
+        0.9500000000000001,
+        0.9500000000000001
+      ],
+      "validation_correct": 844,
+      "validation_cost": 885.8
+    },
+    {
+      "architecture": "mlp128_64",
+      "training": "SFT",
+      "method": "sft",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.8500000000000001,
+        0.55,
+        0.6000000000000001
+      ],
+      "validation_correct": 852,
+      "validation_cost": 1001.563063063063
+    },
+    {
+      "architecture": "mlp128_64",
+      "training": "SFT",
+      "method": "sft",
+      "objective": "ss_budget",
+      "threshold": [
+        0.75,
+        0.6000000000000001,
+        0.6000000000000001
+      ],
+      "validation_correct": 848,
+      "validation_cost": 905.6
+    },
+    {
+      "architecture": "mlp128_64",
+      "training": "SFT + Reward",
+      "method": "exact",
+      "objective": "max_accuracy",
+      "threshold": [
+        0.8500000000000001,
+        0.35000000000000003,
+        0.4
+      ],
+      "validation_correct": 852,
+      "validation_cost": 991.6153153153153
+    },
+    {
+      "architecture": "mlp128_64",
+      "training": "SFT + Reward",
+      "method": "exact",
+      "objective": "ss_budget",
+      "threshold": [
+        0.75,
+        0.35000000000000003,
+        0.4
+      ],
+      "validation_correct": 848,
+      "validation_cost": 903.6153153153153
+    },
+    {
+      "architecture": "mlp128_64",
+      "training": "GRPO",
+      "method": "grpo",
+      "objective": "max_accuracy",
+      "threshold": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "validation_correct": 852,
+      "validation_cost": 1009.0
+    },
+    {
+      "architecture": "mlp128_64",
+      "training": "GRPO",
+      "method": "grpo",
+      "objective": "ss_budget",
+      "threshold": [
+        0.9500000000000001,
+        1.0,
+        1.0
+      ],
+      "validation_correct": 776,
+      "validation_cost": 430.4
+    }
+  ],
+  "rule": "max validation accuracy, cost tie-break; ss_budget additionally requires mean validation Table5 cost<=929",
+  "disclosure": "Previously inspected test; new budget thresholds selected solely on validation; no training changes."
+}

@@ -1,0 +1,26 @@
+{
+  "setting": 3,
+  "family": "rbf_svm",
+  "seed": 17,
+  "selected": {
+    "candidate": 0,
+    "parameter": {
+      "C": 1.0,
+      "gamma": "scale"
+    },
+    "val_reward_fixed050": 0.48678221029335383,
+    "val_accuracy_fixed050": 0.65,
+    "val_cost_fixed050": 933.6483333333332,
+    "seconds": 0.09173640422523022
+  },
+  "candidate_count": 4,
+  "train_rows": 90,
+  "val_rows": 60,
+  "routing_label_counts": [
+    39,
+    51
+  ],
+  "sample_weight_min": 0.1739513238691492,
+  "sample_weight_max": 1.9325840206036962,
+  "seconds": 0.3381742415949702
+}

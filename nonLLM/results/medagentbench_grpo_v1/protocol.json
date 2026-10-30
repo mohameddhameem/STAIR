@@ -1,0 +1,92 @@
+{
+  "source": {
+    "jonathan_commit": "3ac054d1d72994cab5e8927c6cdba1449371aba4",
+    "source_hashes": {
+      "common/TRAINING.md": "b8a5d6bc9ad09a46f5f3382cd544e3b1e252bcc47fa2142ba233c7879fce3300",
+      "common/stair_common/splits/MANIFEST.json": "20249991441cd786213dbfe1e2fa55e4cc01e16d224ac7019af34bcfe7195755",
+      "common/stair_common/splits/medagentbench/calib.txt": "a2f0e5691f8aebe2412b18a7cfa08341fb30027d09761bcb3c6d28d325551102",
+      "common/stair_common/splits/medagentbench/calib_sweep.txt": "d037276c4ea3f1fec58ff47135e653c202579205aa54d5a96ae0c59b16257285",
+      "common/stair_common/splits/medagentbench/test.txt": "fedca64d981b37369233512b28508086f3ed91e803010e49ac0842713d570754",
+      "common/tools/medagentbench_patient_split.py": "cbeb52133c17c79e0db3718806c6184895c51556c6033279ba7bee0d228357fc",
+      "lab_package/medagentbench/LAB_RUNBOOK.md": "12098ea62136138febbef68896550fcc14c6f93f2ff160907551e419446a431a",
+      "lab_package/medagentbench/MedAgentBench_Preregistration_DRAFT_22Oct2026.md": "8967d96a329c26fe4506d42ed6b9bcbc0f89921e4e02ac8fcedcb9d4296923f3",
+      "lab_package/medagentbench/MedAgentBench_Results_Writeup_27Oct2026.md": "e976768cc7b94c9515a5e222f06d0bdd0ef99140ecbd50674980b7ca67c2cc7a",
+      "lab_package/medagentbench/README.md": "3ced4c746f23ca5881b89360f54d3186f4d9955e023c8967b6e5e5a32af16708",
+      "lab_package/medagentbench/handoff_replay.py": "b7e7e136a62e032c7fb0d12329f352f4224ad61b7546bca211340aa56436674e",
+      "lab_package/medagentbench/midepisode_headroom.py": "209f187a8c172e4f24d14135cdaeae28a324d0b71828e066f6a122a838d1803b",
+      "lab_package/medagentbench/tau_scoring.py": "e0d17a606c753fe288a3c438e645f254e3e1be350f6dbb8578bc7953c89601fd",
+      "lab_package/medagentbench/training1_build_table.py": "47d4bab8a5da8da627438d18fe5174670c579e783d75534ac7b1236750a5ba21",
+      "lab_package/medagentbench/training1_calibration_latency.py": "a8bb8dcc23e471bd7a938bd3e0733091cc34d9ae89b35a66fe75995917d8fe0f",
+      "lab_package/medagentbench/training1_test_read.py": "61d18c39a561da6ef5a6ade44bbd06a7e2fa19fc3930c54d5311f1fc3ddb4614",
+      "lab_package/medagentbench/training1_trainer.py": "2172e209941c522a65f71875b26ab524650b4e7a9bd9bc6930e23a296b794983",
+      "lab_package/medagentbench/training2_test_read.py": "ff3e7a786360222ce1879e0b0805e6fe01096c0c9a19258c203d2d710e7bd6bc",
+      "lab_package/medagentbench/training2_trainer.py": "ebdf8037b2282e2e17b19279894de919c0f6482879478f109220a7749905f878",
+      "lab_package/medagentbench/training3_build_table.py": "c01553b4f32d84f3b71370bd61986c0151f81b66f4696e042f1768713d136071",
+      "lab_package/medagentbench/training3_test_read.py": "66280a27e488895d51f52d5dabcf4554f42821f5ce33e26f037915c511e3129c",
+      "lab_package/medagentbench/training3_trainer.py": "0b23ddd15e76664363babf64cb92887c61a5c29d7cf8ae0ed5c15ecbfdf7f3c6",
+      "lab_package/medagentbench/training4_test_read.py": "907e767b83f9c7b9048eeeef78e7a8e65201dc5a8543592cc9ec2364c0978624",
+      "lab_package/medagentbench/training4_trainer.py": "4fd8ad388088a9fee69f34c3b139089f95c434d5852da87680fae0f177c4a2b5",
+      "lab_package/medagentbench/training5_board_replay.py": "c1d59afc4b94ad322cf6e0d8ff9dceef7c168b9b0424fd62cea9c8ccc99b180f",
+      "lab_package/medagentbench/training5_select_theta.py": "c88d9493958a79c081f320ae4055fa32cebdd529c084ab23016a998e20dab730",
+      "lab_package/medagentbench/training5_test_read.py": "ebe9634a6f57e3b2d35b8ab5d2084206fd8b4335b68d3a4b864afbc33d8e8cdd",
+      "lab_package/medagentbench/training5_trainer.py": "db5acd1be258290df38be01e107de2087fff407d1668029c419bb0790923e61d",
+      "lab_package/medagentbench/weak_exposure_measure.py": "754d52238e6d0c586b842d935e947f61d04ba4e97d2d7c8d01505ee29c792d19",
+      "results/medagentbench/README.md": "c113e71b57a018a8b16fdf66e56bbff61b8283ee36892fdb1f886ca30a9aae83",
+      "results/medagentbench/handoff_replay.json": "794cf4d240c6da4d216dd55f61c7672010b76e03bce6f347a510ef25bb9d6ea3",
+      "results/medagentbench/tau_scores_v2.json": "2d971783ad37916d53b641f9af9d24bd86dfe0e76dbdeccff0632a63080b0bde",
+      "results/medagentbench/training1_table.json": "186545f07ddf68c2f0362d090bc4e1ff9a1f996cd8d17ea6875374cbdf04a071",
+      "results/medagentbench/training1_test_scores.jsonl": "c0155f5000acf0f1a248153e77c233f932f9df8dd8717ae2faaccc77344ee1ff",
+      "results/medagentbench/training3_table.json": "4eff23f3cf86fcaeb7bb8c03b9cc7b23244dc08baf58bf1e6c7909cb6e256da2",
+      "results/medagentbench/training3_test_scores.jsonl": "252abc19417e241bf83446665b2ebd9824b4e743157c4c19c3608c1fc2a7556c",
+      "results/medagentbench/training5a_test_read_manifest.json": "b17bd957c3524b188ae42bbd1e2c103b87b779a0f1a7f465820c7be602541f49",
+      "results/medagentbench/training5a_test_scores.jsonl": "4e3503c8c3d45bbabcf3985abcf9c42e4d612a9a530a78f0796e3987ac11ca06",
+      "results/medagentbench/training5b_test_read_manifest.json": "1c6e4fdd9c74d720b575278db5922c05061006272019e20b06c7e832a92ce124",
+      "results/medagentbench/training5b_test_scores.jsonl": "3d4aa737bf9fabe8b26a85aa7829b1d729dcf461818fba85a99c95b5fd380135",
+      "results/medagentbench/weak_exposure_high_tier.json": "7479eb6e1009982ed7d24947e0cbc917dc8bfbda6fb46f82af2f64d4b2dfa0b3"
+    },
+    "official_dataset_commit": "99260117137b09f04837a8c18d18a1107efa55ae",
+    "official_dataset_url": "https://raw.githubusercontent.com/stanfordmlgroup/MedAgentBench/99260117137b09f04837a8c18d18a1107efa55ae/data/medagentbench/test_data_v2.json",
+    "official_dataset_sha256": "b6e89b2ef82f1bef27c5778a644a8a66c7b25738bbd6a48d03ab3e5182df6ca8"
+  },
+  "dimensions": {
+    "1": 925,
+    "3": 926
+  },
+  "architectures": {
+    "linear": [],
+    "mlp64": [
+      64
+    ],
+    "mlp128_64": [
+      128,
+      64
+    ]
+  },
+  "seeds": [
+    17,
+    0,
+    1,
+    2
+  ],
+  "primary_seed": 17,
+  "training_settings": [
+    1,
+    3
+  ],
+  "split": "90 train / 60 validation / 150 test, patients30/19/49; no overlap at all three boundaries",
+  "inputs": "Only the exact view field: task instruction/context + weak attempt summary. T3 uses round2 view. No tid, idx, patient identifier field, correctness, risk score, cost or strong output is appended as feature. Patient references already in the same view remain as shown to LLM.",
+  "representation": "Train-only TF-IDF unigram/bigram max6000 plus ten standardized deterministic view statistics; linear or ReLU MLP. No pretrained encoder or executor calls.",
+  "alignment": "Same replay outcomes, observable view, split, cost equations, reward, A1 update, optimizer settings and fixed operating points as Jonathan T1/T3. Router representation/parameterization differ by design; non-LLM models have no pretrained knowledge.",
+  "reward": "Q-.1*(C/cs)-max(0,C/cs-1), per-instance strong cost cs. T1 C=[cw,cw+cs]; T3 C=[cw,cw2+cs]. Benchmark pass/fail, not lenient QA.",
+  "training": "Fresh model, no SFT; GRPO A1 reward minus group mean, NO standard deviation normalization; G8; entropy.03; AdamW lr1e-5, default weight_decay.01; accumulation8, per-row loss/8; clip1;40epochs; drop last2 row gradients per epoch exactly as author loop; Python random.shuffle and action draws.",
+  "selection": "Check every10 optimizer updates; greedy delivered-path validation mean reward rounded4 decimals, pDeliver>0.5, strict improvement; no epoch0 candidate, same source code. Keep best of 40epochs. No test feedback.",
+  "operating_points": "Prespecified .50 and .20; additionally select threshold maximizing validation mean delivered reward over0:.01:1, cost tie-break. All thresholds locked before per-router single test inference. Risk gate tau>=.8 evaluated from same stored probabilities, no training risk term.",
+  "cost": "Measured normalized parameter-FLOP units supplied in table. Report sum policy costs / sum(cw+cs) on same test150 for both T1 andT3. This is weak-first always-escalate baseline, not direct strong cs. Decision-model and risk-scorer compute excluded, consistent with replay board; CPU decision latency separately reported.",
+  "repeatability": "Seed17 matches campaign. Extra0/1/2 are independent repeats, mean/range reported, no probability ensemble or best-test seed selection.",
+  "scope": "Two-action AI-only Training1 andTraining3; not the newer human-handoff Training5. Reuses pass/fail results from benchmark grader; no fresh live-environment validation.",
+  "test_disclosure": "Reference test numbers were public and known; local test predictions computed once after all model/threshold locks. This is a paired replay experiment, not a newly secret benchmark.",
+  "source_table_hashes": {
+    "1": "186545f07ddf68c2f0362d090bc4e1ff9a1f996cd8d17ea6875374cbdf04a071",
+    "3": "4eff23f3cf86fcaeb7bb8c03b9cc7b23244dc08baf58bf1e6c7909cb6e256da2"
+  }
+}

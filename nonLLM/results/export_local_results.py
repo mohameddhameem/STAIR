@@ -2,12 +2,13 @@
 import csv,gzip,hashlib,io,json,re,shutil,subprocess
 from pathlib import Path
 from datetime import datetime,timezone,timedelta
+from export_recent_results import RECENT_RUNS,export_recent
 REPO=Path(__file__).resolve().parents[2]
 WORK=REPO.parent
 DEST=Path(__file__).resolve().parent
 COMMON_COMMIT='c02b09367718249af962140e605a91ddd392baa0'
 SUMMARY_NAMES={'oof_candidates.csv','risk_summary.csv','fold_audits.json','proposal_lock.json','final_meta_crossfit.json','method_summary.csv','training_summary.json','warm_start_verification.json','summary.json','generation_summary.json','token_costs.json','config.json','REPORT.md','METHODS.md','COMPARISON.md','README.md','results.json','comparison.json','verification.json','protocol.json','manifest.json','status.json','source_hashes.json','all_families_test.json','theta_lock.json','validation_lock.json','fit_records.json','training_progress.json','migration.json','concurrency_runtime.json','port_fix.json','RESULTS_INVALIDATED.json','INVALID_RESULTS.md','token_cost_audit.json','frontier_gains.json'}
-EXCLUDE={'cache','samples','training','routers','checkpoints','data','code','__pycache__','more_samples'}
+EXCLUDE={'cache','samples','training','routers','checkpoints','data','code','reference','__pycache__','more_samples'}
 
 def scrub(text):
  text=text.replace(str(WORK),'<WORKSPACE>').replace(str(Path.home()),'<HOME>')
@@ -24,6 +25,7 @@ def main():
  inventory=[];files=[];archive=DEST/'archive_20261023'
  for folder in sorted((WORK/'runs').iterdir()):
   if not folder.is_dir():continue
+  if folder.name in RECENT_RUNS:continue
   exported=[]
   for source in sorted(folder.rglob('*')):
    if not source.is_file() or source.name not in SUMMARY_NAMES:continue
@@ -116,8 +118,9 @@ def main():
   if (next_run/'accuracy_cost.png').exists():shutil.copy2(next_run/'accuracy_cost.png',published/'accuracy_cost.png')
   data=json.loads((next_run/'results.json').read_text())
   for r in data['summaries']:rows.append({'cohort':'four-model-GGUF-nestedOOF-risk-cascade-test500','method':r['policy'],'seed':0,'n':500,'accuracy_pct':100*r['accuracy'],'cost_pct_ss':100*r['units']/data['ss']['units'],'units':r['units'],'status':'fit5125/calibration1280; OOF and val choices separate; exploratory risk gates','source':'menu_ws_next_v1/results.json'})
+ export_recent(WORK,DEST,rows,inventory,files,copy_text)
  with (DEST/'all_results.csv').open('w',newline='') as f:
-  writer=csv.DictWriter(f,fieldnames=['cohort','method','seed','n','accuracy_pct','cost_pct_ss','units','status','source'],lineterminator='\n');writer.writeheader();writer.writerows(rows)
+  writer=csv.DictWriter(f,fieldnames=['cohort','method','seed','n','accuracy_pct','cost_pct_ss','units','status','source','dataset','accuracy_metric','cost_convention'],lineterminator='\n');writer.writeheader();writer.writerows(rows)
  (DEST/'artifact_inventory.json').write_text(json.dumps({'exported_on':datetime.now(timezone(timedelta(hours=8))).date().isoformat(),'local_data_and_weights_included':False,'runs':inventory,'files':files},indent=2)+'\n')
  print(f'Exported {len(files)} text artifacts from {len(inventory)} run directories; {len(rows)} indexed result rows.')
 

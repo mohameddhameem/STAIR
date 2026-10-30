@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1152pt" height="864pt" viewBox="0 0 1152 864" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-31T00:23:30.125191</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 864
+L 1152 864
+L 1152 0
+L 0 0
+z
+" style="fill: #f5f7fb"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 46.8 125.28
+L 1105.2 125.28
+Q 1112.4 125.28 1112.4 118.08
+L 1112.4 103.68
+Q 1112.4 96.48 1105.2 96.48
+L 46.8 96.48
+Q 39.6 96.48 39.6 103.68
+L 39.6 118.08
+Q 39.6 125.28 46.8 125.28
+z
+" clip-path="url(#p364387b907)" style="fill: #14263d; stroke: #14263d; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 46.8 524.16
+L 1105.2 524.16
+Q 1112.4 524.16 1112.4 516.96
+L 1112.4 169.92
+Q 1112.4 162.72 1105.2 162.72
+L 46.8 162.72
+Q 39.6 162.72 39.6 169.92
+L 39.6 516.96
+Q 39.6 524.16 46.8 524.16
+z
+" clip-path="url(#p364387b907)" style="fill: #ffffff; stroke: #dce3ed; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 55.44 237.6
+L 1096.56 237.6
+Q 1103.76 237.6 1103.76 230.4
+L 1103.76 220.32
+Q 1103.76 213.12 1096.56 213.12
+L 55.44 213.12
+Q 48.24 213.12 48.24 220.32
+L 48.24 230.4
+Q 48.24 237.6 55.44 237.6
+z
+" clip-path="url(#p364387b907)" style="fill: #eaf0f8; stroke: #eaf0f8; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 55.44 289.44
+L 1096.56 289.44
+Q 1103.76 289.44 1103.76 282.24
+L 1103.76 272.16
+Q 1103.76 264.96 1096.56 264.96
+L 55.44 264.96
+Q 48.24 264.96 48.24 272.16
+L 48.24 282.24
+Q 48.24 289.44 55.44 289.44
+z
+" clip-path="url(#p364387b907)" style="fill: #f8fafd; stroke: #f8fafd; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 55.44 341.28
+L 1096.56 341.28
+Q 1103.76 341.28 1103.76 334.08
+L 1103.76 324
+Q 1103.76 316.8 1096.56 316.8
+L 55.44 316.8
+Q 48.24 316.8 48.24 324
+L 48.24 334.08
+Q 48.24 341.28 55.44 341.28
+z
+" clip-path="url(#p364387b907)" style="fill: #f8fafd; stroke: #f8fafd; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 55.44 393.12
+L 1096.56 393.12
+Q 1103.76 393.12 1103.76 385.92
+L 1103.76 375.84
+Q 1103.76 368.64 1096.56 368.64
+L 55.44 368.64
+Q 48.24 368.64 48.24 375.84
+L 48.24 385.92
+Q 48.24 393.12 55.44 393.12
+z
+" clip-path="url(#p364387b907)" style="fill: #f8fafd; stroke: #f8fafd; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 55.44 444.96
+L 1096.56 444.96
+Q 1103.76 444.96 1103.76 437.76
+L 1103.76 427.68
+Q 1103.76 420.48 1096.56 420.48
+L 55.44 420.48
+Q 48.24 420.48 48.24 427.68
+L 48.24 437.76
+Q 48.24 444.96 55.44 444.96
+z
+" clip-path="url(#p364387b907)" style="fill: #f8fafd; stroke: #f8fafd; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 55.44 496.8
+L 1096.56 496.8
+Q 1103.76 496.8 1103.76 489.6
+L 1103.76 479.52
+Q 1103.76 472.32 1096.56 472.32
+L 55.44 472.32
+Q 48.24 472.32 48.24 479.52
+L 48.24 489.6
+Q 48.24 496.8 55.44 496.8
+z
+" clip-path="url(#p364387b907)" style="fill: #f8fafd; stroke: #f8fafd; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 46.8 714.96
+L 378 714.96
+Q 385.2 714.96 385.2 707.76
+L 385.2 550.8
+Q 385.2 543.6 378 543.6
+L 46.8 543.6
+Q 39.6 543.6 39.6 550.8
+L 39.6 707.76
+Q 39.6 714.96 46.8 714.96
+z
+" clip-path="url(#p364387b907)" style="fill: #ffffff; stroke: #dce3ed; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 410.4 714.96
+L 741.6 714.96
+Q 748.8 714.96 748.8 707.76
+L 748.8 550.8
+Q 748.8 543.6 741.6 543.6
+L 410.4 543.6
+Q 403.2 543.6 403.2 550.8
+L 403.2 707.76
+Q 403.2 714.96 410.4 714.96
+z
+" clip-path="url(#p364387b907)" style="fill: #ffffff; stroke: #dce3ed; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 774 714.96
+L 1105.2 714.96
+Q 1112.4 714.96 1112.4 707.76
+L 1112.4 550.8
+Q 1112.4 543.6 1105.2 543.6
+L 774 543.6
+Q 766.8 543.6 766.8 550.8
+L 766.8 707.76
+Q 766.8 714.96 774 714.96
+z
+" clip-path="url(#p364387b907)" style="fill: #ffffff; stroke: #dce3ed; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 46.8 802.08
+L 1105.2 802.08
+Q 1112.4 802.08 1112.4 794.88
+L 1112.4 738.72
+Q 1112.4 731.52 1105.2 731.52
+L 46.8 731.52
+Q 39.6 731.52 39.6 738.72
+L 39.6 794.88
+Q 39.6 802.08 46.8 802.08
+z
+" clip-path="url(#p364387b907)" style="fill: #eaf4f2; stroke: #d3e7e2; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 54.72 207.36
+L 1096.56 207.36
+" clip-path="url(#p364387b907)" style="fill: none; stroke: #dce3ed; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 635.04 507.6
+L 635.04 174.24
+" clip-path="url(#p364387b907)" style="fill: none; stroke: #dce3ed; stroke-width: 0.65; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 802.08 507.6
+L 802.08 174.24
+" clip-path="url(#p364387b907)" style="fill: none; stroke: #dce3ed; stroke-width: 0.65; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 968.4 507.6
+L 968.4 174.24
+" clip-path="url(#p364387b907)" style="fill: none; stroke: #dce3ed; stroke-width: 0.65; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 54.72 317.52
+L 1096.56 317.52
+" clip-path="url(#p364387b907)" style="fill: none; stroke: #dce3ed; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 23.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="39.6" y="31.68" transform="rotate(-0 39.6 31.68)">MedAgentBench: Non-LLM Routers vs Jonathan’s LLM</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="41.76" y="59.76" transform="rotate(-0 41.76 59.76)">Same replay views, outcomes and costs · Patient-disjoint split: 90 train / 60 validation / 150 test · Benchmark pass/fail accuracy</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 10.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="41.76" y="80.64" transform="rotate(-0 41.76 80.64)">T1: decide after the full weak attempt     |     T3: decide at round 2     |     Executors: Qwen2.5-7B (weak) / Qwen2.5-72B-AWQ (strong)</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 9.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="55.44" y="113.399727" transform="rotate(-0 55.44 113.399727)">PUBLISHED LLM · NO RISK GATE</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="392.4" y="113.737422" transform="rotate(-0 392.4 113.737422)">T1  61.33% accuracy / 54.11% cost</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="750.96" y="113.737422" transform="rotate(-0 750.96 113.737422)">T3  63.33% accuracy / 81.47% cost</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 10.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="41.76" y="144.72" transform="rotate(-0 41.76 144.72)">MAIN TABLE: same high-risk escalation gate for every router · Seed 17 · Non-LLM thresholds chosen on validation; Jonathan uses θ = 0.50</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="55.44" y="188.64" transform="rotate(-0 55.44 188.64)">Router</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="214.56" y="188.64" transform="rotate(-0 214.56 188.64)">Training</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="334.8" y="188.64" transform="rotate(-0 334.8 188.64)">How the model works</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #14263d" x="722.16" y="180" transform="rotate(-0 722.16 180)">Full attempt · T1</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #14263d" x="885.6" y="180" transform="rotate(-0 885.6 180)">Round 2 · T3</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 9.3px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #14263d" x="1038.24" y="180.72" transform="rotate(-0 1038.24 180.72)">T3 accuracy range</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8.2px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #56657a" x="1038.24" y="195.84" transform="rotate(-0 1038.24 195.84)">seeds 0 / 1 / 2</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="696.24" y="198.72" transform="rotate(-0 696.24 198.72)">Acc. %</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="776.16" y="198.72" transform="rotate(-0 776.16 198.72)">Cost %</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="861.12" y="198.72" transform="rotate(-0 861.12 198.72)">Acc. %</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="941.04" y="198.72" transform="rotate(-0 941.04 198.72)">Cost %</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="229.475988" transform="rotate(-0 56.16 229.475988)">Jonathan LLM</text>
+   </g>
+   <g id="text_20">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7940ca" x="214.56" y="229.267773" transform="rotate(-0 214.56 229.267773)">GRPO (A1)</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="229.00834" transform="rotate(-0 334.8 229.00834)">Qwen2.5-1.5B + LoRA; pretrained backbone.</text>
+   </g>
+   <g id="text_22">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="229.605469" transform="rotate(-0 696.24 229.605469)">61.33</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="229.605469" transform="rotate(-0 776.16 229.605469)">80.99</text>
+   </g>
+   <g id="text_24">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="229.605469" transform="rotate(-0 861.12 229.605469)">63.33</text>
+   </g>
+   <g id="text_25">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="229.605469" transform="rotate(-0 941.04 229.605469)">81.47</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="229.138242" transform="rotate(-0 1087.92 229.138242)">Not reported</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="255.395988" transform="rotate(-0 56.16 255.395988)">Linear Softmax</text>
+   </g>
+   <g id="text_28">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7940ca" x="214.56" y="255.187773" transform="rotate(-0 214.56 255.187773)">GRPO (A1)</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="254.92834" transform="rotate(-0 334.8 254.92834)">Linear softmax on TF-IDF + view statistics.</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="255.525469" transform="rotate(-0 696.24 255.525469)">44.00</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="255.525469" transform="rotate(-0 776.16 255.525469)">71.72</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="255.525469" transform="rotate(-0 861.12 255.525469)">63.33</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="255.525469" transform="rotate(-0 941.04 255.525469)">81.47</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="255.057891" transform="rotate(-0 1087.92 255.057891)">53.33–56.67</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="281.315586" transform="rotate(-0 56.16 281.315586)">MLP · 64</text>
+   </g>
+   <g id="text_36">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7940ca" x="214.56" y="281.107773" transform="rotate(-0 214.56 281.107773)">GRPO (A1)</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="280.84834" transform="rotate(-0 334.8 280.84834)">One ReLU hidden layer with 64 units.</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="281.445469" transform="rotate(-0 696.24 281.445469)">61.33</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="281.445469" transform="rotate(-0 776.16 281.445469)">80.99</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="281.445469" transform="rotate(-0 861.12 281.445469)">63.33</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="281.445469" transform="rotate(-0 941.04 281.445469)">81.47</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="280.977891" transform="rotate(-0 1087.92 280.977891)">54.00–62.67</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="307.235586" transform="rotate(-0 56.16 307.235586)">MLP · 128 → 64</text>
+   </g>
+   <g id="text_44">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7940ca" x="214.56" y="307.027773" transform="rotate(-0 214.56 307.027773)">GRPO (A1)</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="306.76834" transform="rotate(-0 334.8 306.76834)">Two ReLU hidden layers: 128 then 64 units.</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="307.365469" transform="rotate(-0 696.24 307.365469)">61.33</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="307.365469" transform="rotate(-0 776.16 307.365469)">80.99</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="307.365469" transform="rotate(-0 861.12 307.365469)">61.33</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="307.365469" transform="rotate(-0 941.04 307.365469)">71.39</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="306.897891" transform="rotate(-0 1087.92 306.897891)">54.00–63.33</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="333.155988" transform="rotate(-0 56.16 333.155988)">Random Forest</text>
+   </g>
+   <g id="text_52">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="214.56" y="332.948145" transform="rotate(-0 214.56 332.948145)">Supervised</text>
+   </g>
+   <g id="text_53">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="332.68834" transform="rotate(-0 334.8 332.68834)">Average 300 bootstrapped decision trees.</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="333.285469" transform="rotate(-0 696.24 333.285469)">61.33</text>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="333.285469" transform="rotate(-0 776.16 333.285469)">80.99</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="333.285469" transform="rotate(-0 861.12 333.285469)">63.33</text>
+   </g>
+   <g id="text_57">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="333.285469" transform="rotate(-0 941.04 333.285469)">81.47</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="332.817891" transform="rotate(-0 1087.92 332.817891)">63.33–63.33</text>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="359.075586" transform="rotate(-0 56.16 359.075586)">Extra Trees</text>
+   </g>
+   <g id="text_60">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="214.56" y="358.868145" transform="rotate(-0 214.56 358.868145)">Supervised</text>
+   </g>
+   <g id="text_61">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="358.60834" transform="rotate(-0 334.8 358.60834)">Average 300 trees with randomized splits.</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="359.205469" transform="rotate(-0 696.24 359.205469)">61.33</text>
+   </g>
+   <g id="text_63">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="359.205469" transform="rotate(-0 776.16 359.205469)">80.99</text>
+   </g>
+   <g id="text_64">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="359.205469" transform="rotate(-0 861.12 359.205469)">63.33</text>
+   </g>
+   <g id="text_65">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="359.205469" transform="rotate(-0 941.04 359.205469)">81.47</text>
+   </g>
+   <g id="text_66">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="358.737891" transform="rotate(-0 1087.92 358.737891)">63.33–63.33</text>
+   </g>
+   <g id="text_67">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="384.995988" transform="rotate(-0 56.16 384.995988)">Decision Tree</text>
+   </g>
+   <g id="text_68">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="214.56" y="384.788145" transform="rotate(-0 214.56 384.788145)">Supervised</text>
+   </g>
+   <g id="text_69">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="384.52834" transform="rotate(-0 334.8 384.52834)">One tree of learned feature-split rules.</text>
+   </g>
+   <g id="text_70">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="385.125469" transform="rotate(-0 696.24 385.125469)">61.33</text>
+   </g>
+   <g id="text_71">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="385.125469" transform="rotate(-0 776.16 385.125469)">80.99</text>
+   </g>
+   <g id="text_72">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="385.125469" transform="rotate(-0 861.12 385.125469)">61.33</text>
+   </g>
+   <g id="text_73">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="385.125469" transform="rotate(-0 941.04 385.125469)">71.39</text>
+   </g>
+   <g id="text_74">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="384.657891" transform="rotate(-0 1087.92 384.657891)">61.33–61.33</text>
+   </g>
+   <g id="text_75">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="410.915988" transform="rotate(-0 56.16 410.915988)">Linear SVM</text>
+   </g>
+   <g id="text_76">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="214.56" y="410.708145" transform="rotate(-0 214.56 410.708145)">Supervised</text>
+   </g>
+   <g id="text_77">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="410.44834" transform="rotate(-0 334.8 410.44834)">Maximum-margin linear decision boundary.</text>
+   </g>
+   <g id="text_78">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="411.045469" transform="rotate(-0 696.24 411.045469)">61.33</text>
+   </g>
+   <g id="text_79">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="411.045469" transform="rotate(-0 776.16 411.045469)">81.58</text>
+   </g>
+   <g id="text_80">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #087f8c" x="861.12" y="411.045469" transform="rotate(-0 861.12 411.045469)">63.33</text>
+   </g>
+   <g id="text_81">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #087f8c" x="941.04" y="411.045469" transform="rotate(-0 941.04 411.045469)">77.68</text>
+   </g>
+   <g id="text_82">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="410.577891" transform="rotate(-0 1087.92 410.577891)">63.33–63.33</text>
+   </g>
+   <g id="text_83">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="436.835586" transform="rotate(-0 56.16 436.835586)">RBF SVM</text>
+   </g>
+   <g id="text_84">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="214.56" y="436.628145" transform="rotate(-0 214.56 436.628145)">Supervised</text>
+   </g>
+   <g id="text_85">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="436.36834" transform="rotate(-0 334.8 436.36834)">Maximum-margin boundary with an RBF kernel.</text>
+   </g>
+   <g id="text_86">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="436.965469" transform="rotate(-0 696.24 436.965469)">61.33</text>
+   </g>
+   <g id="text_87">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="436.965469" transform="rotate(-0 776.16 436.965469)">81.58</text>
+   </g>
+   <g id="text_88">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #087f8c" x="861.12" y="436.965469" transform="rotate(-0 861.12 436.965469)">63.33</text>
+   </g>
+   <g id="text_89">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #087f8c" x="941.04" y="436.965469" transform="rotate(-0 941.04 436.965469)">77.68</text>
+   </g>
+   <g id="text_90">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="436.497891" transform="rotate(-0 1087.92 436.497891)">63.33–63.33</text>
+   </g>
+   <g id="text_91">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="462.755988" transform="rotate(-0 56.16 462.755988)">Logistic Regression</text>
+   </g>
+   <g id="text_92">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="214.56" y="462.548145" transform="rotate(-0 214.56 462.548145)">Supervised</text>
+   </g>
+   <g id="text_93">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="462.28834" transform="rotate(-0 334.8 462.28834)">Linear classifier fitted by weighted logistic loss.</text>
+   </g>
+   <g id="text_94">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="462.885469" transform="rotate(-0 696.24 462.885469)">61.33</text>
+   </g>
+   <g id="text_95">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="462.885469" transform="rotate(-0 776.16 462.885469)">81.58</text>
+   </g>
+   <g id="text_96">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #087f8c" x="861.12" y="462.885469" transform="rotate(-0 861.12 462.885469)">63.33</text>
+   </g>
+   <g id="text_97">
+    <text style="font-weight: 700; font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #087f8c" x="941.04" y="462.885469" transform="rotate(-0 941.04 462.885469)">77.68</text>
+   </g>
+   <g id="text_98">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="462.417891" transform="rotate(-0 1087.92 462.417891)">63.33–63.33</text>
+   </g>
+   <g id="text_99">
+    <text style="font-size: 10.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="56.16" y="488.675988" transform="rotate(-0 56.16 488.675988)">Naive Bayes</text>
+   </g>
+   <g id="text_100">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="214.56" y="488.468145" transform="rotate(-0 214.56 488.468145)">Supervised</text>
+   </g>
+   <g id="text_101">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="334.8" y="488.20834" transform="rotate(-0 334.8 488.20834)">Class-conditional token likelihoods; text only.</text>
+   </g>
+   <g id="text_102">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="696.24" y="488.805469" transform="rotate(-0 696.24 488.805469)">61.33</text>
+   </g>
+   <g id="text_103">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="776.16" y="488.805469" transform="rotate(-0 776.16 488.805469)">80.99</text>
+   </g>
+   <g id="text_104">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="861.12" y="488.805469" transform="rotate(-0 861.12 488.805469)">63.33</text>
+   </g>
+   <g id="text_105">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #14263d" x="941.04" y="488.805469" transform="rotate(-0 941.04 488.805469)">81.47</text>
+   </g>
+   <g id="text_106">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #56657a" x="1087.92" y="488.337891" transform="rotate(-0 1087.92 488.337891)">63.33–63.33</text>
+   </g>
+   <g id="text_107">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="56.16" y="512.64" transform="rotate(-0 56.16 512.64)">Cost denominator: full weak + strong on the same 150 tasks = 100%.  Full always-escalate: 54.00% accuracy; two-action oracle: 63.33%.</text>
+   </g>
+   <g id="text_108">
+    <text style="font-weight: 700; font-size: 12.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7940ca" x="54" y="568.8" transform="rotate(-0 54 568.8)">GRPO (A1) · neural classifiers</text>
+   </g>
+   <g id="text_109">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="54" y="596.16" transform="rotate(-0 54 596.16)">Linear / MLP: policy-gradient training, as in the LLM recipe.</text>
+   </g>
+   <g id="text_110">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="54" y="615.6" transform="rotate(-0 54 615.6)">Fresh classifier; sample 8 actions per task.</text>
+   </g>
+   <g id="text_111">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="54" y="635.04" transform="rotate(-0 54 635.04)">Advantage = reward − group mean; entropy bonus 0.03.</text>
+   </g>
+   <g id="text_112">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="54" y="654.48" transform="rotate(-0 54 654.48)">40 epochs · lr 1e−5 · accumulation 8 · gradient clip 1.</text>
+   </g>
+   <g id="text_113">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="54" y="673.92" transform="rotate(-0 54 673.92)">No std normalization, KL term or PPO clipping.</text>
+   </g>
+   <g id="text_114">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="54" y="694.8" transform="rotate(-0 54 694.8)">Best checkpoint selected by validation delivered reward.</text>
+   </g>
+   <g id="text_115">
+    <text style="font-weight: 700; font-size: 12.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="417.6" y="568.8" transform="rotate(-0 417.6 568.8)">Supervised · classical classifiers</text>
+   </g>
+   <g id="text_116">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="417.6" y="596.16" transform="rotate(-0 417.6 596.16)">Label = argmax(R_W, R_S); weight = |R_W − R_S|.</text>
+   </g>
+   <g id="text_117">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="417.6" y="615.6" transform="rotate(-0 417.6 615.6)">Fit the classifier to reward-optimal routing actions.</text>
+   </g>
+   <g id="text_118">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="417.6" y="635.04" transform="rotate(-0 417.6 635.04)">Hyperparameters and thresholds selected on validation.</text>
+   </g>
+   <g id="text_119">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="417.6" y="654.48" transform="rotate(-0 417.6 654.48)">SVM: patient-grouped out-of-fold score calibration.</text>
+   </g>
+   <g id="text_120">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="417.6" y="673.92" transform="rotate(-0 417.6 673.92)">This is supervised training, not GRPO.</text>
+   </g>
+   <g id="text_121">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="417.6" y="694.8" transform="rotate(-0 417.6 694.8)">Same view features; Naive Bayes uses text only.</text>
+   </g>
+   <g id="text_122">
+    <text style="font-weight: 700; font-size: 12.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="781.2" y="568.8" transform="rotate(-0 781.2 568.8)">Shared objective and readout</text>
+   </g>
+   <g id="text_123">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="781.2" y="596.16" transform="rotate(-0 781.2 596.16)">R = Q − 0.1 × (C / c_s) − max(0, C / c_s − 1).</text>
+   </g>
+   <g id="text_124">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="781.2" y="615.6" transform="rotate(-0 781.2 615.6)">Q is the benchmark’s pass/fail, not QA lenient match.</text>
+   </g>
+   <g id="text_125">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="781.2" y="635.04" transform="rotate(-0 781.2 635.04)">T1 costs: deliver c_w; escalate c_w + c_s.</text>
+   </g>
+   <g id="text_126">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="781.2" y="654.48" transform="rotate(-0 781.2 654.48)">T3 costs: deliver c_w; escalate c_w2 + c_s.</text>
+   </g>
+   <g id="text_127">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="781.2" y="673.92" transform="rotate(-0 781.2 673.92)">Common gate: τ ≥ 0.8 forces escalation.</text>
+   </g>
+   <g id="text_128">
+    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="781.2" y="694.8" transform="rotate(-0 781.2 694.8)">Inputs: task text/context + observed weak attempt.</text>
+   </g>
+   <g id="text_129">
+    <text style="font-weight: 700; font-size: 13.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #087f8c" x="55.44" y="753.12" transform="rotate(-0 55.44 753.12)">SVM / logistic regression: 63.33% accuracy at 77.68% cost</text>
+   </g>
+   <g id="text_130">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="55.44" y="777.6" transform="rotate(-0 55.44 777.6)">Same success rate as Jonathan’s T3; 3.79 cost points less. Repeats 0/1/2 agree.</text>
+   </g>
+   <g id="text_131">
+    <text style="font-weight: 700; font-size: 10.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #14263d" x="727.2" y="752.4" transform="rotate(-0 727.2 752.4)">Why? Avoid 15 ineffective strong upgrades.</text>
+   </g>
+   <g id="text_132">
+    <text style="font-size: 8.9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="727.2" y="771.12" transform="rotate(-0 727.2 771.12)">Both models fail on those task7 cases; failures remain.</text>
+   </g>
+   <g id="text_133">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="727.2" y="789.12" transform="rotate(-0 727.2 789.12)">Lower compute does not mean improved clinical outcomes.</text>
+   </g>
+   <g id="text_134">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="41.76" y="824.4" transform="rotate(-0 41.76 824.4)">Main table applies the same cached τ ≥ 0.8 gate to all rows. It changes the LLM’s T1 cost from 54.11% to 80.99%; T3 is unchanged. No test-based threshold selection.</text>
+   </g>
+   <g id="text_135">
+    <text style="font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #56657a" x="41.76" y="843.84" transform="rotate(-0 41.76 843.84)">Routers actually run; executor outcomes are replayed, not rerun. Cost excludes router / risk-scorer compute. Previously inspected test; small, homogeneous task types; GRPO repeats vary.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p364387b907">
+   <rect x="0" y="0" width="1152" height="864"/>
+  </clipPath>
+ </defs>
+</svg>

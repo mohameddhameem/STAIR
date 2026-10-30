@@ -1,0 +1,35 @@
+{
+  "exported_on": "2026-10-31",
+  "new_index_rows": 559,
+  "total_index_rows": 914,
+  "runs": [
+    {
+      "source_run": "nonllm_jonathan_aligned_v1",
+      "published": "hotpotqa_jonathan_aligned_v1",
+      "artifacts": 95
+    },
+    {
+      "source_run": "nonllm_jonathan_model_comparison_v1",
+      "published": "hotpotqa_model_comparison_v1",
+      "artifacts": 80
+    },
+    {
+      "source_run": "nonllm_jonathan_model_comparison_v1/operating_points_v2",
+      "published": "hotpotqa_budget_points_v2",
+      "artifacts": 6
+    },
+    {
+      "source_run": "nonllm_medagentbench_replay_v1",
+      "published": "medagentbench_grpo_v1",
+      "artifacts": 62
+    },
+    {
+      "source_run": "nonllm_medagentbench_classical_v1",
+      "published": "medagentbench_classical_v1",
+      "artifacts": 180
+    }
+  ],
+  "privacy": "Explicit allowlist; no raw views/answers/actual patient identifiers/checkpoints/feature vocabularies",
+  "minimal_replay_inputs": "medagentbench_replay_inputs",
+  "figures": "figures"
+}

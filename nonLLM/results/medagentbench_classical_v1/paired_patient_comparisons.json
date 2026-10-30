@@ -1,0 +1,1178 @@
+[
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886285,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886356,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886285,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886356,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886285,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886356,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886285,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886356,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886285,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886356,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 1.4155971528389983,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      3.6177392243422206
+    ],
+    "decision_disagreements": 2,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886356,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886285,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.5916783313886356,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      1.8219012097157687
+    ],
+    "decision_disagreements": 1,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -33.09104415322629,
+    "cost_delta_patient_bootstrap_95ci": [
+      -39.17171157235787,
+      -26.14806308971997
+    ],
+    "decision_disagreements": 45,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -10.07449407136508,
+    "cost_delta_patient_bootstrap_95ci": [
+      -13.47516153853195,
+      -6.981380293032135
+    ],
+    "decision_disagreements": 30,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -3.5381885897124477,
+    "cost_delta_patient_bootstrap_95ci": [
+      -7.709574277917936,
+      0.0
+    ],
+    "decision_disagreements": 3,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -23.016550081861226,
+    "cost_delta_patient_bootstrap_95ci": [
+      -30.1705103335957,
+      -15.100443461036422
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -23.016550081861226,
+    "cost_delta_patient_bootstrap_95ci": [
+      -30.1705103335957,
+      -15.100443461036422
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -33.09104415322629,
+    "cost_delta_patient_bootstrap_95ci": [
+      -39.17171157235787,
+      -26.14806308971997
+    ],
+    "decision_disagreements": 45,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -10.07449407136508,
+    "cost_delta_patient_bootstrap_95ci": [
+      -13.47516153853195,
+      -6.981380293032135
+    ],
+    "decision_disagreements": 30,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -33.09104415322629,
+    "cost_delta_patient_bootstrap_95ci": [
+      -39.17171157235787,
+      -26.14806308971997
+    ],
+    "decision_disagreements": 45,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -10.07449407136508,
+    "cost_delta_patient_bootstrap_95ci": [
+      -13.47516153853195,
+      -6.981380293032135
+    ],
+    "decision_disagreements": 30,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -33.09104415322629,
+    "cost_delta_patient_bootstrap_95ci": [
+      -39.17171157235787,
+      -26.14806308971997
+    ],
+    "decision_disagreements": 45,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": -2.0000000000000018,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      -4.545454545454546,
+      0.0
+    ],
+    "cost_delta_pp": -10.07449407136508,
+    "cost_delta_patient_bootstrap_95ci": [
+      -13.47516153853195,
+      -6.981380293032135
+    ],
+    "decision_disagreements": 30,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -26.807873741585624,
+    "cost_delta_patient_bootstrap_95ci": [
+      -33.645400060400554,
+      -19.29720532012148
+    ],
+    "decision_disagreements": 30,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -3.791323659724412,
+    "cost_delta_patient_bootstrap_95ci": [
+      -5.425997182200185,
+      -2.308937512296577
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -23.016550081861226,
+    "cost_delta_patient_bootstrap_95ci": [
+      -30.1705103335957,
+      -15.100443461036422
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -26.807873741585624,
+    "cost_delta_patient_bootstrap_95ci": [
+      -33.645400060400554,
+      -19.29720532012148
+    ],
+    "decision_disagreements": 30,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -3.791323659724412,
+    "cost_delta_patient_bootstrap_95ci": [
+      -5.425997182200185,
+      -2.308937512296577
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -6.5650472317511515,
+    "cost_delta_patient_bootstrap_95ci": [
+      -11.585725140852587,
+      -1.61228824648516
+    ],
+    "decision_disagreements": 5,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -26.807873741585624,
+    "cost_delta_patient_bootstrap_95ci": [
+      -33.645400060400554,
+      -19.29720532012148
+    ],
+    "decision_disagreements": 30,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -3.791323659724412,
+    "cost_delta_patient_bootstrap_95ci": [
+      -5.425997182200185,
+      -2.308937512296577
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -23.016550081861226,
+    "cost_delta_patient_bootstrap_95ci": [
+      -30.1705103335957,
+      -15.100443461036422
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": -23.016550081861226,
+    "cost_delta_patient_bootstrap_95ci": [
+      -30.1705103335957,
+      -15.100443461036422
+    ],
+    "decision_disagreements": 15,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "seed": 17,
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "reference": "Jonathan same-setting theta.50, same risk gate",
+    "accuracy_delta_pp": 0.0,
+    "accuracy_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "cost_delta_pp": 0.0,
+    "cost_delta_patient_bootstrap_95ci": [
+      0.0,
+      0.0
+    ],
+    "decision_disagreements": 0,
+    "patient_clusters": 50,
+    "bootstrap_resamples": 2000
+  }
+]

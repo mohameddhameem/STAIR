@@ -1,0 +1,842 @@
+[
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.11032772276271
+  },
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 80.98735784291674
+  },
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.11032772276271
+  },
+  {
+    "setting": 1,
+    "family": "random_forest",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 80.98735784291674
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.70200605415133
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 81.57903617430537
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.11032772276271
+  },
+  {
+    "setting": 1,
+    "family": "extra_trees",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 80.98735784291674
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.11032772276271
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 80.98735784291674
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.11032772276271
+  },
+  {
+    "setting": 1,
+    "family": "decision_tree",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 80.98735784291674
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.70200605415133
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 81.57903617430537
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.70200605415133
+  },
+  {
+    "setting": 1,
+    "family": "linear_svm",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 81.57903617430537
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.70200605415133
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 81.57903617430537
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.70200605415133
+  },
+  {
+    "setting": 1,
+    "family": "rbf_svm",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 81.57903617430537
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 55.52592487560171
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 81.57903617430537
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.70200605415133
+  },
+  {
+    "setting": 1,
+    "family": "logistic_regression",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 81.57903617430537
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.11032772276271
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 80.98735784291674
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 54.11032772276271
+  },
+  {
+    "setting": 1,
+    "family": "multinomial_nb",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 80.98735784291674
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 56.05223991102796
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 71.39339229973875
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  },
+  {
+    "setting": 3,
+    "family": "random_forest",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 58.45133628924261
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 58.45133628924261
+  },
+  {
+    "setting": 3,
+    "family": "extra_trees",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 48.37684221787754
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 71.39339229973875
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 48.37684221787754
+  },
+  {
+    "setting": 3,
+    "family": "decision_tree",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 71.39339229973875
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 48.37684221787754
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6133333333333333,
+    "accuracy_min": 0.6133333333333333,
+    "accuracy_max": 0.6133333333333333,
+    "cost_pct_mean": 71.39339229973875
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 54.66001262951821
+  },
+  {
+    "setting": 3,
+    "family": "linear_svm",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 77.67656271137942
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 58.45133628924261
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 54.66001262951821
+  },
+  {
+    "setting": 3,
+    "family": "rbf_svm",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 77.67656271137942
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 74.90283913935268
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 54.66001262951821
+  },
+  {
+    "setting": 3,
+    "family": "logistic_regression",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 77.67656271137942
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "point": "OP_A_fixed_050",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 58.45133628924261
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "point": "OP_A_fixed_050",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "point": "val_reward_selected",
+    "risk_gate": false,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 58.45133628924261
+  },
+  {
+    "setting": 3,
+    "family": "multinomial_nb",
+    "point": "val_reward_selected",
+    "risk_gate": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "accuracy_mean": 0.6333333333333333,
+    "accuracy_min": 0.6333333333333333,
+    "accuracy_max": 0.6333333333333333,
+    "cost_pct_mean": 81.46788637110383
+  }
+]

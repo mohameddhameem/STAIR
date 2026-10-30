@@ -1,0 +1,110 @@
+[
+  {
+    "architecture": "linear",
+    "training": "SFT",
+    "method": "sft",
+    "threshold": [
+      0.6000000000000001,
+      0.35000000000000003,
+      0.55
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1005.963063063063
+  },
+  {
+    "architecture": "linear",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "threshold": [
+      0.6000000000000001,
+      0.30000000000000004,
+      0.55
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1006.0666666666667
+  },
+  {
+    "architecture": "linear",
+    "training": "GRPO",
+    "method": "grpo",
+    "threshold": [
+      0.65,
+      0.65,
+      0.7000000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 998.7333333333333
+  },
+  {
+    "architecture": "mlp64",
+    "training": "SFT",
+    "method": "sft",
+    "threshold": [
+      0.75,
+      0.55,
+      0.6000000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 991.4
+  },
+  {
+    "architecture": "mlp64",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "threshold": [
+      0.75,
+      0.4,
+      0.45
+    ],
+    "validation_correct": 852,
+    "validation_cost": 992.7954954954955
+  },
+  {
+    "architecture": "mlp64",
+    "training": "GRPO",
+    "method": "grpo",
+    "threshold": [
+      0.9500000000000001,
+      0.0,
+      0.9500000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1004.8153153153153
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "SFT",
+    "method": "sft",
+    "threshold": [
+      0.8500000000000001,
+      0.55,
+      0.6000000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1001.563063063063
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "threshold": [
+      0.8500000000000001,
+      0.35000000000000003,
+      0.4
+    ],
+    "validation_correct": 852,
+    "validation_cost": 991.6153153153153
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "GRPO",
+    "method": "grpo",
+    "threshold": [
+      1.0,
+      0.0,
+      1.0
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1009.0
+  }
+]

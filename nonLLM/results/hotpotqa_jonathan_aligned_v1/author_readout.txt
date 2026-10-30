@@ -1,0 +1,8 @@
+test n=1481 | AgentTTS-slice rows n=105
+  full test: always-SS 76.77 at 100% | always-WW 50.30 at 8.6%
+  105-slice: always-SS 78.10 at 100% | always-WW 48.57 at 8.6%
+  AgentTTS published (their pipeline, all 500): 74.6 at ~101%
+label only [parity point, t=0.80/0.90/1.00]  n=1,481: 75.35 at 72.2%  |  n=105 : 78.10 at 66.3%
+label only [peak point, t=0.95/1.00/1.00]  n=1,481: 76.70 at 89.9%  |  n=105 : 78.10 at 89.4%
+reward answering [peak point, t=0.80/0.55/1.00]  n=1,481: 75.96 at 73.1%  |  n=105 : 78.10 at 67.3%
+reward answering [parity point, t=0.80/0.55/0.60]  n=1,481: 75.96 at 71.6%  |  n=105 : 78.10 at 66.2%

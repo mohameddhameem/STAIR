@@ -1,0 +1,7 @@
+{
+  "best_epoch": 2,
+  "last_epoch": 2,
+  "best_criterion": 0.34566161036491394,
+  "lr": 0.0001,
+  "batch": 16
+}

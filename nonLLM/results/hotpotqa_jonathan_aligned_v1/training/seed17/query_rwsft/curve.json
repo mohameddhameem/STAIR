@@ -1,0 +1,16 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 1.3817381237036366,
+    "val_ce": 1.3845305442810059,
+    "val_auc": null,
+    "val_expected_reward": 0.33554860949516296
+  },
+  {
+    "epoch": 2,
+    "train_loss": 1.368681443094019,
+    "val_ce": 1.379793405532837,
+    "val_auc": null,
+    "val_expected_reward": 0.3441130220890045
+  }
+]

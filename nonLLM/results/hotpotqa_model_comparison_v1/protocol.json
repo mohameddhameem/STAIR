@@ -1,0 +1,33 @@
+{
+  "source_run": "<WORKSPACE>/runs/nonllm_jonathan_aligned_v1",
+  "source_protocol_sha256": "f90672b961d2c3e386015c8444460f37815146e0c6ab0e8b70b63eee74446800",
+  "source_features_sha256": "66694288d09c0ef0367ef2532fb33f0ec25a91a27ba214f499e1856c4f255300",
+  "source_grid_hashes": {
+    "train": "26ef16342d8ba588950ee3cf1c764da948fb726d5308ef951db05a1765901c28",
+    "val": "2d6e750380f065e3f56c899a93b5d9752ca4a97312109a251bb0ab70b27a7ac2",
+    "test": "61f375cc587aa20b8fd0ea2dad132918066753bc6675d771536f7a2a2fd789ab"
+  },
+  "architectures": {
+    "linear": [],
+    "mlp64": [
+      64
+    ],
+    "mlp128_64": [
+      128,
+      64
+    ]
+  },
+  "seeds": [
+    17,
+    18,
+    19
+  ],
+  "method_contract": "Same features, labels, stage rewards, training prices, inference prices and split as jonathan_aligned_v1; two stages, three seeds averaged before validation thresholds.",
+  "methods": {
+    "SFT": "Weighted CE, 3epochs lr1e-4 batch8; best val AUC",
+    "SFT + Reward": "SFT warm start; exact E[tokenF1-.1*C/929]+.03*entropy; 3epochs lr1e-5 batch8; best val expected reward",
+    "GRPO": "SFT warm start; group8 normalized advantages+fixed-reference KL.02; no PPO clipping; 2epochs lr1e-4 batch16; best val expected reward. Stage adaptation, not verified slide GRPO run."
+  },
+  "selection": "For each model/method choose highest validation lenient accuracy, break ties by lowest Table5 cost; thresholds 0:.05:1. Save lock before test inference.",
+  "limits": "Previously inspected test; descriptive. MLP sizes are architectural variants, not random forests/SVMs. Decision compute excluded from Table5 budget, same as author readout."
+}

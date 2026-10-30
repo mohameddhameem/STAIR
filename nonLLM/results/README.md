@@ -1,6 +1,60 @@
-# Non-LLM routing results — 24 October 2026
+# Non-LLM routing results — 31 October 2026
 
-The corrected four-model experiment is complete. Earlier experiments are retained as separate cohorts. Do not pool their accuracy or cost values: models, question IDs, scoring implementations and cost rules differ.
+All completed results are catalogued below. [914-row cross-cohort index](all_results.csv) · [artifact inventory](artifact_inventory.json) · [recent publication manifest](recent_publication.json). Rows include controls, seeds and operating points; they are not 914 independent experiments. Dataset, accuracy ruler and cost convention are explicit in the index. Do not pool different cohorts.
+
+## MedAgentBench: GRPO and seven classical families
+
+[English comparison PNG](figures/medagentbench/medagentbench_nonllm_vs_jonathan.png) · [PDF](figures/medagentbench/medagentbench_nonllm_vs_jonathan.pdf) · [editable SVG](figures/medagentbench/medagentbench_nonllm_vs_jonathan.svg) · [GRPO report](medagentbench_grpo_v1/REPORT.md) · [classical report](medagentbench_classical_v1/REPORT.md).
+
+The same Jonathan campaign cache (`3ac054d`), view fields, Qwen7B/72B executor outcomes, benchmark pass/fail grader and measured costs are reused. Train90 / validation60 / test150 have30/19/49 patients, with zero overlap at all three boundaries. Router models actually run on test inputs; task execution is replayed. No new medical episodes are generated. Costs below use full weak-first always-escalate on the same150 tasks as100%; its accuracy is54.00%. This differs from HotpotQA's Table5/direct-SS convention.
+
+**Matched-risk table:** seed17; non-LLM thresholds selected on validation reward; Jonathan uses its fixed theta.50; every row applies the same cached tau>=.8 forced-escalation gate. Entries are accuracy / cost.
+
+| Router / training | Full-attempt review (T1) | Round2 review (T3) |
+|---|---:|---:|
+| Jonathan LLM + LoRA / GRPO A1 |61.33% /80.99%|63.33% /81.47%|
+| Linear / GRPO A1 |44.00% /71.72%|63.33% /81.47%|
+| MLP64 / GRPO A1 |61.33% /80.99%|63.33% /81.47%|
+| MLP128→64 / GRPO A1 |61.33% /80.99%|61.33% /71.39%|
+| Random Forest / supervised |61.33% /80.99%|63.33% /81.47%|
+| Extra Trees / supervised |61.33% /80.99%|63.33% /81.47%|
+| Decision Tree / supervised |61.33% /80.99%|61.33% /71.39%|
+| Linear SVM / supervised |61.33% /81.58%|63.33% /77.68%|
+| RBF SVM / supervised |61.33% /81.58%|63.33% /77.68%|
+| Logistic Regression / supervised |61.33% /81.58%|63.33% /77.68%|
+| Multinomial NB / supervised |61.33% /80.99%|63.33% /81.47%|
+
+Jonathan's published **ungated** T1 is61.33%/54.11%; the common gate raises its cost to80.99% without changing accuracy. Ungated T3 remains63.33%/81.47%. Do not compare gated and ungated costs as if they use the same policy constraint.
+
+The GRPO study has24 fits: three architectures, two decision times, seeds17/0/1/2. It follows the latest A1 update: reward minus group mean, **no std division, KL or PPO clipping**; entropy.03, fresh classifier, lr1e-5, accumulation8, clip1,40epochs and validation reward checkpoints. The small classifiers have no pretrained LLM knowledge. Their repeat seeds vary substantially, so one matching seed is not a stable reproduction claim.
+
+The classical study fits200 candidate configurations and locks56 classifiers. It is **not GRPO**: target=argmax action reward and weight=absolute reward gap. SVM calibration is patient-grouped and refits the entire feature pipeline within each fold. Hyperparameters and thresholds freeze before test inference. Linear/RBF SVM and logistic regression reproduce63.33%/77.68% across independent seeds0/1/2 at the gated validation-selected T3 point. The3.79 cost-point saving comes from skipping ineffective strong upgrades on15 task7 cases where both models fail; those failures remain. This is a compute result, not improved clinical outcomes or proof of transfer to other task types.
+
+Full per-seed/fixed-threshold/validation-threshold/risk-gate readouts: [GRPO results](medagentbench_grpo_v1/results.csv), [classical results](medagentbench_classical_v1/results.csv), [GRPO task rows](medagentbench_grpo_v1/per_task.csv.gz), [classical task rows](medagentbench_classical_v1/per_task.csv.gz), [paired patient intervals](medagentbench_classical_v1/paired_patient_comparisons.json), [source-matching LLM readouts](medagentbench_grpo_v1/llm_reference.json), [safe minimal audit inputs](medagentbench_replay_inputs/README.md), [GRPO protocol/code](../experiments/medagentbench/README.md), [classical protocol/code](../experiments/medagentbench/CLASSICAL.md).
+
+Risk-score generation and decision-model compute are excluded from the supplied cost proxy for both families. CPU feature+batch-decision timing is separate and is not online per-request latency. Published test results were already known; all new selections use validation but the comparisons remain exploratory. Training5's human-handoff action and its human-cost assumptions are outside these two-action studies.
+
+## HotpotQA: Jonathan-cache alignment, model variants and budget points
+
+[Latest English PNG](figures/hotpotqa_v2/nonllm_jonathan_aligned_comparison_v2.png) · [PDF](figures/hotpotqa_v2/nonllm_jonathan_aligned_comparison_v2.pdf) · [initial alignment report](hotpotqa_jonathan_aligned_v1/REPORT.md) · [nine model/recipe rows](hotpotqa_model_comparison_v1/results.csv) · [18 operating points](hotpotqa_budget_points_v2/results.csv).
+
+These use Jonathan's pinned Config B outputs (`5b69cce`) and the shared4814/1110/1481 split. All29,620 cached four-path verdicts match the shared standard lenient scorer. Direct SS is76.77% at929 Table5 budget; weak-first SS costs1009, or108.61%, because all weak calls are charged. This is a **fixed-cache router comparison**, not an independent reproduction of the executor stack. Subsequent source clarification says the July answering prompt added a short-answer instruction and the cluster's AWQ vs bitsandbytes loading is unconfirmed; matching cached numbers does not establish exact AgentTTS prompts or quantization.
+
+Accuracy-first points, selected by validation accuracy (accuracy / cost% direct SS):
+
+| Non-LLM model | SFT | SFT + exact reward, both stages | SFT → sampled stage GRPO |
+|---|---:|---:|---:|
+| Linear softmax |76.50 /107.78|76.64 /107.94|76.03 /106.60|
+| MLP64 |76.84 /106.76|76.30 /106.87|76.70 /108.21|
+| MLP128→64 |76.84 /107.46|76.84 /106.75|76.77 /108.61|
+
+The neural variants add36 fits to the initial42 alignment fits. All use three-seed17/18/19 probability ensembles. Accuracy-first policies almost always upgrade; the image also shows validation SS-budget points. MLP128→64 SFT matches76.77% at98.18% cost; its SFT+reward counterpart matches76.77% at98.33%. A76.84% result is one extra correct question, not stable evidence of an accuracy gain. A validation budget is not a guaranteed test budget.
+
+The reference SFT row is76.70%/89.86%; QA-only reward is75.96%/71.56%. Both-stage **exact expected reward** gives76.23%/76.98% excluding router calls; this matches the slide's accuracy but not its80.5% cost. Sampled stage GRPO here is an explicitly documented adaptation, not a claimed reproduction of that slide row. Its HotpotQA group-standardized/KL recipe differs from MedAgentBench's later A1 recipe. Historical four-action query-only arms use a different old reward surrogate and remain auxiliary.
+
+[All30 initial policies](hotpotqa_jonathan_aligned_v1/results.csv) · [44,430 initial policy/question rows](hotpotqa_jonathan_aligned_v1/per_question.csv.gz) · [13,329 model-comparison rows](hotpotqa_model_comparison_v1/per_question.csv.gz) · [26,658 operating-point rows](hotpotqa_budget_points_v2/per_question.csv.gz) · [alignment method details](../experiments/menu_ws_gguf/JONATHAN_ALIGNED.md). Raw views/answers, fitted feature vocabularies and weights are not published.
+
+The remaining sections retain the earlier independently generated GGUF and historical cohorts. Their baselines, scoring and costs must remain separate from the new frozen-cache comparisons.
 
 ## Four further studies: pairs, OOF stacking, risk calibration, cascades
 
@@ -81,15 +135,15 @@ All scoring is lenient; "exact" names the training objective, not exact-match gr
 - A separate corrected-cache GRPO rerun is now complete; see the new section above. The historical GRPO cohort remains separate.
 - GGUF copies and this execution contract are not eligible for pooled BF16/AWQ headline comparisons without team agreement. Matching the model names and scorer alone is insufficient. K=1 is not the original AgentTTS40-answer-sample recipe.
 
-## Important: upstream common0.3 is a different headline protocol
+## Original protocol boundary: common0.3 vs the earlier common0.2 GGUF run
 
-The latest upstream `main` (`00ee140`, common0.3) adopts Jonathan's `slr-train/slr-val/slr-test` (4,814/1,110/1,481) and Table5 prices for the HotpotQA golden set. It retains the500-question test as a paper comparison. This completed run was frozen under the earlier common0.2 protocol. Its token-based units must not be relabeled as Table5 prices, and its71.8% must not be compared directly with the upstream76.77% golden reference.
+At that run's freeze point, upstream `main` (`00ee140`, common0.3) adopted Jonathan's `slr-train/slr-val/slr-test` (4,814/1,110/1,481) and Table5 prices for the HotpotQA golden set. It retained the500-question test as a paper comparison. The GGUF run was frozen under earlier common0.2; its token-based units must not be relabeled as Table5 prices and its71.8% is not directly comparable to the76.77% reference. The new Jonathan-cache studies above separately use the SLR split and Table5 convention; they do not regenerate executor outputs.
 
-The [evaluation snapshot](menu_ws_gguf_v2/evaluation_snapshot/SOURCE.md) preserves the exact original scorer/cost/split implementation. Syncing the new common code does not turn an older experiment into a new-protocol reproduction. No common0.3 golden-set non-LLM rerun is claimed here.
+The [evaluation snapshot](menu_ws_gguf_v2/evaluation_snapshot/SOURCE.md) preserves the exact original scorer/cost/split implementation. Syncing common code does not turn an older experiment into a new-protocol reproduction. The old GGUF sections make no golden-set executor-reproduction claim.
 
 ## Historical methods and results
 
-[Machine-readable result index](all_results.csv) contains355 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps34 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
+[Machine-readable result index](all_results.csv) contains914 rows across explicitly named cohorts. [Artifact inventory](artifact_inventory.json) maps39 run directories to published reports and source hashes. The archive also contains diagnostic/preparation runs; a run directory is not necessarily a completed experiment.
 
 | Cohort | What was tested | Baseline / representative result | Primary artifacts |
 |---|---|---|---|

@@ -1,0 +1,25 @@
+{
+  "setting": 3,
+  "family": "decision_tree",
+  "seed": 1,
+  "selected": {
+    "candidate": 0,
+    "parameter": {
+      "depth": 2
+    },
+    "val_reward_fixed050": 0.46783835060633233,
+    "val_accuracy_fixed050": 0.6,
+    "val_cost_fixed050": 776.8556666666668,
+    "seconds": 0.03721506893634796
+  },
+  "candidate_count": 4,
+  "train_rows": 90,
+  "val_rows": 60,
+  "routing_label_counts": [
+    39,
+    51
+  ],
+  "sample_weight_min": 0.1739513238691492,
+  "sample_weight_max": 1.9325840206036962,
+  "seconds": 0.12754924315959215
+}

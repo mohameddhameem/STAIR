@@ -1,0 +1,106 @@
+[
+  {
+    "pair": "label",
+    "point": "peak_original_max_tuple",
+    "threshold": [
+      0.95,
+      1.0,
+      1.0
+    ],
+    "val_accuracy": 0.7684684684684685,
+    "val_cost_pct_ss": 90.13993541442412,
+    "test_accuracy": 0.7670492910195814,
+    "test_cost_pct_ss": 89.8565903671115
+  },
+  {
+    "pair": "label",
+    "point": "cheapest_val_atleast_ss",
+    "threshold": [
+      0.8,
+      0.9,
+      1.0
+    ],
+    "val_accuracy": 0.7684684684684685,
+    "val_cost_pct_ss": 70.79287037306413,
+    "test_accuracy": 0.7535449020931803,
+    "test_cost_pct_ss": 72.1568282565892
+  },
+  {
+    "pair": "reward_qa",
+    "point": "peak_original_max_tuple",
+    "threshold": [
+      0.8,
+      0.55,
+      1.0
+    ],
+    "val_accuracy": 0.7693693693693694,
+    "val_cost_pct_ss": 71.86347811751472,
+    "test_accuracy": 0.7596218771100608,
+    "test_cost_pct_ss": 73.11805292586614
+  },
+  {
+    "pair": "reward_qa",
+    "point": "cheapest_val_atleast_ss",
+    "threshold": [
+      0.8,
+      0.55,
+      0.6
+    ],
+    "val_accuracy": 0.7675675675675676,
+    "val_cost_pct_ss": 70.61443574898904,
+    "test_accuracy": 0.7596218771100608,
+    "test_cost_pct_ss": 71.555018028868
+  },
+  {
+    "pair": "reward_ret",
+    "point": "peak_original_max_tuple",
+    "threshold": [
+      0.95,
+      0.95,
+      1.0
+    ],
+    "val_accuracy": 0.7684684684684685,
+    "val_cost_pct_ss": 76.1141011840689,
+    "test_accuracy": 0.7609723160027009,
+    "test_cost_pct_ss": 76.50708762371453
+  },
+  {
+    "pair": "reward_ret",
+    "point": "cheapest_val_atleast_ss",
+    "threshold": [
+      0.95,
+      0.95,
+      1.0
+    ],
+    "val_accuracy": 0.7684684684684685,
+    "val_cost_pct_ss": 76.1141011840689,
+    "test_accuracy": 0.7609723160027009,
+    "test_cost_pct_ss": 76.50708762371453
+  },
+  {
+    "pair": "reward_both",
+    "point": "peak_original_max_tuple",
+    "threshold": [
+      0.95,
+      0.6,
+      1.0
+    ],
+    "val_accuracy": 0.7684684684684685,
+    "val_cost_pct_ss": 76.61594856428012,
+    "test_accuracy": 0.762322754895341,
+    "test_cost_pct_ss": 76.97516224527547
+  },
+  {
+    "pair": "reward_both",
+    "point": "cheapest_val_atleast_ss",
+    "threshold": [
+      0.95,
+      0.55,
+      0.7
+    ],
+    "val_accuracy": 0.7684684684684685,
+    "val_cost_pct_ss": 76.05834036404542,
+    "test_accuracy": 0.7609723160027009,
+    "test_cost_pct_ss": 76.40678591909432
+  }
+]

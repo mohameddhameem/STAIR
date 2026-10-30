@@ -1,0 +1,26 @@
+{
+  "setting": 3,
+  "family": "extra_trees",
+  "seed": 2,
+  "selected": {
+    "candidate": 0,
+    "parameter": {
+      "depth": 3,
+      "leaf": 1
+    },
+    "val_reward_fixed050": 0.48678221029335383,
+    "val_accuracy_fixed050": 0.65,
+    "val_cost_fixed050": 933.6483333333332,
+    "seconds": 0.38960903137922287
+  },
+  "candidate_count": 4,
+  "train_rows": 90,
+  "val_rows": 60,
+  "routing_label_counts": [
+    39,
+    51
+  ],
+  "sample_weight_min": 0.1739513238691492,
+  "sample_weight_max": 1.9325840206036962,
+  "seconds": 1.2964894492179155
+}

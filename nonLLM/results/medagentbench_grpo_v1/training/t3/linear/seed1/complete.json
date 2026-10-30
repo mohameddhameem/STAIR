@@ -1,0 +1,17 @@
+{
+  "setting": 3,
+  "architecture": "linear",
+  "seed": 1,
+  "best_step": 330,
+  "best_epoch_zero_based": 29,
+  "last_step": 440,
+  "epochs": 40,
+  "best_val_reward": 0.3117,
+  "fresh_start_eval": {
+    "val_meanR_delivered": 0.0205,
+    "val_acc": 0.0833,
+    "val_mean_cost": 751.7,
+    "mean_pDeliver": 0.5022
+  },
+  "seconds": 1.4127440098673105
+}

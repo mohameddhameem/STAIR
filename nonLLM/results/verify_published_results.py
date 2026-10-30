@@ -78,6 +78,8 @@ def main():
   assert not audit['risk_certified'] and len(audit['risk_test_above_nominal'])>0
   assert audit['cascade_all_strong_cost_pct_ss']>100
   assert json.loads((ROOT/'menu_ws_next_v1/status.json').read_text())['phase']=='complete'
+ from verify_recent_results import verify_recent
+ expected_index+=verify_recent(ROOT)
  assert len(rows)==expected_index
  for row in rows:
   assert 0<=float(row['accuracy_pct'])<=100

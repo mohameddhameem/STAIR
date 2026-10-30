@@ -1,0 +1,28 @@
+{
+  "source_commit": "3ac054d1d72994cab5e8927c6cdba1449371aba4",
+  "split_sizes": {
+    "train": 90,
+    "val": 60,
+    "test": 150
+  },
+  "patients_per_split": {
+    "train": 30,
+    "val": 19,
+    "test": 49
+  },
+  "all_three_patient_boundaries_disjoint": true,
+  "split_files_match_manifest": true,
+  "author_reward_builder_parity_rows": 300,
+  "two_replay_table_hashes_verified": true,
+  "task_instruction_prefix_matches_official_dataset": true,
+  "completed_grpo_fits": 24,
+  "test_inference_scores": 3600,
+  "audited_per_task_policy_rows": 21600,
+  "paired_reference_accuracy_reproduced": true,
+  "per_task_cost_correctness_and_aggregates_verified": true,
+  "no_risk_scores_or_grader_fields_as_features": true,
+  "official_dataset_hash_matches_team_manifest": true,
+  "all_24_model_hashes_match_pretest_lock": true,
+  "all_checkpoint_choices_verified_against_rounded_validation_objective": true,
+  "paired_patient_bootstrap_contrasts": 24
+}

@@ -1,0 +1,7 @@
+{
+  "operating_points": 18,
+  "audited_predictions": 26658,
+  "accuracy_first_matches_v1": true,
+  "linear_budget_matches_prior_audit": true,
+  "weak_call_costs_verified": true
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "candidate": 0,
+    "parameter": {
+      "depth": 2
+    },
+    "val_reward_fixed050": 0.36665124396723914,
+    "val_accuracy_fixed050": 0.6,
+    "val_cost_fixed050": 865.5630000000002,
+    "seconds": 0.036126517690718174
+  },
+  {
+    "candidate": 1,
+    "parameter": {
+      "depth": 4
+    },
+    "val_reward_fixed050": 0.3533434410285067,
+    "val_accuracy_fixed050": 0.5333333333333333,
+    "val_cost_fixed050": 771.4066666666669,
+    "seconds": 0.07102894224226475
+  },
+  {
+    "candidate": 2,
+    "parameter": {
+      "depth": 6
+    },
+    "val_reward_fixed050": 0.3533434410285067,
+    "val_accuracy_fixed050": 0.5333333333333333,
+    "val_cost_fixed050": 771.4066666666669,
+    "seconds": 0.10351445712149143
+  },
+  {
+    "candidate": 3,
+    "parameter": {
+      "depth": null
+    },
+    "val_reward_fixed050": 0.3533434410285067,
+    "val_accuracy_fixed050": 0.5333333333333333,
+    "val_cost_fixed050": 771.4066666666669,
+    "seconds": 0.13501221127808094
+  }
+]

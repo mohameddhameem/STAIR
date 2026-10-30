@@ -1,0 +1,464 @@
+{
+  "models": [
+    {
+      "setting": 1,
+      "architecture": "linear",
+      "seed": 17,
+      "val_reward_threshold": {
+        "threshold": 0.49,
+        "val_reward": 0.30975005058660093,
+        "val_accuracy": 0.4666666666666667,
+        "val_cost": 792.7608333333335
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "linear",
+      "seed": 0,
+      "val_reward_threshold": {
+        "threshold": 0.56,
+        "val_reward": 0.1890182115060029,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1579.7341666666666
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "linear",
+      "seed": 1,
+      "val_reward_threshold": {
+        "threshold": 0.5,
+        "val_reward": 0.21672288425373154,
+        "val_accuracy": 0.3333333333333333,
+        "val_cost": 689.5730000000002
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "linear",
+      "seed": 2,
+      "val_reward_threshold": {
+        "threshold": 0.51,
+        "val_reward": 0.350069534881469,
+        "val_accuracy": 0.6,
+        "val_cost": 1050.861
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp64",
+      "seed": 17,
+      "val_reward_threshold": {
+        "threshold": 0.5,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp64",
+      "seed": 0,
+      "val_reward_threshold": {
+        "threshold": 0.47000000000000003,
+        "val_reward": 0.24149410696681942,
+        "val_accuracy": 0.5,
+        "val_cost": 1106.1585
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp64",
+      "seed": 1,
+      "val_reward_threshold": {
+        "threshold": 0.49,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp64",
+      "seed": 2,
+      "val_reward_threshold": {
+        "threshold": 0.45,
+        "val_reward": 0.2352313302983853,
+        "val_accuracy": 0.3,
+        "val_cost": 484.1335
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp128_64",
+      "seed": 17,
+      "val_reward_threshold": {
+        "threshold": 0.51,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp128_64",
+      "seed": 0,
+      "val_reward_threshold": {
+        "threshold": 0.49,
+        "val_reward": 0.1890182115060029,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1579.7341666666666
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp128_64",
+      "seed": 1,
+      "val_reward_threshold": {
+        "threshold": 0.5,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 1,
+      "architecture": "mlp128_64",
+      "seed": 2,
+      "val_reward_threshold": {
+        "threshold": 0.55,
+        "val_reward": 0.1890182115060029,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1579.7341666666666
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "linear",
+      "seed": 17,
+      "val_reward_threshold": {
+        "threshold": 0.53,
+        "val_reward": 0.4755756713564051,
+        "val_accuracy": 0.65,
+        "val_cost": 1278.1953333333336
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "linear",
+      "seed": 0,
+      "val_reward_threshold": {
+        "threshold": 0.5,
+        "val_reward": 0.4243839666331047,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 819.5493333333335
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "linear",
+      "seed": 1,
+      "val_reward_threshold": {
+        "threshold": 0.51,
+        "val_reward": 0.37185853971601923,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1363.6138333333336
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "linear",
+      "seed": 2,
+      "val_reward_threshold": {
+        "threshold": 0.52,
+        "val_reward": 0.37185853971601923,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1363.6138333333336
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp64",
+      "seed": 17,
+      "val_reward_threshold": {
+        "threshold": 0.52,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp64",
+      "seed": 0,
+      "val_reward_threshold": {
+        "threshold": 0.48,
+        "val_reward": 0.37185853971601923,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1363.6138333333336
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp64",
+      "seed": 1,
+      "val_reward_threshold": {
+        "threshold": 0.45,
+        "val_reward": 0.4026533860096229,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 945.3733333333333
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp64",
+      "seed": 2,
+      "val_reward_threshold": {
+        "threshold": 0.53,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp128_64",
+      "seed": 17,
+      "val_reward_threshold": {
+        "threshold": 0.5,
+        "val_reward": 0.46783835060633233,
+        "val_accuracy": 0.6,
+        "val_cost": 776.8556666666668
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp128_64",
+      "seed": 0,
+      "val_reward_threshold": {
+        "threshold": 0.5,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp128_64",
+      "seed": 1,
+      "val_reward_threshold": {
+        "threshold": 0.54,
+        "val_reward": 0.383065078652968,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1019.0668333333334
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    },
+    {
+      "setting": 3,
+      "architecture": "mlp128_64",
+      "seed": 2,
+      "val_reward_threshold": {
+        "threshold": 0.5,
+        "val_reward": 0.37185853971601923,
+        "val_accuracy": 0.5666666666666667,
+        "val_cost": 1363.6138333333336
+      },
+      "fixed_thresholds": [
+        0.5,
+        0.2
+      ]
+    }
+  ],
+  "model_hashes": [
+    {
+      "path": "training/t1/linear/seed17/best.joblib",
+      "sha256": "d77403ee32d4e2ca46684ba5f0e6fd09354a8117442cbe74babd95c75ce67b8b"
+    },
+    {
+      "path": "training/t1/linear/seed0/best.joblib",
+      "sha256": "14ee73b29c670494e7dbfe31da8b9deddbeb24b33eee26c66b048516487618d3"
+    },
+    {
+      "path": "training/t1/linear/seed1/best.joblib",
+      "sha256": "52a8e3b3a48cfcb67697537e1b0b240b6002020389c579696cdb5d42098f82d7"
+    },
+    {
+      "path": "training/t1/linear/seed2/best.joblib",
+      "sha256": "0a785b3e67f449c8f04c6a92cc14b150ffbf6027c3dc8c024e05b016a8daa454"
+    },
+    {
+      "path": "training/t1/mlp64/seed17/best.joblib",
+      "sha256": "9f7d76a430c3b5d15df2e7bbe8fb3d5eafa4390946a49a739a35be543d7e1718"
+    },
+    {
+      "path": "training/t1/mlp64/seed0/best.joblib",
+      "sha256": "dc0542391e3c818d3a58066bb30145cfffd12a191eeb802c4e38db1814d9516f"
+    },
+    {
+      "path": "training/t1/mlp64/seed1/best.joblib",
+      "sha256": "36f9b3a4f0da584d08751f4f6dd8662dbba95f9a7a0681a3bb9a758d93f80bc3"
+    },
+    {
+      "path": "training/t1/mlp64/seed2/best.joblib",
+      "sha256": "e0dc2abf8e15bca445551eb26295547d727f74bc8759de72536bde17629dba2b"
+    },
+    {
+      "path": "training/t1/mlp128_64/seed17/best.joblib",
+      "sha256": "87464df2faf2877f39d071892703e093f7d5167ea539360058e20d4bd97f8d0f"
+    },
+    {
+      "path": "training/t1/mlp128_64/seed0/best.joblib",
+      "sha256": "3278c70905211cd1eb0308225d588ca18e641f054c1fdfce39451c49dda88445"
+    },
+    {
+      "path": "training/t1/mlp128_64/seed1/best.joblib",
+      "sha256": "5254a138916e8c4765c85c3a972b3b7cef31b66c3bc036243e1aef6051db86cf"
+    },
+    {
+      "path": "training/t1/mlp128_64/seed2/best.joblib",
+      "sha256": "622b5c0452f8226bc556e08f55381d87377b73c8c69bb42d4c154e965a0d01b0"
+    },
+    {
+      "path": "training/t3/linear/seed17/best.joblib",
+      "sha256": "e98bcc0c438a0c14d3f0f9ab1e786a1e588f7f36602392fd575c1d4912538284"
+    },
+    {
+      "path": "training/t3/linear/seed0/best.joblib",
+      "sha256": "db9e72121b32866cc594d2dfa5f61ca5c78201c4b929939f7758bddb5c6a3a9c"
+    },
+    {
+      "path": "training/t3/linear/seed1/best.joblib",
+      "sha256": "8b3cbec25e6e4e842036a993167d81ce1721a10ffe5def99057694ea16f35dd7"
+    },
+    {
+      "path": "training/t3/linear/seed2/best.joblib",
+      "sha256": "32c731ff3cb185e3a3c2c3d8c0c949327f29747ff060350a8c22bcb110b50f56"
+    },
+    {
+      "path": "training/t3/mlp64/seed17/best.joblib",
+      "sha256": "c8ba8149ed171d4df7e7e991254932fec92a24098bd21f30c578bacfc28339d3"
+    },
+    {
+      "path": "training/t3/mlp64/seed0/best.joblib",
+      "sha256": "aede765912d0df81952af3f43f553afbc6a3899476f3082a4521b1f0b6362cf1"
+    },
+    {
+      "path": "training/t3/mlp64/seed1/best.joblib",
+      "sha256": "5a55e4e6abf8f5c31cf6b860359b2d3bbc2769423233d398ab234b310ded2145"
+    },
+    {
+      "path": "training/t3/mlp64/seed2/best.joblib",
+      "sha256": "994fc6a79e501696403ee39fff9954a1467d619b7d562bff905c1c6c3490c41d"
+    },
+    {
+      "path": "training/t3/mlp128_64/seed17/best.joblib",
+      "sha256": "30d03a5ce9de7a4ed13c46411879c39e6a2b7d9496b8c17567333e0f383ff9d4"
+    },
+    {
+      "path": "training/t3/mlp128_64/seed0/best.joblib",
+      "sha256": "c30b73a0f90dc9f3dbaccde34e9756edd30a99e201475c6c97c7011af5c89e9c"
+    },
+    {
+      "path": "training/t3/mlp128_64/seed1/best.joblib",
+      "sha256": "23324423be2b479a8586744a7c56e2247b7eb026b30175ca76801bff427ed7e5"
+    },
+    {
+      "path": "training/t3/mlp128_64/seed2/best.joblib",
+      "sha256": "0b8f2498af12e1fda115ca22bc855200991535e478bdb39ad82067ba5c65f140"
+    }
+  ],
+  "all_24_fits_complete_before_test": true,
+  "selection": "validation reward, then lower cost; no test score feedback"
+}

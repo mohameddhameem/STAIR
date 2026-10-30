@@ -1,0 +1,1721 @@
+{
+  "models": [
+    {
+      "setting": 1,
+      "family": "random_forest",
+      "seed": 17,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.30872080009430647
+      },
+      "selected_threshold": {
+        "threshold": 0.31,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "random_forest",
+      "seed": 0,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.3104207366704941
+      },
+      "selected_threshold": {
+        "threshold": 0.31,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "random_forest",
+      "seed": 1,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.31859238259494305
+      },
+      "selected_threshold": {
+        "threshold": 0.31,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "random_forest",
+      "seed": 2,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.313733022660017
+      },
+      "selected_threshold": {
+        "threshold": 0.3,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "extra_trees",
+      "seed": 17,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.2606157884001732
+      },
+      "selected_threshold": {
+        "threshold": 0.31,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "extra_trees",
+      "seed": 0,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.26165343541651964
+      },
+      "selected_threshold": {
+        "threshold": 0.28,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "extra_trees",
+      "seed": 1,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.25865971483290195
+      },
+      "selected_threshold": {
+        "threshold": 0.3,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "extra_trees",
+      "seed": 2,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.2608804814517498
+      },
+      "selected_threshold": {
+        "threshold": 0.28,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "decision_tree",
+      "seed": 17,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.03629418462514877
+      },
+      "selected_threshold": {
+        "threshold": 0.06,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "decision_tree",
+      "seed": 0,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.036126517690718174
+      },
+      "selected_threshold": {
+        "threshold": 0.06,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "decision_tree",
+      "seed": 1,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.03534675110131502
+      },
+      "selected_threshold": {
+        "threshold": 0.06,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "decision_tree",
+      "seed": 2,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.035512558184564114
+      },
+      "selected_threshold": {
+        "threshold": 0.06,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "linear_svm",
+      "seed": 17,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.08720885403454304
+      },
+      "selected_threshold": {
+        "threshold": 0.48,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "linear_svm",
+      "seed": 0,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.08781461790204048
+      },
+      "selected_threshold": {
+        "threshold": 0.48,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "linear_svm",
+      "seed": 1,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.08460381533950567
+      },
+      "selected_threshold": {
+        "threshold": 0.49,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "linear_svm",
+      "seed": 2,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.08255284000188112
+      },
+      "selected_threshold": {
+        "threshold": 0.49,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "rbf_svm",
+      "seed": 17,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.09034139756113291
+      },
+      "selected_threshold": {
+        "threshold": 0.38,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "rbf_svm",
+      "seed": 0,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.09060608223080635
+      },
+      "selected_threshold": {
+        "threshold": 0.39,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "rbf_svm",
+      "seed": 1,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.08974459115415812
+      },
+      "selected_threshold": {
+        "threshold": 0.4,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "rbf_svm",
+      "seed": 2,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.09021143056452274
+      },
+      "selected_threshold": {
+        "threshold": 0.38,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "logistic_regression",
+      "seed": 17,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.035400995053350925
+      },
+      "selected_threshold": {
+        "threshold": 0.44,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "logistic_regression",
+      "seed": 0,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.03675263840705156
+      },
+      "selected_threshold": {
+        "threshold": 0.44,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "logistic_regression",
+      "seed": 1,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.03608051873743534
+      },
+      "selected_threshold": {
+        "threshold": 0.44,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "logistic_regression",
+      "seed": 2,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.03549386188387871
+      },
+      "selected_threshold": {
+        "threshold": 0.44,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "multinomial_nb",
+      "seed": 17,
+      "parameter": {
+        "alpha": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "alpha": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.02680115308612585
+      },
+      "selected_threshold": {
+        "threshold": 0.02,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "multinomial_nb",
+      "seed": 0,
+      "parameter": {
+        "alpha": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "alpha": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.03626222349703312
+      },
+      "selected_threshold": {
+        "threshold": 0.02,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "multinomial_nb",
+      "seed": 1,
+      "parameter": {
+        "alpha": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "alpha": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.026489299722015858
+      },
+      "selected_threshold": {
+        "threshold": 0.02,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 1,
+      "family": "multinomial_nb",
+      "seed": 2,
+      "parameter": {
+        "alpha": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "alpha": 0.1
+        },
+        "val_reward_fixed050": 0.36665124396723914,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 865.5630000000002,
+        "seconds": 0.025984227657318115
+      },
+      "selected_threshold": {
+        "threshold": 0.02,
+        "val_reward": 0.36665124396723914,
+        "val_accuracy": 0.6,
+        "val_cost": 865.5630000000002
+      }
+    },
+    {
+      "setting": 3,
+      "family": "random_forest",
+      "seed": 17,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.3182006673887372
+      },
+      "selected_threshold": {
+        "threshold": 0.7000000000000001,
+        "val_reward": 0.48496379265661965,
+        "val_accuracy": 0.65,
+        "val_cost": 1004.7108333333333
+      }
+    },
+    {
+      "setting": 3,
+      "family": "random_forest",
+      "seed": 0,
+      "parameter": {
+        "depth": 6,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 1,
+        "parameter": {
+          "depth": 6,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 1.0134053267538548
+      },
+      "selected_threshold": {
+        "threshold": 0.8200000000000001,
+        "val_reward": 0.4755756713564051,
+        "val_accuracy": 0.65,
+        "val_cost": 1278.1953333333336
+      }
+    },
+    {
+      "setting": 3,
+      "family": "random_forest",
+      "seed": 1,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.3084704726934433
+      },
+      "selected_threshold": {
+        "threshold": 0.72,
+        "val_reward": 0.4755756713564051,
+        "val_accuracy": 0.65,
+        "val_cost": 1278.1953333333336
+      }
+    },
+    {
+      "setting": 3,
+      "family": "random_forest",
+      "seed": 2,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.3169527603313327
+      },
+      "selected_threshold": {
+        "threshold": 0.72,
+        "val_reward": 0.4755756713564051,
+        "val_accuracy": 0.65,
+        "val_cost": 1278.1953333333336
+      }
+    },
+    {
+      "setting": 3,
+      "family": "extra_trees",
+      "seed": 17,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.4237173153087497
+      },
+      "selected_threshold": {
+        "threshold": 0.46,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    },
+    {
+      "setting": 3,
+      "family": "extra_trees",
+      "seed": 0,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.46779759135097265
+      },
+      "selected_threshold": {
+        "threshold": 0.44,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    },
+    {
+      "setting": 3,
+      "family": "extra_trees",
+      "seed": 1,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.35139180440455675
+      },
+      "selected_threshold": {
+        "threshold": 0.44,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    },
+    {
+      "setting": 3,
+      "family": "extra_trees",
+      "seed": 2,
+      "parameter": {
+        "depth": 3,
+        "leaf": 1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 3,
+          "leaf": 1
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.38960903137922287
+      },
+      "selected_threshold": {
+        "threshold": 0.46,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    },
+    {
+      "setting": 3,
+      "family": "decision_tree",
+      "seed": 17,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.036010284908115864
+      },
+      "selected_threshold": {
+        "threshold": 0.03,
+        "val_reward": 0.46783835060633233,
+        "val_accuracy": 0.6,
+        "val_cost": 776.8556666666668
+      }
+    },
+    {
+      "setting": 3,
+      "family": "decision_tree",
+      "seed": 0,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.037152668461203575
+      },
+      "selected_threshold": {
+        "threshold": 0.03,
+        "val_reward": 0.46783835060633233,
+        "val_accuracy": 0.6,
+        "val_cost": 776.8556666666668
+      }
+    },
+    {
+      "setting": 3,
+      "family": "decision_tree",
+      "seed": 1,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.03721506893634796
+      },
+      "selected_threshold": {
+        "threshold": 0.03,
+        "val_reward": 0.46783835060633233,
+        "val_accuracy": 0.6,
+        "val_cost": 776.8556666666668
+      }
+    },
+    {
+      "setting": 3,
+      "family": "decision_tree",
+      "seed": 2,
+      "parameter": {
+        "depth": 2
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "depth": 2
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.03714832104742527
+      },
+      "selected_threshold": {
+        "threshold": 0.03,
+        "val_reward": 0.46783835060633233,
+        "val_accuracy": 0.6,
+        "val_cost": 776.8556666666668
+      }
+    },
+    {
+      "setting": 3,
+      "family": "linear_svm",
+      "seed": 17,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.08560661412775517
+      },
+      "selected_threshold": {
+        "threshold": 0.52,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "linear_svm",
+      "seed": 0,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.08523949515074492
+      },
+      "selected_threshold": {
+        "threshold": 0.53,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "linear_svm",
+      "seed": 1,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.08425956964492798
+      },
+      "selected_threshold": {
+        "threshold": 0.54,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "linear_svm",
+      "seed": 2,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.46783835060633233,
+        "val_accuracy_fixed050": 0.6,
+        "val_cost_fixed050": 776.8556666666668,
+        "seconds": 0.0841626850888133
+      },
+      "selected_threshold": {
+        "threshold": 0.54,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "rbf_svm",
+      "seed": 17,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.09173640422523022
+      },
+      "selected_threshold": {
+        "threshold": 0.27,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "rbf_svm",
+      "seed": 0,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.0939979087561369
+      },
+      "selected_threshold": {
+        "threshold": 0.27,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "rbf_svm",
+      "seed": 1,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.09086838085204363
+      },
+      "selected_threshold": {
+        "threshold": 0.27,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "rbf_svm",
+      "seed": 2,
+      "parameter": {
+        "C": 1.0,
+        "gamma": "scale"
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 1.0,
+          "gamma": "scale"
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.09493703674525023
+      },
+      "selected_threshold": {
+        "threshold": 0.27,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "logistic_regression",
+      "seed": 17,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.48496379265661965,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 1004.7108333333333,
+        "seconds": 0.03628417570143938
+      },
+      "selected_threshold": {
+        "threshold": 0.35000000000000003,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "logistic_regression",
+      "seed": 0,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.48496379265661965,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 1004.7108333333333,
+        "seconds": 0.036276922561228275
+      },
+      "selected_threshold": {
+        "threshold": 0.35000000000000003,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "logistic_regression",
+      "seed": 1,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.48496379265661965,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 1004.7108333333333,
+        "seconds": 0.035872673615813255
+      },
+      "selected_threshold": {
+        "threshold": 0.35000000000000003,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "logistic_regression",
+      "seed": 2,
+      "parameter": {
+        "C": 0.1
+      },
+      "fixed_validation": {
+        "candidate": 0,
+        "parameter": {
+          "C": 0.1
+        },
+        "val_reward_fixed050": 0.48496379265661965,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 1004.7108333333333,
+        "seconds": 0.03666107263416052
+      },
+      "selected_threshold": {
+        "threshold": 0.35000000000000003,
+        "val_reward": 0.5030829875111945,
+        "val_accuracy": 0.65,
+        "val_cost": 874.1945
+      }
+    },
+    {
+      "setting": 3,
+      "family": "multinomial_nb",
+      "seed": 17,
+      "parameter": {
+        "alpha": 1.0
+      },
+      "fixed_validation": {
+        "candidate": 1,
+        "parameter": {
+          "alpha": 1.0
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.05596911162137985
+      },
+      "selected_threshold": {
+        "threshold": 0.45,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    },
+    {
+      "setting": 3,
+      "family": "multinomial_nb",
+      "seed": 0,
+      "parameter": {
+        "alpha": 1.0
+      },
+      "fixed_validation": {
+        "candidate": 1,
+        "parameter": {
+          "alpha": 1.0
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.05236884672194719
+      },
+      "selected_threshold": {
+        "threshold": 0.45,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    },
+    {
+      "setting": 3,
+      "family": "multinomial_nb",
+      "seed": 1,
+      "parameter": {
+        "alpha": 1.0
+      },
+      "fixed_validation": {
+        "candidate": 1,
+        "parameter": {
+          "alpha": 1.0
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.05192389991134405
+      },
+      "selected_threshold": {
+        "threshold": 0.45,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    },
+    {
+      "setting": 3,
+      "family": "multinomial_nb",
+      "seed": 2,
+      "parameter": {
+        "alpha": 1.0
+      },
+      "fixed_validation": {
+        "candidate": 1,
+        "parameter": {
+          "alpha": 1.0
+        },
+        "val_reward_fixed050": 0.48678221029335383,
+        "val_accuracy_fixed050": 0.65,
+        "val_cost_fixed050": 933.6483333333332,
+        "seconds": 0.05167110916227102
+      },
+      "selected_threshold": {
+        "threshold": 0.45,
+        "val_reward": 0.48678221029335383,
+        "val_accuracy": 0.65,
+        "val_cost": 933.6483333333332
+      }
+    }
+  ],
+  "model_hashes": [
+    {
+      "path": "training/t1/random_forest/seed17/best.joblib",
+      "sha256": "28204d8462b1dc8568b61b1902d1ca88484c2cbdd88c1ff33ac2722675d366ea"
+    },
+    {
+      "path": "training/t1/random_forest/seed0/best.joblib",
+      "sha256": "5088bac146bc42ca94ab70392c1ba1ee13dfe8252e9e9d0c72fad519e2abfff8"
+    },
+    {
+      "path": "training/t1/random_forest/seed1/best.joblib",
+      "sha256": "53c92831ca8b21b7fe96702617ced34d4291a7ee3b8d67c37883e0f44b0ad15c"
+    },
+    {
+      "path": "training/t1/random_forest/seed2/best.joblib",
+      "sha256": "667dc929d53617096613e6faab1e885f0d65618cee48ea1222e71c63ea52b131"
+    },
+    {
+      "path": "training/t1/extra_trees/seed17/best.joblib",
+      "sha256": "aa085aaa1d77a28a1b2449d4345b0abc46242974cf2f13e1d996105d8139fdf1"
+    },
+    {
+      "path": "training/t1/extra_trees/seed0/best.joblib",
+      "sha256": "b43ca960f61bb004f2cf5ee127067b74217543ce8f5b3b027ec496855161c167"
+    },
+    {
+      "path": "training/t1/extra_trees/seed1/best.joblib",
+      "sha256": "e486450e3b7b7dbb78ec9601daf3fec24fcf08e817070f187ecbc55fe048fa6a"
+    },
+    {
+      "path": "training/t1/extra_trees/seed2/best.joblib",
+      "sha256": "df006aae16e102543d72543d97354acf9256e002c29ee2f84a105d5f25b0ebb0"
+    },
+    {
+      "path": "training/t1/decision_tree/seed17/best.joblib",
+      "sha256": "a9cd9e9e579e51adb740e5d23c8db2d03c47237d62ed086cdf26fd8048176c7d"
+    },
+    {
+      "path": "training/t1/decision_tree/seed0/best.joblib",
+      "sha256": "d043ae467e58132beaadc7ac85b01f7e9342a201cbb63053d8c6445c595fa3d7"
+    },
+    {
+      "path": "training/t1/decision_tree/seed1/best.joblib",
+      "sha256": "07e4407a82aea10dc7874584ef5e5a99a537f22509e81442af4e9a9a2a36c23e"
+    },
+    {
+      "path": "training/t1/decision_tree/seed2/best.joblib",
+      "sha256": "2a982eedb000ae540151f4cbde0ce4b5553b8fc383acfdd016f105dc7d4e8dd7"
+    },
+    {
+      "path": "training/t1/linear_svm/seed17/best.joblib",
+      "sha256": "70dcc10e7c2b19e9afb94e55af43ba45c60705005d6552ceca29cafa34d727f3"
+    },
+    {
+      "path": "training/t1/linear_svm/seed0/best.joblib",
+      "sha256": "22e01cdf5775941e7c3f19bb0c8c2bef035146c8a4cb5aac53e1f3d797a95bf9"
+    },
+    {
+      "path": "training/t1/linear_svm/seed1/best.joblib",
+      "sha256": "26ba569f14b940a2bcd7a0c3fc7e1bef52fb3a1f83af014578a1bce8f706f7bc"
+    },
+    {
+      "path": "training/t1/linear_svm/seed2/best.joblib",
+      "sha256": "6f861e07345a58089c5c5538e6e87d895c954de547a518d3fcdb5bca5ac1ba69"
+    },
+    {
+      "path": "training/t1/rbf_svm/seed17/best.joblib",
+      "sha256": "27c80ff58ffe0fcd2dd31d8dbf2db5513258a712cb2d7be0bdb4ba3439e3e4b2"
+    },
+    {
+      "path": "training/t1/rbf_svm/seed0/best.joblib",
+      "sha256": "420e2218d0008d547922014d8575f35af9b8cdd22f51a9cadd79154b68c1f6e9"
+    },
+    {
+      "path": "training/t1/rbf_svm/seed1/best.joblib",
+      "sha256": "c18ce5e886d8ba3ace71ade588fcef04e30a062d9a29d66c579fe9fb3ab12f15"
+    },
+    {
+      "path": "training/t1/rbf_svm/seed2/best.joblib",
+      "sha256": "92059bc29b0b4ced02d66737808085a50fe3a470ee77bfbac6dd95c1ac9c0cde"
+    },
+    {
+      "path": "training/t1/logistic_regression/seed17/best.joblib",
+      "sha256": "0fdfb5703d21352979e147a61b746179c42d83b88603f292191c548d9709c284"
+    },
+    {
+      "path": "training/t1/logistic_regression/seed0/best.joblib",
+      "sha256": "1238b828795ed94b12be7a88923dd7e481deea40fffdd0ce5a7ff5907fad91ce"
+    },
+    {
+      "path": "training/t1/logistic_regression/seed1/best.joblib",
+      "sha256": "33d6f2d90886de316c9c3082b7646335fa63a5e514b5539796e0e1dbe9c33f8b"
+    },
+    {
+      "path": "training/t1/logistic_regression/seed2/best.joblib",
+      "sha256": "ab72e47799adef3b1e4ca85fdf599baa14cce16cfd829e61ee60357d47e5d7ae"
+    },
+    {
+      "path": "training/t1/multinomial_nb/seed17/best.joblib",
+      "sha256": "bc0ed51126499f91f8365ae200d7b6dd500eb10f9823306834c717dd11d14a55"
+    },
+    {
+      "path": "training/t1/multinomial_nb/seed0/best.joblib",
+      "sha256": "b59327d58b9e100779ea30f40e4746353d405618f0bd585b045aedc38094b423"
+    },
+    {
+      "path": "training/t1/multinomial_nb/seed1/best.joblib",
+      "sha256": "4078284d6183ca0b69119836e63944990c21336c068cc7195cd96bac73683afb"
+    },
+    {
+      "path": "training/t1/multinomial_nb/seed2/best.joblib",
+      "sha256": "3b5011b59ce9d274ab005165f649c5652c6dc27c791c054dc5fb90d3401e0050"
+    },
+    {
+      "path": "training/t3/random_forest/seed17/best.joblib",
+      "sha256": "2c0177ad193d0322334091e55f8f4934fd20cf64519da3d3dc211cd3260c58b9"
+    },
+    {
+      "path": "training/t3/random_forest/seed0/best.joblib",
+      "sha256": "8db4d378246176880531f31bdc10195c9aae7ac25e800573e7cc21cecbb9c6df"
+    },
+    {
+      "path": "training/t3/random_forest/seed1/best.joblib",
+      "sha256": "de78294dee921665e14d3eddbd7578123a1366125d4ea3caab6f5755b2df6a4b"
+    },
+    {
+      "path": "training/t3/random_forest/seed2/best.joblib",
+      "sha256": "ff3ae4863a5114fae5db58ff1d333ae04f5ebbae64c89bc9a4ecdb32e51a87ac"
+    },
+    {
+      "path": "training/t3/extra_trees/seed17/best.joblib",
+      "sha256": "7915e78b9433b271fad4c088cae54afa7290785f668a82f0cedc75f0bef39b6d"
+    },
+    {
+      "path": "training/t3/extra_trees/seed0/best.joblib",
+      "sha256": "16261e5a3e10460ff4b6ea269034aaaca412fd8fd7680027b48a534b304253f8"
+    },
+    {
+      "path": "training/t3/extra_trees/seed1/best.joblib",
+      "sha256": "e196bf253e1a8615bbb2ba6ca5429a55aa85b134f3eb23cf38f17bf62a1d5856"
+    },
+    {
+      "path": "training/t3/extra_trees/seed2/best.joblib",
+      "sha256": "508cfa3fc44581c957bd6b78266b59b21a4634b6910a92289524b7008096949a"
+    },
+    {
+      "path": "training/t3/decision_tree/seed17/best.joblib",
+      "sha256": "843867ab162c16e02c141d7d380b6fbd3e9c68c3c5fcd65f2595854d3bd0a5e8"
+    },
+    {
+      "path": "training/t3/decision_tree/seed0/best.joblib",
+      "sha256": "b7e77d859f943ce2963ef82f237e0fce1bfd56f13cc21a376f63010f7693663c"
+    },
+    {
+      "path": "training/t3/decision_tree/seed1/best.joblib",
+      "sha256": "f784f2293d59c9252ed660b82af945f8debfb5a4e98e7652f4f51324a844a103"
+    },
+    {
+      "path": "training/t3/decision_tree/seed2/best.joblib",
+      "sha256": "41abca8640d873793cb75f83b4518c1292da5134b1e83162ef66ec5b514a8ee7"
+    },
+    {
+      "path": "training/t3/linear_svm/seed17/best.joblib",
+      "sha256": "9c469cb8e5e4b2619bdba2a215d5abf86a11030e0b637a8d03eb7c5f4f6f6bce"
+    },
+    {
+      "path": "training/t3/linear_svm/seed0/best.joblib",
+      "sha256": "366b2ff6e8026d74a324c0260a626ba9baafd46eb498676350a608a4c3fa15b7"
+    },
+    {
+      "path": "training/t3/linear_svm/seed1/best.joblib",
+      "sha256": "2aded9d624255ba890ecbb82dd3709b8eb9fb60b6be9ecd49aa39cb9d2156c2c"
+    },
+    {
+      "path": "training/t3/linear_svm/seed2/best.joblib",
+      "sha256": "bbdf46a11bd74a1a2df134a2c265ff07dd1ca6c1758b56e06c96d0af5c5d1ff6"
+    },
+    {
+      "path": "training/t3/rbf_svm/seed17/best.joblib",
+      "sha256": "6e85c073f12ddae86e26d1341556991725b335cced002ed9e5a3c79801456d1f"
+    },
+    {
+      "path": "training/t3/rbf_svm/seed0/best.joblib",
+      "sha256": "0e8f8de214b86fd28ec9fb9de0fffdddea6318ac907c1d2a9f9d04c61ffe24bd"
+    },
+    {
+      "path": "training/t3/rbf_svm/seed1/best.joblib",
+      "sha256": "154cf30841ca0ab9c00423ec429bb7fb00c2990d71d2cf87e43d50d1b7f8f1a2"
+    },
+    {
+      "path": "training/t3/rbf_svm/seed2/best.joblib",
+      "sha256": "cb82cb88ff15bd761166f9e658ac18354b94ad4eacb9601dea018f08926f6364"
+    },
+    {
+      "path": "training/t3/logistic_regression/seed17/best.joblib",
+      "sha256": "e2d52984f5b4b2110b356f0d8a5108fdd7a72af5ea3f7ec227a2f214b641450e"
+    },
+    {
+      "path": "training/t3/logistic_regression/seed0/best.joblib",
+      "sha256": "ea571db4250ea8d746c00c3a79358d46dcde659f763cfbe336d94cc741aa818d"
+    },
+    {
+      "path": "training/t3/logistic_regression/seed1/best.joblib",
+      "sha256": "ff85256cff03acc2ece946be2ec30d6aed87c8989c45b26b21371a5d9a396e69"
+    },
+    {
+      "path": "training/t3/logistic_regression/seed2/best.joblib",
+      "sha256": "a67356070f3c1e0055e3edd8d13b07e7493b73f397b01c3ce3a2884179353d05"
+    },
+    {
+      "path": "training/t3/multinomial_nb/seed17/best.joblib",
+      "sha256": "df9b273fb851468680decb7b72f4d93ee1ae6d248bac5ffc566b328a827cf35d"
+    },
+    {
+      "path": "training/t3/multinomial_nb/seed0/best.joblib",
+      "sha256": "53c8c494d0fca988ae823f850ce27e9101f24f5c81db076bd6473940198ffea4"
+    },
+    {
+      "path": "training/t3/multinomial_nb/seed1/best.joblib",
+      "sha256": "3deeb7a571f8a0266187149b1817ba2f8f9fe7143e48fa8c3b38d6a1032eed90"
+    },
+    {
+      "path": "training/t3/multinomial_nb/seed2/best.joblib",
+      "sha256": "2f7cfe862bf902b2d66b32de54a19e82cad12c89630778e232f020fca2691ee9"
+    }
+  ],
+  "global_family_choices": [
+    {
+      "setting": 1,
+      "seed": 17,
+      "point": "OP_A_fixed_050",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 1,
+      "seed": 17,
+      "point": "val_reward_selected",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 1,
+      "seed": 0,
+      "point": "OP_A_fixed_050",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 1,
+      "seed": 0,
+      "point": "val_reward_selected",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 1,
+      "seed": 1,
+      "point": "OP_A_fixed_050",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 1,
+      "seed": 1,
+      "point": "val_reward_selected",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 1,
+      "seed": 2,
+      "point": "OP_A_fixed_050",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 1,
+      "seed": 2,
+      "point": "val_reward_selected",
+      "family": "decision_tree"
+    },
+    {
+      "setting": 3,
+      "seed": 17,
+      "point": "OP_A_fixed_050",
+      "family": "extra_trees"
+    },
+    {
+      "setting": 3,
+      "seed": 17,
+      "point": "val_reward_selected",
+      "family": "linear_svm"
+    },
+    {
+      "setting": 3,
+      "seed": 0,
+      "point": "OP_A_fixed_050",
+      "family": "extra_trees"
+    },
+    {
+      "setting": 3,
+      "seed": 0,
+      "point": "val_reward_selected",
+      "family": "linear_svm"
+    },
+    {
+      "setting": 3,
+      "seed": 1,
+      "point": "OP_A_fixed_050",
+      "family": "extra_trees"
+    },
+    {
+      "setting": 3,
+      "seed": 1,
+      "point": "val_reward_selected",
+      "family": "linear_svm"
+    },
+    {
+      "setting": 3,
+      "seed": 2,
+      "point": "OP_A_fixed_050",
+      "family": "extra_trees"
+    },
+    {
+      "setting": 3,
+      "seed": 2,
+      "point": "val_reward_selected",
+      "family": "linear_svm"
+    }
+  ],
+  "all_56_models_complete_before_test": true
+}

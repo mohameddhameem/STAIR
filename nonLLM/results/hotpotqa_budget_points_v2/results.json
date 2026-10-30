@@ -1,0 +1,434 @@
+[
+  {
+    "architecture": "linear",
+    "training": "SFT",
+    "method": "sft",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.6000000000000001,
+      0.35000000000000003,
+      0.55
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1005.963063063063,
+    "test_n": 1481,
+    "test_correct": 1133,
+    "accuracy_pct": 76.50236326806213,
+    "cost": 1001.2336259284267,
+    "cost_pct_ss": 107.77541721511591,
+    "route_counts": {
+      "WW": 3,
+      "WS": 10,
+      "SW": 5,
+      "SS": 1463
+    }
+  },
+  {
+    "architecture": "linear",
+    "training": "SFT",
+    "method": "sft",
+    "objective": "ss_budget",
+    "threshold": [
+      0.5,
+      0.55,
+      0.55
+    ],
+    "validation_correct": 790,
+    "validation_cost": 462.56306306306305,
+    "test_n": 1481,
+    "test_correct": 1033,
+    "accuracy_pct": 69.75016880486157,
+    "cost": 460.082376772451,
+    "cost_pct_ss": 49.524475432987195,
+    "route_counts": {
+      "WW": 4,
+      "WS": 994,
+      "SW": 1,
+      "SS": 482
+    }
+  },
+  {
+    "architecture": "linear",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.6000000000000001,
+      0.30000000000000004,
+      0.55
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1006.0666666666667,
+    "test_n": 1481,
+    "test_correct": 1135,
+    "accuracy_pct": 76.63740715732614,
+    "cost": 1002.7987846049966,
+    "cost_pct_ss": 107.94389500591998,
+    "route_counts": {
+      "WW": 1,
+      "WS": 10,
+      "SW": 1,
+      "SS": 1469
+    }
+  },
+  {
+    "architecture": "linear",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "objective": "ss_budget",
+    "threshold": [
+      0.5,
+      0.55,
+      0.55
+    ],
+    "validation_correct": 797,
+    "validation_cost": 550.6666666666666,
+    "test_n": 1481,
+    "test_correct": 1057,
+    "accuracy_pct": 71.37069547602971,
+    "cost": 560.3477380148548,
+    "cost_pct_ss": 60.31730226209417,
+    "route_counts": {
+      "WW": 2,
+      "WS": 814,
+      "SW": 0,
+      "SS": 665
+    }
+  },
+  {
+    "architecture": "linear",
+    "training": "GRPO",
+    "method": "grpo",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.65,
+      0.65,
+      0.7000000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 998.7333333333333,
+    "test_n": 1481,
+    "test_correct": 1126,
+    "accuracy_pct": 76.02970965563809,
+    "cost": 990.3126266036462,
+    "cost_pct_ss": 106.59985216400928,
+    "route_counts": {
+      "WW": 0,
+      "WS": 34,
+      "SW": 0,
+      "SS": 1447
+    }
+  },
+  {
+    "architecture": "linear",
+    "training": "GRPO",
+    "method": "grpo",
+    "objective": "ss_budget",
+    "threshold": [
+      0.6000000000000001,
+      0.7000000000000001,
+      0.65
+    ],
+    "validation_correct": 843,
+    "validation_cost": 892.6153153153153,
+    "test_n": 1481,
+    "test_correct": 1102,
+    "accuracy_pct": 74.40918298446995,
+    "cost": 897.2761647535449,
+    "cost_pct_ss": 96.58516305205004,
+    "route_counts": {
+      "WW": 0,
+      "WS": 202,
+      "SW": 9,
+      "SS": 1270
+    }
+  },
+  {
+    "architecture": "mlp64",
+    "training": "SFT",
+    "method": "sft",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.75,
+      0.55,
+      0.6000000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 991.4,
+    "test_n": 1481,
+    "test_correct": 1138,
+    "accuracy_pct": 76.83997299122214,
+    "cost": 991.8062120189062,
+    "cost_pct_ss": 106.76062562098022,
+    "route_counts": {
+      "WW": 2,
+      "WS": 29,
+      "SW": 0,
+      "SS": 1450
+    }
+  },
+  {
+    "architecture": "mlp64",
+    "training": "SFT",
+    "method": "sft",
+    "objective": "ss_budget",
+    "threshold": [
+      0.65,
+      0.55,
+      0.6000000000000001
+    ],
+    "validation_correct": 845,
+    "validation_cost": 870.7189189189189,
+    "test_n": 1481,
+    "test_correct": 1124,
+    "accuracy_pct": 75.89466576637408,
+    "cost": 876.4679270762998,
+    "cost_pct_ss": 94.3453096960495,
+    "route_counts": {
+      "WW": 8,
+      "WS": 232,
+      "SW": 0,
+      "SS": 1241
+    }
+  },
+  {
+    "architecture": "mlp64",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.75,
+      0.4,
+      0.45
+    ],
+    "validation_correct": 852,
+    "validation_cost": 992.7954954954955,
+    "test_n": 1481,
+    "test_correct": 1130,
+    "accuracy_pct": 76.29979743416611,
+    "cost": 992.8582039162728,
+    "cost_pct_ss": 106.87386479184852,
+    "route_counts": {
+      "WW": 4,
+      "WS": 20,
+      "SW": 34,
+      "SS": 1423
+    }
+  },
+  {
+    "architecture": "mlp64",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "objective": "ss_budget",
+    "threshold": [
+      0.65,
+      0.45,
+      0.45
+    ],
+    "validation_correct": 849,
+    "validation_cost": 902.0693693693694,
+    "test_n": 1481,
+    "test_correct": 1126,
+    "accuracy_pct": 76.02970965563809,
+    "cost": 912.8453747467927,
+    "cost_pct_ss": 98.26107370794324,
+    "route_counts": {
+      "WW": 4,
+      "WS": 166,
+      "SW": 31,
+      "SS": 1280
+    }
+  },
+  {
+    "architecture": "mlp64",
+    "training": "GRPO",
+    "method": "grpo",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.9500000000000001,
+      0.0,
+      0.9500000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1004.8153153153153,
+    "test_n": 1481,
+    "test_correct": 1136,
+    "accuracy_pct": 76.70492910195814,
+    "cost": 1005.236326806212,
+    "cost_pct_ss": 108.20627845061486,
+    "route_counts": {
+      "WW": 6,
+      "WS": 0,
+      "SW": 0,
+      "SS": 1475
+    }
+  },
+  {
+    "architecture": "mlp64",
+    "training": "GRPO",
+    "method": "grpo",
+    "objective": "ss_budget",
+    "threshold": [
+      0.9,
+      0.9500000000000001,
+      0.9500000000000001
+    ],
+    "validation_correct": 844,
+    "validation_cost": 885.8,
+    "test_n": 1481,
+    "test_correct": 1123,
+    "accuracy_pct": 75.82714382174207,
+    "cost": 887.5320729237002,
+    "cost_pct_ss": 95.5362834148224,
+    "route_counts": {
+      "WW": 0,
+      "WS": 221,
+      "SW": 0,
+      "SS": 1260
+    }
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "SFT",
+    "method": "sft",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.8500000000000001,
+      0.55,
+      0.6000000000000001
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1001.563063063063,
+    "test_n": 1481,
+    "test_correct": 1138,
+    "accuracy_pct": 76.83997299122214,
+    "cost": 998.3241053342336,
+    "cost_pct_ss": 107.46222877655906,
+    "route_counts": {
+      "WW": 2,
+      "WS": 17,
+      "SW": 1,
+      "SS": 1461
+    }
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "SFT",
+    "method": "sft",
+    "objective": "ss_budget",
+    "threshold": [
+      0.75,
+      0.6000000000000001,
+      0.6000000000000001
+    ],
+    "validation_correct": 848,
+    "validation_cost": 905.6,
+    "test_n": 1481,
+    "test_correct": 1137,
+    "accuracy_pct": 76.77245104659015,
+    "cost": 912.1100607697501,
+    "cost_pct_ss": 98.18192258016686,
+    "route_counts": {
+      "WW": 1,
+      "WS": 175,
+      "SW": 1,
+      "SS": 1304
+    }
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "objective": "max_accuracy",
+    "threshold": [
+      0.8500000000000001,
+      0.35000000000000003,
+      0.4
+    ],
+    "validation_correct": 852,
+    "validation_cost": 991.6153153153153,
+    "test_n": 1481,
+    "test_correct": 1138,
+    "accuracy_pct": 76.83997299122214,
+    "cost": 991.7285617825794,
+    "cost_pct_ss": 106.7522671455952,
+    "route_counts": {
+      "WW": 1,
+      "WS": 30,
+      "SW": 2,
+      "SS": 1448
+    }
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "SFT + Reward",
+    "method": "exact",
+    "objective": "ss_budget",
+    "threshold": [
+      0.75,
+      0.35000000000000003,
+      0.4
+    ],
+    "validation_correct": 848,
+    "validation_cost": 903.6153153153153,
+    "test_n": 1481,
+    "test_correct": 1137,
+    "accuracy_pct": 76.77245104659015,
+    "cost": 913.4483457123565,
+    "cost_pct_ss": 98.32597908636777,
+    "route_counts": {
+      "WW": 4,
+      "WS": 169,
+      "SW": 2,
+      "SS": 1306
+    }
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "GRPO",
+    "method": "grpo",
+    "objective": "max_accuracy",
+    "threshold": [
+      1.0,
+      0.0,
+      1.0
+    ],
+    "validation_correct": 852,
+    "validation_cost": 1009.0,
+    "test_n": 1481,
+    "test_correct": 1137,
+    "accuracy_pct": 76.77245104659015,
+    "cost": 1009.0,
+    "cost_pct_ss": 108.6114101184069,
+    "route_counts": {
+      "WW": 0,
+      "WS": 0,
+      "SW": 0,
+      "SS": 1481
+    }
+  },
+  {
+    "architecture": "mlp128_64",
+    "training": "GRPO",
+    "method": "grpo",
+    "objective": "ss_budget",
+    "threshold": [
+      0.9500000000000001,
+      1.0,
+      1.0
+    ],
+    "validation_correct": 776,
+    "validation_cost": 430.4,
+    "test_n": 1481,
+    "test_correct": 1030,
+    "accuracy_pct": 69.54760297096557,
+    "cost": 435.187711006077,
+    "cost_pct_ss": 46.844748224550806,
+    "route_counts": {
+      "WW": 0,
+      "WS": 1044,
+      "SW": 0,
+      "SS": 437
+    }
+  }
+]

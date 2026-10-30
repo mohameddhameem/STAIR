@@ -1,0 +1,290 @@
+[
+  {
+    "run": "training/mlp128_64/seed17/qa_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6137239933013916,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed17/qa_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.522355318069458,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp128_64/seed17/qa_sft",
+    "best_epoch": 1,
+    "last_epoch": 3,
+    "best_criterion": 0.5381831656743392,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed17/ret_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6923737525939941,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed17/ret_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.6744961142539978,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp128_64/seed17/ret_sft",
+    "best_epoch": 2,
+    "last_epoch": 3,
+    "best_criterion": 0.6849659396460674,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed18/qa_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6061503291130066,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed18/qa_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.5220228433609009,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp128_64/seed18/qa_sft",
+    "best_epoch": 1,
+    "last_epoch": 3,
+    "best_criterion": 0.5353274974965112,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed18/ret_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6927669048309326,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed18/ret_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.6751486659049988,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp128_64/seed18/ret_sft",
+    "best_epoch": 2,
+    "last_epoch": 3,
+    "best_criterion": 0.6842510642419323,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed19/qa_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6124446392059326,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed19/qa_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.52275550365448,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp128_64/seed19/qa_sft",
+    "best_epoch": 1,
+    "last_epoch": 3,
+    "best_criterion": 0.5334702838463585,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed19/ret_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6919810771942139,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp128_64/seed19/ret_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.6747216582298279,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp128_64/seed19/ret_sft",
+    "best_epoch": 2,
+    "last_epoch": 3,
+    "best_criterion": 0.6845001176085344,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed17/qa_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.5991169214248657,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed17/qa_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.5424654483795166,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp64/seed17/qa_sft",
+    "best_epoch": 1,
+    "last_epoch": 3,
+    "best_criterion": 0.5408667879320815,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed17/ret_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6897475719451904,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed17/ret_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.6793094277381897,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp64/seed17/ret_sft",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6753082035411699,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed18/qa_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.5960516929626465,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed18/qa_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.5372963547706604,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp64/seed18/qa_sft",
+    "best_epoch": 1,
+    "last_epoch": 3,
+    "best_criterion": 0.5342849286303527,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed18/ret_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.689919650554657,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed18/ret_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.6789406538009644,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp64/seed18/ret_sft",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6807089719169268,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed19/qa_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.5941190123558044,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed19/qa_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.5359587669372559,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp64/seed19/qa_sft",
+    "best_epoch": 1,
+    "last_epoch": 3,
+    "best_criterion": 0.5386404843166175,
+    "lr": 0.0001,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed19/ret_exact",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6895313262939453,
+    "lr": 1e-05,
+    "batch": 8
+  },
+  {
+    "run": "training/mlp64/seed19/ret_grpo",
+    "best_epoch": 1,
+    "last_epoch": 2,
+    "best_criterion": 0.6791173815727234,
+    "lr": 0.0001,
+    "batch": 16
+  },
+  {
+    "run": "training/mlp64/seed19/ret_sft",
+    "best_epoch": 3,
+    "last_epoch": 3,
+    "best_criterion": 0.6789471499531871,
+    "lr": 0.0001,
+    "batch": 8
+  }
+]
