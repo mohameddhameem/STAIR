@@ -355,6 +355,7 @@ def main():
     ap.add_argument("--twin-gpus", type=int, default=2)
     ap.add_argument("--twin-cards", default="h100|h100nvl", help="Slurm features the copy may run on (80 GB+ cards)")
     ap.add_argument("--twin-mem", default="240G", help="CPU memory of the copy (loading a 72B model for QLoRA used ~119 GB)")
+    ap.add_argument("--ss-jon", action="store_true", help="AL-02 replication on Jonathan's pools, retrievals and prompt (answer step)")
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
@@ -428,6 +429,17 @@ def main():
             sys.exit(f"sbatch failed: {err}" if rc else f"submitted {out.split(';')[0]}  stair-{P.prefix}{j['name']}: whichever of it and the "
                      f"4-GPU job starts first trains {a.twin}")
         return
+    if a.ss_jon:                           # one GPU job, no submitter: the queue is nearly full; compare runs on the login node
+        P.prefix = "jon-"
+        P.add("ans-l70", "--stage ss_jon --part answer --model l70", tp("l70"), 6)   # --model: the big-GPU card rule
+        cmd = P._cmd(P.jobs[0], [])
+        if a.dry:
+            print(" ".join(cmd))
+            return
+        rc, out, err = _sh(cmd)
+        sys.exit(f"sbatch failed: {err}" if rc else f"submitted {out.split(';')[0]}  stair-jon-ans-l70; when it has finished:  "
+                 "bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py --config configs/default.yaml "
+                 "--stage ss_jon --part compare'")
     if a.ss:
         rm, am = (W.get("ws2", {}).get("config") or ["q72", 1, "l70", 1])[0::2]
         P.prefix = "ss-"

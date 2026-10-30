@@ -20,6 +20,8 @@ Stages, in the order the job chain runs them (WS1-2 first, then the fine-tuning 
   export      only the team results tables: one CSV per experiment and seed, checked by stair_common.schema
   ss_greedy   AL-02 replication: the team's always-strong (greedy Qwen 72B -> Llama 70B, AgentTTS's prompts, no fuser) on
               our stack, compared question by question with the shared rows (--part retrieve | answer | compare)
+  ss_jon      AL-02 replication on Jonathan's own inputs: his pools (tts_test.json), his stored retrievals, his answer prompt;
+              Llama 70B re-run on our stack and compared with his stored answers (--part check | answer | compare)
   status      rebuild the status page and push it to GitHub now
   all         everything above in order (the CPU dry run)
 """
@@ -151,7 +153,7 @@ def _parts_or(arg, parts):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
-    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "export", "ss_greedy", "all"])
+    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "export", "ss_greedy", "ss_jon", "all"])
     ap.add_argument("--part", default="")
     ap.add_argument("--model", default="")
     ap.add_argument("--ws", default="")
@@ -244,6 +246,10 @@ def main():
             export(cfg)
         elif st == "status":
             maybe_push(cfg, force=True)
+        elif st == "ss_jon":
+            from stair import ss_jon
+            for p in _parts_or(a.part, ["check", "answer", "compare"]):
+                ss_jon.run(cfg, p)
         elif st == "ss_greedy":
             for p in _parts_or(a.part, ["retrieve", "answer", "compare"]):
                 AT.run_ss(cfg, p)
