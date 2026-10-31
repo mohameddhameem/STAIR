@@ -1,0 +1,11 @@
+{
+ "seed": 20261031,
+ "n": 60,
+ "by_label": {"abstain_and_refer": 30, "diagnose_and_manage": 30},
+ "by_category": {"refer": 26, "urgent_refer": 4, "manage_after_tests": 1, "manage_in_gp": 29},
+ "by_urgency": {"emergency": 15, "urgent": 12, "routine": 3, "none": 30},
+ "test_total": 485,
+ "emergency_in_test": 15,
+ "sha256": "9128558de4c7b9a6cf3dec1aefa6aff602199e29bb867519df421b0bb35da97c",
+ "generated_on": "lab hmcs-ada600, 31 Oct 2026 21:42, gpab_pilot_split.py (seed 20261031), from the authors' test split; verified by Jonathan (check 2)"
+}
