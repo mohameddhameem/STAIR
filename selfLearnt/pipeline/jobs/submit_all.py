@@ -355,6 +355,7 @@ def main():
     ap.add_argument("--twin-gpus", type=int, default=2)
     ap.add_argument("--twin-cards", default="h100|h100nvl", help="Slurm features the copy may run on (80 GB+ cards)")
     ap.add_argument("--twin-mem", default="240G", help="CPU memory of the copy (loading a 72B model for QLoRA used ~119 GB)")
+    ap.add_argument("--fhir-test", action="store_true", help="CPU job: start MedAgentBench's records server and check one known answer")
     ap.add_argument("--ss-jon", action="store_true", help="AL-02 replication on Jonathan's pools, retrievals and prompt (answer step)")
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
@@ -381,6 +382,12 @@ def main():
     cfg = load_config(os.path.join(ROOT, env.get("CONFIG", "configs/default.yaml")), seed=a.seed)
     sd = f" --seed {a.seed}" if a.seed is not None else ""
     os.makedirs(os.path.join(ROOT, "logs"), exist_ok=True)
+    if a.fhir_test:
+        cmd = ["sbatch", "--parsable"] + [f"{flag}={env[k]}" for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos"))
+                                          if env.get(k) and not env[k].startswith("EDIT")] + [os.path.join("jobs", "fhir_test.sbatch")]
+        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+        sys.exit(f"sbatch failed: {r.stderr.strip()}" if r.returncode else
+                 f"submitted {r.stdout.strip()}: tail -f logs/stair-fhir-test-{r.stdout.strip()}.out")
     if a.smoke:
         cmd = ["sbatch", "--parsable"] + [f"{flag}={env[k]}" for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos"))
                                           if env.get(k) and not env[k].startswith("EDIT")]
