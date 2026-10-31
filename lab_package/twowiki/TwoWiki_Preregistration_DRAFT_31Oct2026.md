@@ -105,7 +105,7 @@ Train the HotpotQA champion recipe (fresh adapter, GRPO(Reward), same seeds, sam
 - TaskBench: official JARVIS evaluation check, 20-instance timing pilot, metric decision, sub-domain split — after 2Wiki.
 
 ## 14. Outcome log (appended as results arrive; §§1–13 are not rewritten)
-*(empty)*
+- **31 Oct 2026 22:05 — RUN OF RECORD SUBMITTED by Jonathan:** cluster job **346512** (`twowiki_record.sbatch`, one H200, 12 h limit), their `archon_main.py` unchanged, 72B-AWQ ×1 → Llama-3.2-3B ×50 → fuser on their 100 (`--examples 100`, no `--test`). Predictions stand as in §11. Nothing in the output folder is a reportable number until `twowiki_score_sidecar.py` (reviewed) has run with the §6 gold-list decision recorded.
 
 ---
 *Prepared 31 Oct 2026 from: AgentTTS repo 3f0c2df (`code_others/archon_main.py`, `AgentTTS.py`, `data/retrieval_QA_data_generator.py`), the corrected 2Wiki registry (commit 262dc65), `twowiki_profile.py` output on the lab, and the HotpotQA GRPO pre-registration (20 Oct) for the recipe, rulers and frozen champion points.*
