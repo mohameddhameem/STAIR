@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # twowiki_repro_run.sh -- Row A: "AgentTTS (reproduced), their 100" on 2WikiMultiHopQA.
-# VERSION v1.2 2026-10-31 -- DRAFT for Jonathan's line-by-line review. NOT to be launched before approval.
+# VERSION v1.3 2026-11-01 for Jonathan's line-by-line review. NOT to be launched before approval.
 #
 # WHAT IT RUNS. AgentTTS's own code_others/archon_main.py (commit 3f0c2df), unchanged, with the configuration from
 # the command block at the bottom of that file ("tts", test budget 4):
@@ -53,7 +53,9 @@ mkdir -p "$OUT"
 
 # their code must be exactly the GitHub commit (no local edits)
 (cd "$REPO" && git rev-parse HEAD | grep -q 3f0c2df814c059d0df57a71056c3266ff02c8559) || { echo "agenttts_verify is not at commit 3f0c2df"; exit 1; }
-[ -z "$(cd "$REPO" && git status --porcelain -- code_others data/2wikimultihopqa)" ] || { echo "local modifications in their code/data -- stop"; (cd "$REPO" && git status --short); exit 1; }
+# tracked files must be clean; untracked __pycache__ left by a previous run is not a modification (v1.3)
+[ -z "$(cd "$REPO" && git status --porcelain --untracked-files=no -- code_others data/2wikimultihopqa)" ] || { echo "local modifications in their code/data -- stop"; (cd "$REPO" && git status --short --untracked-files=no); exit 1; }
+[ -z "$(cd "$REPO" && git status --porcelain -- code_others data/2wikimultihopqa | grep -v __pycache__)" ] || { echo "untracked files other than __pycache__ in their tree -- stop"; (cd "$REPO" && git status --short | grep -v __pycache__); exit 1; }
 
 # the data file: 100 instances, first question = official dev[0] (checked against the registry split report)
 "$ENV/bin/python" - "$DATA" <<'PY'
