@@ -12,7 +12,14 @@ priced at AgentTTS's Table 5). The golden-set runs have their own experiment IDs
 mixed: AL-07 = AL-01 (AgentTTS), AL-08 = AL-02 (always-strong, Jonathan's rows, already in:
 [`jonathan-ss-hotpotqa-slr-test.csv`](../results/common/jonathan-ss-hotpotqa-slr-test.csv), 0.7677), AL-09 / AL-10 /
 AL-11 = AL-04 / AL-05 / AL-06 (results `AL-09`..`AL-11-hotpotqa-slr-test-seed0.csv`, curves
-`history/selfLearnt-golden-*`). They are running; results expected early November. AL-03 is not repeated.
+`history/selfLearnt-golden-*`). AL-03 is not repeated. AL-07 is in (AgentTTS on slr-test, our own passages): paper-best
+0.736 at 1,971 units, searched 0.646 at 3,518.
+
+Because the team's always-strong reference uses AgentTTS's own passage file (tts_test.json) and our runs rebuilt the
+passages themselves, the golden set is also run on AgentTTS's passages, in its own folder and IDs, reusing golden_v1's
+fine-tuned models: AL-12 = AgentTTS, AL-13 / AL-14 / AL-15 = AL-04 / AL-05 / AL-06 (`configs/golden_tts.yaml`). Checked
+first: Jonathan's always-strong answer step re-run on our stack with his passages, retrievals and prompt gives 77.31 on
+slr-test against his 76.77 (87% identical answers, 28 vs 20 questions right for only one side).
 
 | Experiment | Policy | Accuracy | Units / question |
 |---|---|---|---|
