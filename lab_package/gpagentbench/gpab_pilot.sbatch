@@ -1,6 +1,6 @@
 #!/bin/bash
 # gpab_pilot.sbatch -- GPAgentBench-2K pilot (60 cases x 2 agents + judge) on the SMU cluster, one H200.
-# DRAFT v1.0 2026-10-31 for Jonathan's review. Header from his prod_*.sbatch. NOT to be submitted before approval.
+# DRAFT v1.1 2026-10-31 (reviewed by Jonathan 22:32; v1.1: all Python via $VLLM_PY, AWQ auto-detected). Header from his prod_*.sbatch. NOT to be submitted before approval.
 # Needs: ~/slr/vllm-env (cluster_vllm_env.sh, vLLM 0.19.0) -- no pre-existing cluster env had vLLM (checked 31 Oct)
 #        the 7B, 72B-AWQ in $HF_HOME (both present 31 Oct), STAIR pulled at ~/slr/STAIR, data at $DATA.
 #SBATCH --job-name=gpab_pilot
@@ -28,22 +28,22 @@ nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 
 # 1. two vLLM servers on one H200: 7B (agent-weak + simulator) on 8001, 72B-AWQ (agent-strong + judge) on 8002
 $VLLM_PY -m vllm.entrypoints.openai.api_server --model $WEAK   --port 8001 --gpu-memory-utilization 0.20 --max-model-len 16384 --dtype bfloat16 > vllm_7b.log 2>&1 &
-$VLLM_PY -m vllm.entrypoints.openai.api_server --model $STRONG --port 8002 --gpu-memory-utilization 0.70 --max-model-len 16384 --quantization awq_marlin > vllm_72b.log 2>&1 &
+$VLLM_PY -m vllm.entrypoints.openai.api_server --model $STRONG --port 8002 --gpu-memory-utilization 0.70 --max-model-len 16384 > vllm_72b.log 2>&1 &
 for port in 8001 8002; do
   for i in $(seq 1 120); do curl -s localhost:$port/v1/models >/dev/null 2>&1 && break; sleep 10; done
   curl -s localhost:$port/v1/models | head -c 300; echo
 done
 
 # 2. episodes: weak agent (7B) then strong agent (72B); simulator = 7B on 8001 in both
-python3 $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag weak   --agent-model $WEAK   --agent-url http://localhost:8001/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1
-python3 $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag strong --agent-model $STRONG --agent-url http://localhost:8002/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1
+$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag weak   --agent-model $WEAK   --agent-url http://localhost:8001/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1
+$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag strong --agent-model $STRONG --agent-url http://localhost:8002/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1
 
 # 3. churn: the first 10 pilot cases again, per agent, to separate files
 head -10 $CASES > $OUT/repeat10.txt
-python3 $PKG/gpab_run.py --data $DATA --cases $OUT/repeat10.txt --out $OUT --agent-tag weak   --agent-model $WEAK   --agent-url http://localhost:8001/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1 --repeat-tag rep2
-python3 $PKG/gpab_run.py --data $DATA --cases $OUT/repeat10.txt --out $OUT --agent-tag strong --agent-model $STRONG --agent-url http://localhost:8002/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1 --repeat-tag rep2
+$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $OUT/repeat10.txt --out $OUT --agent-tag weak   --agent-model $WEAK   --agent-url http://localhost:8001/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1 --repeat-tag rep2
+$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $OUT/repeat10.txt --out $OUT --agent-tag strong --agent-model $STRONG --agent-url http://localhost:8002/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1 --repeat-tag rep2
 
 # 4. score: deterministic metrics + FLOPs + Dx/Tx judge (72B, C.2 prompts)
-python3 $PKG/gpab_score.py --run $OUT --data $DATA --cases $CASES --judge-url http://localhost:8002/v1 --judge-model $STRONG
+$VLLM_PY $PKG/gpab_score.py --run $OUT --data $DATA --cases $CASES --judge-url http://localhost:8002/v1 --judge-model $STRONG
 pkill -f "vllm.entrypoints.openai.api_server" || true
 echo "PILOT DONE -> $OUT"
