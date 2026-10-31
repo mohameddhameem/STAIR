@@ -32,7 +32,7 @@ from .engines import free_gpu, make_engine
 
 MAB_COMMIT = "9926011"
 REFSOL_SHA = "67d19da263ac92c1b7075b3218ace3a4bd19b206a06fc7aebcc897dc39625419"
-DATA_SHA = "b6e89b2ef82f1bef29c5778a644a8a66c7b25738bbd6a48d03ab3e5182df6ca8"
+DATA_SHA = "b6e89b2ef82f1bef27c5778a644a8a66c7b25738bbd6a48d03ab3e5182df6ca8"   # = common MANIFEST.json
 MAX_ROUND = 8
 MAX_TOKENS = 2048
 MAX_MODEL_LEN = {"q72": 11264}            # Jonathan's serving of the 72B (46 GB card); 16384 for the others
