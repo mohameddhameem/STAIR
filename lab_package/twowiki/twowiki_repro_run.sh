@@ -29,7 +29,7 @@ set -euo pipefail
 
 ENV=/mnt/hdd/jonathan/archon-env
 REPO=/mnt/hdd/jonathan/agenttts_verify
-SHIMS=/mnt/hdd/jonathan/stair/lab_package/twowiki/shims          # this folder, pulled from branch jonathan
+SHIMS=/mnt/hdd/jonathan/STAIR/lab_package/twowiki/shims          # this folder, pulled from branch jonathan (lab clone = STAIR)
 DATA=$REPO/data/2wikimultihopqa/tts_test.json
 export HF_HOME=/mnt/hdd/jonathan/hf_cache
 HUB=$HF_HOME/hub
