@@ -355,6 +355,7 @@ def main():
     ap.add_argument("--twin-gpus", type=int, default=2)
     ap.add_argument("--twin-cards", default="h100|h100nvl", help="Slurm features the copy may run on (80 GB+ cards)")
     ap.add_argument("--twin-mem", default="240G", help="CPU memory of the copy (loading a 72B model for QLoRA used ~119 GB)")
+    ap.add_argument("--mab-accept", action="store_true", help="MedAgentBench acceptance check: Qwen 7B and Qwen 72B on all 300 tasks")
     ap.add_argument("--fhir-test", action="store_true", help="CPU job: start MedAgentBench's records server and check one known answer")
     ap.add_argument("--ss-jon", action="store_true", help="AL-02 replication on Jonathan's pools, retrievals and prompt (answer step)")
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
@@ -435,6 +436,20 @@ def main():
             rc, out, err = _sh(cmd)
             sys.exit(f"sbatch failed: {err}" if rc else f"submitted {out.split(';')[0]}  stair-{P.prefix}{j['name']}: whichever of it and the "
                      f"4-GPU job starts first trains {a.twin}")
+        return
+    if a.mab_accept:                       # two GPU jobs, no submitter; compare on the login node afterwards
+        P.prefix = "mab-"
+        for mk, hours in (("q7", 8), ("q72", 16)):
+            P.add(f"episodes-{mk}", f"--stage mab --part episodes --model {mk}", tp(mk), hours, small=float(variant(cfg, mk)["params_b"]) <= 7)
+        for j in P.jobs:
+            cmd = P._cmd(j, [])
+            if a.dry:
+                print(" ".join(cmd))
+                continue
+            rc, out, err = _sh(cmd)
+            print(f"sbatch failed: {err}" if rc else f"submitted {out.split(';')[0]}  stair-mab-{j['name']}")
+        print("when both have finished:  bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py "
+              "--config configs/default.yaml --stage mab --part accept'")
         return
     if a.ss_jon:                           # one GPU job, no submitter: the queue is nearly full; compare runs on the login node
         P.prefix = "jon-"
