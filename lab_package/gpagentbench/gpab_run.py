@@ -8,7 +8,9 @@ Pipeline per case (registration §2-§4):
     prompt = their C.1 prompt rebuilt for this turn (gpab_env.Episode.build_prompt)
     reply  = AGENT (vLLM OpenAI-compatible server), temperature 0, max_tokens 2048
     parse  -> one <action type=...> block
-      malformed / masked (D1): ONE re-prompt = same prompt + notice line; second failure consumes the round, episode continues
+      malformed / masked (D1): up to TWO re-prompts = same prompt + notice line; a third failure ENDS the episode (terminal
+                               'invalid_action', graded as no terminal action per D2) -- paper: evaluation restricts actions so
+                               parser failures do not confound clinical decisions; the early stop is ours (cost)
     env.step(): ask -> SIMULATOR reply (our prompt, temperature 0); body_exam/test -> deterministic lookup; diagnose/refer/treat
   record -> <out>/episodes_<agent_tag>.jsonl   (full transcript, actions, token usage per call, dollars)
 Replay cache: a case already present in the output file is skipped (one execution per (case, agent); registration §3.4).
@@ -97,16 +99,19 @@ def run_episode(case, a):
         calls.append({"who": "agent", "round": ep.round + 1, **{k: usage.get(k) for k in ("prompt_tokens", "completion_tokens")}})
         parsed = E.parse_action(reply)
         ok = parsed is not None and ep.allowed_now(parsed[0])
-        if not ok:                               # D1: one re-prompt with the notice
-            reply2, usage2 = chat(a.agent_url, a.agent_model, prompt + D1_NOTICE, a.max_tokens)
-            calls.append({"who": "agent_reprompt", "round": ep.round + 1, **{k: usage2.get(k) for k in ("prompt_tokens", "completion_tokens")}})
-            parsed = E.parse_action(reply2)
+        n_re = 0
+        while not ok and n_re < 2:                 # D1: up to TWO re-prompts (paper: evaluation must not confound clinical
+            n_re += 1                              #     decisions with parser failures -> give the model the chance to comply)
+            reply, usage = chat(a.agent_url, a.agent_model, prompt + D1_NOTICE, a.max_tokens)
+            calls.append({"who": "agent_reprompt", "round": ep.round + 1, **{k: usage.get(k) for k in ("prompt_tokens", "completion_tokens")}})
+            parsed = E.parse_action(reply)
             ok = parsed is not None and ep.allowed_now(parsed[0])
-            if not ok:                           # second failure: the round is consumed, nothing happens
-                ep.round += 1
-                ep.actions.append({"round": ep.round, "type": "invalid", "fields": {}, "body": (reply2 or "")[:500]})
-                ep.transcript.append({"role": "System", "text": "[invalid action; round consumed]"})
-                continue
+        if not ok:                                 # D1 (ours, cost): third failure in one turn ends the episode; graded as no terminal action (D2)
+            ep.round += 1
+            ep.actions.append({"round": ep.round, "type": "invalid", "fields": {}, "body": (reply or "")[:500]})
+            ep.transcript.append({"role": "System", "text": "[invalid action three times; episode ended]"})
+            ep.terminal = "invalid_action"
+            break
         atype, fields, body = parsed
         obs, need_patient = ep.step(atype, fields, body)
         if need_patient:

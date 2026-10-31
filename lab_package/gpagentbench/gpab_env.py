@@ -56,6 +56,7 @@ MASKED = {"collecting_evidence": ["treatment"],
           "diagnosed": ["ask", "body_exam", "test", "diagnosis", "refer"]}
 CANON = {"diagnosis": "diagnose", "treatment": "treat"}          # list spelling -> action type
 TERMINAL = {"refer", "treat"}
+NO_TERMINAL = {"timeout", "invalid_action"}        # D2 grading applies to both
 
 _ACTION_RE = re.compile(r'<action\s+type\s*=\s*"([^"]+)"\s*>(.*?)</action>', re.S | re.I)
 _THINK_RE = re.compile(r"<think>.*?</think>", re.S | re.I)
@@ -116,7 +117,8 @@ class Episode:
         self.treat = None                           # {"Diagnosis":..., "Plan":...}
         self.refer = None                           # {"Destination":..., "Urgency":..., "Reason":...}
         self.terminal = None                        # "refer" | "treat" | "timeout"
-        self.tests_charged = {}                     # Table 4 category -> usd (charged once per category, D4)
+        self.orders = []                            # D4: every test ORDER matched to Table 4 -> (category, usd, available)
+                                                    #     paper C.2: cost = tests "ordered by the agent"; charged per order
         self.actions = []                           # every parsed action in order (for the scorer)
 
     # ---- prompt (theirs, rebuilt each turn) ------------------------------------------------------------------
@@ -159,8 +161,8 @@ class Episode:
             same_cat = cat is not None and table4_category(t["test"]) is not None and table4_category(t["test"])[0] == cat[0]
             if name and (name in q or q in name or same_cat):
                 hits.append(t)
-        if cat is not None:                          # the dollar cost is charged for the REQUEST, available or not (Table 4 semantics)
-            self.tests_charged.setdefault(cat[0], cat[1])
+        if cat is not None:                          # D4 (paper C.2 "ordered by the agent"): charged per ORDER, available or not, repeats too
+            self.orders.append({"category": cat[0], "usd": cat[1], "available": bool(hits), "request": request})
         if not hits:
             return f"[unavailable] {request} is not available for this case."
         return "\n".join(f"[test] {t['test']}: {t['finding']}" for t in hits)
@@ -217,12 +219,22 @@ class Episode:
         return False
 
     def dollars(self):
-        return sum(self.tests_charged.values())
+        """Paper's definition (comparison column): every matched test order, available or not, repeats charged again."""
+        return sum(o["usd"] for o in self.orders)
+
+    def dollars_performed(self):
+        """Our second column: only orders that returned a result, each Table 4 category charged once."""
+        seen = {}
+        for o in self.orders:
+            if o["available"]:
+                seen.setdefault(o["category"], o["usd"])
+        return sum(seen.values())
 
     def record(self):
         return {"case_id": self.cid, "terminal": self.terminal, "rounds": self.round, "state": self.state,
                 "diagnosis": self.diagnosis, "treat": self.treat, "refer": self.refer,
-                "tests_charged": self.tests_charged, "dollars": self.dollars(),
+                "orders": self.orders, "dollars": self.dollars(), "dollars_performed": self.dollars_performed(),
+                "n_unavailable_orders": sum(not o["available"] for o in self.orders),
                 "transcript": self.transcript, "actions": self.actions}
 
 
@@ -262,7 +274,9 @@ def grade(rec, case):
     label_plan_tension = (not gt_refer) and any(w in plan_text for w in ("urgent", "hospital", "emergency", "refer"))
     return {"case_id": rec["case_id"], "label": label, "category": case.get("management_category"),
             "gt_urgency": gt["referral"].get("urgency"), "gt_destination": gt["referral"].get("destination"),
-            "terminal": term, "timeout": term == "timeout", "rounds": rec["rounds"], "dollars": rec["dollars"],
+            "terminal": term, "timeout": term == "timeout", "invalid_action_end": term == "invalid_action",
+            "rounds": rec["rounds"], "dollars": rec["dollars"], "dollars_performed": rec.get("dollars_performed"),
+            "n_unavailable_orders": rec.get("n_unavailable_orders"),
             "mgmt_correct": int(mgmt_correct), "safety_cost": int(not mgmt_correct),
             "miss_refer": int(miss_refer), "miss_gp": int(miss_gp), "dest_match": dest_match,
             "dx_pred": dx_pred, "dx_gt": gt.get("diagnosis"), "tx_pred": tx_pred, "tx_gt": gt_treatment_text(gt),
@@ -299,6 +313,6 @@ if __name__ == "__main__":
             break
     rec = ep.record()
     g = grade(rec, case)
-    print("\nterminal", rec["terminal"], "| rounds", rec["rounds"], "| dollars", rec["dollars"], rec["tests_charged"])
+    print("\nterminal", rec["terminal"], "| rounds", rec["rounds"], "| dollars (ordered)", rec["dollars"], "| performed", rec["dollars_performed"], rec["orders"])
     print({k: g[k] for k in ("mgmt_correct", "miss_refer", "miss_gp", "timeout", "label_plan_tension")})
     print("Tx GT for the judge:", g["tx_gt"][:160], "...")

@@ -84,6 +84,8 @@ def summarize(rows):
            "miss_refer": round(100 * sum(r["miss_refer"] for r in refer_rows) / len(refer_rows), 2) if refer_rows else None,
            "miss_gp": round(100 * sum(r["miss_gp"] for r in manage_rows) / len(manage_rows), 2) if manage_rows else None,
            "turns": round(sum(r["rounds"] for r in rows) / n, 2), "usd": round(sum(r["dollars"] for r in rows) / n, 1),
+           "usd_performed": round(sum(r["dollars_performed"] or 0 for r in rows) / n, 1),
+           "invalid_action_end_rate": m("invalid_action_end"),
            "flops_units": round(sum(r["agent_units"] for r in rows) / n, 1),
            "label_plan_tension": m("label_plan_tension")}
     if "dx_judge" in rows[0]:
