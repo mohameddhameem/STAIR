@@ -1,0 +1,712 @@
+{
+ "question_to_type": {
+  "Who is the mother of the director of film Polish-Russian War (Film)?": "compositional",
+  "Which film came out first, Blind Shaft or The Mask Of Fu Manchu?": "comparison",
+  "When did John V, Prince Of Anhalt-Zerbst's father die?": "compositional",
+  "What is the award that the director of film Wearing Velvet Slippers Under A Golden Umbrella won?": "compositional",
+  "Where was the director of film Ronnie Rocket born?": "compositional",
+  "Who is Charles Bretagne Marie De La Trémoille's paternal grandfather?": "inference",
+  "Where was the father of Ștefan I. Nenițescu born?": "compositional",
+  "Are North Marion High School (Oregon) and Seoul High School both located in the same country?": "comparison",
+  "Which film has the director who was born later, El Extraño Viaje or Love In Pawn?": "bridge_comparison",
+  "Who is the maternal grandfather of Antiochus X Eusebes?": "inference",
+  "Which film has the director died first, Crimen A Las Tres or The Working Class Goes To Heaven?": "bridge_comparison",
+  "Which film has the director born first, Once A Gentleman or The Girl In White?": "bridge_comparison",
+  "Which film has the director who died earlier, Il Seduttore or The Trial Of Joan Of Arc?": "bridge_comparison",
+  "Where was the director of film Thomas Jefferson (Film) born?": "compositional",
+  "Why did Grand Duke Kirill Vladimirovich Of Russia's wife die?": "compositional",
+  "Where was the place of death of the director of film Beat Girl?": "compositional",
+  "Who died first, Fleetwood Sheppard or George William Whitaker?": "comparison",
+  "Which film has the director born first, The Raven'S Dance or Keïta! L'Héritage Du Griot?": "bridge_comparison",
+  "When did Jean Martin (Singer)'s husband die?": "compositional",
+  "Which film has the director who died earlier, Tangled Destinies or The Daltons' Women?": "bridge_comparison",
+  "Which film was released earlier, Moment Of Danger or The Ballad Of Josie?": "comparison",
+  "What nationality is the director of film World And Time Enough?": "compositional",
+  "Which film has the director died earlier, Poker In Bed or The Machine To Kill Bad People?": "bridge_comparison",
+  "Which film whose director is younger, Heads I Win, Tails You Lose or The Incredible Sarah?": "bridge_comparison",
+  "Who is Catherine Of Pomerania, Countess Palatine Of Neumarkt's father-in-law?": "inference",
+  "Who is Marie Zéphyrine Of France's paternal grandmother?": "inference",
+  "Which film has the director died earlier, Condemned Women or Faces In The Dark?": "bridge_comparison",
+  "Who is the spouse of the director of film Eden And After?": "compositional",
+  "Where was the place of death of Anastasia Of Serbia's husband?": "compositional",
+  "Are Fire In Hell and The Tiger: An Old Hunter'S Tale from the same country?": "comparison",
+  "Which film was released more recently, Lo Zappatore or Placer Sangriento?": "comparison",
+  "Was Şemsettin Baş or Gwenc'Hlan Le Scouëzec born first?": "comparison",
+  "Which film has the director born later, Bhoomiyude Avakashikal or The Majesty Of The Law?": "bridge_comparison",
+  "Who is Cornelia (Wife Of Caesar)'s child-in-law?": "inference",
+  "Why did John Middleton Murry's wife die?": "compositional",
+  "Who is the paternal grandfather of Taj Al-Dawla?": "inference",
+  "Do both films Payment On Demand and My Cousin From Warsaw have the directors from the same country?": "bridge_comparison",
+  "What is the place of birth of the director of film And The Spring Comes?": "compositional",
+  "Who died first, Madame Pasca or James A. Donohoe?": "comparison",
+  "Who was born later, D'Arcy Coulson or Thomas William Adams?": "comparison",
+  "Are Simonds Catholic College and Saginaw High School (Texas) both located in the same country?": "comparison",
+  "Which country Prince Nikolaus Wilhelm Of Nassau's mother is from?": "compositional",
+  "Which film whose director was born first, 45 Fathers or The Intended?": "bridge_comparison",
+  "Who is the paternal grandfather of Alexandre Berthier, 3Rd Prince Of Wagram?": "inference",
+  "Where was the husband of Caterina Visconti born?": "compositional",
+  "Which film has the director who was born later, A Quiet Place In The Country or When Were You Born?": "bridge_comparison",
+  "Who was born first, John Beach or Gordon Persons?": "comparison",
+  "Which film has the director born earlier, The House By The Cemetery or Charlie Chan In Honolulu?": "bridge_comparison",
+  "Who is the child of the director of film La Leona (Film)?": "compositional",
+  "Who is Blanche Of Portugal (1259–1321)'s paternal grandmother?": "inference",
+  "Who lived longer, Giuseppe Cesari or Nicos Poulantzas?": "comparison",
+  "Are director of film Nights On The Road and director of film Swann In Love (Film) from the same country?": "bridge_comparison",
+  "Who is older, Aryeh Ben-Eliezer or Jason Pociask?": "comparison",
+  "Where does the director of film Man At Bath work at?": "compositional",
+  "Who is Arthur Gore, 2Nd Earl Of Arran's paternal grandfather?": "inference",
+  "Are both Kaufland and Otrag located in the same country?": "comparison",
+  "Which film came out earlier, Aanaval Mothiram or Heroes Of The Street?": "comparison",
+  "Where was the father of Lord Patrick Crichton-Stuart born?": "compositional",
+  "Which country the director of film Daadagiri is from?": "compositional",
+  "Where was the wife of Douglas Leiterman born?": "compositional",
+  "What is the place of birth of the performer of song Who...?": "compositional",
+  "Where was the place of death of the director of film Mole Men Against The Son Of Hercules?": "compositional",
+  "Where was the father of Alexandre Gaydamak born?": "compositional",
+  "Which film has the director who died earlier, Toen 'T Licht Verdween or Boum Sur Paris?": "bridge_comparison",
+  "Who is Gaston, Duke Of Orléans's paternal grandmother?": "inference",
+  "Where was the director of film The Half-Way Girl born?": "compositional",
+  "Who is the father-in-law of Sophia Of Wittelsbach?": "inference",
+  "Where was the place of death of Lambert I, Count Of Louvain's father?": "compositional",
+  "Where was the director of film Highway Dragnet born?": "compositional",
+  "Where did Prince Gustav Of Thurn And Taxis (1848–1914)'s mother die?": "compositional",
+  "What is the award that the performer of song Sunday Papers earned?": "compositional",
+  "Which film has the director born first, Antonieta or Dodging The Dole?": "bridge_comparison",
+  "Are both Nikolsk Airport and Svobodny Airport located in the same country?": "comparison",
+  "Who is the maternal grandfather of Amadeus Vii, Count Of Savoy?": "inference",
+  "Are both businesses, Telus and Ztr Control Systems, located in the same country?": "comparison",
+  "Do both films, Dial M For Murder and Marius (1931 Film), have the directors who are from the same country?": "bridge_comparison",
+  "Who is older, Dyson Parody or Gene Watson?": "comparison",
+  "Are both directors of films The Princess Bride (Film) and I Never Sang For My Father from the same country?": "bridge_comparison",
+  "When did Prince John Konstantinovich Of Russia's mother die?": "compositional",
+  "Which country Audofleda's husband is from?": "compositional",
+  "What is the place of birth of the director of film Letter To The King?": "compositional",
+  "Are both bands, Snowman (Band) and Jessamine (Band), from the same country?": "comparison",
+  "Where was the performer of song God (John Lennon Song) born?": "compositional",
+  "Which film has the director who died earlier, Captain Kidd And The Slave Girl or Relax Freddie?": "bridge_comparison",
+  "Which song was released more recently, Go Ahead And Break My Heart or Knee Deep In My Heart?": "comparison",
+  "Which film has the director who died later, The Fatal Mistake or The Devil'S Hairpin?": "bridge_comparison",
+  "Who is Maria Luisa Of Savoy's father-in-law?": "inference",
+  "Who is the paternal grandfather of Kujō Yoritsugu?": "inference",
+  "What is the place of birth of the director of film Marianela (1940 Film)?": "compositional",
+  "Which film came out first, Repeated Absences or She Wore A Yellow Ribbon?": "comparison",
+  "Who lived longer, Edward Dearle or Michael Doeberl?": "comparison",
+  "Where does Karin Stoltenberg's husband work at?": "compositional",
+  "Where was the director of film Lettre Ouverte born?": "compositional",
+  "Who is William Ii, Count Of Flanders's paternal grandmother?": "inference",
+  "What is the place of birth of Clara Novello's father?": "compositional",
+  "Which film came out earlier, Emmy Of Stork'S Nest or Indira Vizha?": "comparison",
+  "Which film came out first, Celine: Through The Eyes Of The World or Dilan 1991?": "comparison",
+  "Who was born earlier, Silas Hardy or Lee Mantle?": "comparison",
+  "Where was the place of burial of Albert Frederick, Duke Of Prussia's mother?": "compositional",
+  "Where was the place of death of Juan Carlos Gumucio's wife?": "compositional"
+ },
+ "positions": [
+  {
+   "pos": 0,
+   "adapted_id": "2wiki100-000",
+   "official_id": "8813f87c0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 1,
+   "adapted_id": "2wiki100-001",
+   "official_id": "61a46987092f11ebbdaeac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 2,
+   "adapted_id": "2wiki100-002",
+   "official_id": "e2a3bf2a0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 3,
+   "adapted_id": "2wiki100-003",
+   "official_id": "0cd3bdea0bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 4,
+   "adapted_id": "2wiki100-004",
+   "official_id": "f9dcb4a60bda11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 5,
+   "adapted_id": "2wiki100-005",
+   "official_id": "8981e1ce0bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 6,
+   "adapted_id": "2wiki100-006",
+   "official_id": "019bed300bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 7,
+   "adapted_id": "2wiki100-007",
+   "official_id": "a7b9672009c311ebbdb0ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 8,
+   "adapted_id": "2wiki100-008",
+   "official_id": "298f23b8088a11ebbd6eac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 9,
+   "adapted_id": "2wiki100-009",
+   "official_id": "2ec440560bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 10,
+   "adapted_id": "2wiki100-010",
+   "official_id": "05f8a691087b11ebbd67ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 11,
+   "adapted_id": "2wiki100-011",
+   "official_id": "645c9a5a08c311ebbd8dac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 12,
+   "adapted_id": "2wiki100-012",
+   "official_id": "5bec3cd408a711ebbd7fac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 13,
+   "adapted_id": "2wiki100-013",
+   "official_id": "464cfa460bd911eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 14,
+   "adapted_id": "2wiki100-014",
+   "official_id": "c05e16a40bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 15,
+   "adapted_id": "2wiki100-015",
+   "official_id": "2935f1640bda11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 16,
+   "adapted_id": "2wiki100-016",
+   "official_id": "ada1b358085211ebbd58ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 17,
+   "adapted_id": "2wiki100-017",
+   "official_id": "3f857208086c11ebbd61ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 18,
+   "adapted_id": "2wiki100-018",
+   "official_id": "dfe93efe0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 19,
+   "adapted_id": "2wiki100-019",
+   "official_id": "1d890623088711ebbd6dac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 20,
+   "adapted_id": "2wiki100-020",
+   "official_id": "d8c36503097411ebbdb0ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 21,
+   "adapted_id": "2wiki100-021",
+   "official_id": "2207e9060bda11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 22,
+   "adapted_id": "2wiki100-022",
+   "official_id": "7abc1e3008d511ebbd98ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 23,
+   "adapted_id": "2wiki100-023",
+   "official_id": "ae331827088b11ebbd6fac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 24,
+   "adapted_id": "2wiki100-024",
+   "official_id": "2002bf0c0bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 25,
+   "adapted_id": "2wiki100-025",
+   "official_id": "c531e7560baf11ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 26,
+   "adapted_id": "2wiki100-026",
+   "official_id": "4d982dc308c111ebbd8bac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 27,
+   "adapted_id": "2wiki100-027",
+   "official_id": "a9cc5f240bdb11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 28,
+   "adapted_id": "2wiki100-028",
+   "official_id": "6ebe05740bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 29,
+   "adapted_id": "2wiki100-029",
+   "official_id": "a0065fe9085f11ebbd5dac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 30,
+   "adapted_id": "2wiki100-030",
+   "official_id": "7c490349090311ebbdadac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 31,
+   "adapted_id": "2wiki100-031",
+   "official_id": "8d2382e0085811ebbd5aac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 32,
+   "adapted_id": "2wiki100-032",
+   "official_id": "1a114c5e088f11ebbd71ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 33,
+   "adapted_id": "2wiki100-033",
+   "official_id": "7a1d9d7c0bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 34,
+   "adapted_id": "2wiki100-034",
+   "official_id": "0bedb7e80bdc11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 35,
+   "adapted_id": "2wiki100-035",
+   "official_id": "1869092c0bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 36,
+   "adapted_id": "2wiki100-036",
+   "official_id": "9980b1ed089d11ebbd78ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 37,
+   "adapted_id": "2wiki100-037",
+   "official_id": "c19b72520bdb11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 38,
+   "adapted_id": "2wiki100-038",
+   "official_id": "3a84baaf088311ebbd6dac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 39,
+   "adapted_id": "2wiki100-039",
+   "official_id": "633132f008b711ebbd88ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 40,
+   "adapted_id": "2wiki100-040",
+   "official_id": "9aee006a09c211ebbdb0ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 41,
+   "adapted_id": "2wiki100-041",
+   "official_id": "b3110a5e0bda11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 42,
+   "adapted_id": "2wiki100-042",
+   "official_id": "5b6b8c02089711ebbd77ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 43,
+   "adapted_id": "2wiki100-043",
+   "official_id": "3705552a0bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 44,
+   "adapted_id": "2wiki100-044",
+   "official_id": "07e964920bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 45,
+   "adapted_id": "2wiki100-045",
+   "official_id": "f7c4fdf2087611ebbd67ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 46,
+   "adapted_id": "2wiki100-046",
+   "official_id": "db19bf4c086e11ebbd62ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 47,
+   "adapted_id": "2wiki100-047",
+   "official_id": "9e6d7bdc08a111ebbd79ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 48,
+   "adapted_id": "2wiki100-048",
+   "official_id": "c3c94d0a0bdc11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 49,
+   "adapted_id": "2wiki100-049",
+   "official_id": "96fb4aee0baf11ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 50,
+   "adapted_id": "2wiki100-050",
+   "official_id": "e618b2c608c911ebbd92ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 51,
+   "adapted_id": "2wiki100-051",
+   "official_id": "d71f453b085811ebbd5bac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 52,
+   "adapted_id": "2wiki100-052",
+   "official_id": "f7eb7e31088c11ebbd70ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 53,
+   "adapted_id": "2wiki100-053",
+   "official_id": "e41c14820bd911eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 54,
+   "adapted_id": "2wiki100-054",
+   "official_id": "27e835ee0bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 55,
+   "adapted_id": "2wiki100-055",
+   "official_id": "3f635554096511ebbdafac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 56,
+   "adapted_id": "2wiki100-056",
+   "official_id": "b69ad95c08ad11ebbd83ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 57,
+   "adapted_id": "2wiki100-057",
+   "official_id": "931a85420bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 58,
+   "adapted_id": "2wiki100-058",
+   "official_id": "0bbded440bda11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 59,
+   "adapted_id": "2wiki100-059",
+   "official_id": "258867240bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 60,
+   "adapted_id": "2wiki100-060",
+   "official_id": "3cbd107e0bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 61,
+   "adapted_id": "2wiki100-061",
+   "official_id": "5e8240ea0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 62,
+   "adapted_id": "2wiki100-062",
+   "official_id": "6638110e0bdb11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 63,
+   "adapted_id": "2wiki100-063",
+   "official_id": "7de9188c088b11ebbd6fac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 64,
+   "adapted_id": "2wiki100-064",
+   "official_id": "3972d2b60baf11ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 65,
+   "adapted_id": "2wiki100-065",
+   "official_id": "a8cbc4c40bdc11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 66,
+   "adapted_id": "2wiki100-066",
+   "official_id": "32e50df00bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 67,
+   "adapted_id": "2wiki100-067",
+   "official_id": "deb907f80bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 68,
+   "adapted_id": "2wiki100-068",
+   "official_id": "b81fbe620bdc11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 69,
+   "adapted_id": "2wiki100-069",
+   "official_id": "3717c0600bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 70,
+   "adapted_id": "2wiki100-070",
+   "official_id": "0f1ac1a00bdb11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 71,
+   "adapted_id": "2wiki100-071",
+   "official_id": "f420d4a008a311ebbd7cac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 72,
+   "adapted_id": "2wiki100-072",
+   "official_id": "6638a0f0084e11ebbd56ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 73,
+   "adapted_id": "2wiki100-073",
+   "official_id": "07388c7c0bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 74,
+   "adapted_id": "2wiki100-074",
+   "official_id": "83ff07cd096711ebbdafac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 75,
+   "adapted_id": "2wiki100-075",
+   "official_id": "7a57c5d2089111ebbd73ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 76,
+   "adapted_id": "2wiki100-076",
+   "official_id": "42f6d3b208b911ebbd88ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 77,
+   "adapted_id": "2wiki100-077",
+   "official_id": "f1ff478c089011ebbd72ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 78,
+   "adapted_id": "2wiki100-078",
+   "official_id": "6b55ac320bdb11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 79,
+   "adapted_id": "2wiki100-079",
+   "official_id": "424d56700bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 80,
+   "adapted_id": "2wiki100-080",
+   "official_id": "5c0c69f80bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 81,
+   "adapted_id": "2wiki100-081",
+   "official_id": "ac786909087411ebbd67ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 82,
+   "adapted_id": "2wiki100-082",
+   "official_id": "29427eea0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 83,
+   "adapted_id": "2wiki100-083",
+   "official_id": "d370f0b0085711ebbd5aac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 84,
+   "adapted_id": "2wiki100-084",
+   "official_id": "a9f9985a09a211ebbdb0ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 85,
+   "adapted_id": "2wiki100-085",
+   "official_id": "53ab316c08b911ebbd88ac1f6bf848b6",
+   "type": "bridge_comparison"
+  },
+  {
+   "pos": 86,
+   "adapted_id": "2wiki100-086",
+   "official_id": "bc633e2c0baf11ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 87,
+   "adapted_id": "2wiki100-087",
+   "official_id": "2b4bd5020baf11ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 88,
+   "adapted_id": "2wiki100-088",
+   "official_id": "3647118c0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 89,
+   "adapted_id": "2wiki100-089",
+   "official_id": "d6074911090011ebbdadac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 90,
+   "adapted_id": "2wiki100-090",
+   "official_id": "146b7443086611ebbd5eac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 91,
+   "adapted_id": "2wiki100-091",
+   "official_id": "ea1fc06c0bda11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 92,
+   "adapted_id": "2wiki100-092",
+   "official_id": "00c75ffc0bde11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 93,
+   "adapted_id": "2wiki100-093",
+   "official_id": "94198d580bb011ebab90acde48001122",
+   "type": "inference"
+  },
+  {
+   "pos": 94,
+   "adapted_id": "2wiki100-094",
+   "official_id": "71d8e20e0bdb11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 95,
+   "adapted_id": "2wiki100-095",
+   "official_id": "0323cdea090d11ebbdadac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 96,
+   "adapted_id": "2wiki100-096",
+   "official_id": "f7c153ce092e11ebbdaeac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 97,
+   "adapted_id": "2wiki100-097",
+   "official_id": "0f44750808e411ebbda4ac1f6bf848b6",
+   "type": "comparison"
+  },
+  {
+   "pos": 98,
+   "adapted_id": "2wiki100-098",
+   "official_id": "e701105e0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  },
+  {
+   "pos": 99,
+   "adapted_id": "2wiki100-099",
+   "official_id": "b5e9ef2c0bdd11eba7f7acde48001122",
+   "type": "compositional"
+  }
+ ],
+ "type_counts": {
+  "compositional": 39,
+  "comparison": 25,
+  "inference": 15,
+  "bridge_comparison": 21
+ }
+}
