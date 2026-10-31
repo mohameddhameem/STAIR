@@ -61,7 +61,7 @@ Identical to the HotpotQA matched-model grid (Config B). AgentTTS's 2Wiki pick (
 | **Ret F1** (their "Ret F1") | set F1 between selected passage ids and gold passage ids | their `precision_recall_f1(ctxs_gt_ids, ids)` logic — `utils.py` is absent from their repo; re-implemented from the definition, stated as such |
 
 Columns are labelled **Ret F1** and **QA F1**; "F1" alone is never printed. Alias-EM is **not** reported (decided 31 Oct).
-**[OPEN — gold list for Strict EM and QA F1.]** The certified `score.py` gives every ruler the same gold list and takes the best over aliases (the HotpotQA convention). On 2Wiki that makes "Strict EM" alias-aware (a diacritic variant such as *Malgorzata* / *Małgorzata* counts). Proposed: keep the certified behaviour — one gold list for all four columns, no re-implementation — and say so in the column note. Alternative: Strict EM against the single `answer` string only. Jonathan to decide; the choice is recorded here before any scoring.
+**Gold list — DECIDED 31 Oct 22:26 (Jonathan): one gold list (gold + aliases) for every column; lenient and strict EM match in their gold set.** The certified `score.py` behaviour, `--em-gold aliases` (default) in both scorers; no re-implementation. A diacritic variant such as *Malgorzata* / *Małgorzata* counts for EM; stated in the column note.
 
 ## 7. Pools for the rest of the registry (prerequisite for §8) — CPU, lab, this week
 - **Construction = theirs** (`data/retrieval_QA_data_generator.py`): Elasticsearch `multi_match` over `title` + `text` of the sentence corpus built from the dev contexts, top-100 sentences per question, gold sentences appended if absent, shuffled; `answers` = gold + aliases from `id_aliases.json`.
