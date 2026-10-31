@@ -61,4 +61,4 @@ Request: decoding settings; the patient-simulator prompt; the harness release da
 - Still open before the sbatch is submitted: D1 proposal, D4 sub-decision (charge unavailable tests?), vLLM environment on the cluster, copy of the gated data to cluster scratch, Jonathan's line-by-line read of gpab_env / gpab_run / gpab_score.
 
 ## 11. Outcome log (appended; §§1–10 are not rewritten)
-*(empty)*
+- **31 Oct 2026 22:33 — PILOT SUBMITTED by Jonathan:** cluster job **346578** (`gpab_pilot.sbatch` v1.1, one H200, 6 h limit). Before submission: mechanical checks (Table 4 = paper; Dx/Tx judge prompts = paper word for word; agent prompt structure and all placeholders; scorer's Table 1 rows; simulator sees only patient + persona) all PASS; Jonathan read the filled simulator prompt (→ v1.1, conversation block) and the filled round-1 agent prompt for gpb-0011 (targets = the record's available ones only); sbatch read through. Environment `~/slr/vllm-env` + `tomli`. Predictions stand as in §5; gate as in §3.6. Output: `/common/scratch/users/d/dohyung.ahn.2025/runs/gpagentbench/pilot60/`.
