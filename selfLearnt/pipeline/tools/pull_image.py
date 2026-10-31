@@ -74,6 +74,22 @@ def unpack(path, root):
     return n
 
 
+def fix_links(root):
+    """Absolute links inside the image (e.g. Debian's Java: conf/security/java.security -> /etc/java-17-openjdk/...) point at
+    the host's / outside a container; rewrite each to the same place inside the unpacked root. Returns how many."""
+    n = 0
+    for d, dirs, files in os.walk(root):
+        for f in dirs + files:
+            p = os.path.join(d, f)
+            if os.path.islink(p):
+                t = os.readlink(p)
+                if t.startswith("/"):
+                    os.remove(p)
+                    os.symlink(os.path.relpath(os.path.join(root, t.lstrip("/")), d), p)
+                    n += 1
+    return n
+
+
 def main(ref, out):
     repo, _, tag = ref.partition(":")
     tag = tag or "latest"
@@ -107,6 +123,7 @@ def main(ref, out):
         n = unpack(path, root)
         os.remove(path)
         print(f"  layer {i + 1}/{len(man['layers'])}: {n} entries")
+    print(f"absolute links rewritten inside the image: {fix_links(root)}")
     c = cfg.get("config", {})
     print("\nentrypoint:", c.get("Entrypoint"), "\ncmd:", c.get("Cmd"), "\nworkdir:", c.get("WorkingDir"),
           "\nports:", list((c.get("ExposedPorts") or {}).keys()), "\nenv:", c.get("Env"))
@@ -127,4 +144,7 @@ def main(ref, out):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], os.path.expanduser(sys.argv[2]))
+    if sys.argv[1] == "--fix-links":        # repair an image unpacked before this step existed
+        print(f"absolute links rewritten: {fix_links(os.path.join(os.path.expanduser(sys.argv[2]), 'rootfs'))}")
+    else:
+        main(sys.argv[1], os.path.expanduser(sys.argv[2]))
