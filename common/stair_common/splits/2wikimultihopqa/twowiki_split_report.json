@@ -1,0 +1,42 @@
+{
+ "dev_n": 12576,
+ "test_n": 500,
+ "val_n": 500,
+ "train_extra_n": 9744,
+ "dropped_for_entity_overlap": 1832,
+ "test_types": {
+  "bridge_comparison": 119,
+  "comparison": 103,
+  "compositional": 213,
+  "inference": 65
+ },
+ "val_types": {
+  "bridge_comparison": 109,
+  "comparison": 113,
+  "compositional": 215,
+  "inference": 63
+ },
+ "train_extra_types": {
+  "bridge_comparison": 1567,
+  "comparison": 2799,
+  "compositional": 4135,
+  "inference": 1243
+ },
+ "entities": {
+  "test_distinct": 1204,
+  "shared_test_val": 51,
+  "shared_test_train_extra": 0,
+  "shared_val_train_extra": 0
+ },
+ "agenttts_100": {
+  "found_in_dev": 100,
+  "all_inside_test": true,
+  "is_dev_0_100": true
+ },
+ "dev_sha256": "79f77ae104088ea8e25b1a65dbece768d45771194663bc5660ec9a98070dadf5",
+ "files": {
+  "test": "7b8f0549027a5a1249b4c07d3d2890d8709170b76b58f4c9c21a9ef13cab3ab2",
+  "val": "73e7ea72c61451f38f7ec214d7f1281279908f99899903d251214d9a1be636a4",
+  "train_extra": "529f689d47b7d7ee087501560da016de5b8297022048cda90ca35db79cb13f85"
+ }
+}
