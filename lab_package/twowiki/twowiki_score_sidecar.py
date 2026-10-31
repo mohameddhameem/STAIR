@@ -26,8 +26,10 @@ USAGE (lab, slr-env has pandas):  python3 twowiki_score_sidecar.py --run /mnt/hd
 """
 import argparse, collections, hashlib, json, os, sys
 
-STAIR_COMMON = "/mnt/hdd/jonathan/STAIR/common"
-sys.path.insert(0, STAIR_COMMON)
+# the certified modules live in STAIR/common: lab clone, cluster clone, or $STAIR_ROOT
+for _p in (os.path.join(os.environ.get("STAIR_ROOT", ""), "common"), "/mnt/hdd/jonathan/STAIR/common", os.path.expanduser("~/slr/STAIR/common")):
+    if _p and os.path.isdir(_p):
+        sys.path.insert(0, _p)
 from stair_common.score import lenient, em, f1  # noqa: E402  (certified rulers; RULER_SHA256 check lives in that module)
 
 
