@@ -1,7 +1,7 @@
 #!/bin/bash
 # gpab_pilot.sbatch -- GPAgentBench-2K pilot (60 cases x 2 agents + judge) on the SMU cluster, one H200.
 # DRAFT v1.0 2026-10-31 for Jonathan's review. Header from his prod_*.sbatch. NOT to be submitted before approval.
-# Needs: a Python env with vLLM on the cluster  -> set VLLM_PY below  [OPEN: which env? slr-env has torch 2.11, vLLM untested]
+# Needs: ~/slr/vllm-env (cluster_vllm_env.sh, vLLM 0.19.0) -- no pre-existing cluster env had vLLM (checked 31 Oct)
 #        the 7B, 72B-AWQ in $HF_HOME (both present 31 Oct), STAIR pulled at ~/slr/STAIR, data at $DATA.
 #SBATCH --job-name=gpab_pilot
 #SBATCH --account=zhoupanresearch
@@ -16,10 +16,10 @@ export HF_HOME=/common/scratch/users/d/dohyung.ahn.2025/hf_cache
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 STAIR=$HOME/slr/STAIR
 PKG=$STAIR/lab_package/gpagentbench
-DATA=/common/scratch/users/d/dohyung.ahn.2025/data/gpagentbench          # [OPEN] copy of the lab's gated data dir
+DATA=/common/scratch/users/d/dohyung.ahn.2025/data/gpagentbench          # copied from the lab 31 Oct (jsonl under data/)
 CASES=$STAIR/common/stair_common/splits/gpagentbench/pilot60.txt
 OUT=/common/scratch/users/d/dohyung.ahn.2025/runs/gpagentbench/pilot60
-VLLM_PY=$HOME/slr/vllm-env/bin/python                                    # [OPEN] env with vLLM
+VLLM_PY=$HOME/slr/vllm-env/bin/python                                    # built by cluster_vllm_env.sh (vLLM 0.19.0)
 WEAK=Qwen/Qwen2.5-7B-Instruct
 STRONG=Qwen/Qwen2.5-72B-Instruct-AWQ
 mkdir -p "$OUT"; cd "$OUT"
