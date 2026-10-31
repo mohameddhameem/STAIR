@@ -1,0 +1,13 @@
+You are a clinical expert. Determine whether the predicted diagnosis is clinically equivalent to the ground-truth diagnosis.
+
+Predicted diagnosis: "{predicted}"
+Ground-truth diagnosis: "{ground_truth}"
+
+Rules:
+1. Clinical equivalence: Count as correct if both diagnoses refer to the same underlying condition, even with different wording, e.g., "URI" and "upper respiratory infection".
+2. Partial match: Count as correct only if the core condition is the same, e.g., "pneumonia" and "bacterial pneumonia".
+3. Overly broad diagnosis: Count as incorrect if the prediction is vague or nonspecific, e.g., "infection" for "urinary tract infection" or "abdominal pain" for "appendicitis".
+
+Answer with exactly one value:
+1 if clinically equivalent;
+0 otherwise.

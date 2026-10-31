@@ -1,0 +1,14 @@
+You are a clinical expert. Determine whether the predicted treatment plan is clinically aligned with the ground-truth treatment plan.
+
+Predicted treatment: "{predicted}"
+Ground-truth treatment: "{ground_truth}"
+
+Rules:
+1. Correct treatment: Assign 1 if the predicted treatment covers the key therapeutic components of the ground-truth treatment, even if worded differently.
+2. Partially correct treatment: Assign 0.5 if the predicted treatment includes some clinically relevant components but misses important elements, is too nonspecific, or only partially matches the ground-truth treatment.
+3. Incorrect treatment: Assign 0 if the predicted treatment is unrelated, clinically inappropriate, unsafe, or fails to match the main treatment strategy in the ground truth.
+
+Answer with exactly one value:
+1 for correct;
+0.5 for partially correct;
+0 for incorrect.
