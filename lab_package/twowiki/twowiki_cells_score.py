@@ -25,6 +25,10 @@ import argparse, collections, csv, json, os, re, sys
 
 for p in ("/mnt/hdd/jonathan/STAIR/common", os.path.expanduser("~/slr/STAIR/common")):
     sys.path.insert(0, p)
+try:  # stair_common needs tomllib (Python >= 3.11); on the cluster's 3.10 venv map it to the `tomli` backport (pip install tomli)
+    import tomllib  # noqa: F401
+except ModuleNotFoundError:
+    import tomli as _tomli; sys.modules["tomllib"] = _tomli
 from stair_common.score import lenient, em, f1  # noqa: E402
 from stair_common.cost import units  # noqa: E402
 

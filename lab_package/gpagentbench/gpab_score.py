@@ -19,6 +19,10 @@ import argparse, collections, csv, json, os, sys, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, "/mnt/hdd/jonathan/STAIR/common"); sys.path.insert(0, os.path.expanduser("~/slr/STAIR/common"))
+try:  # stair_common needs tomllib (Python >= 3.11); on the cluster's 3.10 venv map it to the `tomli` backport (pip install tomli)
+    import tomllib  # noqa: F401
+except ModuleNotFoundError:
+    import tomli as _tomli; sys.modules["tomllib"] = _tomli
 import gpab_env as E  # noqa: E402
 from stair_common.cost import units  # noqa: E402  (certified; never re-implemented)
 

@@ -30,6 +30,10 @@ import argparse, collections, hashlib, json, os, sys
 for _p in (os.path.join(os.environ.get("STAIR_ROOT", ""), "common"), "/mnt/hdd/jonathan/STAIR/common", os.path.expanduser("~/slr/STAIR/common")):
     if _p and os.path.isdir(_p):
         sys.path.insert(0, _p)
+try:  # stair_common needs tomllib (Python >= 3.11); on the cluster's 3.10 venv map it to the `tomli` backport (pip install tomli)
+    import tomllib  # noqa: F401
+except ModuleNotFoundError:
+    import tomli as _tomli; sys.modules["tomllib"] = _tomli
 from stair_common.score import lenient, em, f1  # noqa: E402  (certified rulers; RULER_SHA256 check lives in that module)
 
 
