@@ -54,5 +54,11 @@ GPAgentBench-2K (Chen et al., EMNLP 2026; arXiv 2608.30188) cannot be reproduced
 ## 8. Open letter to the authors (Jonathan sends)
 Request: decoding settings; the patient-simulator prompt; the harness release date. If they arrive, D1–D6 are replaced by theirs and the pilot is re-run; the change is logged here.
 
-## 9. Outcome log (appended; §§1–8 are not rewritten)
+## 10. Validation record (31 Oct 2026, 21:40–21:44, lab)
+- **Check 1 — environment on a real case (gpb-0011, scripted agent, no model): PASS.** Lookups return the record's findings; an unlisted test returns the unavailable result; a `treat` before `diagnose` is blocked by the mask; terminal `treat` graded correct vs the manage label; dollars 730 (CBC 30 + MRI 700 — the MRI was unavailable yet charged: D4 sub-decision **[OPEN]**); label-vs-plan tension flagged.
+- **Check 2 — pilot list: PASS.** `gpab_pilot_split.py` on the lab: n 60; refer 30 (emergency 15 = all in the test split, urgent 12, routine 3; categories refer 26 / urgent_refer 4), manage 30 (manage_in_gp 29 / manage_after_tests 1); test split 485. Committed as `common/stair_common/splits/gpagentbench/pilot60.txt`, sha256 `9128558de4c7b9a6cf3dec1aefa6aff602199e29bb867519df421b0bb35da97c` (commit 4f5d4a7; lab and repo copies identical).
+- **Check 3 — prompt identities frozen (sha256, lab = repo):** `agent_prompt_C1.txt` c32c8c7d839f734b6c54ff7566d591e13c8695bc831187978ef528bd7f202933 · `judge_dx_C2.txt` 84668079310c233c75af71dad586a9f3ac3b010c47f506a01fb6dc8eb668c5c9 · `judge_tx_C2.txt` 63da7ece777139fe09413e384984cb8f6a9cf1391a3a58fd1f7fb0694e707293 · `patient_simulator_v1.txt` 09d555d710d5c542ac8fecd4162917d9009b9a9192aecf1b775e00a07d3c5640. Word-level comparison of the C.1 / C.2 texts against the paper: Jonathan's read (pending his verdict).
+- Still open before the sbatch is submitted: D1 proposal, D4 sub-decision (charge unavailable tests?), vLLM environment on the cluster, copy of the gated data to cluster scratch, Jonathan's line-by-line read of gpab_env / gpab_run / gpab_score.
+
+## 11. Outcome log (appended; §§1–10 are not rewritten)
 *(empty)*
