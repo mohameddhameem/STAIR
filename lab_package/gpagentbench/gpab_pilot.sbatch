@@ -1,6 +1,6 @@
 #!/bin/bash
 # gpab_pilot.sbatch -- GPAgentBench-2K pilot (60 cases x 2 agents + judge) on the SMU cluster, one H200.
-# DRAFT v1.1 2026-10-31 (reviewed by Jonathan 22:32; v1.1: all Python via $VLLM_PY, AWQ auto-detected). Header from his prod_*.sbatch. NOT to be submitted before approval.
+# v1.2 2026-11-01 (v1.1 reviewed by Jonathan 31 Oct 22:32; v1.2: servers started in sequence after job 346578's start-up failure; GEN_CFG decision). Header from his prod_*.sbatch. NOT to be submitted before approval.
 # Needs: ~/slr/vllm-env (cluster_vllm_env.sh, vLLM 0.19.0) -- no pre-existing cluster env had vLLM (checked 31 Oct)
 #        the 7B, 72B-AWQ in $HF_HOME (both present 31 Oct), STAIR pulled at ~/slr/STAIR, data at $DATA.
 #SBATCH --job-name=gpab_pilot
@@ -26,13 +26,18 @@ mkdir -p "$OUT"; cd "$OUT"
 [ -f "$CASES" ] || { echo "pilot60.txt missing -- run gpab_pilot_split.py first"; exit 1; }
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 
-# 1. two vLLM servers on one H200: 7B (agent-weak + simulator) on 8001, 72B-AWQ (agent-strong + judge) on 8002
-$VLLM_PY -m vllm.entrypoints.openai.api_server --model $WEAK   --port 8001 --gpu-memory-utilization 0.20 --max-model-len 16384 --dtype bfloat16 > vllm_7b.log 2>&1 &
-$VLLM_PY -m vllm.entrypoints.openai.api_server --model $STRONG --port 8002 --gpu-memory-utilization 0.70 --max-model-len 16384 > vllm_72b.log 2>&1 &
-for port in 8001 8002; do
-  for i in $(seq 1 120); do curl -s localhost:$port/v1/models >/dev/null 2>&1 && break; sleep 10; done
-  curl -s localhost:$port/v1/models | head -c 300; echo
-done
+# 1. two vLLM servers on one H200, started IN SEQUENCE (v1.2, 1 Nov): job 346578 failed because the 7B profiled its
+#    memory while the 72B was loading in parallel ("Available KV cache memory: -29.57 GiB"). 72B first (0.70), wait
+#    until it answers, then the 7B (0.20). GEN_CFG = decoding source: "" = vLLM applies the model's generation_config.json
+#    (Qwen: repetition_penalty 1.05; temperature is overridden by our temperature-0 requests); "--generation-config vllm"
+#    = pure temperature-0 decoding, nothing from the model file.  [DECISION: Jonathan]
+GEN_CFG="--generation-config vllm"
+wait_up () { for i in $(seq 1 120); do curl -s localhost:$1/v1/models >/dev/null 2>&1 && return 0; sleep 10; done; echo "server on $1 did not start"; tail -n 40 $2; exit 1; }
+$VLLM_PY -m vllm.entrypoints.openai.api_server --model $STRONG --port 8002 --gpu-memory-utilization 0.70 --max-model-len 16384 $GEN_CFG > vllm_72b.log 2>&1 &
+wait_up 8002 vllm_72b.log
+$VLLM_PY -m vllm.entrypoints.openai.api_server --model $WEAK   --port 8001 --gpu-memory-utilization 0.20 --max-model-len 16384 --dtype bfloat16 $GEN_CFG > vllm_7b.log 2>&1 &
+wait_up 8001 vllm_7b.log
+for port in 8002 8001; do curl -s localhost:$port/v1/models | head -c 300; echo; done
 
 # 2. episodes: weak agent (7B) then strong agent (72B); simulator = 7B on 8001 in both
 $VLLM_PY $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag weak   --agent-model $WEAK   --agent-url http://localhost:8001/v1 --sim-model $WEAK --sim-url http://localhost:8001/v1
