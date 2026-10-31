@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # twowiki_repro_env.sh -- build the environment for Row A (AgentTTS's own archon_main.py on 2Wiki).
-# VERSION v1.1 2026-10-31 -- DRAFT for Jonathan's line-by-line review. Nothing here touches a model or the GPU.
+# VERSION v1.2 2026-10-31 -- DRAFT for Jonathan's line-by-line review. Nothing here touches a model or the GPU.
 #
 # WHY A NEW ENVIRONMENT. No lab or cluster venv has `autoawq` (their 72B retriever is loaded as AWQ through
 # transformers). Their requirements.txt leaves torch / transformers / autoawq unpinned and omits bitsandbytes
@@ -12,17 +12,19 @@
 # PINS (proposal; the newest set in which transformers still loads AWQ through autoawq):
 #   torch 2.6.0 (cu124 wheel, runs on the CUDA 12.9 driver) · transformers 4.51.3 · autoawq 0.2.9 (final release)
 #   bitsandbytes 0.45.5 · accelerate 0.33.0 (their pin)
-# Usage (lab):  bash twowiki_repro_env.sh          -> /mnt/hdd/jonathan/archon-env
+# Usage (lab):      bash twowiki_repro_env.sh                                  -> /mnt/hdd/jonathan/archon-env
+# Usage (cluster):  ARCHON_ENV=~/slr/archon-env AGENTTTS_REPO=~/slr/agenttts bash twowiki_repro_env.sh   (v1.2: paths via env vars)
 # =============================================================================
 set -euo pipefail
-ENV=/mnt/hdd/jonathan/archon-env
-REPO=/mnt/hdd/jonathan/agenttts_verify          # AgentTTS clone, commit 3f0c2df
+ENV=${ARCHON_ENV:-/mnt/hdd/jonathan/archon-env}                 # cluster: export ARCHON_ENV=~/slr/archon-env
+REPO=${AGENTTTS_REPO:-/mnt/hdd/jonathan/agenttts_verify}       # AgentTTS clone, commit 3f0c2df; cluster: ~/slr/agenttts
 REQ=$REPO/code_others/requirements.txt
 
 [ -f "$REQ" ] || { echo "requirements.txt not found at $REQ"; exit 1; }
 [ -e "$ENV" ] && { echo "$ENV already exists -- refusing to overwrite (delete it yourself if a rebuild is intended)"; exit 1; }
 
-python3.10 -m venv "$ENV"
+PY=${PYTHON310:-python3.10}
+"$PY" -m venv "$ENV"
 "$ENV/bin/pip" install -q --upgrade pip wheel setuptools
 
 # 1. torch, then the modules archon_main.py's import path actually loads.

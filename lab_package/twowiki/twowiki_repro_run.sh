@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # twowiki_repro_run.sh -- Row A: "AgentTTS (reproduced), their 100" on 2WikiMultiHopQA.
-# VERSION v1.0 2026-10-31 -- DRAFT for Jonathan's line-by-line review. NOT to be launched before approval.
+# VERSION v1.2 2026-10-31 -- DRAFT for Jonathan's line-by-line review. NOT to be launched before approval.
 #
 # WHAT IT RUNS. AgentTTS's own code_others/archon_main.py (commit 3f0c2df), unchanged, with the configuration from
 # the command block at the bottom of that file ("tts", test budget 4):
@@ -27,13 +27,17 @@
 # =============================================================================
 set -euo pipefail
 
-ENV=/mnt/hdd/jonathan/archon-env
-REPO=/mnt/hdd/jonathan/agenttts_verify
-SHIMS=/mnt/hdd/jonathan/STAIR/lab_package/twowiki/shims          # this folder, pulled from branch jonathan (lab clone = STAIR)
+# v1.2: every path can be overridden by an environment variable; defaults = the lab. Cluster example:
+#   ARCHON_ENV=~/slr/archon-env AGENTTTS_REPO=~/slr/agenttts STAIR_ROOT=~/slr/STAIR HF_HOME=<cluster hf cache> \
+#   OUTROOT=/common/scratch/users/d/dohyung.ahn.2025/runs/twowiki bash twowiki_repro_run.sh --smoke
+ENV=${ARCHON_ENV:-/mnt/hdd/jonathan/archon-env}
+REPO=${AGENTTTS_REPO:-/mnt/hdd/jonathan/agenttts_verify}
+STAIR_ROOT=${STAIR_ROOT:-/mnt/hdd/jonathan/STAIR}
+SHIMS=$STAIR_ROOT/lab_package/twowiki/shims                       # this folder, pulled from branch jonathan
 DATA=$REPO/data/2wikimultihopqa/tts_test.json
-export HF_HOME=/mnt/hdd/jonathan/hf_cache
+export HF_HOME=${HF_HOME:-/mnt/hdd/jonathan/hf_cache}
 HUB=$HF_HOME/hub
-OUTROOT=/mnt/hdd/jonathan/runs/twowiki
+OUTROOT=${OUTROOT:-/mnt/hdd/jonathan/runs/twowiki}
 
 SMOKE=0; [ "${1:-}" = "--smoke" ] && SMOKE=1
 if [ $SMOKE = 1 ]; then OUT=$OUTROOT/repro_their100_SMOKE; N=2; G=2; else OUT=$OUTROOT/repro_their100; N=100; G=50; fi
