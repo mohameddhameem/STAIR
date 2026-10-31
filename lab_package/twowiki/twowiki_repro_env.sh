@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # twowiki_repro_env.sh -- build the environment for Row A (AgentTTS's own archon_main.py on 2Wiki).
-# VERSION v1.0 2026-10-31 -- DRAFT for Jonathan's line-by-line review. Nothing here touches a model or the GPU.
+# VERSION v1.1 2026-10-31 -- DRAFT for Jonathan's line-by-line review. Nothing here touches a model or the GPU.
 #
 # WHY A NEW ENVIRONMENT. No lab or cluster venv has `autoawq` (their 72B retriever is loaded as AWQ through
 # transformers). Their requirements.txt leaves torch / transformers / autoawq unpinned and omits bitsandbytes
@@ -25,10 +25,14 @@ REQ=$REPO/code_others/requirements.txt
 python3.10 -m venv "$ENV"
 "$ENV/bin/pip" install -q --upgrade pip wheel setuptools
 
-# 1. their requirements, minus flash-attn (unused here) -- unpinned entries get the pins in step 2
-grep -v -i "^flash-attn" "$REQ" | grep -v -i "^torch$" | grep -v -i "^transformers$" | grep -v -i "^autoawq$" > /tmp/req_their.txt
+# 1. torch, then the modules archon_main.py's import path actually loads.
+#    v1.1 (31 Oct, after the first build failed): their requirements.txt is NOT installable as published --
+#    litellm==1.44.5 has been removed from PyPI -- so instead of their full API-client list we install only what
+#    `archon.completions` imports at module load (none of the API clients is used for local generation): openai,
+#    anthropic, groq, litellm, google-generativeai, loguru, python-dotenv, tqdm; plus wandb (their script calls
+#    wandb.init). Current versions, logged in env_freeze.txt. requirements.txt itself is kept for the record only.
 "$ENV/bin/pip" install -q --index-url https://download.pytorch.org/whl/cu124 torch==2.6.0
-"$ENV/bin/pip" install -q -r /tmp/req_their.txt
+"$ENV/bin/pip" install -q openai anthropic groq litellm google-generativeai loguru python-dotenv tqdm wandb
 
 # 2. the four pins + bitsandbytes (missing from their list) ; numpy<2 for the bnb/awq wheels of this era
 "$ENV/bin/pip" install -q "transformers==4.51.3" "accelerate==0.33.0" "autoawq==0.2.9" "bitsandbytes==0.45.5" "numpy<2" tqdm
