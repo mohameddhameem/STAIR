@@ -1,6 +1,6 @@
 #!/bin/bash
 # gpab_pilot.sbatch -- GPAgentBench-2K pilot (60 cases x 2 agents + judge) on the SMU cluster, one H200.
-# v1.2 2026-11-01 (v1.1 reviewed by Jonathan 31 Oct 22:32; v1.2: servers started in sequence after job 346578's start-up failure; GEN_CFG decision). Header from his prod_*.sbatch. NOT to be submitted before approval.
+# v1.2 2026-11-01 (v1.1 reviewed by Jonathan 31 Oct 22:32; v1.2: servers started in sequence after job 346578's start-up failure; GEN_CFG = pure temperature 0, decided 1 Nov). Header from his prod_*.sbatch. NOT to be submitted before approval.
 # Needs: ~/slr/vllm-env (cluster_vllm_env.sh, vLLM 0.19.0) -- no pre-existing cluster env had vLLM (checked 31 Oct)
 #        the 7B, 72B-AWQ in $HF_HOME (both present 31 Oct), STAIR pulled at ~/slr/STAIR, data at $DATA.
 #SBATCH --job-name=gpab_pilot
@@ -30,7 +30,8 @@ nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 #    memory while the 72B was loading in parallel ("Available KV cache memory: -29.57 GiB"). 72B first (0.70), wait
 #    until it answers, then the 7B (0.20). GEN_CFG = decoding source: "" = vLLM applies the model's generation_config.json
 #    (Qwen: repetition_penalty 1.05; temperature is overridden by our temperature-0 requests); "--generation-config vllm"
-#    = pure temperature-0 decoding, nothing from the model file.  [DECISION: Jonathan]
+#    = pure temperature-0 decoding, nothing from the model file.  DECIDED 1 Nov 07:29 (Jonathan): follow the paper where
+#    possible -- the paper states no decoding settings, so the registered temperature 0 applies, applied purely.
 GEN_CFG="--generation-config vllm"
 wait_up () { for i in $(seq 1 120); do curl -s localhost:$1/v1/models >/dev/null 2>&1 && return 0; sleep 10; done; echo "server on $1 did not start"; tail -n 40 $2; exit 1; }
 $VLLM_PY -m vllm.entrypoints.openai.api_server --model $STRONG --port 8002 --gpu-memory-utilization 0.70 --max-model-len 16384 $GEN_CFG > vllm_72b.log 2>&1 &
