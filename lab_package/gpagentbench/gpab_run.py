@@ -29,7 +29,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gpab_env as E  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SIM_PROMPT = open(os.path.join(HERE, "prompts", "patient_simulator_v1.txt"), encoding="utf-8").read()
+SIM_PROMPT = open(os.path.join(HERE, "prompts", "patient_simulator_v1_1.txt"), encoding="utf-8").read()   # v1.1: + conversation so far
 SIM_RULES = json.load(open(os.path.join(HERE, "prompts", "patient_simulator_v1_persona_rules.json"), encoding="utf-8"))
 D1_NOTICE = "\n\nYour previous response was not a valid action for this turn. Produce exactly one allowed action."
 
@@ -55,7 +55,13 @@ def patient_record_text(patient):
     return "\n".join(f"- {k}: {v if v not in (None, '') else 'Not reported'}" for k, v in patient.items())
 
 
-def simulator_prompt(case, doctor_utterance):
+def conversation_text(ep):
+    """D6: the patient sees only the spoken turns -- never [body_exam]/[test] results or System lines."""
+    turns = [m for m in ep.transcript if m["role"] in ("Doctor", "Patient") and not m["text"].startswith("[")]
+    return "\n".join(f"- {m['role']}: {m['text']}" for m in turns[:-1]) or "- (this is the first question)"
+
+
+def simulator_prompt(case, doctor_utterance, conversation="- (this is the first question)"):
     p = case["persona"]
     lang = str(p.get("language_proficiency", "B")).upper()
     return SIM_PROMPT.format(
@@ -66,7 +72,7 @@ def simulator_prompt(case, doctor_utterance):
         recall_rule=SIM_RULES["recall_level"].get(p.get("recall_level", "high"), SIM_RULES["recall_level"]["high"]),
         disorientation_rule=SIM_RULES["disorientation"].get(p.get("disorientation", "normal"), SIM_RULES["disorientation"]["normal"]),
         max_words=SIM_RULES["max_words"].get(lang, 60),
-        doctor_utterance=doctor_utterance)
+        conversation=conversation, doctor_utterance=doctor_utterance)
 
 
 def load_cases(data_dir, case_list):
@@ -115,7 +121,7 @@ def run_episode(case, a):
         atype, fields, body = parsed
         obs, need_patient = ep.step(atype, fields, body)
         if need_patient:
-            sp = simulator_prompt(case, body)
+            sp = simulator_prompt(case, body, conversation_text(ep))
             answer, su = chat(a.sim_url, a.sim_model, sp, a.sim_max_tokens)
             calls.append({"who": "simulator", "round": ep.round, **{k: su.get(k) for k in ("prompt_tokens", "completion_tokens")}})
             ep.add_patient_reply(answer.strip())
