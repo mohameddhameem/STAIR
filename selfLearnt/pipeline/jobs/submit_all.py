@@ -460,6 +460,14 @@ def main():
         _, s = ft_settings(cfg, k)
         return int(s.get("gpus", 1))
 
+    if cfg.get("models_from_run"):             # inference only on another run's fine-tuned models: all must be trained
+        from stair.progress import is_done as _isd
+        src = dict(cfg, run_dir=os.path.join(cfg["paths"]["runs_dir"], cfg["models_from_run"], f"seed{cfg['seed']}"))
+        need = sorted({v.split(":")[0] for w in cfg["workstreams"].values() if w.get("kind") == "rules"
+                       for v in w["retrievers"] + w["answerers"] if v.endswith(":ft")})
+        left = [k for k in need if not _isd(src, "train", k)]
+        if left:
+            sys.exit(f"run {cfg['models_from_run']} has not finished fine-tuning {', '.join(left)} yet: submit this run after it has")
     data = P.add("data", "--stage data", 0, 2, cpu_only=True)
     last = [data]
     # ---------------- phase 1: WS1 + WS2
@@ -480,9 +488,12 @@ def main():
         base = lambda v: v.split(":")[0]
         for v in w["retrievers"] + w["answerers"]:
             b, _, tag = v.partition(":")
+            if tag == "ft" and b not in train_job and cfg.get("models_from_run"):
+                train_job[b] = None            # the models come from another run, which must have trained them
+                continue
             if tag == "ft" and b not in train_job:
                 train_job[b] = P.add(f"train-{b}", f"--stage train --model {b}", train_gpus(b), 96, [data], small=sm_tr(b))
-        own = lambda v: [train_job[base(v)]] if v.endswith(":ft") else [data]
+        own = lambda v: [train_job[base(v)] or data] if v.endswith(":ft") else [data]
         for v in w["retrievers"]:
             if v not in ret_job:
                 ret_job[v] = P.add(f"ret-{v}-{ws}", f"--stage retrieve --model {v}", tp(v) if variant(cfg, v).get("kind") != "ranker" else 1, 36,

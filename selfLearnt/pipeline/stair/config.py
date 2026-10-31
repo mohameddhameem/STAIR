@@ -131,6 +131,13 @@ def ft_settings(cfg, key):
     return None, None
 
 
+def model_run_dir(cfg):
+    """Where the fine-tuned models live: this run's folder, or another run's (models_from_run) when a run only re-runs
+    inference on other inputs and must not train or overwrite anything."""
+    src = cfg.get("models_from_run")
+    return os.path.join(cfg["paths"]["runs_dir"], src, f"seed{cfg['seed']}") if src else cfg["run_dir"]
+
+
 def variant(cfg, name):
     """Resolve 'q7' or 'q7:ft' to a model entry with everything needed to run it."""
     base, _, tag = name.partition(":")
@@ -143,8 +150,9 @@ def variant(cfg, name):
         assert s, f"{base} has no fine-tuning settings"
         m["ft"] = s
         m["role"] = role
-        m["adapter_dir"] = os.path.join(cfg["run_dir"], "adapters", base)
-        m["merged_dir"] = os.path.join(cfg["run_dir"], "merged", base)
+        mdir = model_run_dir(cfg)
+        m["adapter_dir"] = os.path.join(mdir, "adapters", base)
+        m["merged_dir"] = os.path.join(mdir, "merged", base)
         if s["method"] == "lora":
             m["serve_path"], m["lora_path"] = m["merged_dir"], None
         else:

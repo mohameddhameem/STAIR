@@ -1,0 +1,21 @@
+# The HotpotQA golden set on AgentTTS's own passages (31 Oct): the same questions as golden.yaml (slr-val / slr-test,
+# Table 5 prices), but each question's 100 candidate passages come from AgentTTS's file tts_test.json, the pools the team's
+# always-strong reference (Jonathan) uses, so the comparison with it is like-for-like. Checked first: his always-strong
+# answer step re-run on these pools gives 77.31 against his 76.77 (stage ss_jon).
+#   - its own run folder (golden_tts) and experiment IDs, so nothing of golden_v1 (our own pools) or full_v1 is touched:
+#       AL-12 = AgentTTS (as AL-07), AL-13 / AL-14 / AL-15 = AL-09 / AL-10 / AL-11 (rules on fine-tuned models)
+#     always-strong on these pools is AL-08 (Jonathan's rows) as before
+#   - no training: the fine-tuned models are golden_v1's (models_from_run); submit only once golden_v1 has trained all
+#   - needs STAIR_TTS_TEST (path of tts_test.json, sha256 f65d581370fb27b9...) in jobs/cluster.local.env
+#   python jobs/submit_all.py --config configs/golden_tts.yaml --as-job
+include: golden.yaml
+run_name: golden_tts
+models_from_run: golden_v1
+history_tag: golden-tts
+data:
+  pool_source: tts
+workstreams:
+  ws1: {exp_id: AL-12}
+  ws4: {exp_id: AL-13}
+  ws5: {exp_id: AL-14}
+  ws6: {exp_id: AL-15}

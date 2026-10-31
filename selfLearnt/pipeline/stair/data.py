@@ -100,6 +100,30 @@ def _ids(dataset, part):
     return load_split(dataset, part)
 
 
+def _tts_sets(cfg, val_ids, test_ids):
+    """val / test from AgentTTS's own HotpotQA file (tts_test.json, the pools Jonathan's always-strong reference uses):
+    the first 100 candidates in the file's order, gold passages re-injected as in his trim_pool (stair/ss_jon.py)."""
+    from .ss_jon import _tts, title_of, trim_pool
+    tts = _tts(cfg)
+    pos = {(x.get("_id") or x.get("id")): i for i, x in enumerate(tts)}
+    out = {}
+    for name, ids in (("val", val_ids), ("test", test_ids)):
+        rows = []
+        for q in ids:
+            inst = dict(tts[pos[q]])
+            pool = trim_pool(inst)
+            golds = list(dict.fromkeys(inst.get("supporting_titles", [])))
+            ret = [i for i, c in enumerate(pool) if title_of(c) in golds]
+            g = inst.get("answers", inst.get("answer"))
+            g = g[0] if isinstance(g, list) and len(g) == 1 else g
+            rows.append({"qid": q, "question": inst["question"], "answer": g, "type": inst.get("type"), "level": inst.get("level"),
+                         "ret_answers": ret, "ctxs_candidate": pool})
+        out[name] = rows
+        log(f"{name}: {len(rows)} questions from tts_test.json; both gold passages in the pool for "
+            f"{sum(1 for r in rows if len(r['ret_answers']) >= 2)}")
+    return out
+
+
 def build(cfg):
     d = cfg["data"]
     out = cfg["paths"]["data_dir"]
@@ -116,8 +140,11 @@ def build(cfg):
     bm = BM25([a + " " + b for a, b in zip(titles, texts)])
     rng = random.Random(d["seed"])
     val_ids, test_ids = _ids(ds, d.get("val_part", "val")), _ids(ds, d.get("test_part", "test"))
-    sets = {"val": _build([by_id[i] for i in val_ids], texts, bm, rng, nr),
-            "test": _build([by_id[i] for i in test_ids], texts, bm, rng, nr)}
+    if d.get("pool_source") == "tts":          # AgentTTS's own pools (the golden set's reference passages)
+        sets = _tts_sets(cfg, val_ids, test_ids)
+    else:                                       # our own: gold + BM25 top-100 over the dev file, shuffled
+        sets = {"val": _build([by_id[i] for i in val_ids], texts, bm, rng, nr),
+                "test": _build([by_id[i] for i in test_ids], texts, bm, rng, nr)}
     lim = d.get("limit") or {}  # dry runs only: keep the first n of a part
     for k in ("val", "test"):
         if lim.get(k):

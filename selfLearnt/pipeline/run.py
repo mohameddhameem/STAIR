@@ -196,6 +196,9 @@ def main():
             if "ws1" in has:
                 AT.search(cfg)
         elif st == "train":
+            if cfg.get("models_from_run"):
+                log(f"this run uses the fine-tuned models of run {cfg['models_from_run']}: no training here")
+                continue
             from stair import train as T
             tr_q, va_q = D.load(cfg, "train"), D.load(cfg, "val")
             for k in _parts_or(a.model, ft_keys(cfg)):
