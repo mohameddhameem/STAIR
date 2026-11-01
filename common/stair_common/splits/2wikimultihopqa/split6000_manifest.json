@@ -1,0 +1,10 @@
+{
+ "name": "2Wiki label set, 6,000 instances (decided by Jonathan 1 Nov 2026)",
+ "derived_from": "team registry commit 262dc65 (test.txt = dev[0:500], val.txt = dev[500:1000], train_extra.txt = dev[1000:] entity-filtered); registry files left UNCHANGED",
+ "test600.txt": {"n": 600, "rule": "test.txt[0:100] + val.txt  = dev[0:100] (AgentTTS's released 100) + dev[500:1000] (AgentTTS's unreleased test 500, by their code: start = sample_number)", "sha256": "74c5efe4c2d3fab393e1a763dac758973cbb25612d186f2dd0708cb0c2bfa6aa"},
+ "val400.txt": {"n": 400, "rule": "test.txt[100:500] = dev[100:500]", "sha256": "cfc15cbae2bbdab7d9d6bd111df855d2fd4dbbfe519cbea1977f463759b7754e"},
+ "train5000.txt": {"n": 5000, "rule": "train_extra.txt[0:5000] by position", "sha256": "6511a81402deb284496621482526c6d6293e033f3d661eaf280908516bbfc456"},
+ "checks": "test600, val400 disjoint; neither shares an _id with train5000; test.txt[0:100] == their100_types.json positions (official ids, in order). train_extra was entity-filtered against dev[0:1000] = test600 U val400, so the training slice shares no gold Wikidata entity with either.",
+ "pools": "lab_package/twowiki/twowiki_pools.py v1.1, seed 17 (per-instance random.Random('17:<_id>')), Elasticsearch 7.17.25, corpus = 24,228 dev supporting-fact sentences; validated identical candidate sets 100/100 on AgentTTS's 100",
+ "test_claim": "non-inferiority margin vs always-SS registered at 3 accuracy points (paired SE ~1.6 at n=600); no extended test block"
+}
