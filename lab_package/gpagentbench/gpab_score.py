@@ -120,7 +120,7 @@ def main():
             agent_calls = [c for c in rec["calls"] if c["who"].startswith("agent")]
             sim_calls = [c for c in rec["calls"] if c["who"] == "simulator"]
             g["agent_units"] = round(sum(units(PARAMS[tag], c["prompt_tokens"] or 0, c["completion_tokens"] or 0) for c in agent_calls), 1)
-            g["sim_units"] = round(sum(units(7.0, c["prompt_tokens"] or 0, c["completion_tokens"] or 0) for c in sim_calls), 1)
+            g["sim_units"] = round(sum(units(float(os.environ.get("GPAB_SIM_PARAMS", "7.0")), c["prompt_tokens"] or 0, c["completion_tokens"] or 0) for c in sim_calls), 1)   # simulator size (72 in gpab_align); diagnostic only, not in flops_units
             g["n_reprompts"] = sum(c["who"] == "agent_reprompt" for c in rec["calls"])
             if a.judge_url:
                 judge(g, a, cache)
