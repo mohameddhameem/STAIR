@@ -68,10 +68,12 @@ def _sha(path):
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
 
+SERVER_TAG = "utc"   # runs since 1 Nov: records server on UTC (see FhirServer); earlier files (no tag) kept as they are
+
+
 def _tag():
-    """MAB_TAG names a variant run (its own episode / grade files), e.g. 'greedy' for MAB_SAMPLING=greedy."""
-    t = os.environ.get("MAB_TAG", "")
-    return f"-{t}" if t else ""
+    """File suffix of a run: MAB_TAG names a variant (e.g. 'greedy' for MAB_SAMPLING=greedy), then the server tag."""
+    return "-" + "-".join(t for t in (os.environ.get("MAB_TAG", ""), SERVER_TAG) if t)
 
 
 def wdir(cfg):
@@ -145,12 +147,17 @@ class FhirServer:
             log(f"port 8080 is taken on this node: using {self.port} (the prompts then differ from the authors' in the port)")
         self.url = f"http://localhost:{self.port}/fhir/"
         lf = open(os.path.join(self.log_dir, f"fhir-{os.environ.get('SLURM_JOB_ID', os.getpid())}.log"), "w")
+        # The database was written inside the authors' container, which runs on UTC. Its timestamps carry no time zone, so a
+        # server on the node's clock (Singapore, UTC+8) reads every one 8 hours off, and date searches ("date=ge...", the
+        # last-24-hours tasks) miss records near the window's edge, while refsol's own check does not. Found 1 Nov.
+        tz = os.environ.get("FHIR_TZ", "UTC")
         self.proc = subprocess.Popen(
-            [java, f"-Xmx{os.environ.get('FHIR_HEAP', '12g')}", "--class-path", os.path.join(R, "app", "main.war"),
+            [java, f"-Xmx{os.environ.get('FHIR_HEAP', '12g')}"] + ([f"-Duser.timezone={tz}"] if tz else []) + ["--class-path", os.path.join(R, "app", "main.war"),
              f"-Dloader.path=main.war!/WEB-INF/classes/,main.war!/WEB-INF/,{os.path.join(R, 'app', 'extra-classes')}",
              "org.springframework.boot.loader.PropertiesLauncher", f"--spring.config.location=file://{R}/configs/application.yaml",
              f"--server.port={self.port}", f"--spring.datasource.url=jdbc:h2:{self.db_dir}/test_db;DB_CLOSE_DELAY=-1"],
-            cwd=os.path.join(R, "app"), stdout=lf, stderr=subprocess.STDOUT)
+            cwd=os.path.join(R, "app"), stdout=lf, stderr=subprocess.STDOUT, env={**os.environ, **({"TZ": tz} if tz else {})})
+        log(f"FHIR server time zone: {tz or 'the node clock'}")
         import urllib.request
         for i in range(180):
             try:

@@ -20,14 +20,17 @@ fhir_start() {
   FHIR_PORT=$(python3 -c "import socket; s=socket.socket(); s.bind(('127.0.0.1', 0)); print(s.getsockname()[1])")
   FHIR_URL="http://localhost:$FHIR_PORT/fhir/"
   FHIR_LOG="${FHIR_LOG:-logs/fhir-${SLURM_JOB_ID:-$$}.log}"
-  ( cd "$R/app" && exec "$JAVA" -Xmx${FHIR_HEAP:-12g} --class-path "$R/app/main.war" \
+  # UTC as in the authors' container: the database's timestamps carry no time zone (see stair/medagent.py, FhirServer)
+  local tz="${FHIR_TZ-UTC}" tzopt=""
+  [ -n "$tz" ] && tzopt="-Duser.timezone=$tz"
+  ( cd "$R/app" && { [ -n "$tz" ] && export TZ="$tz"; true; } && exec "$JAVA" -Xmx${FHIR_HEAP:-12g} $tzopt --class-path "$R/app/main.war" \
       "-Dloader.path=main.war!/WEB-INF/classes/,main.war!/WEB-INF/,$R/app/extra-classes" \
       org.springframework.boot.loader.PropertiesLauncher \
       "--spring.config.location=file://$R/configs/application.yaml" \
       "--server.port=$FHIR_PORT" \
       "--spring.datasource.url=jdbc:h2:$FHIR_DB_DIR/test_db;DB_CLOSE_DELAY=-1" ) > "$FHIR_LOG" 2>&1 &
   FHIR_PID=$!
-  echo "FHIR server starting (pid $FHIR_PID, port $FHIR_PORT, log $FHIR_LOG)"
+  echo "FHIR server starting (pid $FHIR_PID, port $FHIR_PORT, time zone ${tz:-node clock}, log $FHIR_LOG)"
   for i in $(seq 1 180); do                         # up to 15 minutes
     if curl -sf "${FHIR_URL}metadata" -o /dev/null; then echo "FHIR server ready at $FHIR_URL after $((i * 5)) s"; export FHIR_URL FHIR_PORT; return 0; fi
     if ! kill -0 "$FHIR_PID" 2>/dev/null; then echo "FHIR server stopped while starting; last lines of $FHIR_LOG:"; tail -20 "$FHIR_LOG"; return 1; fi
