@@ -149,7 +149,7 @@ def main():
         done = {json.loads(l)["case_id"] for l in open(out) if l.strip()}
     cases = load_cases(a.data, a.cases)
     man = {"version": "gpab_run v1.0 2026-10-31", "agent": a.agent_tag, "agent_model": a.agent_model, "sim_model": a.sim_model,
-           "max_tokens": a.max_tokens, "sim_max_tokens": a.sim_max_tokens, "temperature": 0.0, "max_rounds": E.MAX_ROUNDS,
+           "max_tokens": a.max_tokens, "sim_max_tokens": a.sim_max_tokens, "temperature": 0.0, "tolerant_parser": E.TOLERANT, "max_rounds": E.MAX_ROUNDS,
            "cases_file": a.cases, "cases_sha256": hashlib.sha256(open(a.cases, "rb").read()).hexdigest(), "n_cases": len(cases),
            "agent_prompt_sha256": hashlib.sha256(open(E.PROMPT_PATH, "rb").read()).hexdigest(),
            "sim_prompt_sha256": hashlib.sha256(SIM_PROMPT.encode()).hexdigest(), "started": time.strftime("%Y-%m-%dT%H:%M:%S")}

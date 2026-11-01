@@ -58,7 +58,10 @@ CANON = {"diagnosis": "diagnose", "treatment": "treat"}          # list spelling
 TERMINAL = {"refer", "treat"}
 NO_TERMINAL = {"timeout", "invalid_action"}        # D2 grading applies to both
 
-_ACTION_RE = re.compile(r'<action\s+type\s*=\s*"([^"]+)"\s*>(.*?)</action>', re.S | re.I)
+# Pilot audit 1 Nov: 14 of the 7B's 15 invalid-action ends were `[action type="treat">` (opening '[' for '<').
+# GPAB_TOLERANT=1 also accepts '[' as the opening bracket (condition B/D of the 7B rerun); default = strict, as the pilot ran.
+TOLERANT = os.environ.get("GPAB_TOLERANT", "0") == "1"
+_ACTION_RE = re.compile((r'[<\[]' if TOLERANT else r'<') + r'action\s+type\s*=\s*"([^"]+)"\s*>(.*?)</action>', re.S | re.I)
 _THINK_RE = re.compile(r"<think>.*?</think>", re.S | re.I)
 
 
