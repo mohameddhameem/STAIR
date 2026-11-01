@@ -52,6 +52,7 @@ def parse_score(text, allowed):
 def judge(g, a, cache):
     """Fill dx_judge / tx_judge for one graded row; cache keyed on the exact prompt so repeats cost nothing."""
     g["dx_judge"] = g["tx_judge"] = 0.0; g["dx_judge_raw"] = g["tx_judge_raw"] = None
+    g["dx_unparsed"] = g["tx_unparsed"] = 0          # v1.1 fix: every row carries both columns (job 347293 crashed at the CSV)
     if g["dx_pred"]:
         p = DX_PROMPT.format(predicted=g["dx_pred"], ground_truth=g["dx_gt"])
         raw = cache.get(p) or chat(a.judge_url, a.judge_model, p); cache[p] = raw
