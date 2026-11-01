@@ -68,6 +68,12 @@ def _sha(path):
     return hashlib.sha256(open(path, "rb").read()).hexdigest()
 
 
+def _tag():
+    """MAB_TAG names a variant run (its own episode / grade files), e.g. 'greedy' for MAB_SAMPLING=greedy."""
+    t = os.environ.get("MAB_TAG", "")
+    return f"-{t}" if t else ""
+
+
 def wdir(cfg):
     d = os.path.join(cfg["run_dir"], "medagent")
     os.makedirs(d, exist_ok=True)
@@ -183,7 +189,7 @@ def _template(tok, messages, thinking=None):
 def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs):
     """Episodes of one model on the given task ids (resumes: tasks already in the store are skipped)."""
     from stair_common.cost import units
-    out = os.path.join(wdir(cfg), f"episodes_{model_key}.jsonl")
+    out = os.path.join(wdir(cfg), f"episodes_{model_key}{_tag()}.jsonl")
     have = {r["tid"] for r in read_jsonl(out)}
     by_id = {t["id"]: t for t in tasks}
     todo = [t for t in tids if t not in have]
@@ -194,12 +200,16 @@ def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs):
     mml = MAX_MODEL_LEN.get(model_key, 16384)
     eng = make_engine(cfg, m, max_model_len=mml)
     from vllm import SamplingParams
-    try:                                   # the model's generation_config defaults, as vLLM's server applies them
+    if os.environ.get("MAB_SAMPLING") == "greedy":   # variant: plain greedy, none of the model's generation_config defaults
+        sp = SamplingParams(temperature=0.0, max_tokens=MAX_TOKENS)
+        log(f"sampling: plain greedy (temperature 0, max_tokens {MAX_TOKENS}, repetition_penalty {sp.repetition_penalty})")
+    else:
+      try:                                   # the model's generation_config defaults, as vLLM's server applies them
         sp = eng.llm.get_default_sampling_params()
         sp.temperature, sp.max_tokens = 0.0, MAX_TOKENS
         log(f"sampling: temperature 0, max_tokens {MAX_TOKENS}, from generation_config: repetition_penalty {sp.repetition_penalty}, "
             f"top_p {sp.top_p}, top_k {sp.top_k}")
-    except Exception as e:  # noqa: BLE001
+      except Exception as e:  # noqa: BLE001
         sp = SamplingParams(temperature=0.0, max_tokens=MAX_TOKENS)
         log(f"no generation_config defaults ({e}): temperature 0, max_tokens {MAX_TOKENS} only")
     thinking = False if m.get("no_thinking") else None
@@ -268,7 +278,7 @@ def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs):
 def grade(cfg, model_key, fhir_url, ref, tasks):
     """refsol on every stored episode (the authors' eval(): a result is needed; grader True -> correct; errors -> wrong)."""
     by_id = {t["id"]: t for t in tasks}
-    rows = read_jsonl(os.path.join(wdir(cfg), f"episodes_{model_key}.jsonl"))
+    rows = read_jsonl(os.path.join(wdir(cfg), f"episodes_{model_key}{_tag()}.jsonl"))
     out = []
     for e in rows:
         ok = False
@@ -279,41 +289,44 @@ def grade(cfg, model_key, fhir_url, ref, tasks):
             except Exception as ex:  # noqa: BLE001
                 log(f"{e['tid']}: grader error {ex}")
         out.append({"tid": e["tid"], "model": model_key, "correct": int(ok), "status": e["status"], "rounds": e["rounds"], "units": e["units"]})
-    write_json(os.path.join(wdir(cfg), f"graded_{model_key}.json"), out)
+    write_json(os.path.join(wdir(cfg), f"graded_{model_key}{_tag()}.json"), out)
     acc = sum(r["correct"] for r in out) / max(1, len(out))
-    log(f"{model_key}: {sum(r['correct'] for r in out)}/{len(out)} correct ({100 * acc:.2f}%), {sum(r['units'] for r in out) / max(1, len(out)):.0f} units per task")
+    log(f"{model_key}{_tag()}: {sum(r['correct'] for r in out)}/{len(out)} correct ({100 * acc:.2f}%), {sum(r['units'] for r in out) / max(1, len(out)):.0f} units per task")
     return out
 
 
 def accept(cfg, pairs=(("q7", "qw"), ("q72", "qs"))):
     """Our runs against Jonathan's replay table (results/medagentbench/training1_table.json on branch jonathan): per task type
-    accuracy (his fingerprint) and per task agreement."""
+    accuracy (his fingerprint) and per task agreement, for every run of each model (the main one and variants
+    graded_<model>-<tag>.json)."""
+    import glob
     t = subprocess.run(["git", "-C", ROOT, "show", "origin/jonathan:results/medagentbench/training1_table.json"], capture_output=True, text=True)
     if t.returncode:
         raise SystemExit("run `git fetch origin jonathan` first")
     his = {r["tid"]: r for r in json.loads(t.stdout)}
     report = {}
     for mk, col in pairs:
-        p = os.path.join(wdir(cfg), f"graded_{mk}.json")
-        if not os.path.exists(p):
+        files = sorted(glob.glob(os.path.join(wdir(cfg), f"graded_{mk}.json")) + glob.glob(os.path.join(wdir(cfg), f"graded_{mk}-*.json")))
+        if not files:
             log(f"{mk}: not graded yet")
-            continue
-        ours = {r["tid"]: r for r in json.load(open(p))}
-        common = sorted(set(ours) & set(his), key=lambda x: (int(x.split("_")[0][4:]), int(x.split("_")[1])))
-        types = sorted({c.split("_")[0] for c in common}, key=lambda x: int(x[4:]))
-        line = []
-        for ty in types:
-            ids = [c for c in common if c.startswith(ty + "_")]
-            line.append(f"{ty[4:]}: {100 * sum(ours[c]['correct'] for c in ids) / len(ids):.0f} / {100 * sum(his[c][col] for c in ids) / len(ids):.0f}")
-        a = sum(ours[c]["correct"] for c in common) / len(common)
-        b = sum(his[c][col] for c in common) / len(common)
-        flips = sum(ours[c]["correct"] != his[c][col] for c in common)
-        cu = sum(ours[c]["units"] for c in common) / len(common)
-        hu = sum(his[c]["cw" if col == "qw" else "cs"] for c in common) / len(common)
-        log(f"{mk} vs Jonathan's {col}: {100 * a:.2f} vs {100 * b:.2f} on {len(common)} tasks; {flips} tasks differ "
-            f"({100 * flips / len(common):.1f}%); units {cu:.0f} vs {hu:.0f}")
-        log(f"  by task type (ours / his, %): " + " | ".join(line))
-        report[mk] = {"ours": a, "his": b, "n": len(common), "flips": flips, "units": cu, "his_units": hu}
+        for p in files:
+            run_name = os.path.basename(p)[len("graded_"):-len(".json")]
+            ours = {r["tid"]: r for r in json.load(open(p))}
+            common = sorted(set(ours) & set(his), key=lambda x: (int(x.split("_")[0][4:]), int(x.split("_")[1])))
+            types = sorted({c.split("_")[0] for c in common}, key=lambda x: int(x[4:]))
+            line = []
+            for ty in types:
+                ids = [c for c in common if c.startswith(ty + "_")]
+                line.append(f"{ty[4:]}: {100 * sum(ours[c]['correct'] for c in ids) / len(ids):.0f} / {100 * sum(his[c][col] for c in ids) / len(ids):.0f}")
+            a = sum(ours[c]["correct"] for c in common) / len(common)
+            b = sum(his[c][col] for c in common) / len(common)
+            flips = sum(ours[c]["correct"] != his[c][col] for c in common)
+            cu = sum(ours[c]["units"] for c in common) / len(common)
+            hu = sum(his[c]["cw" if col == "qw" else "cs"] for c in common) / len(common)
+            log(f"{run_name} vs Jonathan's {col}: {100 * a:.2f} vs {100 * b:.2f} on {len(common)} tasks; {flips} tasks differ "
+                f"({100 * flips / len(common):.1f}%); units {cu:.0f} vs {hu:.0f}")
+            log("  by task type (ours / his, %): " + " | ".join(line))
+            report[run_name] = {"ours": a, "his": b, "n": len(common), "flips": flips, "units": cu, "his_units": hu}
     write_json(os.path.join(wdir(cfg), "acceptance.json"), report)
 
 
