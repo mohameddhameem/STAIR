@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """
 twowiki_pools.py -- rebuild AgentTTS-style candidate pools for 2Wiki instances (lab, CPU + local Elasticsearch).
-DRAFT v1.0 2026-11-01 for Jonathan's line-by-line review.
+DRAFT v1.1 2026-11-01 for Jonathan's line-by-line review.
+v1.1: CORPUS CORRECTED to the supporting-fact (gold) sentences of dev.json -- v1.0 indexed all 200,360 context sentences
+      and validation gave candidate Jaccard 0.069; the gold-sentence test showed 9,841 / 9,841 of AgentTTS's non-gold
+      candidates are gold sentences of SOME dev question (24,228 distinct). Index renamed so v1.0's index is not reused.
+      Out-of-range supporting facts (70 in dev) are skipped, counted per instance (`n_broken_facts`), never guessed.
 
 Construction = AgentTTS data/retrieval_QA_data_generator.py (repo 3f0c2df), with their three unreleased inputs rebuilt
 from the official dev.json as the probe established (twowiki_pool_probe.py, 1 Nov: gold 244/244 exact, aliases via
 answer_id 86/86, candidates 10,085/10,085 inside dev contexts, no duplicate texts in any pool):
-  corpus   = every DISTINCT sentence of dev.json's contexts (by text; first title seen kept)  -> their corpus.jsonl
+  corpus   = every DISTINCT supporting-fact sentence of dev.json (by text; first title kept) -> their corpus.jsonl
   gold     = the supporting_facts sentences, in supporting_facts order                       -> their queries ctxs
   answers  = [answer] + id_aliases[answer_id].aliases  ([] if answer_id has no entry)         -> their `answers`
   index    = mapping {title: text, text: text}  (theirs, unchanged)
@@ -28,7 +32,7 @@ Usage (lab, slr-env, Elasticsearch 7.17 on localhost:9200):
 """
 import argparse, collections, csv, datetime, hashlib, json, os, random, re
 
-INDEX = "2wiki_dev_sentences"
+INDEX = "2wiki_dev_gold_sentences"                              # v1.1 (v1.0: 2wiki_dev_sentences, all context sentences)
 RETRIEVE_N = 100
 
 
@@ -48,13 +52,24 @@ def load_aliases(path):
     return {r["Q_id"]: r.get("aliases", []) for r in rows}
 
 
-def corpus_from_dev(dev):
+def gold_facts(d):
+    """(title, sentence) for each supporting fact, in order; out-of-range facts skipped and counted (70 in dev)."""
+    ctx = {t: s for t, s in d["context"]}
+    ok, broken = [], 0
+    for t, i in d["supporting_facts"]:
+        if t in ctx and i < len(ctx[t]):
+            ok.append((t, ctx[t][i]))
+        else:
+            broken += 1
+    return ok, broken
+
+
+def corpus_from_dev(dev):                                       # v1.1: gold sentences only
     seen, docs = set(), []
     for d in dev:
-        for title, sents in d["context"]:
-            for s in sents:
-                if s not in seen:
-                    seen.add(s); docs.append({"title": title, "text": s})
+        for title, s in gold_facts(d)[0]:
+            if s not in seen:
+                seen.add(s); docs.append({"title": title, "text": s})
     return docs
 
 
@@ -75,8 +90,8 @@ def cmd_index(a):
 
 
 def make_record(es, d, aliases, seed):
-    ctx = {t: s for t, s in d["context"]}
-    gold = [ctx[t][i] for t, i in d["supporting_facts"]]
+    facts, n_broken = gold_facts(d)
+    gold = [s for _, s in facts]
     answers = [d["answer"]] + list(aliases.get(d["answer_id"], []))
     ctxs = gold.copy()
     hits = es.search(index=INDEX, body={"query": {"multi_match": {"query": d["question"], "fields": ["title", "text"]}},
@@ -88,7 +103,7 @@ def make_record(es, d, aliases, seed):
     random.Random(f"{seed}:{d['_id']}").shuffle(ctxs)                                      # D1
     return {"_id": d["_id"], "type": d["type"], "question": d["question"], "answers": answers, "answer": answers[0],
             "ctxs_candidate": ctxs, "ctxs_gt": gold, "supporting_titles": [title_of(g) for g in gold],
-            "n_hits": len(hits)}
+            "n_hits": len(hits), "n_broken_facts": n_broken}
 
 
 def cmd_validate(a):
@@ -147,10 +162,11 @@ def cmd_build(a):
     assert len({r["_id"] for r in recs}) == len(recs), "duplicate _id across the ids files"
     os.makedirs(a.out, exist_ok=True)
     json.dump(recs, open(out_path, "w", encoding="utf-8"), ensure_ascii=False)
-    man = {"version": "twowiki_pools v1.0 2026-11-01", "tag": a.tag, "n": len(recs), "seed": a.seed, "retrieve_n": RETRIEVE_N,
+    man = {"version": "twowiki_pools v1.1 2026-11-01", "tag": a.tag, "n": len(recs), "seed": a.seed, "retrieve_n": RETRIEVE_N,
            "index": INDEX, "es_version": es.info()["version"]["number"], "dev_sha256": sha(a.dev), "aliases_sha256": sha(a.aliases),
            "ids_files": ids_sha, "max_pool": max(len(r["ctxs_candidate"]) for r in recs),
-           "by_split": dict(collections.Counter(r["split"] for r in recs)), "output_sha256": sha(out_path),
+           "by_split": dict(collections.Counter(r["split"] for r in recs)),
+           "instances_with_broken_facts": [r["_id"] for r in recs if r["n_broken_facts"]], "output_sha256": sha(out_path),
            "created": datetime.datetime.now().isoformat(timespec="seconds")}
     json.dump(man, open(os.path.join(a.out, f"pools_{a.tag}_manifest.json"), "w"), indent=1)
     print(json.dumps(man, indent=1))
