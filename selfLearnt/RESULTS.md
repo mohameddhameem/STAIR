@@ -11,9 +11,9 @@ Since 21 Oct (`common` 0.3.0) the team's HotpotQA headline is Jonathan's golden 
 priced at AgentTTS's Table 5). The golden-set runs have their own experiment IDs, sheets and files, so the two are never
 mixed: AL-07 = AL-01 (AgentTTS), AL-08 = AL-02 (always-strong, Jonathan's rows, already in:
 [`jonathan-ss-hotpotqa-slr-test.csv`](../results/common/jonathan-ss-hotpotqa-slr-test.csv), 0.7677), AL-09 / AL-10 /
-AL-11 = AL-04 / AL-05 / AL-06 (results `AL-09`..`AL-11-hotpotqa-slr-test-seed0.csv`, curves
-`history/selfLearnt-golden-*`). AL-03 is not repeated. AL-07 is in (AgentTTS on slr-test, our own passages): paper-best
-0.736 at 1,971 units, searched 0.646 at 3,518.
+AL-11 = AL-04 / AL-05 / AL-06. AL-03 is not repeated. AL-07 is in (AgentTTS on slr-test, our own passages): paper-best
+0.736 at 1,971 units, searched 0.646 at 3,518. AL-09 .. AL-11 were stopped once AL-13 .. AL-15 (below) were set up: the
+same fine-tuned models, on the passages the team's always-strong reference uses.
 
 Because the team's always-strong reference uses AgentTTS's own passage file (tts_test.json) and our runs rebuilt the
 passages themselves, the golden set is also run on AgentTTS's passages, in its own folder and IDs, reusing golden_v1's
@@ -170,6 +170,75 @@ retriever each question ended on (learnt rules, test):
   ladders bought 20-30x lower cost (3-5% of AL-04's) for 7-12 points, not the same accuracy for less.
 - What this suggests: let the rules jump up the ladder (e.g. straight to Qwen 0.8B or 7B when the first retriever is
   unsure), or start the long ladders at Qwen 0.8B, the efficient point of the fixed-pair curve.
+
+## Golden set on AgentTTS's passages (AL-12 .. AL-15, slr-test, done 2 Nov)
+
+The team's HotpotQA headline set: 1,481 test questions (`slr-test`), each with AgentTTS's own 100 candidate passages
+(`tts_test.json`, the same inputs as the team's always-strong reference). All 11 models were fine-tuned again for this
+run (`golden_v1`, 25-31 Oct), each checkpoint picked on `slr-val` (1,110 questions); the rules were learnt on `slr-val`
+too. Seed 0. Accuracy = lenient; units = measured AgentTTS units per question; price = AgentTTS's Table 5 price (the
+golden set's cost rule, always-strong = 929). "Paired" = questions right only for this setting / only for always-strong.
+With 1,481 questions an accuracy carries about +-1.1 points of sampling noise.
+
+| Setting | Accuracy | Units | Price | vs always-strong | Paired |
+|---|---|---|---|---|---|
+| AL-12 AgentTTS paper-best (Qwen2.5 72B x1 -> Llama 3.2 3B x40 + fusion) | 0.762 | 1,955 | 1,327 | -0.6 (n.s.) | 150 / 159 |
+| AL-12 AgentTTS searched (its search, Qwen2.5 32B x10 -> Llama 3.1 8B x30 + fusion) | 0.749 | 1,360 | 1,877 | -1.9 (n.s.) | 152 / 179 |
+| AL-08 always-strong, team reference (Jonathan's rows) | 0.768 | 1,821 | 929 | - | - |
+| AL-13 learnt rules (no change accepted: = starting rules) | 0.796 | 464 | 218 | **+2.8** | 118 / 76 |
+| AL-14 learnt rules (no change accepted) | 0.674 | 12 | 4 | **-9.4** | 107 / 246 |
+| AL-15 learnt rules (starting rules 0.698 at 24) | 0.713 | 26 | 13 | **-5.5** | 111 / 192 |
+| Fixed Qwen 7B -> Llama 70B (fine-tuned) | 0.813 | 217 | 192 | **+4.5** | 110 / 43 |
+| Fixed Qwen 7B -> Llama 8B | 0.812 | 176 | 88 | **+4.4** | 129 / 63 |
+| Fixed Qwen 3B -> Llama 8B | 0.812 | 78 | 43 | **+4.4** | 131 / 66 |
+| Fixed Qwen 0.8B -> Llama 8B | 0.808 | 25 | 18 | **+4.0** | 129 / 70 |
+| Fixed Qwen 0.8B -> Llama 3B | 0.785 | 22 | 10 | +1.7 (n.s.) | 129 / 104 |
+
+Oracles within each rulebook's choices: AL-13 0.848 at 182 units, AL-14 0.771 at 41, AL-15 0.783 at 30. Full tables:
+[`AL-12`](../results/common/AL-12-hotpotqa-slr-test-seed0.csv) ..
+[`AL-15-hotpotqa-slr-test-seed0.csv`](../results/common/AL-15-hotpotqa-slr-test-seed0.csv).
+
+- **The first run's findings hold on the team's set.** Fine-tuned pairs beat both baselines clearly: Qwen 0.8B ->
+  Llama 8B is 4 points above always-strong at 1.4% of its measured cost (2% of its price), and 4.6 points above
+  AgentTTS's paper setting.
+- **The curve is flat at the top.** From 25 units (0.808) to 217 (0.813) accuracy gains half a point, within the noise:
+  above Qwen 0.8B -> Llama 8B, larger models buy almost nothing here.
+- **The learnt rules still do not beat a fixed pair.** AL-13's rules (0.796 at 464) are below Qwen 7B -> Llama 8B
+  (0.812 at 176); AL-14's and AL-15's stay on the bottom rungs, as on the first run. In AL-13 and AL-14 the learner again
+  accepted no change.
+- **All numbers sit 3-4 points lower than on AgentTTS's 500** (e.g. Qwen 7B -> Llama 70B 0.854 -> 0.813), while
+  AgentTTS rises (0.744 -> 0.762) and always-strong is flat (0.776 -> 0.768): the margin over always-strong narrows from
+  about +8 to +4.5 points but stays clear.
+- **Passages matter for AgentTTS.** On our own BM25 passages (AL-07) its paper setting scores 0.736; on its own
+  passages 0.762.
+- **Still to do:** the fixed pairs above are read off the test results. A pair claimed as a result must be chosen on
+  `slr-val` first (e.g. the cheapest within 1 point of the best) and reported once on test.
+
+## MedAgentBench: acceptance check of our harness (2 Nov)
+
+Before running our models and rules on MedAgentBench (Jonathan's request), our cluster setup must reproduce his
+always-weak and always-strong runs: the authors' harness (stanfordmlgroup/MedAgentBench @ 9926011, their grader
+refsol.py), all 300 tasks, Qwen2.5 7B and Qwen2.5 72B AWQ, temperature 0, 8 rounds. The records server is the authors'
+image unpacked without Docker (`tools/pull_image.py`). Code: `stair/medagent.py` (stage `mab`); per-task grades and the
+comparison in [`results/medagentbench/selfLearnt-acceptance/`](../results/medagentbench/selfLearnt-acceptance/).
+
+| Run | Ours | Jonathan's | Tasks that differ | Units / task (ours / his) |
+|---|---|---|---|---|
+| Qwen 7B (always-weak) | 12.00% | 11.67% | 1 of 300 | 289 / 295 |
+| Qwen 72B (always-strong), first run | 52.33% | 56.00% | 27 | 1,276 / 1,255 |
+| Qwen 72B, plain greedy (no repetition penalty) | 53.33% | 56.00% | 26 | 1,218 / 1,255 |
+| **Qwen 72B, records server on UTC** | **56.67%** | 56.00% | **6** | 1,180 / 1,255 |
+
+- **Accepted.** On the corrected server the 72B matches Jonathan's run (his own two runs: 56.67 and 56.00) and the 7B
+  matches too, so later MedAgentBench rows use this setup (`-utc` files).
+- **What was wrong: the records server's clock.** The first 72B run lost on the "last 24 hours" task types (4: 77 vs
+  100%, 6: 43 vs 73%). The patient database was written inside the authors' container, which runs on UTC, and its
+  timestamps carry no time zone; our server ran on the cluster's clock (UTC+8), so date searches were 8 hours off and
+  missed readings near the window's start (task4_3: a magnesium reading at 13:35 UTC was missing from
+  `date=ge2023-11-12T10:15`), while the grader, which reads the records without a date search, expected it. The server
+  now runs on UTC (`-Duser.timezone=UTC`, `jobs/fhir_test.sbatch` checks both clocks).
+- The decoding setting (the model's default repetition penalty 1.05 vs plain greedy) moved the score by 1 point; the
+  default is kept, as an OpenAI-style vLLM server applies it.
 
 ## Fine-tuning so far (early stopping on validation loss, `results/common/history/`)
 

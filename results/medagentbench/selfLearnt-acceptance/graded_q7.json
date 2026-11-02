@@ -1,0 +1,2402 @@
+[
+ {
+  "tid": "task1_1",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.72048611111111
+ },
+ {
+  "tid": "task1_2",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.671875
+ },
+ {
+  "tid": "task1_3",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.78125
+ },
+ {
+  "tid": "task1_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 83.84201388888889
+ },
+ {
+  "tid": "task1_5",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.62326388888889
+ },
+ {
+  "tid": "task1_6",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.5625
+ },
+ {
+  "tid": "task1_7",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.90277777777777
+ },
+ {
+  "tid": "task1_8",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.76909722222223
+ },
+ {
+  "tid": "task1_9",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.73263888888889
+ },
+ {
+  "tid": "task1_10",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.69618055555556
+ },
+ {
+  "tid": "task1_11",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.72048611111111
+ },
+ {
+  "tid": "task1_12",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.87847222222223
+ },
+ {
+  "tid": "task1_13",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.72048611111111
+ },
+ {
+  "tid": "task1_14",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.80555555555556
+ },
+ {
+  "tid": "task1_15",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.85416666666666
+ },
+ {
+  "tid": "task1_16",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.72048611111111
+ },
+ {
+  "tid": "task1_17",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.73263888888889
+ },
+ {
+  "tid": "task1_18",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.72048611111111
+ },
+ {
+  "tid": "task1_19",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.65972222222223
+ },
+ {
+  "tid": "task1_20",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.27083333333333
+ },
+ {
+  "tid": "task1_21",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.76909722222223
+ },
+ {
+  "tid": "task1_22",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.78125
+ },
+ {
+  "tid": "task1_23",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.84201388888889
+ },
+ {
+  "tid": "task1_24",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.74479166666666
+ },
+ {
+  "tid": "task1_25",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.64756944444444
+ },
+ {
+  "tid": "task1_26",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.82986111111111
+ },
+ {
+  "tid": "task1_27",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.79340277777777
+ },
+ {
+  "tid": "task1_28",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.75694444444444
+ },
+ {
+  "tid": "task1_29",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 83.85416666666666
+ },
+ {
+  "tid": "task1_30",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 2,
+  "units": 83.85416666666666
+ },
+ {
+  "tid": "task2_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.74479166666667
+ },
+ {
+  "tid": "task2_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.671875
+ },
+ {
+  "tid": "task2_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.73263888888889
+ },
+ {
+  "tid": "task2_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.57465277777777
+ },
+ {
+  "tid": "task2_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.59895833333334
+ },
+ {
+  "tid": "task2_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.57465277777777
+ },
+ {
+  "tid": "task2_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.63541666666667
+ },
+ {
+  "tid": "task2_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.5625
+ },
+ {
+  "tid": "task2_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.65972222222223
+ },
+ {
+  "tid": "task2_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.21006944444444
+ },
+ {
+  "tid": "task2_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.58680555555556
+ },
+ {
+  "tid": "task2_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.671875
+ },
+ {
+  "tid": "task2_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.62326388888889
+ },
+ {
+  "tid": "task2_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.63541666666667
+ },
+ {
+  "tid": "task2_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.62326388888889
+ },
+ {
+  "tid": "task2_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.80555555555556
+ },
+ {
+  "tid": "task2_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.58680555555556
+ },
+ {
+  "tid": "task2_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.58680555555556
+ },
+ {
+  "tid": "task2_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.234375
+ },
+ {
+  "tid": "task2_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.65972222222223
+ },
+ {
+  "tid": "task2_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.671875
+ },
+ {
+  "tid": "task2_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.59895833333334
+ },
+ {
+  "tid": "task2_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.62326388888889
+ },
+ {
+  "tid": "task2_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.78125
+ },
+ {
+  "tid": "task2_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.5625
+ },
+ {
+  "tid": "task2_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.72048611111111
+ },
+ {
+  "tid": "task2_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.59895833333334
+ },
+ {
+  "tid": "task2_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.57465277777777
+ },
+ {
+  "tid": "task2_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.671875
+ },
+ {
+  "tid": "task2_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 90.59895833333334
+ },
+ {
+  "tid": "task3_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task3_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 85.96875
+ },
+ {
+  "tid": "task4_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_2",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_12",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_16",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_21",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_22",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_24",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task4_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 402.828125
+ },
+ {
+  "tid": "task4_30",
+  "model": "q7",
+  "correct": 1,
+  "status": "completed",
+  "rounds": 5,
+  "units": 232.57986111111111
+ },
+ {
+  "tid": "task5_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task5_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 413.81423611111114
+ },
+ {
+  "tid": "task6_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task6_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 403.8003472222222
+ },
+ {
+  "tid": "task7_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task7_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 361.71527777777777
+ },
+ {
+  "tid": "task8_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task8_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 2,
+  "units": 87.59722222222223
+ },
+ {
+  "tid": "task9_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 709.4427083333334
+ },
+ {
+  "tid": "task9_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 869.8107638888889
+ },
+ {
+  "tid": "task9_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "agent context limit",
+  "rounds": 7,
+  "units": 760.8732638888889
+ },
+ {
+  "tid": "task9_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 657.5260416666666
+ },
+ {
+  "tid": "task9_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 4,
+  "units": 226.39409722222223
+ },
+ {
+  "tid": "task9_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 790.5746527777778
+ },
+ {
+  "tid": "task9_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 709.4427083333334
+ },
+ {
+  "tid": "task9_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 709.4427083333334
+ },
+ {
+  "tid": "task9_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "agent context limit",
+  "rounds": 6,
+  "units": 675.8159722222222
+ },
+ {
+  "tid": "task9_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 660.6371527777777
+ },
+ {
+  "tid": "task9_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 660.6371527777777
+ },
+ {
+  "tid": "task9_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "agent context limit",
+  "rounds": 6,
+  "units": 678.2829861111111
+ },
+ {
+  "tid": "task9_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "agent context limit",
+  "rounds": 5,
+  "units": 522.703125
+ },
+ {
+  "tid": "task9_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 778.1180555555555
+ },
+ {
+  "tid": "task9_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "agent context limit",
+  "rounds": 7,
+  "units": 762.4045138888889
+ },
+ {
+  "tid": "task9_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "agent context limit",
+  "rounds": 4,
+  "units": 409.5
+ },
+ {
+  "tid": "task9_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 7,
+  "units": 505.13020833333337
+ },
+ {
+  "tid": "task9_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 653.625
+ },
+ {
+  "tid": "task9_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 668.9131944444445
+ },
+ {
+  "tid": "task9_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 4,
+  "units": 226.44270833333334
+ },
+ {
+  "tid": "task9_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "agent context limit",
+  "rounds": 5,
+  "units": 514.5607638888889
+ },
+ {
+  "tid": "task9_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 818.2829861111111
+ },
+ {
+  "tid": "task9_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 657.5260416666666
+ },
+ {
+  "tid": "task10_1",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_2",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_3",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_4",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_5",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_6",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_7",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_8",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_9",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_10",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_11",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_12",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 5,
+  "units": 225.1909722222222
+ },
+ {
+  "tid": "task10_13",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_14",
+  "model": "q7",
+  "correct": 0,
+  "status": "completed",
+  "rounds": 5,
+  "units": 223.59895833333334
+ },
+ {
+  "tid": "task10_15",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_16",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_17",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_18",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_19",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_20",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_21",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_22",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_23",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_24",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_25",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_26",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_27",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 376.00694444444446
+ },
+ {
+  "tid": "task10_28",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_29",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ },
+ {
+  "tid": "task10_30",
+  "model": "q7",
+  "correct": 0,
+  "status": "task limit reached",
+  "rounds": 8,
+  "units": 372.89583333333337
+ }
+]
