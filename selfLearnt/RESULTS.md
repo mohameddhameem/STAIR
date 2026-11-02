@@ -47,8 +47,13 @@ run scored there, and lose the 3-4 points only on the golden questions:
 | Qwen3.5 0.8B -> Llama 8B | 0.826 @ 25 | 0.828 @ 25 | 0.808 @ 25 |
 | Qwen2.5 7B -> Llama 8B | 0.848 @ 178 | 0.844 @ 177 | 0.812 @ 176 |
 
-The golden questions are harder for our fine-tuned pipeline (but not for always-strong, 0.776 -> 0.768, or AgentTTS,
-which rises): our gain over the baselines is smaller there, and the golden set is the number to report.
+Why (`jobs/golden_diag.py`, 2 Nov): the question mix is the same (19-20% comparison questions in every set) and the
+retriever finds both gold passages as often (89-94%). The difference is where the questions come from: on both of
+AgentTTS's slices, dev [0:500] and [500:1000], our pairs score 0.83-0.85; on both golden sets, drawn from all 7,405 dev
+questions, 0.81-0.82, even when both gold passages were picked (answer accuracy then 0.85-0.86 vs 0.83-0.84).
+Always-strong also drops a little (0.788 / 0.776 vs 0.768 / 0.768). The first 1,000 dev questions suit our fine-tuned
+answerers better than the dev set as a whole; the golden set, sampled across all of it, is the representative number,
+and our lead over always-strong there is about +4.5 points.
 
 ## First run in detail (AgentTTS's 500 test questions)
 
