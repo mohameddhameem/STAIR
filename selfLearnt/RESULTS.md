@@ -38,9 +38,17 @@ golden IDs AL-09 .. AL-11 (the same on our own passages) were stopped in favour 
 
 On the golden set our experiments score 3-4 points lower (the fixed fine-tuned pairs too: Qwen 7B -> Llama 70B 0.854 ->
 0.813) while AgentTTS rises, so the lead over always-strong narrows from about +8 to about +4.5 points but stays clear.
-Questions, passages and the retrained models all changed at once; on the 94 questions both sets share, the retrained
-models are not consistently worse. A cross-check running now (golden models with AgentTTS's passages on the old 500,
-`configs/xcheck_old500.yaml`) separates the questions from the passages.
+**The drop comes from the questions, not from the passages or the retrained models.** Cross-check (2 Nov,
+`configs/xcheck_old500.yaml`): the golden models with AgentTTS's passages on the old 500 questions score what the first
+run scored there, and lose the 3-4 points only on the golden questions:
+
+| Fixed pair (fine-tuned) | First run (first-run models, our passages, old 500) | Golden models, AgentTTS's passages, old 500 | Golden set (slr-test) |
+|---|---|---|---|
+| Qwen3.5 0.8B -> Llama 8B | 0.826 @ 25 | 0.828 @ 25 | 0.808 @ 25 |
+| Qwen2.5 7B -> Llama 8B | 0.848 @ 178 | 0.844 @ 177 | 0.812 @ 176 |
+
+The golden questions are harder for our fine-tuned pipeline (but not for always-strong, 0.776 -> 0.768, or AgentTTS,
+which rises): our gain over the baselines is smaller there, and the golden set is the number to report.
 
 ## First run in detail (AgentTTS's 500 test questions)
 
