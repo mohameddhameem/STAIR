@@ -21,20 +21,41 @@ fine-tuned models: AL-12 = AgentTTS, AL-13 / AL-14 / AL-15 = AL-04 / AL-05 / AL-
 first: Jonathan's always-strong answer step re-run on our stack with his passages, retrievals and prompt gives 77.31 on
 slr-test against his 76.77 (87% identical answers, 28 vs 20 questions right for only one side).
 
-## Summary: first run vs golden set
+## Summary: question set x passage list
 
-Accuracy (lenient) @ measured AgentTTS units per question, seed 0. Old = AgentTTS's 500 test questions; golden = the
-team's 1,481 `slr-test` questions with AgentTTS's own passages (the inputs of the team's always-strong reference). The
-golden IDs AL-09 .. AL-11 (the same on our own passages) were stopped in favour of AL-13 .. AL-15.
+Lenient accuracy, seed 0. Two things vary between runs:
 
-| Experiment | Old (500 questions) | Golden (1,481 questions) |
-|---|---|---|
-| AgentTTS (paper's best setting) | AL-01: 0.744 @ 1,984 | AL-12: 0.762 @ 1,955 |
-| Always-strong (team reference) | AL-02: 0.776 @ 1,829 | AL-08: 0.768 @ 1,821 |
-| Untrained models + rules | AL-03: 0.566 @ 609 | not repeated |
-| Fine-tuned 3+3 models + rules | AL-04: 0.830 @ 437 | AL-13: 0.796 @ 464 |
-| Long ladders from nano-jev + rules | AL-05: 0.710 @ 13 | AL-14: 0.674 @ 12 |
-| Ladders from Qwen 0.5B + rules | AL-06: 0.756 @ 22 | AL-15: 0.713 @ 26 |
+- **Questions.** *Old* = AgentTTS's 500 test questions (dev [500:1000], the paper's slice); *golden* = the team's
+  1,481 `slr-test` questions (Jonathan's split, the team's headline set since 21 Oct).
+- **Passage list** (100 candidate passages per question, 2 of them gold). *Scattered* = our own list (gold passages
+  plus BM25's closest look-alikes, shuffled: gold at median position 50). *Top* = AgentTTS's file `tts_test.json`, the
+  inputs of the team's always-strong reference, where the gold passages usually come first (median position 2; both in
+  the first 10 for about 60% of questions; `jobs/pool_diag.py`).
+
+| Method | Old, scattered | Old, top | Golden, scattered | Golden, top |
+|---|---|---|---|---|
+| AgentTTS | 0.744 (AL-01) | - | 0.736 (AL-07) | 0.762 (AL-12) |
+| Always-strong (Qwen 72B -> Llama 70B) | - | 0.776 (AL-02) | - | 0.768 (AL-08) |
+| Untrained models + learnt rules | 0.566 (AL-03) | - | - | - |
+| Fine-tuned 3+3 models + learnt rules | 0.830 (AL-04) | - | stopped (AL-09) | 0.796 (AL-13) |
+| Fine-tuned fixed pair, Qwen 7B -> Llama 8B | 0.848 (AL-04) | 0.844 (cross-check) | - | 0.812 (AL-13) |
+| Fine-tuned long ladders from nano-jev + learnt rules | 0.710 (AL-05) | - | stopped (AL-10) | 0.674 (AL-14) |
+| Fine-tuned ladders from Qwen 0.5B + learnt rules | 0.756 (AL-06) | - | stopped (AL-11) | 0.713 (AL-15) |
+
+- *Stopped*: planned on the golden questions with our list, cancelled on 31 Oct before producing results so that the
+  golden runs use exactly the inputs of the team's always-strong reference (AL-12 .. AL-15); their fine-tuning was kept
+  and reused. *Cross-check*: `configs/xcheck_old500.yaml`, the golden models on the old questions with AgentTTS's list.
+- The fixed pair is one of the 9 reference pairs scored inside AL-04 / AL-13 (every question through the same fine-tuned
+  retriever and answerer, no switching): the best-value pair, used as the reference throughout.
+- **Passage order helps the untrained models, not ours.** AgentTTS gains 2.6 points from AgentTTS's list (golden:
+  0.736 -> 0.762); the fine-tuned pair scores the same on either list (old: 0.848 vs 0.844). Untrained models reading
+  100 passages favour what comes first; ours were trained on shuffled lists. Always-strong has only been run on
+  AgentTTS's list, so how much the order helps it is not known.
+- **The golden questions are harder for everyone**, for ours more: AgentTTS -0.8 (same list), always-strong -0.8 (same
+  list), our fixed pair -3.2 (same list). On the golden set, with identical inputs for every method, the fine-tuned
+  pair leads always-strong by 4.4 points.
+
+### Why the golden set scores lower
 
 On the golden set our experiments score 3-4 points lower (the fixed fine-tuned pairs too: Qwen 7B -> Llama 70B 0.854 ->
 0.813). AgentTTS and always-strong drop about 1 point on the same passages (AgentTTS 0.744 -> 0.736 on our passages,
