@@ -366,8 +366,15 @@ def run_part(cfg, stage, part):
     else:
         run_answers(cfg, split, m)
     mark_done(cfg, stage, part)
-    if stage == "ws1_test" and all(_done(cfg, stage, p) for p in all_parts(cfg, stage)):
+    if stage == "ws1_test" and all(_done(cfg, stage, p) or not _used(cfg, p) for p in all_parts(cfg, stage)):
         test_results(cfg)
+
+
+def _used(cfg, part):
+    """A test part whose model none of the test settings uses: the submitter never runs it (2 Nov, golden_tts: the
+    Llama 70B answer part was skipped, so the test table was never written), so it must not hold up the table."""
+    kind, _, m = part.partition("-")
+    return any((c[0] if kind == "retrieve" else c[2]) == m for c in test_plan(cfg))
 
 
 def _done(cfg, stage, p):
