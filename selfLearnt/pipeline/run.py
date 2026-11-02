@@ -155,7 +155,7 @@ def _parts_or(arg, parts):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
-    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "export", "ss_greedy", "ss_jon", "mab", "xcheck", "all"])
+    ap.add_argument("--stage", required=True, choices=ORDER + ["status", "export", "ss_greedy", "ss_jon", "mab", "mab_run", "mab_rules", "xcheck", "all"])
     ap.add_argument("--part", default="")
     ap.add_argument("--model", default="")
     ap.add_argument("--ws", default="")
@@ -254,6 +254,12 @@ def main():
         elif st == "mab":
             from stair import medagent
             medagent.run(cfg, a.part or "episodes", a.model)
+        elif st == "mab_run":
+            from stair import mab
+            mab.run(cfg, a.part, a.model)
+        elif st == "mab_rules":
+            from stair import mab_rules
+            mab_rules.run(cfg, a.part or "all")
         elif st == "xcheck":
             from stair import xcheck
             xcheck.compare(cfg)

@@ -193,19 +193,27 @@ def _template(tok, messages, thinking=None):
     return list(tok(text, add_special_tokens=False)["input_ids"])
 
 
-def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs):
-    """Episodes of one model on the given task ids (resumes: tasks already in the store are skipped)."""
+def ep_name(model_key):
+    return model_key.replace(":", "-")
+
+
+def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs, out=None, temperature=None, seed=0, starts=None):
+    """Episodes of one model on the given task ids (resumes: tasks already in the store are skipped).
+    model_key: 'q72' (untrained) or 'q7:ft' (fine-tuned in this run). temperature/seed: sampled attempts (teacher data).
+    starts: {tid: {"history": [...], "n_in": [...], "n_out": [...], "rounds": r, "from": model}} continues an attempt
+    another model began (hand-off, AL-19): the conversation so far, then this model's rounds up to MAX_ROUND in all."""
     from stair_common.cost import units
-    out = os.path.join(wdir(cfg), f"episodes_{model_key}{_tag()}.jsonl")
+    from .config import serve_entry
+    out = out or os.path.join(wdir(cfg), f"episodes_{ep_name(model_key)}{_tag()}.jsonl")
     have = {r["tid"] for r in read_jsonl(out)}
     by_id = {t["id"]: t for t in tasks}
-    todo = [t for t in tids if t not in have]
-    log(f"{model_key}: {len(todo)} of {len(tids)} episodes to run")
+    todo = [t for t in tids if t not in have and (starts is None or t in starts)]
+    log(f"{model_key}: {len(todo)} of {len(tids)} episodes to run -> {os.path.basename(out)}")
     if not todo:
         return out
     m = variant(cfg, model_key)
-    mml = MAX_MODEL_LEN.get(model_key, 16384)
-    eng = make_engine(cfg, m, max_model_len=mml)
+    mml = MAX_MODEL_LEN.get(model_key.split(":")[0], 16384)
+    eng = make_engine(cfg, serve_entry(m), max_model_len=mml, lora_path=m.get("lora_path"))
     from vllm import SamplingParams
     if os.environ.get("MAB_SAMPLING") == "greedy":   # variant: plain greedy, none of the model's generation_config defaults
         sp = SamplingParams(temperature=0.0, max_tokens=MAX_TOKENS)
@@ -219,17 +227,29 @@ def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs):
       except Exception as e:  # noqa: BLE001
         sp = SamplingParams(temperature=0.0, max_tokens=MAX_TOKENS)
         log(f"no generation_config defaults ({e}): temperature 0, max_tokens {MAX_TOKENS} only")
+    if temperature:                          # teacher data: sampled attempts (one seed per pass)
+        sp.temperature, sp.seed = float(temperature), int(seed)
+        log(f"sampled attempts: temperature {temperature}, seed {seed}")
+    sp.logprobs = 0                          # the reply's log-probability (a confidence signal); does not change the output
     thinking = False if m.get("no_thinking") else None
     ep = {}
     for tid in todo:
         case = by_id[tid]
-        ep[tid] = {"tid": tid, "model": model_key, "status": None, "result": None, "rounds": 0, "n_in": [], "n_out": [],
+        ep[tid] = {"tid": tid, "model": model_key, "status": None, "result": None, "rounds": 0, "n_in": [], "n_out": [], "lp": [],
                    "history": [{"role": "user", "content": MedAgentBench_prompt.format(
                        api_base=fhir_url, functions=json.dumps(funcs), context=case["context"], question=case["instruction"])}]}
+        if starts:                           # hand-off: continue the other model's conversation
+            st0 = starts[tid]
+            import re          # the other job's server may have had another port: point the conversation at this one
+            hist = [dict(h, content=re.sub(r"http://localhost:\d+/fhir/", fhir_url, h["content"])) for h in st0["history"]]
+            ep[tid].update(history=hist, rounds=st0["rounds"], prior_rounds=st0["rounds"],
+                           prior_units=st0.get("units", 0.0), handed_from=st0.get("from"))
     for rnd in range(MAX_ROUND):
-        act = [tid for tid in todo if ep[tid]["status"] is None]
+        act = [tid for tid in todo if ep[tid]["status"] is None and ep[tid]["rounds"] <= rnd]
         if not act:
-            break
+            if all(ep[t]["status"] is not None for t in todo):
+                break
+            continue
         prompts, ids = [], []
         for tid in act:
             msgs = [{"role": "assistant" if h["role"] == "agent" else "user", "content": h["content"]} for h in ep[tid]["history"]]
@@ -239,12 +259,15 @@ def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs):
                 continue
             prompts.append({"prompt_token_ids": p})
             ids.append(tid)
-        outs = eng.llm.generate(prompts, [sp] * len(prompts), use_tqdm=False) if prompts else []
+        kw = {"lora_request": eng.lora} if getattr(eng, "lora", None) else {}
+        outs = eng.llm.generate(prompts, [sp] * len(prompts), use_tqdm=False, **kw) if prompts else []
         for tid, pr, o in zip(ids, prompts, outs):
             e = ep[tid]
             text = o.outputs[0].text
             e["n_in"].append(len(pr["prompt_token_ids"]))
             e["n_out"].append(len(o.outputs[0].token_ids))
+            clp = getattr(o.outputs[0], "cumulative_logprob", None)
+            e["lp"].append(float(clp) / max(1, len(o.outputs[0].token_ids)) if clp is not None else None)
             e["rounds"] = rnd + 1
             e["history"].append({"role": "agent", "content": text})
             try:                                # the authors' handling of one action, line by line
@@ -275,17 +298,35 @@ def run_episodes(cfg, model_key, tids, fhir_url, utils, tasks, funcs):
     for tid in todo:
         e = ep[tid]
         e["status"] = e["status"] or "task limit reached"
-        e["units"] = float(sum(units(params, a, b) for a, b in zip(e["n_in"], e["n_out"])))
+        e["units"] = float(sum(units(params, a, b) for a, b in zip(e["n_in"], e["n_out"])))   # this model's rounds only
         rows.append(e)
     append_jsonl(out, rows)
     free_gpu(eng)
     return out
 
 
+def grade_file(path, fhir_url, ref, tasks, out_path):
+    """refsol on every episode in one store -> {tid: 1/0} (written to out_path)."""
+    by_id = {t["id"]: t for t in tasks}
+    res = {}
+    for e in read_jsonl(path):
+        ok = False
+        if e.get("result") is not None:
+            results = _Item(index=None, status=e["status"], result=e["result"], history=[_Item(h) for h in e["history"]])
+            try:
+                ok = getattr(ref, e["tid"].split("_")[0])(by_id[e["tid"]], results, fhir_url) is True
+            except Exception as ex:  # noqa: BLE001
+                log(f"{e['tid']}: grader error {ex}")
+        res[e["tid"]] = int(ok)
+    write_json(out_path, res)
+    log(f"{os.path.basename(path)}: {sum(res.values())}/{len(res)} correct")
+    return res
+
+
 def grade(cfg, model_key, fhir_url, ref, tasks):
     """refsol on every stored episode (the authors' eval(): a result is needed; grader True -> correct; errors -> wrong)."""
     by_id = {t["id"]: t for t in tasks}
-    rows = read_jsonl(os.path.join(wdir(cfg), f"episodes_{model_key}{_tag()}.jsonl"))
+    rows = read_jsonl(os.path.join(wdir(cfg), f"episodes_{ep_name(model_key)}{_tag()}.jsonl"))
     out = []
     for e in rows:
         ok = False
@@ -296,7 +337,7 @@ def grade(cfg, model_key, fhir_url, ref, tasks):
             except Exception as ex:  # noqa: BLE001
                 log(f"{e['tid']}: grader error {ex}")
         out.append({"tid": e["tid"], "model": model_key, "correct": int(ok), "status": e["status"], "rounds": e["rounds"], "units": e["units"]})
-    write_json(os.path.join(wdir(cfg), f"graded_{model_key}{_tag()}.json"), out)
+    write_json(os.path.join(wdir(cfg), f"graded_{ep_name(model_key)}{_tag()}.json"), out)
     acc = sum(r["correct"] for r in out) / max(1, len(out))
     log(f"{model_key}{_tag()}: {sum(r['correct'] for r in out)}/{len(out)} correct ({100 * acc:.2f}%), {sum(r['units'] for r in out) / max(1, len(out)):.0f} units per task")
     return out

@@ -1,0 +1,34 @@
+# MedAgentBench with our method (AL-16 .. AL-19, sheets in experiments/): every agent model fine-tuned on passing attempts,
+# then a learnt switching rulebook. Jonathan's patient-disjoint split (seed 20260729): train 90 = calib minus calib_sweep
+# (fine-tuning data), val 60 = calib_sweep (checkpoints and rule learning), test 150 (read once).
+#   python jobs/submit_all.py --mab-run          (the GPU jobs, chained)
+#   bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py --config configs/medagent.yaml --stage mab_rules'
+include: default.yaml
+run_name: mab_v1
+history_tag: mab
+workstreams:
+  ws1: null
+  ws2: null
+  ws3: null
+  ws4: null
+  ws5: null
+  ws6: null
+medagent:
+  teacher: q72                 # the untrained 72B: its passing attempts are the training data
+  teach_samples: 4             # sampled attempts per calib task (temperature 0.7) on top of the greedy one
+  teach_temperature: 0.7
+  keep_per_task: 4             # at most this many passing attempts per task
+  weak: "q7:ft"
+  ladders:                     # AL-16 .. AL-18: restart on a larger model; AL-19: hand the attempt to a larger answerer
+    AL-16: {ladder: ["q7:ft", "q72:ft"], human: false, mode: restart, name: "W -> S"}
+    AL-17: {ladder: ["q7:ft", "q72:ft"], human: true, mode: restart, name: "W -> S -> person"}
+    AL-18: {ladder: ["q7:ft", "q32:ft", "q72:ft"], human: true, mode: restart, name: "W -> M -> S -> person"}
+    AL-19: {ladder: ["q7:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, name: "W searches -> W / M / S answers, or a person"}
+  high_risk_types: [task5, task9]   # Jonathan's tau >= 0.8 tier (medication orders): the only tasks a person may take
+  human_cost_factor: 2.0       # a person costs 2 x always-strong's cost on that task ("expensive"; Jonathan used 1.0)
+  cost_weight: 0.10            # objective = accuracy - 0.10 x cost / always-strong cost (Jonathan's R')
+finetune:
+  agents:
+    q7:  {method: lora, n_train: 100000, max_len: 12288, max_epochs: 4, grad_accum: 4, n_val_loss: 300, n_val_metric: 0, save_every_questions: 16}
+    q32: {method: qlora, n_train: 100000, max_len: 12288, max_epochs: 4, grad_accum: 4, n_val_loss: 300, n_val_metric: 0, save_every_questions: 16, gpus: 2}
+    q72: {method: qlora, n_train: 100000, max_len: 11264, max_epochs: 4, grad_accum: 4, n_val_loss: 300, n_val_metric: 0, save_every_questions: 16, gpus: 4}

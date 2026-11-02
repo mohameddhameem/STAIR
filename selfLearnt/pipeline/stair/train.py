@@ -78,10 +78,31 @@ def answer_refs(ex, rng, settings):
     return refs
 
 
+def agent_examples(tok, q):
+    """A passing MedAgentBench attempt -> (ids, prompt length) per model turn: the conversation so far as the prompt (the
+    chat template the episodes use, thinking off), the model's turn as the target. Loss on the target only."""
+    msgs = q["messages"]
+    out = []
+    for k, mm in enumerate(msgs):
+        if mm["role"] != "assistant":
+            continue
+        try:
+            p = tok.apply_chat_template(msgs[:k], tokenize=False, add_generation_prompt=True, enable_thinking=False)
+        except TypeError:
+            p = tok.apply_chat_template(msgs[:k], tokenize=False, add_generation_prompt=True)
+        pid = list(tok(p, add_special_tokens=False)["input_ids"])
+        ans = list(tok(mm["content"] + (tok.eos_token or ""), add_special_tokens=False)["input_ids"])
+        out.append((pid + ans, len(pid)))
+    return out
+
+
 def examples(cfg, role, tok, qs, T, seed=0):
     rng = random.Random(seed)
     out = []
     for q in qs:
+        if role == "agent":              # MedAgentBench: one example per model turn of a passing attempt (stair/mab.py)
+            out += [x for x in agent_examples(tok, q) if len(x[0]) <= T["max_len"]]
+            continue
         if role == "retriever":
             ids, n = fit_retrieval(tok, q, T["max_len"], rng)
         else:

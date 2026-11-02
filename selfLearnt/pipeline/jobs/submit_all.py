@@ -363,6 +363,7 @@ def main():
     ap.add_argument("--ss-jon", action="store_true", help="AL-02 replication on Jonathan's pools, retrievals and prompt (answer step)")
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
     ap.add_argument("--xcheck", action="store_true", help="cross-check: golden models + AgentTTS's passages on AgentTTS's 500 (configs/xcheck_old500.yaml), 2 fixed pairs")
+    ap.add_argument("--mab-run", action="store_true", help="MedAgentBench with our method (configs/medagent.yaml, AL-16 .. AL-19): teacher, fine-tuning, episodes, hand-offs")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
@@ -370,6 +371,8 @@ def main():
         env.update(read_env(os.path.join(HERE, "cluster.local.env")))
     if a.config:
         env["CONFIG"] = a.config
+    if a.mab_run:
+        env["CONFIG"] = "configs/medagent.yaml"
     if a.xcheck:                           # its own config; test questions only (exported to the jobs: sbatch --export=ALL)
         env["CONFIG"] = "configs/xcheck_old500.yaml"
         os.environ["STAIR_SPLITS"] = "test"
@@ -460,6 +463,30 @@ def main():
             print(f"sbatch failed: {err}" if rc else f"submitted {out.split(';')[0]}  stair-{P.prefix}{j['name']}")
         print("when both have finished:  bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py "
               "--config configs/default.yaml --stage mab --part accept'")
+        return
+    if a.mab_run:                          # ten GPU jobs with dependencies, no submitter; the rulebooks run on the login node
+        P.prefix = "mab-"
+        tg = lambda k: int(ft_settings(cfg, k)[1].get("gpus", 1))
+        te = P.add("teach", "--stage mab_run --part teach --model q72", tp("q72"), 16)
+        P.add("ref-q7", "--stage mab_run --part episodes --model q7", 1, 4, small=True)
+        tr = {k: P.add(f"train-{k}", f"--stage mab_run --part train --model {k}", tg(k), 48, [te]) for k in ("q7", "q32", "q72")}
+        ep = {k: P.add(f"episodes-{k}:ft", f"--stage mab_run --part episodes --model {k}:ft", tp(k), 8, [tr[k]]) for k in ("q7", "q32", "q72")}
+        for k in ("q32", "q72"):
+            P.add(f"handoff-{k}:ft", f"--stage mab_run --part handoff --model {k}:ft", tp(k), 8, [ep["q7"], ep[k]])
+        real = {}
+        for j in P.jobs:
+            cmd = P._cmd(j, [real[x] for x in j["deps"]])
+            if a.dry:
+                print(" ".join(cmd))
+                real[j["key"]] = j["key"]
+                continue
+            rc, out, err = _sh(cmd)
+            if rc:
+                sys.exit(f"sbatch failed after {len(real)} jobs: {err}")
+            real[j["key"]] = out.split(";")[0]
+            print(f"submitted {real[j['key']]}  stair-{P.prefix}{j['name']}")
+        print("when all have finished:  bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py "
+              "--config configs/medagent.yaml --stage mab_rules'")
         return
     if a.xcheck:                           # five small jobs in a chain, no submitter; the comparison runs on the login node
         d = P.add("data", "--stage data", 0, 3, cpu_only=True)

@@ -125,7 +125,7 @@ def load_config(path, seed=None, exp=None):
 def ft_settings(cfg, key):
     """(role, settings) of a model's fine-tuning, or (None, None)."""
     F = cfg["finetune"]
-    for role in ("retrievers", "answerers"):
+    for role in ("agents", "retrievers", "answerers"):   # agents: MedAgentBench (configs/medagent.yaml)
         if key in (F.get(role) or {}):
             return role[:-1], dict(F["defaults"], **F[role][key])
     return None, None
