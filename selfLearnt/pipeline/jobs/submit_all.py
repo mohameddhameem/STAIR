@@ -362,6 +362,7 @@ def main():
     ap.add_argument("--fhir-test", action="store_true", help="CPU job: start MedAgentBench's records server and check one known answer")
     ap.add_argument("--ss-jon", action="store_true", help="AL-02 replication on Jonathan's pools, retrievals and prompt (answer step)")
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
+    ap.add_argument("--xcheck", action="store_true", help="cross-check: golden models + AgentTTS's passages on AgentTTS's 500 (configs/xcheck_old500.yaml), 2 fixed pairs")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
@@ -369,6 +370,9 @@ def main():
         env.update(read_env(os.path.join(HERE, "cluster.local.env")))
     if a.config:
         env["CONFIG"] = a.config
+    if a.xcheck:                           # its own config; test questions only (exported to the jobs: sbatch --export=ALL)
+        env["CONFIG"] = "configs/xcheck_old500.yaml"
+        os.environ["STAIR_SPLITS"] = "test"
     if a.as_job:
         args = [x for x in sys.argv[1:] if x != "--as-job"]
         cmd = ["sbatch", "--parsable"] + [f"{flag}={env[k]}" for k, flag in (("PARTITION", "--partition"), ("ACCOUNT", "--account"), ("QOS", "--qos"))
@@ -456,6 +460,26 @@ def main():
             print(f"sbatch failed: {err}" if rc else f"submitted {out.split(';')[0]}  stair-{P.prefix}{j['name']}")
         print("when both have finished:  bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py "
               "--config configs/default.yaml --stage mab --part accept'")
+        return
+    if a.xcheck:                           # five small jobs in a chain, no submitter; the comparison runs on the login node
+        d = P.add("data", "--stage data", 0, 3, cpu_only=True)
+        r = [P.add(f"ret-{v}", f"--stage retrieve --model {v}", 1, 4, [d], small=True) for v in ("q08:ft", "q7:ft")]
+        c = P.add("reach", "--stage reach", 0, 1, r, cpu_only=True)
+        P.add("ans-l8:ft", "--stage answer --model l8:ft", 1, 4, [c])
+        real = {}
+        for j in P.jobs:
+            cmd = P._cmd(j, [real[x] for x in j["deps"]])
+            if a.dry:
+                print(" ".join(cmd))
+                real[j["key"]] = j["key"]
+                continue
+            rc, out, err = _sh(cmd)
+            if rc:
+                sys.exit(f"sbatch failed: {err}")
+            real[j["key"]] = out.split(";")[0]
+            print(f"submitted {real[j['key']]}  stair-{P.prefix}{j['name']}")
+        print("when all have finished:  bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py "
+              "--config configs/xcheck_old500.yaml --stage xcheck'")
         return
     if a.ss_jon:                           # one GPU job, no submitter: the queue is nearly full; compare runs on the login node
         P.prefix = "jon-"

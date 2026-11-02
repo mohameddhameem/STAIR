@@ -1,0 +1,29 @@
+# Cross-check (2 Nov): why do the fine-tuned pairs score 3-4 points lower on the golden set (AL-13/14) than on
+# AgentTTS's 500 (AL-04/05)? Three things changed at once: the questions, the passages and the (retrained) models.
+# This run holds the questions fixed: golden_v1's fine-tuned models, AgentTTS's passages (tts_test.json), on AgentTTS's
+# 500 test questions. Two fixed pairs only (Qwen3.5 0.8B -> Llama 8B, Qwen2.5 7B -> Llama 8B); no training, no rules,
+# test questions only (STAIR_SPLITS=test), no results table. Not an experiment of its own: a diagnosis for RESULTS.md.
+#   python jobs/submit_all.py --xcheck          then, when the jobs have finished:
+#   bash -c 'source jobs/cluster.env; source jobs/cluster.local.env; python run.py --config configs/xcheck_old500.yaml --stage xcheck'
+include: golden_tts.yaml
+run_name: xcheck_old500
+models_from_run: golden_v1
+history_tag: xcheck
+data:
+  val_part: val          # AgentTTS's validation part (dev [0:500]); built but not used
+  test_part: test        # AgentTTS's 500 (dev [500:1000]), as AL-04 / AL-05
+  pool_source: tts
+workstreams:
+  ws1: null
+  ws4: null
+  ws5: null
+  ws6: null
+  wsx:
+    exp_id: XC
+    menu: A
+    name: "Cross-check: golden models, AgentTTS's passages, AgentTTS's 500"
+    kind: rules
+    retrievers: ["q08:ft", "q7:ft"]
+    answerers: ["l8:ft"]
+    signals: all
+    seed_rules: []

@@ -18,7 +18,8 @@ from .config import serve_entry, variant, workstreams
 from .engines import free_gpu, make_engine
 from .progress import Tracker, mark_done
 
-SPLITS = ("val", "test")
+# STAIR_SPLITS=test: a run that only scores fixed pairs on the test questions (configs/xcheck_old500.yaml) skips val
+SPLITS = tuple(x for x in os.environ.get("STAIR_SPLITS", "val,test").split(",") if x)
 
 
 def step_dir(cfg):
