@@ -99,7 +99,7 @@ class Plan:
         gpus, con = j["gpus"], (e.get("CONSTRAINT_SMALL") if j["small"] and e.get("CONSTRAINT_SMALL") else e.get("CONSTRAINT"))
         if j.get("constraint"):                # a job pinned to particular cards (the --twin copy on H100s)
             con = j["constraint"]
-        if gpus >= 2 and not j["name"].startswith("train-") and e.get("BIG_GPUS"):
+        if gpus >= 2 and not j["name"].startswith("train-") and e.get("BIG_GPUS") and not j.get("keep_gpus"):
             # models split over several GPUs (32B / 70B / 72B inference): the model is spread over however many GPUs the job
             # gets (vLLM tensor parallel = visible GPUs), so 4 smaller cards work as well as 2 large ones
             gpus, con = int(e["BIG_GPUS"]), e.get("CONSTRAINT_BIG") or con
@@ -364,6 +364,8 @@ def main():
     ap.add_argument("--ss", action="store_true", help="AL-02 replication only: greedy Qwen 72B -> Llama 70B, then compare with the shared rows")
     ap.add_argument("--xcheck", action="store_true", help="cross-check: golden models + AgentTTS's passages on AgentTTS's 500 (configs/xcheck_old500.yaml), 2 fixed pairs")
     ap.add_argument("--mab-run", action="store_true", help="MedAgentBench with our method (configs/medagent.yaml, AL-16 .. AL-19): teacher, fine-tuning, episodes, hand-offs")
+    ap.add_argument("--mab-redo", default="", help="with --mab-run: submit only these jobs (comma-separated names, e.g. "
+                    "episodes-q32:ft,handoff-q32:ft); their dependencies on jobs not listed are taken as done")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
@@ -473,6 +475,12 @@ def main():
         ep = {k: P.add(f"episodes-{k}:ft", f"--stage mab_run --part episodes --model {k}:ft", tp(k), 8, [tr[k]]) for k in ("q7", "q32", "q72")}
         for k in ("q32", "q72"):
             P.add(f"handoff-{k}:ft", f"--stage mab_run --part handoff --model {k}:ft", tp(k), 8, [ep["q7"], ep[k]])
+        for j in P.jobs:                   # the 32B (64 GB in bf16) runs on 2 cards of 48 GB+, not 4: it starts sooner
+            if "q32:ft" in j["name"]:
+                j["keep_gpus"], j["constraint"] = True, "a40|l40s|l40|h100|h100nvl"
+        if a.mab_redo:
+            keep = set(a.mab_redo.split(","))
+            P.jobs = [dict(j, deps=[d for d in j["deps"] if d in {x["key"] for x in P.jobs if x["name"] in keep}]) for j in P.jobs if j["name"] in keep]
         real = {}
         for j in P.jobs:
             cmd = P._cmd(j, [real[x] for x in j["deps"]])
