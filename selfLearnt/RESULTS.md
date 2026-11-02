@@ -21,6 +21,29 @@ fine-tuned models: AL-12 = AgentTTS, AL-13 / AL-14 / AL-15 = AL-04 / AL-05 / AL-
 first: Jonathan's always-strong answer step re-run on our stack with his passages, retrievals and prompt gives 77.31 on
 slr-test against his 76.77 (87% identical answers, 28 vs 20 questions right for only one side).
 
+## Summary: first run vs golden set
+
+Accuracy (lenient) @ measured AgentTTS units per question, seed 0. Old = AgentTTS's 500 test questions; golden = the
+team's 1,481 `slr-test` questions with AgentTTS's own passages (the inputs of the team's always-strong reference). The
+golden IDs AL-09 .. AL-11 (the same on our own passages) were stopped in favour of AL-13 .. AL-15.
+
+| Experiment | Old (500 questions) | Golden (1,481 questions) |
+|---|---|---|
+| AgentTTS (paper's best setting) | AL-01: 0.744 @ 1,984 | AL-12: 0.762 @ 1,955 |
+| Always-strong (team reference) | AL-02: 0.776 @ 1,829 | AL-08: 0.768 @ 1,821 |
+| Untrained models + rules | AL-03: 0.566 @ 609 | not repeated |
+| Fine-tuned 3+3 models + rules | AL-04: 0.830 @ 437 | AL-13: 0.796 @ 464 |
+| Long ladders from nano-jev + rules | AL-05: 0.710 @ 13 | AL-14: 0.674 @ 12 |
+| Ladders from Qwen 0.5B + rules | AL-06: 0.756 @ 22 | AL-15: 0.713 @ 26 |
+
+On the golden set our experiments score 3-4 points lower (the fixed fine-tuned pairs too: Qwen 7B -> Llama 70B 0.854 ->
+0.813) while AgentTTS rises, so the lead over always-strong narrows from about +8 to about +4.5 points but stays clear.
+Questions, passages and the retrained models all changed at once; on the 94 questions both sets share, the retrained
+models are not consistently worse. A cross-check running now (golden models with AgentTTS's passages on the old 500,
+`configs/xcheck_old500.yaml`) separates the questions from the passages.
+
+## First run in detail (AgentTTS's 500 test questions)
+
 | Experiment | Policy | Accuracy | Units / question |
 |---|---|---|---|
 | AL-01 AgentTTS | **paper-best** (their reported setting: Qwen2.5 72B x1 -> Llama 3.2 3B x40 + fusion) | **0.744** | 1,984 |
