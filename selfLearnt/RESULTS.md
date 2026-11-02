@@ -37,7 +37,9 @@ golden IDs AL-09 .. AL-11 (the same on our own passages) were stopped in favour 
 | Ladders from Qwen 0.5B + rules | AL-06: 0.756 @ 22 | AL-15: 0.713 @ 26 |
 
 On the golden set our experiments score 3-4 points lower (the fixed fine-tuned pairs too: Qwen 7B -> Llama 70B 0.854 ->
-0.813) while AgentTTS rises, so the lead over always-strong narrows from about +8 to about +4.5 points but stays clear.
+0.813). AgentTTS and always-strong drop about 1 point on the same passages (AgentTTS 0.744 -> 0.736 on our passages,
+AL-01 -> AL-07; always-strong 0.776 -> 0.768); AL-12's 0.762 also has AgentTTS's own passages, which help it (below).
+The lead over always-strong narrows from about +8 to about +4.5 points but stays clear.
 **The drop comes from the questions, not from the passages or the retrained models.** Cross-check (2 Nov,
 `configs/xcheck_old500.yaml`): the golden models with AgentTTS's passages on the old 500 questions score what the first
 run scored there, and lose the 3-4 points only on the golden questions:
@@ -242,11 +244,17 @@ Oracles within each rulebook's choices: AL-13 0.848 at 182 units, AL-14 0.771 at
 - **The learnt rules still do not beat a fixed pair.** AL-13's rules (0.796 at 464) are below Qwen 7B -> Llama 8B
   (0.812 at 176); AL-14's and AL-15's stay on the bottom rungs, as on the first run. In AL-13 and AL-14 the learner again
   accepted no change.
-- **All numbers sit 3-4 points lower than on AgentTTS's 500** (e.g. Qwen 7B -> Llama 70B 0.854 -> 0.813), while
-  AgentTTS rises (0.744 -> 0.762) and always-strong is flat (0.776 -> 0.768): the margin over always-strong narrows from
-  about +8 to +4.5 points but stays clear.
-- **Passages matter for AgentTTS.** On our own BM25 passages (AL-07) its paper setting scores 0.736; on its own
-  passages 0.762.
+- **Our numbers sit 3-4 points lower than on AgentTTS's 500** (e.g. Qwen 7B -> Llama 70B 0.854 -> 0.813); AgentTTS
+  (on the same passages) and always-strong drop about 1 point: the margin over always-strong narrows from about +8 to
+  +4.5 points but stays clear.
+- **Passages matter for AgentTTS, not for us.** On our own BM25 passages (AL-07) its paper setting scores 0.736; on
+  its own passages (AL-12) 0.762. Our fine-tuned pairs score the same on either (old 500: 0.848 vs 0.844). Why
+  (`jobs/pool_diag.py`): AgentTTS's file lists the gold passages near the top (median position 2 of 100; both in the
+  first 10 for 60-62% of questions), while ours places them at random (median 50; both in the first 10 for 1%), and
+  among BM25's closest look-alikes (gold passages rank 6th by word overlap with the question vs 3rd in AgentTTS's
+  file). Untrained models reading 100 passages profit from that order; our retrievers, trained on shuffled lists, do
+  not use it. The team's always-strong reference and AL-12 therefore have the easier passage lists; our fine-tuned
+  pairs match or beat them without that help.
 - **Still to do:** the fixed pairs above are read off the test results. A pair claimed as a result must be chosen on
   `slr-val` first (e.g. the cheapest within 1 point of the best) and reported once on test.
 
