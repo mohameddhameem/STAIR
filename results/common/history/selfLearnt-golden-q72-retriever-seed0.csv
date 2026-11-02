@@ -1,0 +1,5 @@
+track,model,run,seed,epoch,train_loss,val_loss,step,val_metric
+selfLearnt,Qwen2.5 72B retriever,golden-qlora-r16,0,0.5,0.06713728115573758,0.041757033181881224,125,0.8
+selfLearnt,Qwen2.5 72B retriever,golden-qlora-r16,0,1.0,0.022678554511753646,0.05155604994603588,250,0.86
+selfLearnt,Qwen2.5 72B retriever,golden-qlora-r16,0,1.5,0.024640384456715538,0.029165269655131852,375,0.84
+selfLearnt,Qwen2.5 72B retriever,golden-qlora-r16,0,2.0,0.012199622894419235,0.028441017047603812,500,0.86

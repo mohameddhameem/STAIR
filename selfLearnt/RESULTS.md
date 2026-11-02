@@ -240,22 +240,31 @@ comparison in [`results/medagentbench/selfLearnt-acceptance/`](../results/medage
 - The decoding setting (the model's default repetition penalty 1.05 vs plain greedy) moved the score by 1 point; the
   default is kept, as an OpenAI-style vLLM server applies it.
 
-## Fine-tuning so far (early stopping on validation loss, `results/common/history/`)
+## Fine-tuning (early stopping on validation loss, `results/common/history/`)
 
-| Model | Role | Epochs run | Best epoch (kept) | Val loss |
-|---|---|---|---|---|
-| Llama 3.2 1B / 3.2 3B / 3.1 8B | answerer | 2 | 1 | 0.354 / 0.270 / 0.273 |
-| Llama 3.1 70B (QLoRA, 2,000 questions) | answerer | 2 | 1 | 0.258 |
-| Qwen2.5 0.5B | retriever | 3 | 2.5 | 0.127 |
-| Qwen3.5 0.8B | retriever | 2 | 1 | 0.044 |
-| Qwen2.5 1.5B / 3B / 7B | retriever | 2 | 2 | 0.058 / 0.034 / 0.024 |
-| Qwen2.5 32B (QLoRA) | retriever | 2 | 1.5 | 0.035 |
+Each model was fine-tuned twice: for the first run (checkpoints picked on dev [0:500], AgentTTS's validation questions;
+`selfLearnt-<model>-...csv`) and again for the golden set (picked on `slr-val`, 1,110 questions;
+`selfLearnt-golden-<model>-...csv`). Same training questions and settings; the validation losses are on different
+questions, so they are not comparable across the two runs.
 
-Answerers stop improving after one epoch (validation loss rises in the second, so the epoch-1 checkpoint is kept);
-retrievers keep improving through epoch 2 (Qwen2.5 32B: best at 1.5). Qwen2.5 72B (QLoRA) has finished training; its
-curve is added with the AL-05/06 results.
+| Model | Role | First run: epochs run / best epoch / val loss | Golden set: epochs run / best epoch / val loss |
+|---|---|---|---|
+| Llama 3.2 1B | answerer | 2 / 1 / 0.354 | 2 / 1 / 0.388 |
+| Llama 3.2 3B | answerer | 2 / 1 / 0.270 | 1.5 / 0.5 / 0.329 |
+| Llama 3.1 8B | answerer | 2 / 1 / 0.273 | 2 / 1 / 0.286 |
+| Llama 3.1 70B (QLoRA, 2,000 questions) | answerer | 2 / 1 / 0.258 | 2 / 1 / 0.214 |
+| Qwen2.5 0.5B | retriever | 3 / 2.5 / 0.127 | 3 / 2 / 0.125 |
+| Qwen3.5 0.8B | retriever | 2 / 1 / 0.044 | 3 / 2 / 0.038 |
+| Qwen2.5 1.5B | retriever | 2 / 2 / 0.058 | 2 / 1.5 / 0.051 |
+| Qwen2.5 3B | retriever | 2 / 2 / 0.034 | 2 / 2 / 0.048 |
+| Qwen2.5 7B | retriever | 2 / 2 / 0.024 | 2 / 1.5 / 0.029 |
+| Qwen2.5 32B (QLoRA) | retriever | 2 / 1.5 / 0.035 | 2 / 1 / 0.060 |
+| Qwen2.5 72B (QLoRA) | retriever | 2 / 2 / 0.020 | 2 / 2 / 0.028 |
 
-AL-05 and AL-06 are done (seed 0, AgentTTS's 500).
+Answerers stop improving after about one epoch (validation loss rises after it, so the earlier checkpoint is kept);
+retrievers mostly keep improving through epoch 2. The golden curves here were written from the golden run's training records
+(2 Nov): on the cluster, 9 of the `selfLearnt-golden-*` files had been overwritten with the first run's curves by a file
+renaming slip. Only the curve files were affected, not the models or the results tables.
 
 ## Reading so far
 

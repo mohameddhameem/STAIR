@@ -1,0 +1,5 @@
+track,model,run,seed,epoch,train_loss,val_loss,step,val_metric
+selfLearnt,Llama 3.1 8B answerer,golden-lora-r16,0,0.5,0.20866092049256743,0.28615882836515083,750,0.8
+selfLearnt,Llama 3.1 8B answerer,golden-lora-r16,0,1.0,0.15547062784293667,0.2861349011367808,1500,0.8
+selfLearnt,Llama 3.1 8B answerer,golden-lora-r16,0,1.5,0.07952950656441196,0.3340555220670164,2250,0.8
+selfLearnt,Llama 3.1 8B answerer,golden-lora-r16,0,2.0,0.05492606087341361,0.36618918110799614,3000,0.79

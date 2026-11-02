@@ -1,0 +1,5 @@
+track,model,run,seed,epoch,train_loss,val_loss,step,val_metric
+selfLearnt,Qwen2.5 1.5B retriever,golden-lora-r16,0,0.5,0.2627394489194558,0.12497337994088108,750,0.68
+selfLearnt,Qwen2.5 1.5B retriever,golden-lora-r16,0,1.0,0.10009225229605817,0.07614760976490895,1500,0.84
+selfLearnt,Qwen2.5 1.5B retriever,golden-lora-r16,0,1.5,0.05981349391533422,0.05128293912072271,2250,0.86
+selfLearnt,Qwen2.5 1.5B retriever,golden-lora-r16,0,2.0,0.02681447251231822,0.05596040988022954,3000,0.89
