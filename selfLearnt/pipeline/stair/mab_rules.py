@@ -23,7 +23,7 @@ import os
 import numpy as np
 
 from .common import log, read_jsonl, write_json
-from .mab import hstore, mstore, splits, store
+from .mab import SEARCH_SETS, cstore, hstore, mstore, setkey, splits, store
 from .medagent import wdir
 
 TYPES = [f"task{i}" for i in range(1, 11)]
@@ -59,6 +59,17 @@ def flags(e):
         ok = False
     return {"empty_search": any(_get_empty(g) for g in gets), "empty_answer": res.strip().replace(" ", "") in ("[]", ""),
             "not_found": "not found" in res.lower(), "bad_format": not ok, "several_orders": len(posts) > 1}
+
+
+def _search_flags(e):
+    """Checks of the searches an attempt was given or made: any empty, none at all."""
+    h = e["history"]
+    gets = [h[i + 1]["content"] for i in range(len(h) - 1) if h[i]["role"] == "agent"
+            and h[i]["content"].strip().replace("```", "").strip().startswith("GET")]
+    return {"search_empty": any(_get_empty(g) for g in gets), "no_search": not gets}
+
+
+SEARCH_SIGNALS = {"search_empty": "a search came back empty", "no_search": "no search was made"}
 
 
 def answer_sig(e):
@@ -106,6 +117,29 @@ class Data:
         self.hr = set(M["high_risk_types"])
         self.F = {k: {tid: flags(e) for tid, e in E.items()} for k, E in self.E.items()}
         self.S = {k: {tid: answer_sig(e) for tid, e in E.items()} for k, E in self.E.items()}
+        self.C = {}                                        # (answerer, search set) -> {tid: (correct, answer units, flags, sig, result)}
+        self.SU = {}                                       # search set -> {tid: (search units, empty search?, number of searches)}
+        if rev >= 2:
+            ans = sorted({k for d in M["ladders"].values() for k in d["ladder"]})
+            for models in SEARCH_SETS:
+                sk = setkey(models)
+                for a in ans:
+                    ep, gr = cstore(cfg, a, models)
+                    if models == [a] and a in self.E:      # a model answering from its own searches = its own attempt
+                        continue
+                    if not os.path.exists(gr):
+                        continue
+                    g = json.load(open(gr))
+                    rows = {e["tid"]: e for e in read_jsonl(ep)}
+                    self.C[(a, sk)] = {t: (g.get(t, 0), e["units"], flags(e), answer_sig(e), e.get("result"), e["status"])
+                                       for t, e in rows.items()}
+                    if sk not in self.SU:
+                        self.SU[sk] = {t: (e.get("search_units", 0.0), _search_flags(e)) for t, e in rows.items()}
+            w = M["weak"]
+            if w in self.E and setkey([w]) in self.SU:     # the weak model on its own searches = its own attempt
+                su = self.SU[setkey([w])]
+                self.C[(w, setkey([w]))] = {t: (self.G[w].get(t, 0), max(0.0, e["units"] - su.get(t, (0.0,))[0]), self.F[w][t],
+                                                self.S[w][t], e.get("result"), e["status"]) for t, e in self.E[w].items()}
 
     def two_rounds(self, k, tid):
         from stair_common.cost import units
@@ -122,6 +156,11 @@ class Data:
 def seed_book(D, design):
     L = D.M["ladders"][design]
     n = len(L["ladder"])
+    if D.rev >= 2:                                         # 3 Nov: every escalation adds the model's own searches
+        if L["mode"] == "handoff":                         # AL-19: search ladder, then answer ladder
+            return {"mode": "staged", "ret": [{t: "stay" for t in TYPES} for _ in range(n)], "ret_sig": [[] for _ in range(n)],
+                    "end": [{t: "accept" for t in TYPES} for _ in range(n)], "sig": [[] for _ in range(n)], "vote": False}
+        return {"mode": "joint", "end": [{t: "accept" for t in TYPES} for _ in range(n)], "sig": [[] for _ in range(n)], "vote": False}
     if L["mode"] == "handoff":
         return {"mode": "handoff", "act": {t: "accept" for t in TYPES}, "theta": None, "sig_act": {}}
     return {"mode": "restart", "end": [{t: "accept" for t in TYPES} for _ in range(n)],
@@ -135,6 +174,8 @@ def _copy(book):
 
 def options(D, design, book):
     """Every single change of a rulebook: (description, new book)."""
+    if book["mode"] in ("joint", "staged"):
+        return options2(D, design, book)
     L = D.M["ladders"][design]
     lad, human = L["ladder"], L["human"]
     n = len(lad)
@@ -194,6 +235,8 @@ def options(D, design, book):
 
 def play(D, design, book, tid, k_human=None):
     """One task under a rulebook -> (correct, cost in units, path, answer, person?)."""
+    if book["mode"] in ("joint", "staged"):
+        return play2(D, design, book, tid, k_human)
     L = D.M["ladders"][design]
     lad, human = L["ladder"], L["human"]
     t = _ty(tid)
@@ -266,6 +309,138 @@ def play(D, design, book, tid, k_human=None):
         if i >= n:
             c, kk = deliver(k)
             return c, cost, "->".join(path), D.E[kk][tid].get("result"), False
+
+
+def options2(D, design, book):
+    L = D.M["ladders"][design]
+    lad, human = L["ladder"], L["human"]
+    n = len(lad)
+    out = []
+    staged = book["mode"] == "staged"
+    word = "answerer" if staged else "rung"
+
+    def chg(desc, f):
+        b = _copy(book)
+        f(b)
+        out.append((desc, b))
+    if staged:                                             # the search ladder
+        for i in range(n - 1):
+            for t in TYPES:
+                for a in ["stay", "up"] + (["top"] if i < n - 2 else []):
+                    if a != book["ret"][i][t]:
+                        chg(f"searches after {lad[i]}, {t}: {book['ret'][i][t]} -> {a}", lambda b, i=i, t=t, a=a: b["ret"][i].__setitem__(t, a))
+            for sg in SEARCH_SIGNALS:
+                on = sg not in book["ret_sig"][i]
+                chg(f"add the next model's searches if {SEARCH_SIGNALS[sg]} (after {lad[i]}) = {on}",
+                    lambda b, i=i, sg=sg: b["ret_sig"].__setitem__(i, sorted(set(b["ret_sig"][i]) ^ {sg})))
+    for i in range(n):
+        top = i == n - 1
+        for t in TYPES:
+            acts = ["accept"] + ([] if top else ["up"] + (["top"] if i < n - 2 else [])) + (["person"] if human and t in D.hr else [])
+            for a in acts:
+                if a != book["end"][i][t]:
+                    chg(f"{word} {i + 1} ({lad[i]}), {t}: {book['end'][i][t]} -> {a}", lambda b, i=i, t=t, a=a: b["end"][i].__setitem__(t, a))
+        if not top:
+            for sg in SIGNALS:
+                on = sg not in book["sig"][i]
+                chg(f"{word} {i + 1} ({lad[i]}): escalate if {SIGNALS[sg]} = {on}",
+                    lambda b, i=i, sg=sg: b["sig"].__setitem__(i, sorted(set(b["sig"][i]) ^ {sg})))
+    chg(f"vote on escalation (agree -> accept, else majority, ties to the larger model) = {not book['vote']}",
+        lambda b: b.__setitem__("vote", not b["vote"]))
+    return out
+
+
+def play2(D, design, book, tid, k_human=None):
+    """joint (AL-16 .. AL-18): rung i = the model at rung i answering from the searches of every model visited so far
+    (each escalation adds that model's own searches); staged (AL-19): first the search ladder (which models' searches),
+    then the answer ladder (who answers from them). Cost = every visited model's searches + every answer attempt."""
+    L = D.M["ladders"][design]
+    lad, human = L["ladder"], L["human"]
+    n = len(lad)
+    t = _ty(tid)
+    kh = D.M["human_cost_factor"] if k_human is None else k_human
+    person_ok = human and t in D.hr
+    vote = book.get("vote")
+    seen = []
+
+    def outcome(a, V):
+        return D.C[(a, setkey(V))][tid]
+
+    def finish(cost, path, a, V):
+        r = outcome(a, V)
+        if vote and len(seen) > 1:
+            cnt = {}
+            for _, sg in seen:
+                cnt[sg] = cnt.get(sg, 0) + 1
+            best = max(cnt.values())
+            aa, VV = [x for x, sg in seen if cnt[sg] == best][-1]
+            r = outcome(aa, VV)
+        return r[0], cost, path, r[4], False
+    if book["mode"] == "joint":
+        i, V, cost, path = 0, [lad[0]], 0.0, []
+        while True:
+            a = lad[i]
+            r = outcome(a, V)
+            cost = D.SU[setkey(V)][tid][0] + sum(outcome(x, VV)[1] for x, VV in [(p, q) for p, q in path]) + r[1]
+            path.append((a, list(V)))
+            top = i == n - 1
+            if r[5] == "completed":
+                seen.append(((a, list(V)), r[3]))
+                if vote and len(seen) > 1 and seen[-1][1] == seen[-2][1]:
+                    return r[0], cost, "agree", r[4], False
+            act = book["end"][i][t]
+            if r[5] != "completed":
+                act = "up" if not top else ("person" if person_ok else "accept")
+            elif not top and act == "accept" and any(r[2][sg] for sg in book["sig"][i]):
+                act = "up"
+            if act == "person" and person_ok:
+                return 1, cost + kh * D.ss[tid], "person", None, True
+            if act == "accept" or top:
+                return finish(cost, "->".join(x for x, _ in path), a, V) if not seen or not vote else _vote(D, seen, tid, cost)
+            i = n - 1 if act == "top" else i + 1
+            V = V + [lad[i]]
+    # staged: the search ladder ...
+    i, V = 0, [lad[0]]
+    while i < n - 1:
+        act = book["ret"][i][t]
+        if act == "stay" and any(D.SU[setkey(V)][tid][1][sg] for sg in book["ret_sig"][i]):
+            act = "up"
+        if act == "stay":
+            break
+        i = n - 1 if act == "top" else i + 1
+        V = V + [lad[i]]
+    cost = D.SU[setkey(V)][tid][0]
+    j = 0
+    while True:                                            # ... then the answer ladder on those searches
+        a = lad[j]
+        r = outcome(a, V)
+        cost += r[1]
+        top = j == n - 1
+        if r[5] == "completed":
+            seen.append(((a, list(V)), r[3]))
+            if vote and len(seen) > 1 and seen[-1][1] == seen[-2][1]:
+                return r[0], cost, "agree", r[4], False
+        act = book["end"][j][t]
+        if r[5] != "completed":
+            act = "up" if not top else ("person" if person_ok else "accept")
+        elif not top and act == "accept" and any(r[2][sg] for sg in book["sig"][j]):
+            act = "up"
+        if act == "person" and person_ok:
+            return 1, cost + kh * D.ss[tid], "person", None, True
+        if act == "accept" or top:
+            return _vote(D, seen, tid, cost) if vote and len(seen) > 1 else (r[0], cost, a, r[4], False)
+        j = n - 1 if act == "top" else j + 1
+
+
+def _vote(D, seen, tid, cost):
+    """Majority of the answers given so far; ties go to the latest (largest) model."""
+    cnt = {}
+    for _, sg in seen:
+        cnt[sg] = cnt.get(sg, 0) + 1
+    best = max(cnt.values())
+    a, V = [x for x, sg in seen if cnt[sg] == best][-1]
+    r = D.C[(a, setkey(V))][tid]
+    return r[0], cost, "vote", r[4], False
 
 
 def objective(D, design, book, tids):
@@ -378,8 +553,13 @@ def run(cfg, part="all"):
             if any(k not in D.G for k in L["ladder"]) or (L["mode"] == "handoff" and not D.H):
                 log(f"{design}: not all episodes yet - skipped")
                 continue
-            if rev == 2 and L["mode"] == "handoff" and not any(k.startswith("merge-") for k in D.H):
-                log(f"{design}: search-merge runs not there yet (stage mab_run --part merge): learnt without them")
+            if rev == 2:
+                need = [(a, setkey(m)) for m in SEARCH_SETS if set(m) <= set(L["ladder"]) for a in L["ladder"]
+                        if L["mode"] == "handoff" or a == [x for x in L["ladder"] if x in m][-1]]
+                miss = sorted({f"{a} from {sk}" for a, sk in need if (a, sk) not in D.C})
+                if miss:
+                    log(f"{design}: answers from merged searches missing ({', '.join(miss)}): run stage mab_run --part cont first")
+                    continue
             book, hist = learn(D, design)
             sb = seed_book(D, design)
             s = summary(D, design, book, T)
