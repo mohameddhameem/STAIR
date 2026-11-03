@@ -46,6 +46,49 @@ def store(cfg, key):
     return (os.path.join(wdir(cfg), f"episodes_{ep_name(key)}.jsonl"), os.path.join(wdir(cfg), f"graded_{ep_name(key)}.json"))
 
 
+def mstore(cfg, key):
+    return (os.path.join(wdir(cfg), f"merge_{ep_name(key)}.jsonl"), os.path.join(wdir(cfg), f"graded_merge_{ep_name(key)}.json"))
+
+
+def _searches(e):
+    """The leading searches of an attempt: [(GET turn, server reply)], up to its first non-GET turn."""
+    h, out = e["history"], []
+    for i in range(1, len(h) - 1):
+        if h[i]["role"] == "agent":
+            if not h_is_get(h[i]["content"]):
+                break
+            out.append((h[i], h[i + 1]))
+    return out
+
+
+def merge_starts(cfg, big):
+    """Search merge (the MedAgentBench counterpart of merging shortlists on HotpotQA): the task prompt, then the weak
+    model's searches and the larger model's own searches (from its fresh attempt) with the server's replies; the larger
+    model continues from there and answers. Cost so far = the weak model's searches + the larger model's searches."""
+    from stair_common.cost import units
+    from .config import variant
+    weak = cfg["medagent"]["weak"]
+    pw, pb = float(variant(cfg, weak)["params_b"]), float(variant(cfg, big)["params_b"])
+    B = {e["tid"]: e for e in read_jsonl(store(cfg, big)[0])}
+    out = {}
+    for e in read_jsonl(store(cfg, weak)[0]):
+        b = B.get(e["tid"])
+        if not b:
+            continue
+        sw, sb = _searches(e), _searches(b)
+        seen, turns = set(), []
+        for a, r in sw + sb:                      # identical searches once
+            k = a["content"].strip()
+            if k not in seen:
+                seen.add(k)
+                turns += [a, r]
+        turns = turns[:2 * (MAX_ROUND - 1)]       # leave the answerer at least one round
+        cu = sum(units(pw, x, y) for x, y in list(zip(e["n_in"], e["n_out"]))[:len(sw)]) + \
+            sum(units(pb, x, y) for x, y in list(zip(b["n_in"], b["n_out"]))[:len(sb)])
+        out[e["tid"]] = {"history": [e["history"][0]] + turns, "rounds": len(turns) // 2, "from": f"{weak}+{big}", "units": float(cu)}
+    return out
+
+
 def hstore(cfg, key):
     return (os.path.join(wdir(cfg), f"handoff_{ep_name(key)}.jsonl"), os.path.join(wdir(cfg), f"graded_handoff_{ep_name(key)}.json"))
 
@@ -145,6 +188,16 @@ def run(cfg, part, model=""):
         elif part == "handoff":
             ep, gr = hstore(cfg, model)
             run_episodes(cfg, model, allt, srv.url, utils, tasks, funcs, out=ep, starts=handoff_starts(cfg))
+            grade_file(ep, srv.url, ref, tasks, gr)
+        elif part == "merge":
+            ep, gr = mstore(cfg, model)
+            starts = merge_starts(cfg, model)
+            run_episodes(cfg, model, allt, srv.url, utils, tasks, funcs, out=ep, starts=starts)
+            rows = read_jsonl(ep)                 # record the merged searches' cost with each continuation
+            for r in rows:
+                r["merge_units"] = starts.get(r["tid"], {}).get("units", 0.0)
+            from .common import write_jsonl
+            write_jsonl(ep, rows)
             grade_file(ep, srv.url, ref, tasks, gr)
         else:
             raise SystemExit(f"unknown part {part}")
