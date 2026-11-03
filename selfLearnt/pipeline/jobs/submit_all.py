@@ -477,6 +477,8 @@ def main():
             P.add(f"handoff-{k}:ft", f"--stage mab_run --part handoff --model {k}:ft", tp(k), 8, [ep["q7"], ep[k]])
         for k in ("q32", "q72"):           # search merge: both models' searches, the larger one answers
             P.add(f"merge-{k}:ft", f"--stage mab_run --part merge --model {k}:ft", tp(k), 8, [ep["q7"], ep[k]])
+        for k in ("q7", "q32", "q72"):     # each answerer from every merged search set (W, W+M, W+S, W+M+S)
+            P.add(f"cont-{k}:ft", f"--stage mab_run --part cont --model {k}:ft", tp(k), 8, list(ep.values()), small=(k == "q7"))
         for j in P.jobs:                   # the 32B (64 GB in bf16) runs on 2 cards of 48 GB+, not 4: it starts sooner
             if "q32:ft" in j["name"]:
                 j["keep_gpus"], j["constraint"] = True, "a40|l40s|l40|h100|h100nvl"

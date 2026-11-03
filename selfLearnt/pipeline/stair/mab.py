@@ -89,6 +89,46 @@ def merge_starts(cfg, big):
     return out
 
 
+SEARCH_SETS = [["q7:ft"], ["q7:ft", "q32:ft"], ["q7:ft", "q72:ft"], ["q7:ft", "q32:ft", "q72:ft"]]   # W, W+M, W+S, W+M+S
+
+
+def setkey(models):
+    return "+".join(m.split(":")[0] for m in models)
+
+
+def cstore(cfg, answerer, models):
+    """One answerer continuing from one merged search set (approaches 1-4, 3 Nov)."""
+    b = f"cont_{ep_name(answerer)}_{setkey(models)}"
+    return os.path.join(wdir(cfg), f"{b}.jsonl"), os.path.join(wdir(cfg), f"graded_{b}.json")
+
+
+def search_starts(cfg, models):
+    """The task prompt, then every listed model's own leading searches (from its fresh attempt) with the server's
+    replies, identical searches once, in ladder order; the answerer continues from there. Cost so far = each listed
+    model's search rounds."""
+    from stair_common.cost import units
+    from .config import variant
+    eps = {m: {e["tid"]: e for e in read_jsonl(store(cfg, m)[0])} for m in models}
+    out = {}
+    for tid, first in eps[models[0]].items():
+        seen, turns, cu = set(), [], 0.0
+        for m in models:
+            e = eps[m].get(tid)
+            if not e:
+                continue
+            sw = _searches(e)
+            pb = float(variant(cfg, m)["params_b"])
+            cu += sum(units(pb, x, y) for x, y in list(zip(e["n_in"], e["n_out"]))[:len(sw)])
+            for a, r in sw:
+                k = a["content"].strip()
+                if k not in seen:
+                    seen.add(k)
+                    turns += [a, r]
+        turns = turns[:2 * (MAX_ROUND - 1)]            # leave the answerer at least one round
+        out[tid] = {"history": [first["history"][0]] + turns, "rounds": len(turns) // 2, "from": setkey(models), "units": float(cu)}
+    return out
+
+
 def hstore(cfg, key):
     return (os.path.join(wdir(cfg), f"handoff_{ep_name(key)}.jsonl"), os.path.join(wdir(cfg), f"graded_handoff_{ep_name(key)}.json"))
 
@@ -189,6 +229,19 @@ def run(cfg, part, model=""):
             ep, gr = hstore(cfg, model)
             run_episodes(cfg, model, allt, srv.url, utils, tasks, funcs, out=ep, starts=handoff_starts(cfg))
             grade_file(ep, srv.url, ref, tasks, gr)
+        elif part == "cont":                     # this answerer from every merged search set
+            from .common import write_jsonl
+            for models in SEARCH_SETS:
+                if models == [model]:
+                    continue                          # a model answering from its own searches = its own attempt
+                ep, gr = cstore(cfg, model, models)
+                starts = search_starts(cfg, models)
+                run_episodes(cfg, model, allt, srv.url, utils, tasks, funcs, out=ep, starts=starts)
+                rows = read_jsonl(ep)
+                for r in rows:
+                    r["search_units"] = starts.get(r["tid"], {}).get("units", 0.0)
+                write_jsonl(ep, rows)
+                grade_file(ep, srv.url, ref, tasks, gr)
         elif part == "merge":
             ep, gr = mstore(cfg, model)
             starts = merge_starts(cfg, model)
