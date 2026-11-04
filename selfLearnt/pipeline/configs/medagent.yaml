@@ -33,6 +33,10 @@ medagent:
             name: "AL-18, plus 4 x always-strong for a high-risk task answered wrong without a person"}
     AL-23: {ladder: ["q7:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 2.0, miss_penalty: 4.0,
             name: "AL-19, plus 4 x always-strong for a high-risk task answered wrong without a person"}
+    AL-24: {ladder: ["q7:ft", "q32:ft", "q72:ft"], human: true, mode: restart, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0,
+            name: "AL-20 (person at 1 x), plus 4 x always-strong for a high-risk task answered wrong without a person"}
+    AL-25: {ladder: ["q7:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0,
+            name: "AL-21 (person at 1 x), plus 4 x always-strong for a high-risk task answered wrong without a person"}
   high_risk_types: [task5, task9]   # Jonathan's tau >= 0.8 tier (medication orders): the only tasks a person may take
   human_cost_factor: 2.0       # a person costs 2 x always-strong's cost on that task ("expensive"; Jonathan used 1.0)
   cost_weight: 0.10            # objective = accuracy - 0.10 x cost / always-strong cost (Jonathan's R')
