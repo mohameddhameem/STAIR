@@ -39,6 +39,7 @@ SIGNALS = {   # checks of one finished attempt (revision 2, 3 Nov); each can be 
     "not_found": "the answer says 'not found'",
     "bad_format": "the answer is not a JSON list",
     "several_orders": "it placed more than one order",
+    "no_order": "it placed no order",
 }
 
 
@@ -58,7 +59,7 @@ def flags(e):
     except Exception:  # noqa: BLE001
         ok = False
     return {"empty_search": any(_get_empty(g) for g in gets), "empty_answer": res.strip().replace(" ", "") in ("[]", ""),
-            "not_found": "not found" in res.lower(), "bad_format": not ok, "several_orders": len(posts) > 1}
+            "not_found": "not found" in res.lower(), "bad_format": not ok, "several_orders": len(posts) > 1, "no_order": not posts}
 
 
 def _search_flags(e):
@@ -159,8 +160,9 @@ def seed_book(D, design):
     if D.rev >= 2:                                         # 3 Nov: every escalation adds the model's own searches
         if L["mode"] == "handoff":                         # AL-19: search ladder, then answer ladder
             return {"mode": "staged", "ret": [{t: "stay" for t in TYPES} for _ in range(n)], "ret_sig": [[] for _ in range(n)],
-                    "end": [{t: "accept" for t in TYPES} for _ in range(n)], "sig": [[] for _ in range(n)], "vote": False}
-        return {"mode": "joint", "end": [{t: "accept" for t in TYPES} for _ in range(n)], "sig": [[] for _ in range(n)], "vote": False}
+                    "end": [{t: "accept" for t in TYPES} for _ in range(n)], "sig": [[] for _ in range(n)], "vote": False, "person_sig": []}
+        return {"mode": "joint", "end": [{t: "accept" for t in TYPES} for _ in range(n)], "sig": [[] for _ in range(n)], "vote": False,
+                "person_sig": []}
     if L["mode"] == "handoff":
         return {"mode": "handoff", "act": {t: "accept" for t in TYPES}, "theta": None, "sig_act": {}}
     return {"mode": "restart", "end": [{t: "accept" for t in TYPES} for _ in range(n)],
@@ -347,6 +349,11 @@ def options2(D, design, book):
                     lambda b, i=i, sg=sg: b["sig"].__setitem__(i, sorted(set(b["sig"][i]) ^ {sg})))
     chg(f"vote on escalation (agree -> accept, else majority, ties to the larger model) = {not book['vote']}",
         lambda b: b.__setitem__("vote", not b["vote"]))
+    if human:                                              # 4 Nov: one doubtful high-risk attempt straight to a person
+        for sg in SIGNALS:
+            on = sg not in book.get("person_sig", [])
+            chg(f"high-risk task: a person if {SIGNALS[sg]} = {on}",
+                lambda b, sg=sg: b.__setitem__("person_sig", sorted(set(b.get("person_sig", [])) ^ {sg})))
     return out
 
 
@@ -403,6 +410,8 @@ def _play2(D, design, book, tid, k_human=None):
                 act = "up" if not top else ("person" if person_ok else "accept")
             elif not top and act == "accept" and any(r[2][sg] for sg in book["sig"][i]):
                 act = "up"
+            if person_ok and any(r[2][sg] for sg in book.get("person_sig", [])):
+                act = "person"
             if act == "person" and person_ok:
                 return 1, cost + kh * D.ss[tid], "person", None, True
             if act == "accept" or top:
@@ -435,6 +444,8 @@ def _play2(D, design, book, tid, k_human=None):
             act = "up" if not top else ("person" if person_ok else "accept")
         elif not top and act == "accept" and any(r[2][sg] for sg in book["sig"][j]):
             act = "up"
+        if person_ok and any(r[2][sg] for sg in book.get("person_sig", [])):
+            act = "person"
         if act == "person" and person_ok:
             return 1, cost + kh * D.ss[tid], "person", None, True
         if act == "accept" or top:
