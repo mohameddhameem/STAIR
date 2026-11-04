@@ -69,3 +69,10 @@ Accuracy "with H" counts a hand-off as completed correctly (the person is assume
 (a hand-off falls back to the strong model, scored on its real result) the same decisions give 5a 55.33 %, 5b 63.33 %
 at both points — replayable from these scores plus training1_table.json. Registration: the 29 Oct entries in
 lab_package/medagentbench/MedAgentBench_Preregistration_DRAFT_22Oct2026.md.
+
+## Flat per-task decisions (added 4 Nov 2026, for Dhameem's paired comparison)
+`training1_3_test_decisions.csv` (sha256 f54b730b…) — one row per held-out test task (150): `tid`, `idx`, and for Training 1 and
+Training 3 the router's `pDeliver` plus `escalate_theta050` / `escalate_theta020` (1 = escalate to the strong model, 0 = deliver the
+weak answer; rule `escalate = pDeliver < theta`). Derived from the two `*_test_scores.jsonl` files above, nothing else. Tallies:
+T1 θ0.50 escalate 90 / deliver 60 (61.33 %); T1 θ0.20 83 / 67 (60.00 %); T3 θ0.50 135 / 15 (63.33 %, the registered read); T3 θ0.20 120 / 30
+(not a declared point — for reference only). Same condition as the score files: for the paired read after a judge's own test read, not for tuning.
