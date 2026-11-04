@@ -37,11 +37,18 @@ medagent:
             name: "AL-20 (person at 1 x), plus 4 x always-strong for a high-risk task answered wrong without a person"}
     AL-25: {ladder: ["q7:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0,
             name: "AL-21 (person at 1 x), plus 4 x always-strong for a high-risk task answered wrong without a person"}
+    # 4 Nov, option B: the weak model also trained on checked expert attempts for the order tasks (types 5, 9, 10)
+    AL-26: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, rev1_only: true,
+            name: "W -> M -> S -> person, W trained with expert order examples (revision-1 rules)"}
   high_risk_types: [task5, task9]   # Jonathan's tau >= 0.8 tier (medication orders): the only tasks a person may take
   human_cost_factor: 2.0       # a person costs 2 x always-strong's cost on that task ("expensive"; Jonathan used 1.0)
+  order_weight: 3              # option B: expert attempts that place an order count 3 x in training
   cost_weight: 0.10            # objective = accuracy - 0.10 x cost / always-strong cost (Jonathan's R')
 finetune:
   agents:
     q7:  {method: lora, n_train: 100000, max_len: 12288, max_epochs: 4, grad_accum: 4, n_val_loss: 300, n_val_metric: 0, save_every_questions: 16}
+    q7x: {method: lora, n_train: 100000, max_len: 12288, max_epochs: 4, grad_accum: 4, n_val_loss: 300, n_val_metric: 0, save_every_questions: 16, experts: true}
     q32: {method: qlora, n_train: 100000, max_len: 12288, max_epochs: 4, grad_accum: 4, n_val_loss: 300, n_val_metric: 0, save_every_questions: 16, gpus: 2}
     q72: {method: qlora, n_train: 100000, max_len: 11264, max_epochs: 4, grad_accum: 4, n_val_loss: 300, n_val_metric: 0, save_every_questions: 16, gpus: 4}
+models:
+  q7x: {toml: A.retriever.Qwen2.5-7B, label: Qwen2.5 7B (with expert order examples)}

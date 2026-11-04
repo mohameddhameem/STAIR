@@ -177,9 +177,111 @@ def sft_sets(cfg):
     return tr, va
 
 
+EXPERT_TYPES = ("task5", "task9", "task10")    # the order tasks the teacher never got right (4 Nov, option B)
+NOW = "2023-11-13T10:15:00+00:00"                # the benchmark's current time
+
+
+def _expert_turns(case, base, utils):
+    """A correct attempt for one order task, following the task's own instructions: look the value up, place the order
+    the instructions call for (if any), report the value. Returns the conversation after the task prompt."""
+    from datetime import datetime, timedelta
+    ty, mrn = case["id"].split("_")[0], case["eval_MRN"]
+    code = {"task5": "MG", "task9": "K", "task10": "A1C"}[ty]
+    url = f"{base}Observation?patient={mrn}&code={code}&_count=5000"
+    res = utils.send_get_request(url + "&_format=json")
+    turns = [{"role": "agent", "content": f"GET {url}"},
+             {"role": "user", "content": f"Here is the response from the GET request:\n{res['data']}. Please call FINISH if you have got answers for all the questions and finished all the requested tasks"}]
+    data = json.loads(res["data"]) if isinstance(res["data"], str) else res["data"]
+    now = datetime.fromisoformat(NOW)
+    obs = [(datetime.fromisoformat(e["resource"]["effectiveDateTime"]), e["resource"]["effectiveDateTime"], e["resource"]["valueQuantity"]["value"])
+           for e in data.get("entry", [])]
+    if ty == "task5":                                # magnesium: the last value in the past 24 hours
+        obs = [o for o in obs if o[0] >= now - timedelta(hours=24)]
+    last = max(obs, key=lambda o: o[0]) if obs else None
+    subj = {"reference": f"Patient/{mrn}"}
+    posts = []
+    if ty == "task5" and last and last[2] <= 1.9:
+        dose = 4 if last[2] < 1 else 2 if last[2] < 1.5 else 1
+        posts.append(("MedicationRequest", {
+            "resourceType": "MedicationRequest",
+            "medicationCodeableConcept": {"text": "Magnesium sulfate in water", "coding": [{"system": "http://hl7.org/fhir/sid/ndc", "code": "0338-1715-40"}]},
+            "authoredOn": NOW, "dosageInstruction": [{"route": "IV", "doseAndRate": [{"doseQuantity": {"value": dose, "unit": "g"},
+                                                                                     "rateQuantity": {"value": dose, "unit": "h"}}]}],
+            "status": "active", "intent": "order", "subject": subj}))
+    if ty == "task9" and last and last[2] < 3.5:
+        posts.append(("MedicationRequest", {
+            "resourceType": "MedicationRequest",
+            "medicationCodeableConcept": {"text": "Potassium chloride", "coding": [{"system": "http://hl7.org/fhir/sid/ndc", "code": "40032-917-01"}]},
+            "authoredOn": NOW, "dosageInstruction": [{"route": "oral", "doseAndRate": [{"doseQuantity": {"value": round((3.5 - last[2]) / 0.1 * 10, 1), "unit": "mEq"}}]}],
+            "status": "active", "intent": "order", "subject": subj}))
+        posts.append(("ServiceRequest", {
+            "resourceType": "ServiceRequest", "code": {"coding": [{"system": "http://loinc.org", "code": "2823-3", "display": "Potassium [Moles/volume] in Serum or Plasma"}]},
+            "authoredOn": NOW, "status": "active", "intent": "order", "priority": "stat", "subject": subj,
+            "occurrenceDateTime": "2023-11-14T08:00:00+00:00"}))
+    if ty == "task10" and (not last or last[0] < now - timedelta(days=365)):
+        posts.append(("ServiceRequest", {
+            "resourceType": "ServiceRequest", "code": {"coding": [{"system": "http://loinc.org", "code": "4548-4", "display": "Hemoglobin A1c/Hemoglobin.total in Blood"}]},
+            "authoredOn": NOW, "status": "active", "intent": "order", "priority": "stat", "subject": subj}))
+    for kind, payload in posts:
+        turns += [{"role": "agent", "content": f"POST {base}{kind}\n{json.dumps(payload)}"},
+                  {"role": "user", "content": "POST request accepted and executed successfully. Please call FINISH if you have got answers for all the questions and finished all the requested tasks"}]
+    ans = [-1] if not last else ([last[2], last[1]] if ty == "task10" else [last[2]])
+    turns.append({"role": "agent", "content": f"FINISH({json.dumps(ans)})"})
+    return turns, bool(posts)
+
+
+def experts(cfg, srv, tasks, funcs, utils, ref):
+    """Correct attempts for the order tasks (types 5, 9, 10) of the train and val parts, each checked by refsol before it
+    is kept -> medagent/experts.jsonl. Test tasks are never touched."""
+    from .medagent import MedAgentBench_prompt
+    sp = splits()
+    keep = set(sp["train"]) | set(sp["val"])
+    by_id = {t["id"]: t for t in tasks}
+    p = os.path.join(wdir(cfg), "experts.jsonl")
+    rows = []
+    for tid in sorted(keep):
+        if tid.split("_")[0] not in EXPERT_TYPES:
+            continue
+        case = by_id[tid]
+        prompt = MedAgentBench_prompt.format(api_base=srv.url, functions=json.dumps(funcs), context=case["context"], question=case["instruction"])
+        turns, ordered = _expert_turns(case, srv.url, utils)
+        res = turns[-1]["content"][len("FINISH("):-1]
+        rows.append({"tid": tid, "status": "completed", "result": res, "ordered": ordered,
+                     "history": [{"role": "user", "content": prompt}] + turns, "rounds": sum(1 for x in turns if x["role"] == "agent"),
+                     "n_in": [], "n_out": [], "units": 0.0})
+    from .common import write_jsonl
+    write_jsonl(p, rows)
+    g = grade_file(p, srv.url, ref, tasks, os.path.join(wdir(cfg), "graded_experts.json"))
+    bad = [r["tid"] for r in rows if not g.get(r["tid"])]
+    log(f"expert attempts: {len(rows)} written, {len(rows) - len(bad)} pass the grader"
+        f" ({sum(r['ordered'] for r in rows)} with an order){'; failing: ' + ', '.join(bad) if bad else ''}")
+
+
+def expert_sets(cfg):
+    """The checked expert attempts as training / validation examples; those with an order repeated `order_weight` times."""
+    M = cfg["medagent"]
+    p, gp = os.path.join(wdir(cfg), "experts.jsonl"), os.path.join(wdir(cfg), "graded_experts.json")
+    if not os.path.exists(gp):
+        raise SystemExit("no expert attempts yet: run --part expert first")
+    g = json.load(open(gp))
+    sp = splits()
+    tr, va = [], []
+    for e in read_jsonl(p):
+        if not g.get(e["tid"]):
+            continue
+        x = {"tid": e["tid"], "messages": [{"role": "assistant" if h["role"] == "agent" else "user", "content": h["content"]} for h in e["history"]]}
+        n = int(M.get("order_weight", 3)) if e["ordered"] else 1
+        (tr if e["tid"] in sp["train"] else va).extend([x] * (n if e["tid"] in sp["train"] else 1))
+    log(f"expert examples: {len(tr)} training (orders x{M.get('order_weight', 3)}), {len(va)} validation")
+    return tr, va
+
+
 def train_model(cfg, key):
     from . import train as T
     tr, va = sft_sets(cfg)
+    if cfg["finetune"]["agents"].get(key, {}).get("experts"):     # option B: the teacher's attempts + checked expert ones
+        xt, xv = expert_sets(cfg)
+        tr, va = tr + xt, va + xv
     if not tr:
         raise SystemExit("no passing teacher attempts yet: run --part teach first")
     if not T.trained(cfg, key):
@@ -229,6 +331,8 @@ def run(cfg, part, model=""):
             ep, gr = hstore(cfg, model)
             run_episodes(cfg, model, allt, srv.url, utils, tasks, funcs, out=ep, starts=handoff_starts(cfg))
             grade_file(ep, srv.url, ref, tasks, gr)
+        elif part == "expert":
+            experts(cfg, srv, tasks, funcs, utils, ref)
         elif part == "cont":                     # this answerer from every merged search set
             from .common import write_jsonl
             for models in SEARCH_SETS:

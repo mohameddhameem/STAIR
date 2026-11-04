@@ -569,12 +569,13 @@ def run(cfg, part="all"):
         tag = "" if rev == 2 else "-r1"
         if rev == 1:
             for k, name in (("q7", "untrained Qwen 7B (always-weak)"), (D.M["teacher"], "untrained Qwen 72B (always-strong)"),
-                            ("q7:ft", "fine-tuned Qwen 7B alone"), ("q32:ft", "fine-tuned Qwen 32B alone"), ("q72:ft", "fine-tuned Qwen 72B alone")):
+                            ("q7:ft", "fine-tuned Qwen 7B alone"), ("q7x:ft", "fine-tuned Qwen 7B with expert order examples, alone"),
+                            ("q32:ft", "fine-tuned Qwen 32B alone"), ("q72:ft", "fine-tuned Qwen 72B alone")):
                 if k in D.G:
                     out[name] = fixed(D, k, T)
                     line(name, out[name])
         for design, L in D.M["ladders"].items():
-            if rev == 1 and L.get("rev2_only"):
+            if (rev == 1 and L.get("rev2_only")) or (rev == 2 and L.get("rev1_only")):
                 continue
             if any(k not in D.G for k in L["ladder"]) or (L["mode"] == "handoff" and not D.H):
                 log(f"{design}: not all episodes yet - skipped")
