@@ -32,7 +32,8 @@
 #   bash scripts/run_cluster.sh slr7-judges    # ... their judges, J=zeroshot|train, ONLY=... (GPU); slr7-eval: reports (CPU job)
 #   bash scripts/run_cluster.sh exp8s-pools    # experiment 8 on the golden set: split + pools (CPU job); then exp8-score, exp8-answer, exp8-judge with EXP8_OUT/PLAN
 #   bash scripts/run_cluster.sh nanojev-fetch  # Jev novelty E1: nano-jev's recipe + datasets (login node); nanojev-pretrain: its retrains (GPU)
-# The Jev novelty steps (E0-E9) are documented in docs/gpu-jobs-jev.md.
+# The Jev novelty steps (E0-E9) are documented in docs/gpu-jobs-jev.md; experiment 11's (exp11-*, MedAgentBench by
+# replay; exp11-check, exp11-select and exp11-test are CPU jobs) in docs/gpu-jobs-exp11.md.
 # The common-setup steps are documented in docs/gpu-jobs-common.md; the golden-set steps in docs/gpu-jobs-slr.md.
 # Experiment 9's steps are documented in docs/gpu-jobs-exp9.md.
 # Where each step runs: login node = `prepare` (downloads + light parquet export), `exp8-prepare` and `slr-fetch`
@@ -234,6 +235,23 @@ EOF
     ;;
   exp10-eval)  # CPU job: reports for every judge set trained so far, against Jonathan's routers (loads only his router's tokenizer, to price its calls)
     $BIN exp10-slr eval --plan "${PLAN:-configs/exp10-slr.toml}" ${EXP10_OUT:+--out "$EXP10_OUT"}
+    ;;
+  exp11-check)  # CPU job: experiment 11's replay table and split (sha256, sizes, patients); loads no model
+    $BIN exp11-mab check --plan "${PLAN:-configs/exp11-mab.toml}"
+    ;;
+  exp11-zeroshot)  # GPU, ~15 min: experiment 11's zero-shot judges on MedAgentBench's 300 replayed views (configs/exp11-mab.toml)
+    $BIN exp11-mab zeroshot --plan "${PLAN:-configs/exp11-mab.toml}"
+    ;;
+  exp11-train)  # GPU (or CPU for the 33M judges): experiment 11's judge sets, JUDGE=<names, ':'-separated, as qsub -v
+                # splits on commas>; resumes
+    JUDGE=${JUDGE:?JUDGE=nano-jev:minilm:msmarco|decider-2b|decider-e4b}
+    $BIN exp11-mab train --judge "${JUDGE//:/,}" --plan "${PLAN:-configs/exp11-mab.toml}"
+    ;;
+  exp11-select)  # CPU job: experiment 11's operating points from val (no test labels read)
+    $BIN exp11-mab select --plan "${PLAN:-configs/exp11-mab.toml}"
+    ;;
+  exp11-test)  # CPU job: experiment 11's one test read (refuses a second)
+    $BIN exp11-mab test --plan "${PLAN:-configs/exp11-mab.toml}"
     ;;
   exp8s-pools)  # CPU job: experiment 8 on the golden set: its split (questions answered before drawn first) and pools
     $BIN make-splits --slr --router-size "${EXP8_TRAIN:-1000}" --calib-size "${EXP8_CALIB:-500}" \

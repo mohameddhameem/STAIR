@@ -1,4 +1,4 @@
-## Nano-Jev — `sdmlai/nano-jev@ffee345e97797bef0948561461ea54fe558588a0` on `runs/nanojev-pretrain/nano-jev-src/data`
+## Nano-Jev — `<home>/.cache/huggingface/hub/models--sdmlai--nano-jev/snapshots/ffee345e97797bef0948561461ea54fe558588a0` on `<repo>/runs/nanojev-pretrain/nano-jev-src/data`
 
 | decision | n | T | acc | macro-F1 | NLL raw → cal | Brier raw → cal | ECE raw → cal | ms/decision |
 |---|---|---|---|---|---|---|---|---|

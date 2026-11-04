@@ -124,12 +124,24 @@ def fit_logistic(X: np.ndarray, y: np.ndarray, seed: int):
     return grid.best_estimator_, grid.best_params_["logisticregression__C"]
 
 
-def bootstrap(policies: dict, n: int, n_boot: int, seed: int, fixed_range: tuple[float, float]) -> dict:
-    """Paired bootstrap over questions. `policies` maps a name to f(idx) -> points on the resampled rows."""
+def resample(n: int, rng: np.random.Generator, groups: np.ndarray | None = None) -> np.ndarray:
+    """One bootstrap draw of row indices: n rows with replacement or, given `groups` (a label per row), as many groups
+    with replacement, each bringing all its rows (MedAgentBench: a patient's tasks are not independent)."""
+    if groups is None:
+        return rng.integers(0, n, n)
+    labels, inverse = np.unique(np.asarray(groups), return_inverse=True)
+    members = [np.flatnonzero(inverse == g) for g in range(len(labels))]
+    return np.concatenate([members[g] for g in rng.integers(0, len(labels), len(labels))])
+
+
+def bootstrap(policies: dict, n: int, n_boot: int, seed: int, fixed_range: tuple[float, float],
+              groups: np.ndarray | None = None) -> dict:
+    """Paired bootstrap over questions, or over `groups` of them. `policies` maps a name to f(idx) -> points on the
+    resampled rows."""
     rng = np.random.default_rng(seed)
     aiqs = {k: [] for k in policies}
     for _ in range(n_boot):
-        idx = rng.integers(0, n, n)
+        idx = resample(n, rng, groups)
         for k, f in policies.items():
             aiqs[k].append(aiq(f(idx), *fixed_range))
     aiqs = {k: np.asarray(v) for k, v in aiqs.items()}

@@ -202,6 +202,7 @@ menu A (experiment 10).
 | E6: one 4-option question on menu A | Exploratory | +0.004 [+0.002, +0.007] over two stage decisions; against Jonathan's 1.5B router [−0.009, +0.002] |
 | E7: nano-jev's ranking with 20 fused samples | Descriptive | +0.057 over MS MARCO, +0.122 over BM25 |
 | E9: latency per decision | Measured | CPU 123 ms (1.5B router 4.8 s, 39×); L40S 6.4 ms (11.5 ms, 1.8×) |
+| E11: MedAgentBench by replay of Jonathan's table (150 test tasks, read once) | Exploratory | Fine-tuned nano-jev 63.33% at 59.0%; category routing 63.33% at 67.7%; always-escalate 54.00%. Paired intervals include zero for most contrasts; Jonathan's routers not yet joined |
 
 **Not run** (the write-up lists every item): the dollar re-pricing, the BERT and kNN question routers, and H3 on
 2Wiki's 2,000-question secondary test.

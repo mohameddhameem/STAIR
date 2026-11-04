@@ -1,4 +1,4 @@
-## Nano-Jev — `runs/nanojev-pretrain/nohotpot/model` on `runs/nanojev-pretrain/nohotpot/data`
+## Nano-Jev — `<repo>/runs/nanojev-pretrain/nohotpot/model` on `<repo>/runs/nanojev-pretrain/nohotpot/data`
 
 | decision | n | T | acc | macro-F1 | NLL raw → cal | Brier raw → cal | ECE raw → cal | ms/decision |
 |---|---|---|---|---|---|---|---|---|

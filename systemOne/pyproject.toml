@@ -44,6 +44,7 @@ confirm = "stair.confirm:main"
 zero-label = "stair.zero_label:main"
 risk-control = "stair.risk_control:main"
 latency = "stair.latency:main"
+exp11-mab = "stair.exp11_mab:main"
 
 [project.optional-dependencies]
 llm = [
