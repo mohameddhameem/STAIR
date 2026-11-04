@@ -1,0 +1,4 @@
+track,model,run,seed,epoch,train_loss,val_loss,step
+selfLearnt,Qwen2.5 72B agent,mab-qlora-r16,0,0.486,0.050333790506715874,0.021530258980913868,18
+selfLearnt,Qwen2.5 72B agent,mab-qlora-r16,0,0.973,0.03776086224727098,0.037738401823266064,36
+selfLearnt,Qwen2.5 72B agent,mab-qlora-r16,0,1.459,0.034185595695668605,0.022006505539122787,54

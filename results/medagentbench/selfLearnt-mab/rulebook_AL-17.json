@@ -1,0 +1,78 @@
+{
+ "test": {
+  "acc": 0.7666666666666667,
+  "acc_no9": 0.7481481481481481,
+  "cost_share": 0.0761942388695957,
+  "cost_share_no_penalty": 0.0761942388695957,
+  "units": 94.72766203703705,
+  "to_person": 0,
+  "silent_failures": 3,
+  "n": 150
+ },
+ "test_person_at_1x": {
+  "acc": 0.7666666666666667,
+  "acc_no9": 0.7481481481481481,
+  "cost_share": 0.0761942388695957,
+  "cost_share_no_penalty": 0.0761942388695957,
+  "units": 94.72766203703705,
+  "to_person": 0,
+  "silent_failures": 3,
+  "n": 150
+ },
+ "val": {
+  "acc": 0.8166666666666667,
+  "acc_no9": 0.7962962962962963,
+  "cost_share": 0.07520893723171071,
+  "cost_share_no_penalty": 0.07520893723171071,
+  "units": 95.6204861111111,
+  "to_person": 0,
+  "silent_failures": 0,
+  "n": 60
+ },
+ "seed_test": {
+  "acc": 0.7666666666666667,
+  "acc_no9": 0.7481481481481481,
+  "cost_share": 0.0761942388695957,
+  "cost_share_no_penalty": 0.0761942388695957,
+  "units": 94.72766203703705,
+  "to_person": 0,
+  "silent_failures": 3,
+  "n": 150
+ },
+ "rulebook": {
+  "mode": "joint",
+  "end": [
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "accept",
+    "task10": "accept"
+   },
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "accept",
+    "task10": "accept"
+   }
+  ],
+  "sig": [
+   [],
+   []
+  ],
+  "vote": false,
+  "person_sig": []
+ },
+ "changes": []
+}

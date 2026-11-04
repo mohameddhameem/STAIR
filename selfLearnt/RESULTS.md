@@ -305,6 +305,89 @@ comparison in [`results/medagentbench/selfLearnt-acceptance/`](../results/medage
 - The decoding setting (the model's default repetition penalty 1.05 vs plain greedy) moved the score by 1 point; the
   default is kept, as an OpenAI-style vLLM server applies it.
 
+## MedAgentBench: our method (AL-16 .. AL-25, 2-4 Nov)
+
+Jonathan's patient-disjoint split: the rules learn on 60 practice tasks (`calib_sweep`), the models train on the other
+90 calib tasks, and the 150 test tasks are read once. Accuracy = the benchmark's own grader (refsol, pass / fail); cost
+= every model call that ran, in AgentTTS units, as a share of always-strong's cost (the untrained Qwen 72B) on the same
+tasks; a person counts as correct. Seed 0. Code: `stair/mab.py`, `stair/mab_rules.py`, `configs/medagent.yaml`;
+per-task tables `results/common/AL-16` .. `AL-25-medagentbench-test-seed0.csv`; rulebooks, grades and the summary in
+[`results/medagentbench/selfLearnt-mab/`](../results/medagentbench/selfLearnt-mab/).
+
+**Fine-tuning.** The untrained Qwen 72B (the teacher) did every calib task once greedily and 4 more times sampled; its
+attempts the grader passed (72 distinct ones on 60 of the 90 training tasks) are the training examples. Qwen 7B (LoRA),
+32B and 72B (QLoRA) were fine-tuned on them, checkpoints on validation loss (curves `history/selfLearnt-mab-*`).
+
+**The four approaches** (one shared set of fine-tuned models and stored runs; W = 7B, M = 32B, S = 72B):
+
+| | Approach | How escalation works |
+|---|---|---|
+| AL-16 | W -> S | the larger model adds its own record searches to W's (merged) and answers from all of them |
+| AL-17 | W -> S -> person | as AL-16; a person can take a high-risk task (types 5 and 9, the medication orders) |
+| AL-18 | W -> M -> S -> person | as AL-17, three models; the rules may skip M (W -> S) |
+| AL-19 | search ladder W -> M -> S, then answer ladder W -> M -> S -> person | as AL-04 on HotpotQA: whose searches (merged) and who answers are escalated separately |
+
+The rules (learnt on the 60 practice tasks; a change is kept only if it helps on both halves of them) can act on the
+task type and on checks of each attempt: an empty search, an empty / "not found" / malformed answer, no order or several
+orders, the model's confidence; and vote between the answers given. A person costs 2 x always-strong's cost on that
+task. Revision 1 (2 Nov: restart on the larger model or hand it the weak model's searches, no merging, task type only)
+is kept beside it (`-r1` files).
+
+**Results on the 150 test tasks.** "Without task 9" leaves out the potassium task, where doing nothing passes (below).
+
+| Policy | Accuracy | Without task 9 | Cost (% of always-strong) | High-risk failures no one sees |
+|---|---|---|---|---|
+| Untrained 7B (= Jonathan's always-weak, 12.00) | 12.7% | 14.1% | 23.4% | 30 |
+| Untrained 72B (= Jonathan's always-strong, 54.00) | 54.7% | 60.7% | 100% | 21 |
+| Fine-tuned 7B alone | 76.7% | 74.8% | 7.6% | 3 |
+| Fine-tuned 32B alone | 80.0% | 88.9% | 49.4% | 17 |
+| Fine-tuned 72B alone | 68.7% | 76.3% | 106.1% | 17 |
+| AL-16 W -> S (learnt: nothing; = 7B alone) | 76.7% | 74.8% | 7.6% | 3 |
+| AL-17 W -> S -> person (learnt: nothing) | 76.7% | 74.8% | 7.6% | 3 |
+| **AL-18 W -> M -> S -> person** (learnt: patient lookups go to M) | **86.0%** | **85.2%** | **11.0%** | 3 |
+| **AL-19 search ladder -> answer ladder** (learnt: patient lookups add M's searches, W still answers; a malformed answer goes up the answer ladder) | **86.0%** | **85.2%** | **9.4%** | 3 |
+| AL-18 / AL-19, revision 1 (restart / hand-over, no merging) | 86.0% / 76.7% | 85.2% / 74.8% | 10.9% / 7.6% | 3 |
+| Jonathan, same 150: Training 1 router / Training 3 router | 61.33% / 63.33% | | 54.1% / 81.5% | |
+| Jonathan, same 150: Training 5b (a person on high-risk tasks) | 76.00% | | 94.5% (AI + people) | 2 |
+
+**Prices for the person (AL-20 .. AL-25, same rules and runs as AL-18 / AL-19).** Person at 1 x always-strong
+(Jonathan's price: AL-20, AL-21); person at 2 x plus 4 x always-strong for each high-risk task answered wrong without a
+person (AL-22, AL-23); person at 1 x plus that penalty (AL-24, AL-25). Every one learnt the same rules as AL-18 / AL-19
+and sent no task to a person: 86.0% at 11.0% / 9.4% (with the penalty counted, 25.5% / 23.8%, from the 3 missed
+high-risk tasks). From 4 Nov the rules may also send one doubtful high-risk attempt straight to a person; that did not
+change the outcome either (why below).
+
+**Reading.**
+
+- **Fine-tuning does most of the work.** The fine-tuned 7B alone (76.7% at 7.6% of always-strong's cost) beats every
+  baseline, and beats its own teacher by 22 points: it learnt only from the teacher's successes. As on HotpotQA,
+  fine-tuning a small model is the big step.
+- **Switching adds 9 points where one model is blind.** The fine-tuned 7B fails patient lookups (1 of 15: it searches
+  `name=Glenda+Hall`, which the records server does not match, and answers "Patient not found"); the fine-tuned 32B
+  searches by family and given name and gets 15 of 15. The rules found that type on the practice tasks. AL-19 does it
+  cheapest: only the searches are escalated, and with the 32B's searches added even the 7B answers correctly.
+- **Restart vs hand-over.** Handing the 32B the 7B's searches (revision 1, AL-19) cannot fix a bad search: it inherits
+  the empty result (1 of 15). Merging both models' searches (revision 2) can. A hand-over does fix weak answers from good
+  searches (types 2 and 6: 11 -> 15 and 10 -> 12 of 15), but the practice set (6 tasks per type) was too small for the
+  rules to accept it.
+- **Escalating to the 72B never helped.** The fine-tuned 72B is no better than the 7B on the types the 7B fails, so
+  AL-16 and AL-17 learnt to keep everything on the 7B.
+- **Task 9 is a grading shortcut, not skill.** The fine-tuned 7B "solves" 14 of 15 potassium tasks by searching an
+  empty time window (from now onwards), finding nothing and ordering nothing; the grader accepts "no order" for most of
+  these patients. Every other model, Jonathan's too, scores 0 there because it does order. The column without task 9 is
+  the fair comparison; AL-18 / AL-19 still lead there (85.2%), though the fine-tuned 32B alone reaches 88.9% at about
+  half of always-strong's cost.
+- **The medication tasks: a blind spot inherited from the teacher.** In all 12 high-risk practice tasks the right
+  answer happened to be "no order needed", and the 7B was right on all of them, so no rule could learn to call a person
+  (the 4 x penalty never applied in practice). On test, 3 patients did need an order; the 7B ordered nothing and nobody
+  saw it. It was as confident on those 3 (0.86-0.95) as on its correct answers (median 0.93), so a confidence check
+  cannot catch them. Root cause: none of its training examples contains a medication order (types 5, 9, 10: 0 with an
+  order; only the routine types 3 and 8 have orders), because the teacher never got a medication order right. Fine-tuning
+  on a teacher's successes inherits the teacher's blind spots.
+- **Next: recall on medication orders (option B, 4 Nov).** Correct medication-order examples for the 90 training tasks,
+  written from each task's dosing instructions and checked by the grader (training tasks only; the split and the test
+  tasks are unchanged), weighted up in the 7B's training; reported as a separate variant.
+
 ## Fine-tuning (early stopping on validation loss, `results/common/history/`)
 
 Each model was fine-tuned twice: for the first run (checkpoints picked on dev [0:500], AgentTTS's validation questions;
