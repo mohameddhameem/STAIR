@@ -80,3 +80,11 @@ deferred (trigger unmet; mechanical scheme on file).
   cannot be replayed; restart baseline to beat = T3's 63.33 @ 81.5%
 - Other declared openings: third benchmark (recipe transfer), clinician review of
   the rubric's fine calibration, seed repeats of headline runs
+
+## FHIR server time zone (added 4 Nov 2026, from Andy's finding)
+- The authors' image (`jyxsu6/medagentbench:latest`) runs its HAPI FHIR server on UTC inside Docker (no TZ set; verified 4 Nov).
+- If the server is ever run OUTSIDE Docker, set `TZ=UTC`: database timestamps carry no zone, and the 150 time-relative
+  tasks (notably types 4 and 6, "last 24 hours") shift by the host offset — Andy measured 52.33 vs 56.67 on UTC+8 vs UTC.
+- Decoding: all campaign servers applied the model file's repetition_penalty 1.05 (vLLM default path). New runs use
+  `--generation-config vllm` unless a reproduction needs the model-file defaults; check the server log for the override line.
+
