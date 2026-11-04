@@ -26,6 +26,34 @@ are the reference every HotpotQA track reports against.
   router on `slr-train`, pick thresholds on `slr-val`, and re-score on `slr-test` at the Table 5 prices.
   - systemOne and selfLearnt entries made against the dev slices move this way.
 
+### Golden-set inputs: passage file and prompts (proposal from Andy's reply, 2026-11)
+
+- **Passage file.** The 100 candidate passages per question come from AgentTTS's `tts_test.json` (7,405 questions,
+  402 MB; team Shared files, Dataset / HotpotQA_AgentTTS). It is used as received, in its own order. Its sha256 starts
+  `f65d581370fb27b9` (the full value must be checked against the file before a run). BM25 pools rebuilt from the
+  corpus differ, and the scores differ with them.
+- **Retrieval prompt (AgentTTS, verbatim).** System: `You are a helpful assistant that return the beneficial references to the query.`
+  User (`{query}` is `Query: <question>References: ` followed by a newline and `[i] <passage>` for each candidate; `\n` in the format string is a newline):
+
+  ```
+  You have been provided with a query and a set of references. Your task is to select references that comprehensively cover the information needed to answer the query. Your response should include the original query and a list of selected references in the following format: 'Query: [query]\nSelected references: [reference number] [reference details]'.Here is the query and references: 
+   {query}.
+  ```
+
+- **Always-strong answer prompt (Jonathan's `qa_prompt`, spec corrected 28 Oct).** AgentTTS's answer prompt plus one line.
+  The line is required: without it answers become sentences and the score drops about 6 points.
+
+  ```
+  Your task is to answer the query using the provided references. If the references are insufficient, supplement your response with your own knowledge. Answer with ONLY the exact answer phrase - no explanation, no full sentence.
+  Query: {question}
+  {retrieved}
+  ```
+
+  System: `You are a helpful assistant.`, one greedy pass, 128 new tokens.
+- **Recorded reproduction.** Jonathan's always-strong answer step, re-run on AgentTTS's `tts_test.json` with AWQ and vLLM:
+  77.31 against his stored 76.77 (+0.54; 87.1% identical answer text, same right/wrong on 96.8%). The gap is treated as
+  serving-stack numerics.
+
 ## Quick start
 
 ```bash
