@@ -351,6 +351,16 @@ def options2(D, design, book):
 
 
 def play2(D, design, book, tid, k_human=None):
+    """_play2, plus (AL-22 / AL-23) a penalty for a high-risk task delivered wrong without a person seeing it:
+    miss_penalty x always-strong's cost on that task, counted as cost (D.no_penalty: leave it out, AI and person cost only)."""
+    r = _play2(D, design, book, tid, k_human)
+    pen = D.M["ladders"][design].get("miss_penalty")
+    if pen and not getattr(D, "no_penalty", False) and _ty(tid) in D.hr and not r[4] and not r[0]:
+        return (r[0], r[1] + pen * D.ss[tid]) + tuple(r[2:])
+    return r
+
+
+def _play2(D, design, book, tid, k_human=None):
     """joint (AL-16 .. AL-18): rung i = the model at rung i answering from the searches of every model visited so far
     (each escalation adds that model's own searches); staged (AL-19): first the search ladder (which models' searches),
     then the answer ladder (who answers from them). Cost = every visited model's searches + every answer attempt."""
@@ -358,7 +368,7 @@ def play2(D, design, book, tid, k_human=None):
     lad, human = L["ladder"], L["human"]
     n = len(lad)
     t = _ty(tid)
-    kh = D.M["human_cost_factor"] if k_human is None else k_human
+    kh = L.get("human_cost_factor", D.M["human_cost_factor"]) if k_human is None else k_human
     person_ok = human and t in D.hr
     vote = book.get("vote")
     seen = []
@@ -480,9 +490,12 @@ def summary(D, design, book, tids, k_human=None):
     rows = [play(D, design, book, t, k_human) for t in tids]
     acc = np.mean([r[0] for r in rows])
     cost = sum(r[1] for r in rows) / sum(D.ss[t] for t in tids)
+    D.no_penalty = True
+    cost_np = sum(play(D, design, book, t, k_human)[1] for t in tids) / sum(D.ss[t] for t in tids)
+    D.no_penalty = False
     hr = [(t, r) for t, r in zip(tids, rows) if _ty(t) in D.hr]
     acc9 = np.mean([r[0] for t, r in zip(tids, rows) if _ty(t) != "task9"])
-    return {"acc": float(acc), "acc_no9": float(acc9), "cost_share": float(cost), "units": float(np.mean([r[1] for r in rows])),
+    return {"acc": float(acc), "acc_no9": float(acc9), "cost_share": float(cost), "cost_share_no_penalty": float(cost_np), "units": float(np.mean([r[1] for r in rows])),
             "to_person": sum(r[4] for r in rows), "silent_failures": sum(1 for _, r in hr if not r[4] and not r[0]), "n": len(tids)}
 
 
@@ -550,6 +563,8 @@ def run(cfg, part="all"):
                     out[name] = fixed(D, k, T)
                     line(name, out[name])
         for design, L in D.M["ladders"].items():
+            if rev == 1 and L.get("rev2_only"):
+                continue
             if any(k not in D.G for k in L["ladder"]) or (L["mode"] == "handoff" and not D.H):
                 log(f"{design}: not all episodes yet - skipped")
                 continue
@@ -568,6 +583,8 @@ def run(cfg, part="all"):
                                  "rulebook": book, "changes": hist}
             write_json(os.path.join(wdir(cfg), f"rulebook_{design}{tag}.json"), out[design + tag])
             line(f"{design}{' (revision 1)' if rev == 1 else ''} {L['name']}: learnt rules ({len(hist)} changes)", s)
+            if L.get("miss_penalty"):
+                lines.append(f"| ... same, cost without the missed-high-risk penalty (AI + person only) | | | {100 * s['cost_share_no_penalty']:.1f} | | |")
             if L["human"] and s1["to_person"]:
                 lines.append(f"| ... same, a person priced at 1 x always-strong | {100 * s1['acc']:.2f} | {100 * s1['acc_no9']:.2f} | "
                              f"{100 * s1['cost_share']:.1f} | {s1['to_person']} | {s1['silent_failures']} |")
