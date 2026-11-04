@@ -573,7 +573,7 @@ def run(cfg, part="all"):
                 if k in D.G:
                     out[name] = fixed(D, k, T)
                     line(name, out[name])
-        for design, L in D.M["ladders"].items():
+        for design, L in list(D.M["ladders"].items()):
             if (rev == 1 and L.get("rev2_only")) or (rev == 2 and L.get("rev1_only")):
                 continue
             if any(k not in D.G for k in L["ladder"]) or (L["mode"] == "handoff" and not D.H):
@@ -583,6 +583,14 @@ def run(cfg, part="all"):
                 need = [(a, setkey(m)) for m in sets_for(L["ladder"][0]) if set(m) <= set(L["ladder"]) for a in L["ladder"]
                         if L["mode"] == "handoff" or a == [x for x in L["ladder"] if x in m][-1]]
                 miss = sorted({f"{a} from {sk}" for a, sk in need if (a, sk) not in D.C})
+                if miss and all("q72" in m for m in miss) and "q72:ft" in L["ladder"]:
+                    # the 72B's merged-search runs are still queued: report this design without S for now, clearly tagged
+                    log(f"{design}: the 72B's merged-search runs are not there yet; reported as {design}-noS (W and M only) until they are")
+                    design, L = design + "-noS", dict(L, ladder=[x for x in L["ladder"] if x != "q72:ft"], name=L["name"] + " [without S: 72B runs pending]")
+                    D.M["ladders"][design] = L
+                    need = [(a, setkey(m)) for m in sets_for(L["ladder"][0]) if set(m) <= set(L["ladder"]) for a in L["ladder"]
+                            if L["mode"] == "handoff" or a == [x for x in L["ladder"] if x in m][-1]]
+                    miss = sorted({f"{a} from {sk}" for a, sk in need if (a, sk) not in D.C})
                 if miss:
                     log(f"{design}: answers from merged searches missing ({', '.join(miss)}): run stage mab_run --part cont first")
                     continue
@@ -596,7 +604,7 @@ def run(cfg, part="all"):
             line(f"{design}{' (revision 1)' if rev == 1 else ''} {L['name']}: learnt rules ({len(hist)} changes)", s)
             if L.get("miss_penalty"):
                 lines.append(f"| ... same, cost without the missed-high-risk penalty (AI + person only) | | | {100 * s['cost_share_no_penalty']:.1f} | | |")
-            if L["human"] and s1["to_person"]:
+            if L["human"] and s1["to_person"] and L.get("human_cost_factor", D.M["human_cost_factor"]) != 1.0:
                 lines.append(f"| ... same, a person priced at 1 x always-strong | {100 * s1['acc']:.2f} | {100 * s1['acc_no9']:.2f} | "
                              f"{100 * s1['cost_share']:.1f} | {s1['to_person']} | {s1['silent_failures']} |")
             try:
