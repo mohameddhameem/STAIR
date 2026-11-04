@@ -92,6 +92,15 @@ def merge_starts(cfg, big):
 SEARCH_SETS = [["q7:ft"], ["q7:ft", "q32:ft"], ["q7:ft", "q72:ft"], ["q7:ft", "q32:ft", "q72:ft"]]   # W, W+M, W+S, W+M+S
 
 
+def sets_for(weak):
+    """The merged search sets of a ladder that starts with `weak`: W, W+M, W+S, W+M+S."""
+    return [[weak], [weak, "q32:ft"], [weak, "q72:ft"], [weak, "q32:ft", "q72:ft"]]
+
+
+def weaks(cfg):
+    return cfg["medagent"].get("weaks", [cfg["medagent"]["weak"]])
+
+
 def setkey(models):
     return "+".join(m.split(":")[0] for m in models)
 
@@ -335,10 +344,12 @@ def run(cfg, part, model=""):
             experts(cfg, srv, tasks, funcs, utils, ref)
         elif part == "cont":                     # this answerer from every merged search set
             from .common import write_jsonl
-            for models in SEARCH_SETS:
-                if models == [model]:
-                    continue                          # a model answering from its own searches = its own attempt
+            for models in [m for w in weaks(cfg) for m in sets_for(w)]:
+                if models == [model] or (model in weaks(cfg) and model != models[0]):
+                    continue                          # its own attempt, or a weak model answering another weak model's sets
                 ep, gr = cstore(cfg, model, models)
+                if os.path.exists(gr):
+                    continue                          # done in an earlier job
                 starts = search_starts(cfg, models)
                 run_episodes(cfg, model, allt, srv.url, utils, tasks, funcs, out=ep, starts=starts)
                 rows = read_jsonl(ep)

@@ -19,6 +19,7 @@ medagent:
   teach_temperature: 0.7
   keep_per_task: 4             # at most this many passing attempts per task
   weak: "q7:ft"
+  weaks: ["q7:ft", "q7x:ft"]   # every first rung with its own merged-search runs (q7x: option B, 4 Nov)
   ladders:                     # AL-16 .. AL-18: restart on a larger model; AL-19: hand the attempt to a larger answerer
     AL-16: {ladder: ["q7:ft", "q72:ft"], human: false, mode: restart, name: "W -> S"}
     AL-17: {ladder: ["q7:ft", "q72:ft"], human: true, mode: restart, name: "W -> S -> person"}
@@ -38,8 +39,15 @@ medagent:
     AL-25: {ladder: ["q7:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0,
             name: "AL-21 (person at 1 x), plus 4 x always-strong for a high-risk task answered wrong without a person"}
     # 4 Nov, option B: the weak model also trained on checked expert attempts for the order tasks (types 5, 9, 10)
-    AL-26: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, rev1_only: true,
-            name: "W -> M -> S -> person, W trained with expert order examples (revision-1 rules)"}
+    # W = the 7B also trained on checked expert order examples (option B); the same price settings as AL-18 .. AL-25
+    AL-26: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, name: "approach 3, W with expert orders (person 2 x)"}
+    AL-27: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, human_cost_factor: 1.0, name: "approach 3, W with expert orders (person 1 x)"}
+    AL-28: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, miss_penalty: 4.0, name: "approach 3, W with expert orders (person 2 x, 4 x penalty)"}
+    AL-29: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, human_cost_factor: 1.0, miss_penalty: 4.0, name: "approach 3, W with expert orders (person 1 x, 4 x penalty)"}
+    AL-30: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, name: "approach 4, W with expert orders (person 2 x)"}
+    AL-31: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, name: "approach 4, W with expert orders (person 1 x)"}
+    AL-32: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, miss_penalty: 4.0, name: "approach 4, W with expert orders (person 2 x, 4 x penalty)"}
+    AL-33: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0, name: "approach 4, W with expert orders (person 1 x, 4 x penalty)"}
   high_risk_types: [task5, task9]   # Jonathan's tau >= 0.8 tier (medication orders): the only tasks a person may take
   human_cost_factor: 2.0       # a person costs 2 x always-strong's cost on that task ("expensive"; Jonathan used 1.0)
   order_weight: 3              # option B: expert attempts that place an order count 3 x in training

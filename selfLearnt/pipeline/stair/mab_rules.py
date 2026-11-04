@@ -23,7 +23,7 @@ import os
 import numpy as np
 
 from .common import log, read_jsonl, write_json
-from .mab import SEARCH_SETS, cstore, hstore, mstore, setkey, splits, store
+from .mab import cstore, hstore, mstore, sets_for, setkey, splits, store, weaks
 from .medagent import wdir
 
 TYPES = [f"task{i}" for i in range(1, 11)]
@@ -122,7 +122,7 @@ class Data:
         self.SU = {}                                       # search set -> {tid: (search units, empty search?, number of searches)}
         if rev >= 2:
             ans = sorted({k for d in M["ladders"].values() for k in d["ladder"]})
-            for models in SEARCH_SETS:
+            for models in [m for w in weaks(cfg) for m in sets_for(w)]:
                 sk = setkey(models)
                 for a in ans:
                     ep, gr = cstore(cfg, a, models)
@@ -136,11 +136,11 @@ class Data:
                                        for t, e in rows.items()}
                     if sk not in self.SU:
                         self.SU[sk] = {t: (e.get("search_units", 0.0), _search_flags(e)) for t, e in rows.items()}
-            w = M["weak"]
-            if w in self.E and setkey([w]) in self.SU:     # the weak model on its own searches = its own attempt
-                su = self.SU[setkey([w])]
-                self.C[(w, setkey([w]))] = {t: (self.G[w].get(t, 0), max(0.0, e["units"] - su.get(t, (0.0,))[0]), self.F[w][t],
-                                                self.S[w][t], e.get("result"), e["status"]) for t, e in self.E[w].items()}
+            for w in weaks(cfg):
+                if w in self.E and setkey([w]) in self.SU:     # the weak model on its own searches = its own attempt
+                    su = self.SU[setkey([w])]
+                    self.C[(w, setkey([w]))] = {t: (self.G[w].get(t, 0), max(0.0, e["units"] - su.get(t, (0.0,))[0]), self.F[w][t],
+                                                    self.S[w][t], e.get("result"), e["status"]) for t, e in self.E[w].items()}
 
     def two_rounds(self, k, tid):
         from stair_common.cost import units
@@ -236,13 +236,22 @@ def options(D, design, book):
 
 
 def play(D, design, book, tid, k_human=None):
-    """One task under a rulebook -> (correct, cost in units, path, answer, person?)."""
+    """One task under a rulebook -> (correct, cost in units, path, answer, person?), with the missed-high-risk penalty
+    (miss_penalty x always-strong's cost on that task) when the design has one and D.no_penalty is not set."""
+    r = _play(D, design, book, tid, k_human)
+    pen = D.M["ladders"][design].get("miss_penalty")
+    if pen and not getattr(D, "no_penalty", False) and _ty(tid) in D.hr and not r[4] and not r[0]:
+        return (r[0], r[1] + pen * D.ss[tid]) + tuple(r[2:])
+    return r
+
+
+def _play(D, design, book, tid, k_human=None):
     if book["mode"] in ("joint", "staged"):
-        return play2(D, design, book, tid, k_human)
+        return _play2(D, design, book, tid, k_human)
     L = D.M["ladders"][design]
     lad, human = L["ladder"], L["human"]
     t = _ty(tid)
-    kh = D.M["human_cost_factor"] if k_human is None else k_human
+    kh = L.get("human_cost_factor", D.M["human_cost_factor"]) if k_human is None else k_human
     person_ok = human and t in D.hr
     if book["mode"] == "handoff":
         w = lad[0]
@@ -355,16 +364,6 @@ def options2(D, design, book):
             chg(f"high-risk task: a person if {SIGNALS[sg]} = {on}",
                 lambda b, sg=sg: b.__setitem__("person_sig", sorted(set(b.get("person_sig", [])) ^ {sg})))
     return out
-
-
-def play2(D, design, book, tid, k_human=None):
-    """_play2, plus (AL-22 / AL-23) a penalty for a high-risk task delivered wrong without a person seeing it:
-    miss_penalty x always-strong's cost on that task, counted as cost (D.no_penalty: leave it out, AI and person cost only)."""
-    r = _play2(D, design, book, tid, k_human)
-    pen = D.M["ladders"][design].get("miss_penalty")
-    if pen and not getattr(D, "no_penalty", False) and _ty(tid) in D.hr and not r[4] and not r[0]:
-        return (r[0], r[1] + pen * D.ss[tid]) + tuple(r[2:])
-    return r
 
 
 def _play2(D, design, book, tid, k_human=None):
@@ -581,7 +580,7 @@ def run(cfg, part="all"):
                 log(f"{design}: not all episodes yet - skipped")
                 continue
             if rev == 2:
-                need = [(a, setkey(m)) for m in SEARCH_SETS if set(m) <= set(L["ladder"]) for a in L["ladder"]
+                need = [(a, setkey(m)) for m in sets_for(L["ladder"][0]) if set(m) <= set(L["ladder"]) for a in L["ladder"]
                         if L["mode"] == "handoff" or a == [x for x in L["ladder"] if x in m][-1]]
                 miss = sorted({f"{a} from {sk}" for a, sk in need if (a, sk) not in D.C})
                 if miss:
