@@ -76,3 +76,15 @@ Training 3 the router's `pDeliver` plus `escalate_theta050` / `escalate_theta020
 weak answer; rule `escalate = pDeliver < theta`). Derived from the two `*_test_scores.jsonl` files above, nothing else. Tallies:
 T1 θ0.50 escalate 90 / deliver 60 (61.33 %); T1 θ0.20 83 / 67 (60.00 %); T3 θ0.50 135 / 15 (63.33 %, the registered read); T3 θ0.20 120 / 30
 (not a declared point — for reference only). Same condition as the score files: for the paired read after a judge's own test read, not for tuning.
+
+## Separate table: strong model under pure temperature 0 (added 5 Nov 2026, for Dhameem's comparison — NOT a replacement)
+`training1_table_pureT0.json` (sha256 def234cd…) — identical layout and columns to `training1_table.json`; the ONLY difference is
+the strong model's pass/fail (`qs`), taken from a 72B-AWQ rerun served with `--generation-config vllm` (pure temperature 0;
+the campaign's servers applied the model file's repetition_penalty 1.05 — see the 4 Nov pre-registration entry). Weak side
+(`qw`, `cw`, `view`, `weak_rounds`), splits and `idx` are byte-identical. **`cs` is the campaign's per-instance strong cost store
+(unchanged), not re-priced from the rerun** — so cost comparisons across the two tables are like-for-like and only outcomes move.
+Strong success 178/300 = 59.33 % (vs 168/300 = 56.00 %); 12 tasks differ (11 up, 1 down): task5 +5, task10 +2, task2/6/7 +1 each,
+tasks 1/3/4/8/9 unchanged. Band under this table: always-deliver 11.67 · always-escalate 59.33 · oracle 68.33 @ 52.7 % of
+always-escalate cost. Our trained routers (T1/T3) were trained and read on the canonical table; nothing was retrained.
+Rerun provenance: `lab_package/medagentbench/rerun72b_pureT0_lab.sh` (server log confirmed no generation-config override),
+builder `training1_build_table_pureT0.py` (two constants changed from the validated builder).
