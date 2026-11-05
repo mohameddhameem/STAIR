@@ -366,6 +366,8 @@ def main():
     ap.add_argument("--mab-run", action="store_true", help="MedAgentBench with our method (configs/medagent.yaml, AL-16 .. AL-19): teacher, fine-tuning, episodes, hand-offs")
     ap.add_argument("--mab-redo", default="", help="with --mab-run: submit only these jobs (comma-separated names, e.g. "
                     "episodes-q32:ft,handoff-q32:ft); their dependencies on jobs not listed are taken as done")
+    ap.add_argument("--mab-two-gpus", action="store_true", help="with --mab-redo: run the listed jobs on 2 cards of 48 GB+ "
+                    "(the 72B AWQ is ~40 GB: Jonathan serves it on one 46 GB card), when 4 cards do not come free")
     ap.add_argument("--as-job", action="store_true", help="run this submitter as a small CPU job (survives logouts) instead of in tmux")
     a = ap.parse_args()
     env = read_env(os.path.join(HERE, "cluster.env"))
@@ -485,6 +487,10 @@ def main():
         for j in P.jobs:                   # the 32B (64 GB in bf16) runs on 2 cards of 48 GB+, not 4: it starts sooner
             if "q32:ft" in j["name"]:
                 j["keep_gpus"], j["constraint"] = True, "a40|l40s|l40|h100|h100nvl"
+        if a.mab_redo and a.mab_two_gpus:
+            for j in P.jobs:
+                if j["name"] in set(a.mab_redo.split(",")) and j["gpus"]:
+                    j["gpus"], j["keep_gpus"], j["constraint"] = 2, True, "a40|l40s|l40|h100|h100nvl|a100"
         if a.mab_redo:
             keep = set(a.mab_redo.split(","))
             P.jobs = [dict(j, deps=[d for d in j["deps"] if d in {x["key"] for x in P.jobs if x["name"] in keep}]) for j in P.jobs if j["name"] in keep]
