@@ -480,7 +480,7 @@ def main():
         for k in ("q32", "q72"):           # search merge: both models' searches, the larger one answers
             P.add(f"merge-{k}:ft", f"--stage mab_run --part merge --model {k}:ft", tp(k), 8, [ep["q7"], ep[k]])
         for k in ("q7", "q7x", "q32", "q72"):   # each answerer from every merged search set (W, W+M, W+S, W+M+S); sets done are skipped
-            P.add(f"cont-{k}:ft", f"--stage mab_run --part cont --model {k}:ft", tp(k), 3, list(ep.values()), small=k.startswith("q7"))
+            P.add(f"cont-{k}:ft", f"--stage mab_run --part cont --model {k}:ft", tp(k), 3, list(ep.values()), small=k in ("q7", "q7x"))
         xp = P.add("expert", "--stage mab_run --part expert", 0, 2, [], cpu_only=True)   # option B (4 Nov)
         xt = P.add("train-q7x", "--stage mab_run --part train --model q7x", 1, 24, [xp])
         P.add("episodes-q7x:ft", "--stage mab_run --part episodes --model q7x:ft", 1, 8, [xt], small=True)
