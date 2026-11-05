@@ -26,6 +26,15 @@
   "silent_failures": 3,
   "n": 150
  },
+ "fine-tuned Qwen 7B with expert order examples, alone": {
+  "acc": 0.76,
+  "acc_no9": 0.8148148148148148,
+  "cost_share": 0.07907528444774233,
+  "units": 98.30949074074073,
+  "to_person": 0,
+  "silent_failures": 19,
+  "n": 150
+ },
  "fine-tuned Qwen 32B alone": {
   "acc": 0.8,
   "acc_no9": 0.8888888888888888,
@@ -457,6 +466,638 @@
    "sig_act": {}
   },
   "changes": []
+ },
+ "AL-26-r1": {
+  "test": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 1.0004882332836798,
+   "cost_share_no_penalty": 1.0004882332836798,
+   "units": 1243.8461574074074,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 0.6826953977673168,
+   "cost_share_no_penalty": 0.6826953977673168,
+   "units": 848.7536574074074,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 1.0566189037329317,
+   "cost_share_no_penalty": 1.0566189037329317,
+   "units": 1343.3830729166666,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.7866666666666666,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.29365870948075234,
+   "cost_share_no_penalty": 0.29365870948075234,
+   "units": 365.08800925925925,
+   "to_person": 2,
+   "silent_failures": 15,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "restart",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "early": [
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    }
+   ],
+   "theta": [
+    -0.00048328012902883546,
+    null,
+    null
+   ],
+   "sig": [
+    [],
+    [],
+    []
+   ],
+   "vote": false
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.021410283540528024",
+    "val_objective": 0.8658228909778803,
+    "before": 0.8105628846016659
+   },
+   {
+    "round": 2,
+    "change": "rung 2 (q32:ft), task9: end accept -> person",
+    "val_objective": 0.892489557644547,
+    "before": 0.8658228909778803
+   },
+   {
+    "round": 3,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.00048328012902883546",
+    "val_objective": 0.911764471562242,
+    "before": 0.892489557644547
+   },
+   {
+    "round": 4,
+    "change": "rung 1 (q7x:ft), task9: end accept -> person",
+    "val_objective": 0.9130634024593324,
+    "before": 0.911764471562242
+   }
+  ]
+ },
+ "AL-27-r1": {
+  "test": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 0.6826953977673168,
+   "cost_share_no_penalty": 0.6826953977673168,
+   "units": 848.7536574074074,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 0.6826953977673168,
+   "cost_share_no_penalty": 0.6826953977673168,
+   "units": 848.7536574074074,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.7380784520319661,
+   "cost_share_no_penalty": 0.7380784520319661,
+   "units": 938.3914062500002,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.7866666666666666,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.2572920141479289,
+   "cost_share_no_penalty": 0.2572920141479289,
+   "units": 319.8755092592593,
+   "to_person": 2,
+   "silent_failures": 15,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "restart",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "early": [
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    }
+   ],
+   "theta": [
+    -0.00048328012902883546,
+    null,
+    null
+   ],
+   "sig": [
+    [],
+    [],
+    []
+   ],
+   "vote": false
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.021410283540528024",
+    "val_objective": 0.8691562243112136,
+    "before": 0.8138962179349993
+   },
+   {
+    "round": 2,
+    "change": "rung 2 (q32:ft), task9: end accept -> person",
+    "val_objective": 0.8991562243112138,
+    "before": 0.8691562243112136
+   },
+   {
+    "round": 3,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.00048328012902883546",
+    "val_objective": 0.9217644715622421,
+    "before": 0.8991562243112138
+   },
+   {
+    "round": 4,
+    "change": "rung 1 (q7x:ft), task9: end accept -> person",
+    "val_objective": 0.9230634024593324,
+    "before": 0.9217644715622421
+   }
+  ]
+ },
+ "AL-28-r1": {
+  "test": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 1.0421509061268641,
+   "cost_share_no_penalty": 1.0004882332836798,
+   "units": 1295.6428240740743,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 0.7243580706105013,
+   "cost_share_no_penalty": 0.6826953977673168,
+   "units": 900.5503240740742,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 1.0566189037329317,
+   "cost_share_no_penalty": 1.0566189037329317,
+   "units": 1343.3830729166666,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.7866666666666666,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 1.1652582341096285,
+   "cost_share_no_penalty": 0.29365870948075234,
+   "units": 1448.694675925926,
+   "to_person": 2,
+   "silent_failures": 15,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "restart",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "early": [
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    }
+   ],
+   "theta": [
+    -0.00048328012902883546,
+    null,
+    null
+   ],
+   "sig": [
+    [],
+    [],
+    []
+   ],
+   "vote": false
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.021410283540528024",
+    "val_objective": 0.852489557644547,
+    "before": 0.7838962179349994
+   },
+   {
+    "round": 2,
+    "change": "rung 2 (q32:ft), task9: end accept -> person",
+    "val_objective": 0.892489557644547,
+    "before": 0.852489557644547
+   },
+   {
+    "round": 3,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.00048328012902883546",
+    "val_objective": 0.911764471562242,
+    "before": 0.892489557644547
+   },
+   {
+    "round": 4,
+    "change": "rung 1 (q7x:ft), task9: end accept -> person",
+    "val_objective": 0.9130634024593324,
+    "before": 0.911764471562242
+   }
+  ]
+ },
+ "AL-29-r1": {
+  "test": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 0.7243580706105013,
+   "cost_share_no_penalty": 0.6826953977673168,
+   "units": 900.5503240740742,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.94,
+   "acc_no9": 0.9333333333333333,
+   "cost_share": 0.7243580706105013,
+   "cost_share_no_penalty": 0.6826953977673168,
+   "units": 900.5503240740742,
+   "to_person": 15,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.7380784520319661,
+   "cost_share_no_penalty": 0.7380784520319661,
+   "units": 938.3914062500002,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.7866666666666666,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 1.128891538776805,
+   "cost_share_no_penalty": 0.2572920141479289,
+   "units": 1403.482175925926,
+   "to_person": 2,
+   "silent_failures": 15,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "restart",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "early": [
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    },
+    {
+     "task1": false,
+     "task2": false,
+     "task3": false,
+     "task4": false,
+     "task5": false,
+     "task6": false,
+     "task7": false,
+     "task8": false,
+     "task9": false,
+     "task10": false
+    }
+   ],
+   "theta": [
+    -0.00048328012902883546,
+    null,
+    null
+   ],
+   "sig": [
+    [],
+    [],
+    []
+   ],
+   "vote": false
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.021410283540528024",
+    "val_objective": 0.8558228909778803,
+    "before": 0.7872295512683327
+   },
+   {
+    "round": 2,
+    "change": "rung 2 (q32:ft), task9: end accept -> person",
+    "val_objective": 0.8991562243112138,
+    "before": 0.8558228909778803
+   },
+   {
+    "round": 3,
+    "change": "rung 1 (q7x:ft): escalate when confidence < -0.00048328012902883546",
+    "val_objective": 0.9217644715622421,
+    "before": 0.8991562243112138
+   },
+   {
+    "round": 4,
+    "change": "rung 1 (q7x:ft), task9: end accept -> person",
+    "val_objective": 0.9230634024593324,
+    "before": 0.9217644715622421
+   }
+  ]
  },
  "AL-16": {
   "test": {
@@ -1599,6 +2240,878 @@
     "change": "answerer 1 (q7:ft): escalate if the answer is not a JSON list = True",
     "val_objective": 0.8874101605405235,
     "before": 0.8712118546112758
+   }
+  ]
+ },
+ "AL-26-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 1.0219533680797834,
+   "cost_share_no_penalty": 1.0219533680797834,
+   "units": 1270.5324537037038,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.6888664787912517,
+   "cost_share_no_penalty": 0.6888664787912517,
+   "units": 856.4257870370373,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.9738684171094114,
+   "cost_share_no_penalty": 0.9738684171094114,
+   "units": 1238.1742766203704,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.5360777249811072,
+   "cost_share_no_penalty": 0.5360777249811072,
+   "units": 666.472824074074,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "joint",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": [
+    "bad_format"
+   ]
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.8862198361682914,
+    "before": 0.8425223378561579
+   },
+   {
+    "round": 2,
+    "change": "rung 1 (q7x:ft), task9: accept -> person",
+    "val_objective": 0.9009120466266168,
+    "before": 0.8862198361682914
+   },
+   {
+    "round": 3,
+    "change": "high-risk task: a person if the answer is not a JSON list = True",
+    "val_objective": 0.9021734447550069,
+    "before": 0.9009120466266168
+   }
+  ]
+ },
+ "AL-27-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.6888664787912517,
+   "cost_share_no_penalty": 0.6888664787912517,
+   "units": 856.4257870370373,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.6888664787912517,
+   "cost_share_no_penalty": 0.6888664787912517,
+   "units": 856.4257870370373,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.655327965408446,
+   "cost_share_no_penalty": 0.655327965408446,
+   "units": 833.1826099537037,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.32685544474138384,
+   "cost_share_no_penalty": 0.32685544474138384,
+   "units": 406.3594907407407,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "joint",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": [
+    "bad_format"
+   ]
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.8945531695016248,
+    "before": 0.8491890045228245
+   },
+   {
+    "round": 2,
+    "change": "rung 1 (q7x:ft), task9: accept -> person",
+    "val_objective": 0.9109120466266167,
+    "before": 0.8945531695016248
+   },
+   {
+    "round": 3,
+    "change": "high-risk task: a person if the answer is not a JSON list = True",
+    "val_objective": 0.9121734447550068,
+    "before": 0.9109120466266167
+   }
+  ]
+ },
+ "AL-28-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 1.0636160409229678,
+   "cost_share_no_penalty": 1.0219533680797834,
+   "units": 1322.3291203703704,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.730529151634436,
+   "cost_share_no_penalty": 0.6888664787912517,
+   "units": 908.222453703704,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.9738684171094114,
+   "cost_share_no_penalty": 0.9738684171094114,
+   "units": 1238.1742766203704,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.7565984480653621,
+   "cost_share_no_penalty": 0.5360777249811072,
+   "units": 940.6328240740739,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "joint",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": [
+    "bad_format"
+   ]
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.8795531695016248,
+    "before": 0.8291890045228245
+   },
+   {
+    "round": 2,
+    "change": "rung 1 (q7x:ft), task9: accept -> person",
+    "val_objective": 0.9009120466266168,
+    "before": 0.8795531695016248
+   },
+   {
+    "round": 3,
+    "change": "high-risk task: a person if the answer is not a JSON list = True",
+    "val_objective": 0.9021734447550069,
+    "before": 0.9009120466266168
+   }
+  ]
+ },
+ "AL-29-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.730529151634436,
+   "cost_share_no_penalty": 0.6888664787912517,
+   "units": 908.222453703704,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.730529151634436,
+   "cost_share_no_penalty": 0.6888664787912517,
+   "units": 908.222453703704,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.655327965408446,
+   "cost_share_no_penalty": 0.655327965408446,
+   "units": 833.1826099537037,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.5473761678256388,
+   "cost_share_no_penalty": 0.32685544474138384,
+   "units": 680.5194907407408,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "joint",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": [
+    "bad_format"
+   ]
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.8878865028349581,
+    "before": 0.8358556711894913
+   },
+   {
+    "round": 2,
+    "change": "rung 1 (q7x:ft), task9: accept -> person",
+    "val_objective": 0.9109120466266167,
+    "before": 0.8878865028349581
+   },
+   {
+    "round": 3,
+    "change": "high-risk task: a person if the answer is not a JSON list = True",
+    "val_objective": 0.9121734447550068,
+    "before": 0.9109120466266167
+   }
+  ]
+ },
+ "AL-30-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.706865309950865,
+   "cost_share_no_penalty": 0.706865309950865,
+   "units": 878.8026388888892,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.4732477504440125,
+   "cost_share_no_penalty": 0.4732477504440125,
+   "units": 588.360138888889,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.6096397019611869,
+   "cost_share_no_penalty": 0.6096397019611869,
+   "units": 775.0946469907407,
+   "to_person": 4,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.4975198449271887,
+   "cost_share_no_penalty": 0.4975198449271887,
+   "units": 618.5361574074075,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "staged",
+   "ret": [
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    }
+   ],
+   "ret_sig": [
+    [],
+    []
+   ],
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": []
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "answerer 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.9262170928681487,
+    "before": 0.843783735984548
+   }
+  ]
+ },
+ "AL-31-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.4732477504440125,
+   "cost_share_no_penalty": 0.4732477504440125,
+   "units": 588.360138888889,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.4732477504440125,
+   "cost_share_no_penalty": 0.4732477504440125,
+   "units": 588.360138888889,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.41163258708926953,
+   "cost_share_no_penalty": 0.41163258708926953,
+   "units": 523.3488136574074,
+   "to_person": 4,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.28829756468746554,
+   "cost_share_no_penalty": 0.28829756468746554,
+   "units": 358.4228240740741,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "staged",
+   "ret": [
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    }
+   ],
+   "ret_sig": [
+    [],
+    []
+   ],
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": []
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "answerer 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.9328837595348155,
+    "before": 0.8504504026512146
+   }
+  ]
+ },
+ "AL-32-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.7485279827940493,
+   "cost_share_no_penalty": 0.706865309950865,
+   "units": 930.5993055555558,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.514910423287197,
+   "cost_share_no_penalty": 0.4732477504440125,
+   "units": 640.1568055555557,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.6096397019611869,
+   "cost_share_no_penalty": 0.6096397019611869,
+   "units": 775.0946469907407,
+   "to_person": 4,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.7180405680114438,
+   "cost_share_no_penalty": 0.4975198449271887,
+   "units": 892.6961574074074,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "staged",
+   "ret": [
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    }
+   ],
+   "ret_sig": [
+    [],
+    []
+   ],
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": []
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "answerer 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.9262170928681487,
+    "before": 0.8304504026512146
+   }
+  ]
+ },
+ "AL-33-noS": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.514910423287197,
+   "cost_share_no_penalty": 0.4732477504440125,
+   "units": 640.1568055555557,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.514910423287197,
+   "cost_share_no_penalty": 0.4732477504440125,
+   "units": 640.1568055555557,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.41163258708926953,
+   "cost_share_no_penalty": 0.41163258708926953,
+   "units": 523.3488136574074,
+   "to_person": 4,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.5088182877717203,
+   "cost_share_no_penalty": 0.28829756468746554,
+   "units": 632.5828240740742,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "staged",
+   "ret": [
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    }
+   ],
+   "ret_sig": [
+    [],
+    []
+   ],
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    []
+   ],
+   "vote": false,
+   "person_sig": []
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "answerer 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.9328837595348155,
+    "before": 0.8371170693178814
    }
   ]
  }

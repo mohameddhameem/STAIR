@@ -1,0 +1,158 @@
+{
+ "test": {
+  "acc": 0.94,
+  "acc_no9": 0.9333333333333333,
+  "cost_share": 0.7243580706105013,
+  "cost_share_no_penalty": 0.6826953977673168,
+  "units": 900.5503240740742,
+  "to_person": 15,
+  "silent_failures": 2,
+  "n": 150
+ },
+ "test_person_at_1x": {
+  "acc": 0.94,
+  "acc_no9": 0.9333333333333333,
+  "cost_share": 0.7243580706105013,
+  "cost_share_no_penalty": 0.6826953977673168,
+  "units": 900.5503240740742,
+  "to_person": 15,
+  "silent_failures": 2,
+  "n": 150
+ },
+ "val": {
+  "acc": 0.9666666666666667,
+  "acc_no9": 0.9629629629629629,
+  "cost_share": 0.7380784520319661,
+  "cost_share_no_penalty": 0.7380784520319661,
+  "units": 938.3914062500002,
+  "to_person": 6,
+  "silent_failures": 0,
+  "n": 60
+ },
+ "seed_test": {
+  "acc": 0.7866666666666666,
+  "acc_no9": 0.8296296296296296,
+  "cost_share": 1.128891538776805,
+  "cost_share_no_penalty": 0.2572920141479289,
+  "units": 1403.482175925926,
+  "to_person": 2,
+  "silent_failures": 15,
+  "n": 150
+ },
+ "rulebook": {
+  "mode": "restart",
+  "end": [
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "person",
+    "task10": "accept"
+   },
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "person",
+    "task10": "accept"
+   },
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "accept",
+    "task10": "accept"
+   }
+  ],
+  "early": [
+   {
+    "task1": false,
+    "task2": false,
+    "task3": false,
+    "task4": false,
+    "task5": false,
+    "task6": false,
+    "task7": false,
+    "task8": false,
+    "task9": false,
+    "task10": false
+   },
+   {
+    "task1": false,
+    "task2": false,
+    "task3": false,
+    "task4": false,
+    "task5": false,
+    "task6": false,
+    "task7": false,
+    "task8": false,
+    "task9": false,
+    "task10": false
+   },
+   {
+    "task1": false,
+    "task2": false,
+    "task3": false,
+    "task4": false,
+    "task5": false,
+    "task6": false,
+    "task7": false,
+    "task8": false,
+    "task9": false,
+    "task10": false
+   }
+  ],
+  "theta": [
+   -0.00048328012902883546,
+   null,
+   null
+  ],
+  "sig": [
+   [],
+   [],
+   []
+  ],
+  "vote": false
+ },
+ "changes": [
+  {
+   "round": 1,
+   "change": "rung 1 (q7x:ft): escalate when confidence < -0.021410283540528024",
+   "val_objective": 0.8558228909778803,
+   "before": 0.7872295512683327
+  },
+  {
+   "round": 2,
+   "change": "rung 2 (q32:ft), task9: end accept -> person",
+   "val_objective": 0.8991562243112138,
+   "before": 0.8558228909778803
+  },
+  {
+   "round": 3,
+   "change": "rung 1 (q7x:ft): escalate when confidence < -0.00048328012902883546",
+   "val_objective": 0.9217644715622421,
+   "before": 0.8991562243112138
+  },
+  {
+   "round": 4,
+   "change": "rung 1 (q7x:ft), task9: end accept -> person",
+   "val_objective": 0.9230634024593324,
+   "before": 0.9217644715622421
+  }
+ ]
+}

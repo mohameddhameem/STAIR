@@ -305,7 +305,7 @@ comparison in [`results/medagentbench/selfLearnt-acceptance/`](../results/medage
 - The decoding setting (the model's default repetition penalty 1.05 vs plain greedy) moved the score by 1 point; the
   default is kept, as an OpenAI-style vLLM server applies it.
 
-## MedAgentBench: our method (AL-16 .. AL-25, 2-4 Nov)
+## MedAgentBench: our method (AL-16 .. AL-33, 2-5 Nov)
 
 Jonathan's patient-disjoint split: the rules learn on 60 practice tasks (`calib_sweep`), the models train on the other
 90 calib tasks, and the 150 test tasks are read once. Accuracy = the benchmark's own grader (refsol, pass / fail); cost
@@ -384,9 +384,48 @@ change the outcome either (why below).
   cannot catch them. Root cause: none of its training examples contains a medication order (types 5, 9, 10: 0 with an
   order; only the routine types 3 and 8 have orders), because the teacher never got a medication order right. Fine-tuning
   on a teacher's successes inherits the teacher's blind spots.
-- **Next: recall on medication orders (option B, 4 Nov).** Correct medication-order examples for the 90 training tasks,
-  written from each task's dosing instructions and checked by the grader (training tasks only; the split and the test
-  tasks are unchanged), weighted up in the 7B's training; reported as a separate variant.
+
+### Option B: a 7B that has seen correct medication orders (AL-26 .. AL-33, 4-5 Nov)
+
+**What changed.** For the 90 training and 60 practice tasks of the three order types (5 magnesium, 9 potassium, 10
+HbA1c), one correct attempt each was written from the task's own instructions (look the value up, place the order the
+instructions call for if any, report the value) and kept only if the benchmark's grader passed it: 45 written, 45 pass,
+8 of them place an order. A new 7B (`q7x`) was trained on the teacher's attempts plus these, the 7 training ones that
+place an order counted 3 x. Jonathan's split is unchanged; no test task was used. The 32B and 72B are the same as before.
+
+**The new 7B alone** (test tasks per type, out of 15):
+
+| Model | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | All | Without 9 | High-risk failures no one sees |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Fine-tuned 7B (before) | 1 | 11 | 15 | 15 | 13 | 10 | 15 | 15 | 14 | 6 | 76.7% | 74.8% | 3 |
+| Fine-tuned 7B with expert orders | 15 | 8 | 15 | 15 | 7 | 9 | 15 | 15 | 4 | 11 | 76.0% | 81.5% | 19 |
+
+It now orders HbA1c tests correctly (10: 6 -> 11) and, as a side effect, finds patients by name (1: 1 -> 15); on the
+two medication types it now places orders but often wrongly (5: 13 -> 7, 9: 14 -> 4), where before ordering nothing was
+usually accepted. Seven examples taught it *that* to order more than *when* and *how much*. Those mistakes are visible in
+practice, so the rules can now learn from them.
+
+**With the switching rules** (test 150; W = this 7B, M = 32B; the merged-search designs run without the 72B rung for now,
+`-noS`: its runs from the new 7B's searches are still queued, and no rule has escalated to the 72B in any design so far):
+
+| Design | Rules learnt | Accuracy | Without task 9 | Cost, person 2 x | Cost, person 1 x | To a person | High-risk failures no one sees |
+|---|---|---|---|---|---|---|---|
+| Approach 3, restart (AL-26 / AL-27, revision 1) | 7B unsure -> 32B; potassium -> a person | 94.0% | 93.3% | 100.0% | 68.3% | 15 | 2 |
+| Approach 3, merged searches (AL-26 / AL-27 `-noS`) | no order placed -> 32B (adds its searches); potassium -> a person; malformed high-risk answer -> a person | 94.7% | 94.1% | 102.2% | 68.9% | 18 | 2 |
+| **Approach 4, search ladder -> answer ladder (AL-30 / AL-31 `-noS`)** | **no order placed -> the 32B writes the answer from the same searches** | **94.7%** | **94.1%** | **70.7%** | **47.3%** | 13 | 2 |
+| Same, with the 4 x penalty for a missed high-risk failure (AL-28 / AL-29, AL-32 / AL-33) | the same rules as without it | same | same | + 4.2 pt | + 4.2 pt | same | 2 |
+| For comparison: AL-19 (approach 4, the first 7B) | | 86.0% | 85.2% | 9.4% | | 0 | 3 |
+| For comparison: Jonathan, Training 5b (a person on high-risk tasks) | | 76.00% | | | 94.5% | 27 | 2 |
+
+Cost = model calls plus people, as a share of always-strong's cost; a person counts as correct. Approach 4 at
+Jonathan's person price: **94.7% at 47% of always-strong's cost** (always-strong 54.7%, his best router with people
+76.0% at 94.5%). The hand-off works as intended here: the 7B does the searching, and the 32B steps in only for the
+order decision when the 7B placed none; some high-risk tasks still reach a person through the locked rule for
+unfinished attempts. The person's price and the penalty did not change the learnt rules in any of the eight: sending
+the potassium tasks to a person pays off even at 2 x, and the 2 remaining misses (magnesium) never occurred in
+practice, so the penalty only shows as cost on test.
+
+Open: the 72B rung of AL-26 .. AL-33 (merged searches); the queued job will either confirm these numbers or add it.
 
 ## Fine-tuning (early stopping on validation loss, `results/common/history/`)
 

@@ -1,0 +1,9 @@
+track,model,run,seed,epoch,train_loss,val_loss,step
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,0.5,0.25879648239618597,0.07162818684500838,30
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,1.0,0.05318547389918725,0.043114183866849516,60
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,1.5,0.03468818876388771,0.04914383494483167,90
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,2.0,0.03232857719403152,0.03637182114890697,120
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,2.5,0.013278326711065347,0.04388912780349015,150
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,3.0,0.019377232053648184,0.02678297936687827,180
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,3.5,0.008153204085571512,0.028138679021832928,210
+selfLearnt,Qwen2.5 7B (with expert order examples) agent,mab-lora-r16,0,4.0,0.009935998040494573,0.02550021028462058,240

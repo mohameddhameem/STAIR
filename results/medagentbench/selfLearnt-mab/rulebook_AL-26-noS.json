@@ -1,0 +1,101 @@
+{
+ "test": {
+  "acc": 0.9466666666666667,
+  "acc_no9": 0.9407407407407408,
+  "cost_share": 1.0219533680797834,
+  "cost_share_no_penalty": 1.0219533680797834,
+  "units": 1270.5324537037038,
+  "to_person": 18,
+  "silent_failures": 2,
+  "n": 150
+ },
+ "test_person_at_1x": {
+  "acc": 0.9466666666666667,
+  "acc_no9": 0.9407407407407408,
+  "cost_share": 0.6888664787912517,
+  "cost_share_no_penalty": 0.6888664787912517,
+  "units": 856.4257870370373,
+  "to_person": 18,
+  "silent_failures": 2,
+  "n": 150
+ },
+ "val": {
+  "acc": 0.9666666666666667,
+  "acc_no9": 0.9629629629629629,
+  "cost_share": 0.9738684171094114,
+  "cost_share_no_penalty": 0.9738684171094114,
+  "units": 1238.1742766203704,
+  "to_person": 6,
+  "silent_failures": 0,
+  "n": 60
+ },
+ "seed_test": {
+  "acc": 0.84,
+  "acc_no9": 0.8296296296296296,
+  "cost_share": 0.5360777249811072,
+  "cost_share_no_penalty": 0.5360777249811072,
+  "units": 666.472824074074,
+  "to_person": 12,
+  "silent_failures": 7,
+  "n": 150
+ },
+ "rulebook": {
+  "mode": "joint",
+  "end": [
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "person",
+    "task10": "accept"
+   },
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "accept",
+    "task10": "accept"
+   }
+  ],
+  "sig": [
+   [
+    "no_order"
+   ],
+   []
+  ],
+  "vote": false,
+  "person_sig": [
+   "bad_format"
+  ]
+ },
+ "changes": [
+  {
+   "round": 1,
+   "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+   "val_objective": 0.8862198361682914,
+   "before": 0.8425223378561579
+  },
+  {
+   "round": 2,
+   "change": "rung 1 (q7x:ft), task9: accept -> person",
+   "val_objective": 0.9009120466266168,
+   "before": 0.8862198361682914
+  },
+  {
+   "round": 3,
+   "change": "high-risk task: a person if the answer is not a JSON list = True",
+   "val_objective": 0.9021734447550069,
+   "before": 0.9009120466266168
+  }
+ ]
+}
