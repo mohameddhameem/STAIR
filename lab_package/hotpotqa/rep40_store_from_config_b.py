@@ -2,7 +2,7 @@
 """
 rep40_store_from_config_b.py -- turn the lab's Config B strong-retrieval store (run_labels_agenttts.py, pool = first 110
 candidates + golds swapped in, NO shuffle) into a retrieval store rep40.py can use, for a chosen set of positions.
-CPU, seconds. DRAFT v1.0 2026-11-05 for Jonathan's line-by-line review.
+CPU, seconds. DRAFT v1.1 2026-11-05 for Jonathan's line-by-line review (v1.0 refused on 4 cases; see CHECK).
 
 WHY (5 Nov 2026): the 4 Nov reruns (dev[500:1000] -> 32.6, held-out 1,481 -> 33.1) are VOID. rep40.py resolves the
 store's "[13]" as a position in ITS OWN pool (cluster run_labels.py: first 30 candidates + golds, seeded SHUFFLE), but the
@@ -15,8 +15,11 @@ WHAT: for every requested position i
      (deterministic from tts_test.json alone: cands[:110], golds swapped into the tail, no shuffle);
   2. parse the stored selection with the LAB parser (parse_selection) -> positions -> passages from that pool
      (this is exactly what the lab's own QA phase did, run_labels_agenttts.py line ~308);
-  3. CHECK: the store text names each selected reference as "[n] <title>: ..."; the title of pool[n-1] must equal it for
-     every n. Any mismatch -> count it and REFUSE to write (nothing partial is written);
+  3. CHECK: the store text normally names each selected reference as "[n] <title>: ..."; the text after "[n]" must start
+     with the title of pool[n-1]. Residual cases are classified and written to store_check_cases.csv: "misnumbered" (the
+     72B wrote a title that sits at another position -- e.g. idx 572 "[44] Rudolph..." is position 48; the lab's QA read
+     pool[43] too, so we do the same) or "citation/prose" ("[1]" inside a sentence; the lab parser counted it, so do we).
+     REFUSE only if misnumbered selections exceed --max-misnumbered-frac (default 1 %; a real pool shift fails ~100 %);
   4. write <out>/retr_strong.jsonl with {"k": "<i>", "v": [passage, ...]}  -- the PASSAGE TEXTS, not positions --
      plus <out>/store_manifest.json (inputs' sha256, pool_k, counts, per-question #selected, zero-selection count).
 rep40.py v1.1 uses a list value as the references directly (one guarded line); a string value keeps the old path.
@@ -30,9 +33,6 @@ import argparse, hashlib, json, os, re, sys
 sys.path.insert(0, os.path.expanduser("~/slr"))          # the lab runner, scp'd for the 2Wiki job (sha 9ee08eac...)
 import run_labels_agenttts as L
 
-TITLE_RE = re.compile(r"\[(\d+)\]\s*([^\[]*?):")        # "[13] Forbidden Quest: ..." -> (13, "Forbidden Quest")
-
-
 def sha(p): return hashlib.sha256(open(p, "rb").read()).hexdigest()
 
 
@@ -42,6 +42,9 @@ def main():
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--range", nargs=2, type=int, metavar=("START", "STOP"))
     g.add_argument("--ids", help="file of _ids, one per line (positions looked up in --data)")
+    ap.add_argument("--max-misnumbered-frac", type=float, default=0.01,
+                    help="refuse if more than this fraction of selections are numbers the 72B attached to a title that sits "
+                         "at ANOTHER pool position (a real pool shift fails ~100%%; sporadic model slips are expected)")
     a = ap.parse_args()
     assert os.environ.get("SLR_POOL_K") == "110" and os.environ.get("SLR_SHUFFLE") == "off", \
         "run with SLR_POOL_K=110 SLR_SHUFFLE=off (the Config B retrieval settings)"
@@ -64,37 +67,54 @@ def main():
     missing = [i for i in want if i not in st]
     assert not missing, f"{len(missing)} positions absent from the store, e.g. {missing[:5]}"
 
-    rows, nsel, zero, mismatch = [], [], 0, []
+    rows, nsel, zero, cases = [], [], 0, []
     for i in want:
         inst = dict(data[i]); inst["ctxs_candidate"] = L.trim_pool(inst); pool = inst["ctxs_candidate"]
-        txt = st[i]
+        titles = [L.title_of(c) for c in pool]
+        txt = st[i]; tail = txt.split("Selected references")[-1]
         sel = L.parse_selection(txt, len(pool))
-        named = {int(n): t.strip() for n, t in TITLE_RE.findall(txt.split("Selected references")[-1])}
         for n in sel:
-            if named.get(n) is not None and L.title_of(pool[n - 1]) != named[n]:
-                mismatch.append({"idx": i, "n": n, "store_title": named[n], "pool_title": L.title_of(pool[n - 1])})
+            # the text the 72B wrote right after "[n]", up to the next "[" or line break
+            m = re.search(r"\[" + str(n) + r"\]\s*([^\[\n]*)", tail)
+            seg = (m.group(1) if m else "").strip()
+            if seg.startswith(titles[n - 1]):
+                continue                                        # store text names the passage the number points at
+            named = seg.split(":")[0].strip()
+            if named in titles:
+                cls = f"misnumbered (title is at position {titles.index(named) + 1})"
+            else:
+                cls = "citation/prose (no passage title after the number)"
+            cases.append({"idx": i, "n": n, "class": cls, "store_text": seg[:100], "pool_title": titles[n - 1]})
         if not sel:
             zero += 1
         nsel.append(len(sel))
         rows.append({"k": str(i), "v": [pool[n - 1] for n in sel]})
-    if mismatch:
-        print(json.dumps(mismatch[:10], indent=1))
-        raise SystemExit(f"REFUSING: {len(mismatch)} title mismatches between store text and rebuilt lab pool")
+    total = sum(nsel)
+    misnum = sum(c["class"].startswith("misnumbered") for c in cases)
     os.makedirs(a.out, exist_ok=True)
+    if cases:
+        import csv
+        with open(os.path.join(a.out, "store_check_cases.csv"), "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(cases[0])); w.writeheader(); w.writerows(cases)
+    print(f"selections {total}; title confirmed {total - len(cases)}; misnumbered by the 72B {misnum}; "
+          f"citation/prose {len(cases) - misnum}  (cases -> store_check_cases.csv)")
+    if misnum > a.max_misnumbered_frac * total:
+        raise SystemExit(f"REFUSING: {misnum}/{total} misnumbered selections exceeds {a.max_misnumbered_frac:.1%} "
+                         f"-- the rebuilt pool may not be the lab's; nothing written")
     with open(out_store, "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    man = {"version": "rep40_store_from_config_b v1.0 2026-11-05", "data": a.data, "data_sha256": sha(a.data),
+    man = {"version": "rep40_store_from_config_b v1.1 2026-11-05", "data": a.data, "data_sha256": sha(a.data),
            "store": a.store, "store_sha256": sha(a.store), "runner": L.__file__, "runner_sha256": sha(L.__file__),
            "pool_k": L.POOL_K, "shuffle": L.SHUFFLE_SCHEME, "selection": a.range or a.ids, "n": len(rows),
            "positions_first_last": [want[0], want[-1]], "mean_selected": sum(nsel) / len(nsel), "zero_selected": zero,
-           "selected_total": sum(nsel), "title_mismatches": 0,
+           "selected_total": total, "title_confirmed": total - len(cases), "misnumbered": misnum, "citation_prose": len(cases) - misnum,
            "output_sha256": sha(out_store)}
     json.dump(man, open(os.path.join(a.out, "store_manifest.json"), "w"), indent=1)
     if a.ids:
         json.dump(want, open(os.path.join(a.out, "positions_slr_test.json"), "w"))
     print(f"wrote {len(rows)} entries -> {out_store}; mean selected {man['mean_selected']:.2f}; zero-selection {zero}; "
-          f"selections {man['selected_total']}, title mismatches 0")
+          f"selections {total}")
 
 
 if __name__ == "__main__":
