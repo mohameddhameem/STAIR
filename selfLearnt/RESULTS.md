@@ -302,8 +302,14 @@ comparison in [`results/medagentbench/selfLearnt-acceptance/`](../results/medage
   missed readings near the window's start (task4_3: a magnesium reading at 13:35 UTC was missing from
   `date=ge2023-11-12T10:15`), while the grader, which reads the records without a date search, expected it. The server
   now runs on UTC (`-Duser.timezone=UTC`, `jobs/fhir_test.sbatch` checks both clocks).
-- The decoding setting (the model's default repetition penalty 1.05 vs plain greedy) moved the score by 1 point; the
-  default is kept, as an OpenAI-style vLLM server applies it.
+- The decoding setting. Every run here, Jonathan's campaign included, used the model's default repetition penalty 1.05
+  (vLLM applies the model's generation_config; temperature 0 overrides only the sampling fields). Our plain-greedy 72B
+  rerun moved the score by 1 point, but on the records server before the clock fix. Jonathan's rerun without the
+  penalty (5 Nov, `--generation-config vllm`, table `results/medagentbench/training1_table_pureT0.json` on branch
+  `jonathan`, sha256 def234cd...) scores 59.33 against 56.00, 12 tasks differ (11 up), mostly task 5 (+5). Two
+  different servings, single runs each: the penalty costs the 72B somewhere between 1 and 3 points, most likely on the
+  medication-order task. All our MedAgentBench results keep the penalty, so they are comparable with each other and with
+  his canonical table; under pure temperature 0 the always-strong reference would be about 59%.
 
 ## MedAgentBench: our method (AL-16 .. AL-33, 2-5 Nov)
 
