@@ -391,6 +391,32 @@ change the outcome either (why below).
   order; only the routine types 3 and 8 have orders), because the teacher never got a medication order right. Fine-tuning
   on a teacher's successes inherits the teacher's blind spots.
 
+### Summary: the main MedAgentBench results side by side (6 Nov)
+
+Test 150, seed 0; cost = model calls plus people (and, where marked, the penalty) as a share of always-strong's cost; a
+person counts as correct. Each penalty row makes exactly the same decisions as the row above it without the penalty, so
+its accuracy is identical; the penalty only adds the cost of the mistakes that remain.
+
+| Case | Design | Person cost | Penalty | Accuracy | Without task 9 | Cost | To a person | High-risk mistakes no one sees |
+|---|---|---|---|---|---|---|---|---|
+| **AL-27** | approach 3, retrained 7B | 1 x | none | **97.3%** | **97.0%** | 73% | 30 | **0** |
+| **AL-35** | approach 3, retrained 7B | 1 x | 4 x on every wrong answer | **97.3%** | **97.0%** | 84% | 30 | **0** |
+| AL-26 | approach 3, retrained 7B | 2 x | none | 96.0% | 95.6% | 104% | 18 | 2 |
+| AL-34 | approach 3, retrained 7B | 2 x | 4 x on every wrong answer | 96.0% | 95.6% | 118% | 18 | 2 |
+| **AL-31** | approach 4, retrained 7B | 1 x | none | 94.7% | 94.1% | **51%** | 13 | 2 |
+| AL-37 | approach 4, retrained 7B | 1 x | 4 x on every wrong answer | 94.7% | 94.1% | 69% | 13 | 2 |
+| AL-30 | approach 4, retrained 7B | 2 x | none | 94.7% | 94.1% | 74% | 13 | 2 |
+| AL-36 | approach 4, retrained 7B | 2 x | 4 x on every wrong answer | 94.7% | 94.1% | 92% | 13 | 2 |
+| AL-19 | approach 4, first 7B | 2 x | none | 86.0% | 85.2% | 9.4% | 0 | 3 |
+| Fine-tuned 7B alone | first 7B | - | - | 76.7% | 74.8% | **7.6%** | 0 | 3 |
+| Jonathan, Training 5b | his router + people | 1 x | - | 76.0% | | 94.5% | 27 | 2 |
+| Always-strong (untrained 72B) | - | - | - | 54.7% | 60.7% | 100% | 0 | 21 |
+
+AL-35 (84%) is the most conservative price for the safest design: it still charges every mistake no person saw at 4 x
+always-strong's cost, and stays below always-strong's cost at 42.6 points more accuracy. Caveats: single runs; 60
+practice tasks (6 per type) to learn the rules from; Jonathan's run without the repetition penalty puts always-strong
+about 3 points higher (59.3% on all 300).
+
 ### Option B: a 7B that has seen correct medication orders (AL-26 .. AL-33, 4-5 Nov)
 
 **What changed.** For the 90 training and 60 practice tasks of the three order types (5 magnesium, 9 potassium, 10
