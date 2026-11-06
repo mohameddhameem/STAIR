@@ -1,0 +1,1051 @@
+dataset,split,id,track,policy,menu,seed,answer,lenient,em,f1,units,units_retrieve,units_answer,units_fuse,units_router,ms_router,models,price
+medagentbench,test,task1_2,selfLearnt,rulebook-learnt,B,0,"[""S6426560""]",1,1.0,1.0,319.41840277777777,0.0,319.41840277777777,0.0,0.0,,,319.41840277777777
+medagentbench,test,task1_6,selfLearnt,rulebook-learnt,B,0,"[""S2874099""]",1,1.0,1.0,319.1909722222222,0.0,319.1909722222222,0.0,0.0,,,319.1909722222222
+medagentbench,test,task1_7,selfLearnt,rulebook-learnt,B,0,"[""S6200102""]",1,1.0,1.0,320.37847222222223,0.0,320.37847222222223,0.0,0.0,,,320.37847222222223
+medagentbench,test,task1_8,selfLearnt,rulebook-learnt,B,0,"[""S6530532""]",1,1.0,1.0,319.74479166666663,0.0,319.74479166666663,0.0,0.0,,,319.74479166666663
+medagentbench,test,task1_11,selfLearnt,rulebook-learnt,B,0,"[""S6521727""]",1,1.0,1.0,319.6892361111111,0.0,319.6892361111111,0.0,0.0,,,319.6892361111111
+medagentbench,test,task1_13,selfLearnt,rulebook-learnt,B,0,"[""S2154941""]",1,1.0,1.0,319.4739583333333,0.0,319.4739583333333,0.0,0.0,,,319.4739583333333
+medagentbench,test,task1_16,selfLearnt,rulebook-learnt,B,0,"[""S6551923""]",1,1.0,1.0,319.8923611111111,0.0,319.8923611111111,0.0,0.0,,,319.8923611111111
+medagentbench,test,task1_17,selfLearnt,rulebook-learnt,B,0,"[""S2119664""]",1,1.0,1.0,319.2829861111111,0.0,319.2829861111111,0.0,0.0,,,319.2829861111111
+medagentbench,test,task1_21,selfLearnt,rulebook-learnt,B,0,"[""S0547588""]",1,1.0,1.0,319.86805555555554,0.0,319.86805555555554,0.0,0.0,,,319.86805555555554
+medagentbench,test,task1_22,selfLearnt,rulebook-learnt,B,0,"[""S0722219""]",1,1.0,1.0,319.96006944444446,0.0,319.96006944444446,0.0,0.0,,,319.96006944444446
+medagentbench,test,task1_23,selfLearnt,rulebook-learnt,B,0,"[""S3057899""]",1,1.0,1.0,320.1076388888889,0.0,320.1076388888889,0.0,0.0,,,320.1076388888889
+medagentbench,test,task1_24,selfLearnt,rulebook-learnt,B,0,"[""S6538722""]",1,1.0,1.0,319.88020833333337,0.0,319.88020833333337,0.0,0.0,,,319.88020833333337
+medagentbench,test,task1_26,selfLearnt,rulebook-learnt,B,0,"[""S3236936""]",1,1.0,1.0,320.23090277777777,0.0,320.23090277777777,0.0,0.0,,,320.23090277777777
+medagentbench,test,task1_27,selfLearnt,rulebook-learnt,B,0,"[""S3213957""]",1,1.0,1.0,320.28645833333337,0.0,320.28645833333337,0.0,0.0,,,320.28645833333337
+medagentbench,test,task1_29,selfLearnt,rulebook-learnt,B,0,"[""Patient not found""]",1,1.0,1.0,281.43402777777777,0.0,281.43402777777777,0.0,0.0,,,281.43402777777777
+medagentbench,test,task2_1,selfLearnt,rulebook-learnt,B,0,[60],1,1.0,1.0,318.51909722222223,0.0,318.51909722222223,0.0,0.0,,,318.51909722222223
+medagentbench,test,task2_2,selfLearnt,rulebook-learnt,B,0,[80],1,1.0,1.0,319.0607638888889,0.0,319.0607638888889,0.0,0.0,,,319.0607638888889
+medagentbench,test,task2_3,selfLearnt,rulebook-learnt,B,0,[68],1,1.0,1.0,319.53472222222223,0.0,319.53472222222223,0.0,0.0,,,319.53472222222223
+medagentbench,test,task2_6,selfLearnt,rulebook-learnt,B,0,[39],1,1.0,1.0,318.58680555555554,0.0,318.58680555555554,0.0,0.0,,,318.58680555555554
+medagentbench,test,task2_8,selfLearnt,rulebook-learnt,B,0,[89],1,1.0,1.0,318.58680555555554,0.0,318.58680555555554,0.0,0.0,,,318.58680555555554
+medagentbench,test,task2_9,selfLearnt,rulebook-learnt,B,0,[48],1,1.0,1.0,318.99305555555554,0.0,318.99305555555554,0.0,0.0,,,318.99305555555554
+medagentbench,test,task2_11,selfLearnt,rulebook-learnt,B,0,[44],1,1.0,1.0,318.78993055555554,0.0,318.78993055555554,0.0,0.0,,,318.78993055555554
+medagentbench,test,task2_13,selfLearnt,rulebook-learnt,B,0,[81],1,1.0,1.0,318.6545138888889,0.0,318.6545138888889,0.0,0.0,,,318.6545138888889
+medagentbench,test,task2_14,selfLearnt,rulebook-learnt,B,0,[75],1,1.0,1.0,318.72222222222223,0.0,318.72222222222223,0.0,0.0,,,318.72222222222223
+medagentbench,test,task2_16,selfLearnt,rulebook-learnt,B,0,[66],1,1.0,1.0,318.51909722222223,0.0,318.51909722222223,0.0,0.0,,,318.51909722222223
+medagentbench,test,task2_17,selfLearnt,rulebook-learnt,B,0,[76],1,1.0,1.0,318.4513888888889,0.0,318.4513888888889,0.0,0.0,,,318.4513888888889
+medagentbench,test,task2_18,selfLearnt,rulebook-learnt,B,0,[84],1,1.0,1.0,318.78993055555554,0.0,318.78993055555554,0.0,0.0,,,318.78993055555554
+medagentbench,test,task2_19,selfLearnt,rulebook-learnt,B,0,[28],1,1.0,1.0,316.69097222222223,0.0,316.69097222222223,0.0,0.0,,,316.69097222222223
+medagentbench,test,task2_23,selfLearnt,rulebook-learnt,B,0,[62],1,1.0,1.0,318.99305555555554,0.0,318.99305555555554,0.0,0.0,,,318.99305555555554
+medagentbench,test,task2_26,selfLearnt,rulebook-learnt,B,0,[69],1,1.0,1.0,319.2638888888889,0.0,319.2638888888889,0.0,0.0,,,319.2638888888889
+medagentbench,test,task3_1,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_2,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_3,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_5,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_7,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_11,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_13,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_17,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_18,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_20,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_21,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_24,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_27,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_28,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_29,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task4_1,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.38715277777777,0.0,289.38715277777777,0.0,0.0,,,289.38715277777777
+medagentbench,test,task4_5,selfLearnt,rulebook-learnt,B,0,[2.1],1,1.0,1.0,318.97569444444446,0.0,318.97569444444446,0.0,0.0,,,318.97569444444446
+medagentbench,test,task4_6,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.18402777777777,0.0,289.18402777777777,0.0,0.0,,,289.18402777777777
+medagentbench,test,task4_8,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.2517361111111,0.0,289.2517361111111,0.0,0.0,,,289.2517361111111
+medagentbench,test,task4_10,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.18402777777777,0.0,289.18402777777777,0.0,0.0,,,289.18402777777777
+medagentbench,test,task4_11,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.38715277777777,0.0,289.38715277777777,0.0,0.0,,,289.38715277777777
+medagentbench,test,task4_12,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.18402777777777,0.0,289.18402777777777,0.0,0.0,,,289.18402777777777
+medagentbench,test,task4_14,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.4548611111111,0.0,289.4548611111111,0.0,0.0,,,289.4548611111111
+medagentbench,test,task4_15,selfLearnt,rulebook-learnt,B,0,[2.2],1,1.0,1.0,347.9548611111111,0.0,347.9548611111111,0.0,0.0,,,347.9548611111111
+medagentbench,test,task4_16,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.4548611111111,0.0,289.4548611111111,0.0,0.0,,,289.4548611111111
+medagentbench,test,task4_17,selfLearnt,rulebook-learnt,B,0,[2.1],1,1.0,1.0,318.84027777777777,0.0,318.84027777777777,0.0,0.0,,,318.84027777777777
+medagentbench,test,task4_19,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.59027777777777,0.0,289.59027777777777,0.0,0.0,,,289.59027777777777
+medagentbench,test,task4_20,selfLearnt,rulebook-learnt,B,0,[2.0],1,1.0,1.0,347.48090277777777,0.0,347.48090277777777,0.0,0.0,,,347.48090277777777
+medagentbench,test,task4_21,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.4548611111111,0.0,289.4548611111111,0.0,0.0,,,289.4548611111111
+medagentbench,test,task4_22,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.59027777777777,0.0,289.59027777777777,0.0,0.0,,,289.59027777777777
+medagentbench,test,task5_3,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,500.53645833333337,0.0,500.53645833333337,0.0,0.0,,,500.53645833333337
+medagentbench,test,task5_5,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,294.77083333333337,0.0,294.77083333333337,0.0,0.0,,,294.77083333333337
+medagentbench,test,task5_7,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,1010.0555555555555,0.0,1010.0555555555555,0.0,0.0,,,1010.0555555555555
+medagentbench,test,task5_8,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,381.3697916666667,0.0,381.3697916666667,0.0,0.0,,,381.3697916666667
+medagentbench,test,task5_9,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,294.703125,0.0,294.703125,0.0,0.0,,,294.703125
+medagentbench,test,task5_10,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,468.23958333333337,0.0,468.23958333333337,0.0,0.0,,,468.23958333333337
+medagentbench,test,task5_13,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,578.6041666666667,0.0,578.6041666666667,0.0,0.0,,,578.6041666666667
+medagentbench,test,task5_15,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,956.1805555555555,0.0,956.1805555555555,0.0,0.0,,,956.1805555555555
+medagentbench,test,task5_16,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,992.5729166666667,0.0,992.5729166666667,0.0,0.0,,,992.5729166666667
+medagentbench,test,task5_19,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,530.328125,0.0,530.328125,0.0,0.0,,,530.328125
+medagentbench,test,task5_20,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,294.5,0.0,294.5,0.0,0.0,,,294.5
+medagentbench,test,task5_21,selfLearnt,rulebook-learnt,B,0,[],0,0.0,0.0,323.953125,0.0,323.953125,0.0,0.0,,,323.953125
+medagentbench,test,task5_22,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,954.859375,0.0,954.859375,0.0,0.0,,,954.859375
+medagentbench,test,task5_25,selfLearnt,rulebook-learnt,B,0,[],0,0.0,0.0,323.75,0.0,323.75,0.0,0.0,,,323.75
+medagentbench,test,task5_26,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,352.72916666666663,0.0,352.72916666666663,0.0,0.0,,,352.72916666666663
+medagentbench,test,task6_4,selfLearnt,rulebook-learnt,B,0,[94.0],0,0.0,0.0,564.4670138888889,0.0,564.4670138888889,0.0,0.0,,,564.4670138888889
+medagentbench,test,task6_8,selfLearnt,rulebook-learnt,B,0,[115.0],1,1.0,1.0,319.8923611111111,0.0,319.8923611111111,0.0,0.0,,,319.8923611111111
+medagentbench,test,task6_9,selfLearnt,rulebook-learnt,B,0,[108.0],1,1.0,1.0,319.4861111111111,0.0,319.4861111111111,0.0,0.0,,,319.4861111111111
+medagentbench,test,task6_12,selfLearnt,rulebook-learnt,B,0,[188.0],1,1.0,1.0,415.36111111111114,0.0,415.36111111111114,0.0,0.0,,,415.36111111111114
+medagentbench,test,task6_14,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.76215277777777,0.0,289.76215277777777,0.0,0.0,,,289.76215277777777
+medagentbench,test,task6_15,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,289.4236111111111,0.0,289.4236111111111,0.0,0.0,,,289.4236111111111
+medagentbench,test,task6_18,selfLearnt,rulebook-learnt,B,0,[127.0],1,1.0,1.0,319.6892361111111,0.0,319.6892361111111,0.0,0.0,,,319.6892361111111
+medagentbench,test,task6_20,selfLearnt,rulebook-learnt,B,0,[169.0],0,0.0,0.0,498.77777777777777,0.0,498.77777777777777,0.0,0.0,,,498.77777777777777
+medagentbench,test,task6_21,selfLearnt,rulebook-learnt,B,0,[102.0],1,1.0,1.0,348.9947916666667,0.0,348.9947916666667,0.0,0.0,,,348.9947916666667
+medagentbench,test,task6_22,selfLearnt,rulebook-learnt,B,0,[97.0],1,1.0,1.0,319.62152777777777,0.0,319.62152777777777,0.0,0.0,,,319.62152777777777
+medagentbench,test,task6_24,selfLearnt,rulebook-learnt,B,0,[90.0],1,1.0,1.0,319.6892361111111,0.0,319.6892361111111,0.0,0.0,,,319.6892361111111
+medagentbench,test,task6_25,selfLearnt,rulebook-learnt,B,0,[93.0],0,0.0,0.0,466.31597222222223,0.0,466.31597222222223,0.0,0.0,,,466.31597222222223
+medagentbench,test,task6_28,selfLearnt,rulebook-learnt,B,0,[108.0],1,1.0,1.0,348.9392361111111,0.0,348.9392361111111,0.0,0.0,,,348.9392361111111
+medagentbench,test,task6_29,selfLearnt,rulebook-learnt,B,0,[166.0],1,1.0,1.0,352.5954861111111,0.0,352.5954861111111,0.0,0.0,,,352.5954861111111
+medagentbench,test,task6_30,selfLearnt,rulebook-learnt,B,0,[126.0],1,1.0,1.0,319.4861111111111,0.0,319.4861111111111,0.0,0.0,,,319.4861111111111
+medagentbench,test,task7_3,selfLearnt,rulebook-learnt,B,0,[134.0],1,1.0,1.0,387.88715277777777,0.0,387.88715277777777,0.0,0.0,,,387.88715277777777
+medagentbench,test,task7_4,selfLearnt,rulebook-learnt,B,0,[215.0],1,1.0,1.0,390.90972222222223,0.0,390.90972222222223,0.0,0.0,,,390.90972222222223
+medagentbench,test,task7_5,selfLearnt,rulebook-learnt,B,0,[134.0],1,1.0,1.0,387.22916666666663,0.0,387.22916666666663,0.0,0.0,,,387.22916666666663
+medagentbench,test,task7_6,selfLearnt,rulebook-learnt,B,0,[73.0],1,1.0,1.0,387.5607638888889,0.0,387.5607638888889,0.0,0.0,,,387.5607638888889
+medagentbench,test,task7_7,selfLearnt,rulebook-learnt,B,0,[110.0],1,1.0,1.0,381.8125,0.0,381.8125,0.0,0.0,,,381.8125
+medagentbench,test,task7_12,selfLearnt,rulebook-learnt,B,0,[79.0],1,1.0,1.0,387.46875,0.0,387.46875,0.0,0.0,,,387.46875
+medagentbench,test,task7_13,selfLearnt,rulebook-learnt,B,0,[161.0],1,1.0,1.0,391.05729166666663,0.0,391.05729166666663,0.0,0.0,,,391.05729166666663
+medagentbench,test,task7_15,selfLearnt,rulebook-learnt,B,0,[81.0],1,1.0,1.0,387.5486111111111,0.0,387.5486111111111,0.0,0.0,,,387.5486111111111
+medagentbench,test,task7_17,selfLearnt,rulebook-learnt,B,0,[107.0],1,1.0,1.0,387.73958333333337,0.0,387.73958333333337,0.0,0.0,,,387.73958333333337
+medagentbench,test,task7_18,selfLearnt,rulebook-learnt,B,0,[94.0],1,1.0,1.0,387.09375,0.0,387.09375,0.0,0.0,,,387.09375
+medagentbench,test,task7_19,selfLearnt,rulebook-learnt,B,0,[190.0],1,1.0,1.0,387.5798611111111,0.0,387.5798611111111,0.0,0.0,,,387.5798611111111
+medagentbench,test,task7_20,selfLearnt,rulebook-learnt,B,0,[85.0],1,1.0,1.0,387.30902777777777,0.0,387.30902777777777,0.0,0.0,,,387.30902777777777
+medagentbench,test,task7_21,selfLearnt,rulebook-learnt,B,0,[108.0],1,1.0,1.0,387.85069444444446,0.0,387.85069444444446,0.0,0.0,,,387.85069444444446
+medagentbench,test,task7_23,selfLearnt,rulebook-learnt,B,0,[102.0],1,1.0,1.0,387.6840277777778,0.0,387.6840277777778,0.0,0.0,,,387.6840277777778
+medagentbench,test,task7_27,selfLearnt,rulebook-learnt,B,0,[94.0],1,1.0,1.0,387.28993055555554,0.0,387.28993055555554,0.0,0.0,,,387.28993055555554
+medagentbench,test,task8_3,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_5,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_9,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_12,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_14,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_16,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_17,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_18,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_19,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_21,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_22,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_24,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_27,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.25347222222223,0.0,88.25347222222223,0.0,0.0,,,88.25347222222223
+medagentbench,test,task8_28,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_30,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,88.25347222222223,0.0,88.25347222222223,0.0,0.0,,,88.25347222222223
+medagentbench,test,task9_1,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,3829.581597222222,0.0,3829.581597222222,0.0,0.0,,,3829.581597222222
+medagentbench,test,task9_2,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,4864.081597222223,0.0,4864.081597222223,0.0,0.0,,,4864.081597222223
+medagentbench,test,task9_3,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,4830.206597222223,0.0,4830.206597222223,0.0,0.0,,,4830.206597222223
+medagentbench,test,task9_6,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,956.3055555555555,0.0,956.3055555555555,0.0,0.0,,,956.3055555555555
+medagentbench,test,task9_8,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,14068.923611111111,0.0,14068.923611111111,0.0,0.0,,,14068.923611111111
+medagentbench,test,task9_10,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,320.7708333333333,0.0,320.7708333333333,0.0,0.0,,,320.7708333333333
+medagentbench,test,task9_11,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,2000.9565972222222,0.0,2000.9565972222222,0.0,0.0,,,2000.9565972222222
+medagentbench,test,task9_13,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,2002.2065972222222,0.0,2002.2065972222222,0.0,0.0,,,2002.2065972222222
+medagentbench,test,task9_15,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,4389.581597222223,0.0,4389.581597222223,0.0,0.0,,,4389.581597222223
+medagentbench,test,task9_18,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,4386.956597222223,0.0,4386.956597222223,0.0,0.0,,,4386.956597222223
+medagentbench,test,task9_20,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,2002.2065972222222,0.0,2002.2065972222222,0.0,0.0,,,2002.2065972222222
+medagentbench,test,task9_21,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,4445.331597222223,0.0,4445.331597222223,0.0,0.0,,,4445.331597222223
+medagentbench,test,task9_23,selfLearnt,rulebook-learnt,B,0,,1,1.0,1.0,4807.081597222223,0.0,4807.081597222223,0.0,0.0,,,4807.081597222223
+medagentbench,test,task9_24,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,378.95659722222223,0.0,378.95659722222223,0.0,0.0,,,378.95659722222223
+medagentbench,test,task9_26,selfLearnt,rulebook-learnt,B,0,[],1,1.0,1.0,349.6388888888889,0.0,349.6388888888889,0.0,0.0,,,349.6388888888889
+medagentbench,test,task10_2,selfLearnt,rulebook-learnt,B,0,"[5.9, ""2023-11-09T03:05:00+00:00""]",1,1.0,1.0,324.265625,0.0,324.265625,0.0,0.0,,,324.265625
+medagentbench,test,task10_4,selfLearnt,rulebook-learnt,B,0,"[5.4, ""2023-08-01T20:29:00+00:00""]",1,1.0,1.0,411.203125,0.0,411.203125,0.0,0.0,,,411.203125
+medagentbench,test,task10_5,selfLearnt,rulebook-learnt,B,0,"[6.6, ""2023-11-04T14:54:00+00:00""]",1,1.0,1.0,457.71875,0.0,457.71875,0.0,0.0,,,457.71875
+medagentbench,test,task10_6,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_7,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,134.22743055555554,0.0,134.22743055555554,0.0,0.0,,,134.22743055555554
+medagentbench,test,task10_9,selfLearnt,rulebook-learnt,B,0,"[5.5, ""2023-10-14T18:44:00+00:00""]",1,1.0,1.0,612.0260416666666,0.0,612.0260416666666,0.0,0.0,,,612.0260416666666
+medagentbench,test,task10_10,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,134.32465277777777,0.0,134.32465277777777,0.0,0.0,,,134.32465277777777
+medagentbench,test,task10_12,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,134.25173611111111,0.0,134.25173611111111,0.0,0.0,,,134.25173611111111
+medagentbench,test,task10_13,selfLearnt,rulebook-learnt,B,0,"[5.8, ""2022-09-09T15:33:00+00:00""]",0,0.0,0.0,385.94791666666663,0.0,385.94791666666663,0.0,0.0,,,385.94791666666663
+medagentbench,test,task10_14,selfLearnt,rulebook-learnt,B,0,"[4.8, ""2022-05-18T22:03:00+00:00""]",0,0.0,0.0,349.453125,0.0,349.453125,0.0,0.0,,,349.453125
+medagentbench,test,task10_19,selfLearnt,rulebook-learnt,B,0,"[5.9, ""2023-09-22T22:28:00+00:00""]",1,1.0,1.0,603.9010416666667,0.0,603.9010416666667,0.0,0.0,,,603.9010416666667
+medagentbench,test,task10_20,selfLearnt,rulebook-learnt,B,0,"[6.5, ""2022-03-08T08:14:00+00:00""]",0,0.0,0.0,324.18402777777777,0.0,324.18402777777777,0.0,0.0,,,324.18402777777777
+medagentbench,test,task10_22,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_26,selfLearnt,rulebook-learnt,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_28,selfLearnt,rulebook-learnt,B,0,"[7.4, ""2023-06-27T23:25:00+00:00""]",1,1.0,1.0,324.46875,0.0,324.46875,0.0,0.0,,,324.46875
+medagentbench,test,task1_2,selfLearnt,rulebook-seed,B,0,"[""S6426560""]",1,1.0,1.0,90.69618055555556,0.0,90.69618055555556,0.0,0.0,,,90.69618055555556
+medagentbench,test,task1_6,selfLearnt,rulebook-seed,B,0,"[""S2874099""]",1,1.0,1.0,90.63541666666666,0.0,90.63541666666666,0.0,0.0,,,90.63541666666666
+medagentbench,test,task1_7,selfLearnt,rulebook-seed,B,0,"[""S6200102""]",1,1.0,1.0,90.87847222222223,0.0,90.87847222222223,0.0,0.0,,,90.87847222222223
+medagentbench,test,task1_8,selfLearnt,rulebook-seed,B,0,"[""S6530532""]",1,1.0,1.0,90.74479166666666,0.0,90.74479166666666,0.0,0.0,,,90.74479166666666
+medagentbench,test,task1_11,selfLearnt,rulebook-seed,B,0,"[""S6521727""]",1,1.0,1.0,90.74479166666666,0.0,90.74479166666666,0.0,0.0,,,90.74479166666666
+medagentbench,test,task1_13,selfLearnt,rulebook-seed,B,0,"[""S2154941""]",1,1.0,1.0,90.69618055555554,0.0,90.69618055555554,0.0,0.0,,,90.69618055555554
+medagentbench,test,task1_16,selfLearnt,rulebook-seed,B,0,"[""S6551923""]",1,1.0,1.0,90.78125,0.0,90.78125,0.0,0.0,,,90.78125
+medagentbench,test,task1_17,selfLearnt,rulebook-seed,B,0,"[""S2119664""]",1,1.0,1.0,90.671875,0.0,90.671875,0.0,0.0,,,90.671875
+medagentbench,test,task1_21,selfLearnt,rulebook-seed,B,0,"[""S0547588""]",1,1.0,1.0,90.75694444444444,0.0,90.75694444444444,0.0,0.0,,,90.75694444444444
+medagentbench,test,task1_22,selfLearnt,rulebook-seed,B,0,"[""S0722219""]",1,1.0,1.0,90.79340277777777,0.0,90.79340277777777,0.0,0.0,,,90.79340277777777
+medagentbench,test,task1_23,selfLearnt,rulebook-seed,B,0,"[""S3057899""]",1,1.0,1.0,90.82986111111111,0.0,90.82986111111111,0.0,0.0,,,90.82986111111111
+medagentbench,test,task1_24,selfLearnt,rulebook-seed,B,0,"[""S6538722""]",1,1.0,1.0,90.76909722222223,0.0,90.76909722222223,0.0,0.0,,,90.76909722222223
+medagentbench,test,task1_26,selfLearnt,rulebook-seed,B,0,"[""S3236936""]",1,1.0,1.0,90.84201388888889,0.0,90.84201388888889,0.0,0.0,,,90.84201388888889
+medagentbench,test,task1_27,selfLearnt,rulebook-seed,B,0,"[""S3213957""]",1,1.0,1.0,90.84201388888889,0.0,90.84201388888889,0.0,0.0,,,90.84201388888889
+medagentbench,test,task1_29,selfLearnt,rulebook-seed,B,0,"[""Patient not found""]",1,1.0,1.0,83.87847222222223,0.0,83.87847222222223,0.0,0.0,,,83.87847222222223
+medagentbench,test,task2_1,selfLearnt,rulebook-seed,B,0,[60],1,1.0,1.0,90.57465277777777,0.0,90.57465277777777,0.0,0.0,,,90.57465277777777
+medagentbench,test,task2_2,selfLearnt,rulebook-seed,B,0,[70],0,0.0,0.0,90.671875,0.0,90.671875,0.0,0.0,,,90.671875
+medagentbench,test,task2_3,selfLearnt,rulebook-seed,B,0,[67],0,0.0,0.0,90.75694444444444,0.0,90.75694444444444,0.0,0.0,,,90.75694444444444
+medagentbench,test,task2_6,selfLearnt,rulebook-seed,B,0,[40],0,0.0,0.0,90.58680555555556,0.0,90.58680555555556,0.0,0.0,,,90.58680555555556
+medagentbench,test,task2_8,selfLearnt,rulebook-seed,B,0,[88],0,0.0,0.0,90.58680555555556,0.0,90.58680555555556,0.0,0.0,,,90.58680555555556
+medagentbench,test,task2_9,selfLearnt,rulebook-seed,B,0,[48],1,1.0,1.0,90.65972222222223,0.0,90.65972222222223,0.0,0.0,,,90.65972222222223
+medagentbench,test,task2_11,selfLearnt,rulebook-seed,B,0,[44],1,1.0,1.0,90.62326388888889,0.0,90.62326388888889,0.0,0.0,,,90.62326388888889
+medagentbench,test,task2_13,selfLearnt,rulebook-seed,B,0,[71],0,0.0,0.0,90.59895833333334,0.0,90.59895833333334,0.0,0.0,,,90.59895833333334
+medagentbench,test,task2_14,selfLearnt,rulebook-seed,B,0,[75],1,1.0,1.0,90.61111111111111,0.0,90.61111111111111,0.0,0.0,,,90.61111111111111
+medagentbench,test,task2_16,selfLearnt,rulebook-seed,B,0,[66],1,1.0,1.0,90.57465277777777,0.0,90.57465277777777,0.0,0.0,,,90.57465277777777
+medagentbench,test,task2_17,selfLearnt,rulebook-seed,B,0,[75],0,0.0,0.0,90.5625,0.0,90.5625,0.0,0.0,,,90.5625
+medagentbench,test,task2_18,selfLearnt,rulebook-seed,B,0,[84],1,1.0,1.0,90.62326388888889,0.0,90.62326388888889,0.0,0.0,,,90.62326388888889
+medagentbench,test,task2_19,selfLearnt,rulebook-seed,B,0,[28],1,1.0,1.0,90.24652777777777,0.0,90.24652777777777,0.0,0.0,,,90.24652777777777
+medagentbench,test,task2_23,selfLearnt,rulebook-seed,B,0,[62],1,1.0,1.0,90.65972222222223,0.0,90.65972222222223,0.0,0.0,,,90.65972222222223
+medagentbench,test,task2_26,selfLearnt,rulebook-seed,B,0,[70],0,0.0,0.0,90.70833333333334,0.0,90.70833333333334,0.0,0.0,,,90.70833333333334
+medagentbench,test,task3_1,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_2,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_3,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_5,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_7,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_11,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_13,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_17,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_18,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_20,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_21,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_24,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_27,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_28,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_29,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task4_1,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.05381944444444,0.0,86.05381944444444,0.0,0.0,,,86.05381944444444
+medagentbench,test,task4_5,selfLearnt,rulebook-seed,B,0,[2.1],1,1.0,1.0,91.36458333333334,0.0,91.36458333333334,0.0,0.0,,,91.36458333333334
+medagentbench,test,task4_6,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.01736111111111,0.0,86.01736111111111,0.0,0.0,,,86.01736111111111
+medagentbench,test,task4_8,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.02951388888889,0.0,86.02951388888889,0.0,0.0,,,86.02951388888889
+medagentbench,test,task4_10,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.01736111111111,0.0,86.01736111111111,0.0,0.0,,,86.01736111111111
+medagentbench,test,task4_11,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.05381944444444,0.0,86.05381944444444,0.0,0.0,,,86.05381944444444
+medagentbench,test,task4_12,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.01736111111111,0.0,86.01736111111111,0.0,0.0,,,86.01736111111111
+medagentbench,test,task4_14,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.06597222222223,0.0,86.06597222222223,0.0,0.0,,,86.06597222222223
+medagentbench,test,task4_15,selfLearnt,rulebook-seed,B,0,[2.2],1,1.0,1.0,96.56597222222223,0.0,96.56597222222223,0.0,0.0,,,96.56597222222223
+medagentbench,test,task4_16,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.06597222222223,0.0,86.06597222222223,0.0,0.0,,,86.06597222222223
+medagentbench,test,task4_17,selfLearnt,rulebook-seed,B,0,[2.1],1,1.0,1.0,91.34027777777777,0.0,91.34027777777777,0.0,0.0,,,91.34027777777777
+medagentbench,test,task4_19,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.09027777777777,0.0,86.09027777777777,0.0,0.0,,,86.09027777777777
+medagentbench,test,task4_20,selfLearnt,rulebook-seed,B,0,[2.0],1,1.0,1.0,96.48090277777777,0.0,96.48090277777777,0.0,0.0,,,96.48090277777777
+medagentbench,test,task4_21,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.06597222222223,0.0,86.06597222222223,0.0,0.0,,,86.06597222222223
+medagentbench,test,task4_22,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.09027777777777,0.0,86.09027777777777,0.0,0.0,,,86.09027777777777
+medagentbench,test,task5_3,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,124.86979166666667,0.0,124.86979166666667,0.0,0.0,,,124.86979166666667
+medagentbench,test,task5_5,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,87.9375,0.0,87.9375,0.0,0.0,,,87.9375
+medagentbench,test,task5_7,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,1010.0555555555555,0.0,1010.0555555555555,0.0,0.0,,,1010.0555555555555
+medagentbench,test,task5_8,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,103.48090277777777,0.0,103.48090277777777,0.0,0.0,,,103.48090277777777
+medagentbench,test,task5_9,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,87.92534722222223,0.0,87.92534722222223,0.0,0.0,,,87.92534722222223
+medagentbench,test,task5_10,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,119.07291666666667,0.0,119.07291666666667,0.0,0.0,,,119.07291666666667
+medagentbench,test,task5_13,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,138.88194444444446,0.0,138.88194444444446,0.0,0.0,,,138.88194444444446
+medagentbench,test,task5_15,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,956.1805555555555,0.0,956.1805555555555,0.0,0.0,,,956.1805555555555
+medagentbench,test,task5_16,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,213.18402777777777,0.0,213.18402777777777,0.0,0.0,,,213.18402777777777
+medagentbench,test,task5_19,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,130.21701388888889,0.0,130.21701388888889,0.0,0.0,,,130.21701388888889
+medagentbench,test,task5_20,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,87.88888888888889,0.0,87.88888888888889,0.0,0.0,,,87.88888888888889
+medagentbench,test,task5_21,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,93.17534722222223,0.0,93.17534722222223,0.0,0.0,,,93.17534722222223
+medagentbench,test,task5_22,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,206.41493055555554,0.0,206.41493055555554,0.0,0.0,,,206.41493055555554
+medagentbench,test,task5_25,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,93.13888888888889,0.0,93.13888888888889,0.0,0.0,,,93.13888888888889
+medagentbench,test,task5_26,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,98.34027777777777,0.0,98.34027777777777,0.0,0.0,,,98.34027777777777
+medagentbench,test,task6_4,selfLearnt,rulebook-seed,B,0,[106.0],0,0.0,0.0,135.46701388888889,0.0,135.46701388888889,0.0,0.0,,,135.46701388888889
+medagentbench,test,task6_8,selfLearnt,rulebook-seed,B,0,[115.0],1,1.0,1.0,91.55902777777777,0.0,91.55902777777777,0.0,0.0,,,91.55902777777777
+medagentbench,test,task6_9,selfLearnt,rulebook-seed,B,0,[108.0],1,1.0,1.0,91.48611111111111,0.0,91.48611111111111,0.0,0.0,,,91.48611111111111
+medagentbench,test,task6_12,selfLearnt,rulebook-seed,B,0,[189.0],0,0.0,0.0,108.69444444444444,0.0,108.69444444444444,0.0,0.0,,,108.69444444444444
+medagentbench,test,task6_14,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.15104166666667,0.0,86.15104166666667,0.0,0.0,,,86.15104166666667
+medagentbench,test,task6_15,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,86.09027777777777,0.0,86.09027777777777,0.0,0.0,,,86.09027777777777
+medagentbench,test,task6_18,selfLearnt,rulebook-seed,B,0,[127.0],1,1.0,1.0,91.52256944444446,0.0,91.52256944444446,0.0,0.0,,,91.52256944444446
+medagentbench,test,task6_20,selfLearnt,rulebook-seed,B,0,[173.0],0,0.0,0.0,123.66666666666667,0.0,123.66666666666667,0.0,0.0,,,123.66666666666667
+medagentbench,test,task6_21,selfLearnt,rulebook-seed,B,0,[97.0],0,0.0,0.0,96.77256944444446,0.0,96.77256944444446,0.0,0.0,,,96.77256944444446
+medagentbench,test,task6_22,selfLearnt,rulebook-seed,B,0,[97.0],1,1.0,1.0,91.51041666666667,0.0,91.51041666666667,0.0,0.0,,,91.51041666666667
+medagentbench,test,task6_24,selfLearnt,rulebook-seed,B,0,[90.0],1,1.0,1.0,91.52256944444446,0.0,91.52256944444446,0.0,0.0,,,91.52256944444446
+medagentbench,test,task6_25,selfLearnt,rulebook-seed,B,0,"[89.0, 84.0, 110.0, 98.0, 86.0, 99.0]",0,0.0,0.0,118.14930555555556,0.0,118.14930555555556,0.0,0.0,,,118.14930555555556
+medagentbench,test,task6_28,selfLearnt,rulebook-seed,B,0,[108.0],1,1.0,1.0,96.77256944444446,0.0,96.77256944444446,0.0,0.0,,,96.77256944444446
+medagentbench,test,task6_29,selfLearnt,rulebook-seed,B,0,[116.0],0,0.0,0.0,97.42881944444446,0.0,97.42881944444446,0.0,0.0,,,97.42881944444446
+medagentbench,test,task6_30,selfLearnt,rulebook-seed,B,0,[126.0],1,1.0,1.0,91.48611111111111,0.0,91.48611111111111,0.0,0.0,,,91.48611111111111
+medagentbench,test,task7_3,selfLearnt,rulebook-seed,B,0,[134.0],1,1.0,1.0,140.109375,0.0,140.109375,0.0,0.0,,,140.109375
+medagentbench,test,task7_4,selfLearnt,rulebook-seed,B,0,[215.0],1,1.0,1.0,140.63194444444446,0.0,140.63194444444446,0.0,0.0,,,140.63194444444446
+medagentbench,test,task7_5,selfLearnt,rulebook-seed,B,0,[134.0],1,1.0,1.0,139.95138888888889,0.0,139.95138888888889,0.0,0.0,,,139.95138888888889
+medagentbench,test,task7_6,selfLearnt,rulebook-seed,B,0,[73.0],1,1.0,1.0,140.06076388888889,0.0,140.06076388888889,0.0,0.0,,,140.06076388888889
+medagentbench,test,task7_7,selfLearnt,rulebook-seed,B,0,[110.0],1,1.0,1.0,138.97916666666666,0.0,138.97916666666666,0.0,0.0,,,138.97916666666666
+medagentbench,test,task7_12,selfLearnt,rulebook-seed,B,0,[79.0],1,1.0,1.0,140.02430555555557,0.0,140.02430555555557,0.0,0.0,,,140.02430555555557
+medagentbench,test,task7_13,selfLearnt,rulebook-seed,B,0,[161.0],1,1.0,1.0,140.66840277777777,0.0,140.66840277777777,0.0,0.0,,,140.66840277777777
+medagentbench,test,task7_15,selfLearnt,rulebook-seed,B,0,[81.0],1,1.0,1.0,140.04861111111111,0.0,140.04861111111111,0.0,0.0,,,140.04861111111111
+medagentbench,test,task7_17,selfLearnt,rulebook-seed,B,0,[107.0],1,1.0,1.0,140.07291666666669,0.0,140.07291666666669,0.0,0.0,,,140.07291666666669
+medagentbench,test,task7_18,selfLearnt,rulebook-seed,B,0,[94.0],1,1.0,1.0,139.92708333333334,0.0,139.92708333333334,0.0,0.0,,,139.92708333333334
+medagentbench,test,task7_19,selfLearnt,rulebook-seed,B,0,[190.0],1,1.0,1.0,140.02430555555554,0.0,140.02430555555554,0.0,0.0,,,140.02430555555554
+medagentbench,test,task7_20,selfLearnt,rulebook-seed,B,0,[85.0],1,1.0,1.0,139.97569444444443,0.0,139.97569444444443,0.0,0.0,,,139.97569444444443
+medagentbench,test,task7_21,selfLearnt,rulebook-seed,B,0,[108.0],1,1.0,1.0,140.07291666666666,0.0,140.07291666666666,0.0,0.0,,,140.07291666666666
+medagentbench,test,task7_23,selfLearnt,rulebook-seed,B,0,[102.0],1,1.0,1.0,140.07291666666669,0.0,140.07291666666669,0.0,0.0,,,140.07291666666669
+medagentbench,test,task7_27,selfLearnt,rulebook-seed,B,0,[94.0],1,1.0,1.0,140.01215277777777,0.0,140.01215277777777,0.0,0.0,,,140.01215277777777
+medagentbench,test,task8_3,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_5,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_9,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_12,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_14,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_16,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_17,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_18,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_19,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_21,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_22,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_24,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_27,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.25347222222223,0.0,88.25347222222223,0.0,0.0,,,88.25347222222223
+medagentbench,test,task8_28,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_30,selfLearnt,rulebook-seed,B,0,[],1,1.0,1.0,88.25347222222223,0.0,88.25347222222223,0.0,0.0,,,88.25347222222223
+medagentbench,test,task9_1,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,3829.581597222222,0.0,3829.581597222222,0.0,0.0,,,3829.581597222222
+medagentbench,test,task9_2,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,4864.081597222223,0.0,4864.081597222223,0.0,0.0,,,4864.081597222223
+medagentbench,test,task9_3,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,4830.206597222223,0.0,4830.206597222223,0.0,0.0,,,4830.206597222223
+medagentbench,test,task9_6,selfLearnt,rulebook-seed,B,0,[4.3],1,1.0,1.0,206.30555555555557,0.0,206.30555555555557,0.0,0.0,,,206.30555555555557
+medagentbench,test,task9_8,selfLearnt,rulebook-seed,B,0,[3.8],1,1.0,1.0,124.00694444444446,0.0,124.00694444444446,0.0,0.0,,,124.00694444444446
+medagentbench,test,task9_10,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,92.21527777777777,0.0,92.21527777777777,0.0,0.0,,,92.21527777777777
+medagentbench,test,task9_11,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,2000.9565972222222,0.0,2000.9565972222222,0.0,0.0,,,2000.9565972222222
+medagentbench,test,task9_13,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,2002.2065972222222,0.0,2002.2065972222222,0.0,0.0,,,2002.2065972222222
+medagentbench,test,task9_15,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,4389.581597222223,0.0,4389.581597222223,0.0,0.0,,,4389.581597222223
+medagentbench,test,task9_18,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,4386.956597222223,0.0,4386.956597222223,0.0,0.0,,,4386.956597222223
+medagentbench,test,task9_20,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,2002.2065972222222,0.0,2002.2065972222222,0.0,0.0,,,2002.2065972222222
+medagentbench,test,task9_21,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,4445.331597222223,0.0,4445.331597222223,0.0,0.0,,,4445.331597222223
+medagentbench,test,task9_23,selfLearnt,rulebook-seed,B,0,,1,1.0,1.0,4807.081597222223,0.0,4807.081597222223,0.0,0.0,,,4807.081597222223
+medagentbench,test,task9_24,selfLearnt,rulebook-seed,B,0,[4.3],1,1.0,1.0,102.67881944444444,0.0,102.67881944444444,0.0,0.0,,,102.67881944444444
+medagentbench,test,task9_26,selfLearnt,rulebook-seed,B,0,[4.1],1,1.0,1.0,97.41666666666666,0.0,97.41666666666666,0.0,0.0,,,97.41666666666666
+medagentbench,test,task10_2,selfLearnt,rulebook-seed,B,0,"[5.9, ""2023-11-09T03:05:00+00:00""]",1,1.0,1.0,92.54340277777777,0.0,92.54340277777777,0.0,0.0,,,92.54340277777777
+medagentbench,test,task10_4,selfLearnt,rulebook-seed,B,0,"[5.4, ""2023-08-01T20:29:00+00:00""]",1,1.0,1.0,108.14756944444443,0.0,108.14756944444443,0.0,0.0,,,108.14756944444443
+medagentbench,test,task10_5,selfLearnt,rulebook-seed,B,0,"[6.6, ""2023-11-04T14:54:00+00:00""]",1,1.0,1.0,116.49652777777777,0.0,116.49652777777777,0.0,0.0,,,116.49652777777777
+medagentbench,test,task10_6,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_7,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,134.22743055555554,0.0,134.22743055555554,0.0,0.0,,,134.22743055555554
+medagentbench,test,task10_9,selfLearnt,rulebook-seed,B,0,"[5.5, ""2023-10-14T18:44:00+00:00""]",1,1.0,1.0,144.19270833333334,0.0,144.19270833333334,0.0,0.0,,,144.19270833333334
+medagentbench,test,task10_10,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,134.32465277777777,0.0,134.32465277777777,0.0,0.0,,,134.32465277777777
+medagentbench,test,task10_12,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,134.25173611111111,0.0,134.25173611111111,0.0,0.0,,,134.25173611111111
+medagentbench,test,task10_13,selfLearnt,rulebook-seed,B,0,"[5.8, ""2022-09-09T15:33:00+00:00""]",0,0.0,0.0,103.61458333333333,0.0,103.61458333333333,0.0,0.0,,,103.61458333333333
+medagentbench,test,task10_14,selfLearnt,rulebook-seed,B,0,"[4.8, ""2022-05-18T22:03:00+00:00""]",0,0.0,0.0,97.06423611111111,0.0,97.06423611111111,0.0,0.0,,,97.06423611111111
+medagentbench,test,task10_19,selfLearnt,rulebook-seed,B,0,"[5.6, ""2023-09-02T18:31:00+00:00""]",0,0.0,0.0,142.734375,0.0,142.734375,0.0,0.0,,,142.734375
+medagentbench,test,task10_20,selfLearnt,rulebook-seed,B,0,[-1],0,0.0,0.0,92.23958333333333,0.0,92.23958333333333,0.0,0.0,,,92.23958333333333
+medagentbench,test,task10_22,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_26,selfLearnt,rulebook-seed,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_28,selfLearnt,rulebook-seed,B,0,"[7.4, ""2023-06-27T23:25:00+00:00""]",1,1.0,1.0,92.57986111111111,0.0,92.57986111111111,0.0,0.0,,,92.57986111111111
+medagentbench,test,task1_2,selfLearnt,fixed:q32:ft,B,0,"[""S6426560""]",1,1.0,1.0,414.72222222222223,0.0,414.72222222222223,0.0,0.0,,,414.72222222222223
+medagentbench,test,task1_6,selfLearnt,fixed:q32:ft,B,0,"[""S2874099""]",1,1.0,1.0,414.3888888888889,0.0,414.3888888888889,0.0,0.0,,,414.3888888888889
+medagentbench,test,task1_7,selfLearnt,fixed:q32:ft,B,0,"[""S6200102""]",1,1.0,1.0,415.27777777777777,0.0,415.27777777777777,0.0,0.0,,,415.27777777777777
+medagentbench,test,task1_8,selfLearnt,fixed:q32:ft,B,0,"[""S6530532""]",1,1.0,1.0,415.27777777777777,0.0,415.27777777777777,0.0,0.0,,,415.27777777777777
+medagentbench,test,task1_11,selfLearnt,fixed:q32:ft,B,0,"[""S6521727""]",1,1.0,1.0,414.77777777777777,0.0,414.77777777777777,0.0,0.0,,,414.77777777777777
+medagentbench,test,task1_13,selfLearnt,fixed:q32:ft,B,0,"[""S2154941""]",1,1.0,1.0,415.0,0.0,415.0,0.0,0.0,,,415.0
+medagentbench,test,task1_16,selfLearnt,fixed:q32:ft,B,0,"[""S6551923""]",1,1.0,1.0,414.8888888888889,0.0,414.8888888888889,0.0,0.0,,,414.8888888888889
+medagentbench,test,task1_17,selfLearnt,fixed:q32:ft,B,0,"[""S2119664""]",1,1.0,1.0,415.0,0.0,415.0,0.0,0.0,,,415.0
+medagentbench,test,task1_21,selfLearnt,fixed:q32:ft,B,0,"[""S0547588""]",1,1.0,1.0,415.1666666666667,0.0,415.1666666666667,0.0,0.0,,,415.1666666666667
+medagentbench,test,task1_22,selfLearnt,fixed:q32:ft,B,0,"[""S0722219""]",1,1.0,1.0,414.83333333333337,0.0,414.83333333333337,0.0,0.0,,,414.83333333333337
+medagentbench,test,task1_23,selfLearnt,fixed:q32:ft,B,0,"[""S3057899""]",1,1.0,1.0,415.3888888888889,0.0,415.3888888888889,0.0,0.0,,,415.3888888888889
+medagentbench,test,task1_24,selfLearnt,fixed:q32:ft,B,0,"[""S6538722""]",1,1.0,1.0,414.8888888888889,0.0,414.8888888888889,0.0,0.0,,,414.8888888888889
+medagentbench,test,task1_26,selfLearnt,fixed:q32:ft,B,0,"[""S3236936""]",1,1.0,1.0,415.1111111111111,0.0,415.1111111111111,0.0,0.0,,,415.1111111111111
+medagentbench,test,task1_27,selfLearnt,fixed:q32:ft,B,0,"[""S3213957""]",1,1.0,1.0,415.22222222222223,0.0,415.22222222222223,0.0,0.0,,,415.22222222222223
+medagentbench,test,task1_29,selfLearnt,fixed:q32:ft,B,0,"[""Patient not found""]",1,1.0,1.0,383.6666666666667,0.0,383.6666666666667,0.0,0.0,,,383.6666666666667
+medagentbench,test,task2_1,selfLearnt,fixed:q32:ft,B,0,[60],1,1.0,1.0,414.0,0.0,414.0,0.0,0.0,,,414.0
+medagentbench,test,task2_2,selfLearnt,fixed:q32:ft,B,0,[0],0,0.0,0.0,816.5,0.0,816.5,0.0,0.0,,,816.5
+medagentbench,test,task2_3,selfLearnt,fixed:q32:ft,B,0,[68],1,1.0,1.0,414.83333333333337,0.0,414.83333333333337,0.0,0.0,,,414.83333333333337
+medagentbench,test,task2_6,selfLearnt,fixed:q32:ft,B,0,[39],1,1.0,1.0,414.0,0.0,414.0,0.0,0.0,,,414.0
+medagentbench,test,task2_8,selfLearnt,fixed:q32:ft,B,0,[89],1,1.0,1.0,414.1111111111111,0.0,414.1111111111111,0.0,0.0,,,414.1111111111111
+medagentbench,test,task2_9,selfLearnt,fixed:q32:ft,B,0,[48],1,1.0,1.0,414.44444444444446,0.0,414.44444444444446,0.0,0.0,,,414.44444444444446
+medagentbench,test,task2_11,selfLearnt,fixed:q32:ft,B,0,[44],1,1.0,1.0,414.1111111111111,0.0,414.1111111111111,0.0,0.0,,,414.1111111111111
+medagentbench,test,task2_13,selfLearnt,fixed:q32:ft,B,0,[81],1,1.0,1.0,414.33333333333337,0.0,414.33333333333337,0.0,0.0,,,414.33333333333337
+medagentbench,test,task2_14,selfLearnt,fixed:q32:ft,B,0,[75],1,1.0,1.0,414.27777777777777,0.0,414.27777777777777,0.0,0.0,,,414.27777777777777
+medagentbench,test,task2_16,selfLearnt,fixed:q32:ft,B,0,[66],1,1.0,1.0,414.1111111111111,0.0,414.1111111111111,0.0,0.0,,,414.1111111111111
+medagentbench,test,task2_17,selfLearnt,fixed:q32:ft,B,0,[76],1,1.0,1.0,414.1111111111111,0.0,414.1111111111111,0.0,0.0,,,414.1111111111111
+medagentbench,test,task2_18,selfLearnt,fixed:q32:ft,B,0,[84],1,1.0,1.0,414.27777777777777,0.0,414.27777777777777,0.0,0.0,,,414.27777777777777
+medagentbench,test,task2_19,selfLearnt,fixed:q32:ft,B,0,[28],1,1.0,1.0,412.44444444444446,0.0,412.44444444444446,0.0,0.0,,,412.44444444444446
+medagentbench,test,task2_23,selfLearnt,fixed:q32:ft,B,0,[62],1,1.0,1.0,414.27777777777777,0.0,414.27777777777777,0.0,0.0,,,414.27777777777777
+medagentbench,test,task2_26,selfLearnt,fixed:q32:ft,B,0,[69],1,1.0,1.0,414.66666666666663,0.0,414.66666666666663,0.0,0.0,,,414.66666666666663
+medagentbench,test,task3_1,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_2,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_3,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_5,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_7,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_11,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_13,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_17,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_18,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_20,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_21,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_24,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_27,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_28,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task3_29,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,389.6666666666667,0.0,389.6666666666667,0.0,0.0,,,389.6666666666667
+medagentbench,test,task4_1,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.44444444444446,0.0,393.44444444444446,0.0,0.0,,,393.44444444444446
+medagentbench,test,task4_5,selfLearnt,fixed:q32:ft,B,0,[2.1],1,1.0,1.0,417.66666666666663,0.0,417.66666666666663,0.0,0.0,,,417.66666666666663
+medagentbench,test,task4_6,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.3888888888889,0.0,393.3888888888889,0.0,0.0,,,393.3888888888889
+medagentbench,test,task4_8,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.3888888888889,0.0,393.3888888888889,0.0,0.0,,,393.3888888888889
+medagentbench,test,task4_10,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.5,0.0,393.5,0.0,0.0,,,393.5
+medagentbench,test,task4_11,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.55555555555554,0.0,393.55555555555554,0.0,0.0,,,393.55555555555554
+medagentbench,test,task4_12,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.3888888888889,0.0,393.3888888888889,0.0,0.0,,,393.3888888888889
+medagentbench,test,task4_14,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.27777777777777,0.0,393.27777777777777,0.0,0.0,,,393.27777777777777
+medagentbench,test,task4_15,selfLearnt,fixed:q32:ft,B,0,[2.2],1,1.0,1.0,441.55555555555554,0.0,441.55555555555554,0.0,0.0,,,441.55555555555554
+medagentbench,test,task4_16,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.3333333333333,0.0,393.3333333333333,0.0,0.0,,,393.3333333333333
+medagentbench,test,task4_17,selfLearnt,fixed:q32:ft,B,0,[2.1],1,1.0,1.0,417.55555555555554,0.0,417.55555555555554,0.0,0.0,,,417.55555555555554
+medagentbench,test,task4_19,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.1111111111111,0.0,393.1111111111111,0.0,0.0,,,393.1111111111111
+medagentbench,test,task4_20,selfLearnt,fixed:q32:ft,B,0,[2.0],1,1.0,1.0,441.2222222222222,0.0,441.2222222222222,0.0,0.0,,,441.2222222222222
+medagentbench,test,task4_21,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.44444444444446,0.0,393.44444444444446,0.0,0.0,,,393.44444444444446
+medagentbench,test,task4_22,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.2222222222222,0.0,393.2222222222222,0.0,0.0,,,393.2222222222222
+medagentbench,test,task5_3,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,453.6111111111111,0.0,453.6111111111111,0.0,0.0,,,453.6111111111111
+medagentbench,test,task5_5,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,405.8888888888889,0.0,405.8888888888889,0.0,0.0,,,405.8888888888889
+medagentbench,test,task5_7,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,429.94444444444446,0.0,429.94444444444446,0.0,0.0,,,429.94444444444446
+medagentbench,test,task5_8,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,405.8888888888889,0.0,405.8888888888889,0.0,0.0,,,405.8888888888889
+medagentbench,test,task5_9,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,406.05555555555554,0.0,406.05555555555554,0.0,0.0,,,406.05555555555554
+medagentbench,test,task5_10,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,429.83333333333337,0.0,429.83333333333337,0.0,0.0,,,429.83333333333337
+medagentbench,test,task5_13,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,405.83333333333337,0.0,405.83333333333337,0.0,0.0,,,405.83333333333337
+medagentbench,test,task5_15,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,405.8888888888889,0.0,405.8888888888889,0.0,0.0,,,405.8888888888889
+medagentbench,test,task5_16,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,430.0,0.0,430.0,0.0,0.0,,,430.0
+medagentbench,test,task5_19,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,453.94444444444446,0.0,453.94444444444446,0.0,0.0,,,453.94444444444446
+medagentbench,test,task5_20,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,405.83333333333337,0.0,405.83333333333337,0.0,0.0,,,405.83333333333337
+medagentbench,test,task5_21,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,429.8888888888889,0.0,429.8888888888889,0.0,0.0,,,429.8888888888889
+medagentbench,test,task5_22,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,405.94444444444446,0.0,405.94444444444446,0.0,0.0,,,405.94444444444446
+medagentbench,test,task5_25,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,430.0,0.0,430.0,0.0,0.0,,,430.0
+medagentbench,test,task5_26,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,405.7777777777778,0.0,405.7777777777778,0.0,0.0,,,405.7777777777778
+medagentbench,test,task6_4,selfLearnt,fixed:q32:ft,B,0,[94.0],0,0.0,0.0,619.2222222222222,0.0,619.2222222222222,0.0,0.0,,,619.2222222222222
+medagentbench,test,task6_8,selfLearnt,fixed:q32:ft,B,0,[115.0],1,1.0,1.0,418.22222222222223,0.0,418.22222222222223,0.0,0.0,,,418.22222222222223
+medagentbench,test,task6_9,selfLearnt,fixed:q32:ft,B,0,[108.0],1,1.0,1.0,418.3888888888889,0.0,418.3888888888889,0.0,0.0,,,418.3888888888889
+medagentbench,test,task6_12,selfLearnt,fixed:q32:ft,B,0,[188.0],1,1.0,1.0,496.8888888888889,0.0,496.8888888888889,0.0,0.0,,,496.8888888888889
+medagentbench,test,task6_14,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.72222222222223,0.0,393.72222222222223,0.0,0.0,,,393.72222222222223
+medagentbench,test,task6_15,selfLearnt,fixed:q32:ft,B,0,[-1],1,1.0,1.0,393.72222222222223,0.0,393.72222222222223,0.0,0.0,,,393.72222222222223
+medagentbench,test,task6_18,selfLearnt,fixed:q32:ft,B,0,[127.0],1,1.0,1.0,418.44444444444446,0.0,418.44444444444446,0.0,0.0,,,418.44444444444446
+medagentbench,test,task6_20,selfLearnt,fixed:q32:ft,B,0,[167.0],0,0.0,0.0,565.3888888888889,0.0,565.3888888888889,0.0,0.0,,,565.3888888888889
+medagentbench,test,task6_21,selfLearnt,fixed:q32:ft,B,0,[102.0],1,1.0,1.0,442.5,0.0,442.5,0.0,0.0,,,442.5
+medagentbench,test,task6_22,selfLearnt,fixed:q32:ft,B,0,[97.0],1,1.0,1.0,418.22222222222223,0.0,418.22222222222223,0.0,0.0,,,418.22222222222223
+medagentbench,test,task6_24,selfLearnt,fixed:q32:ft,B,0,[90.0],1,1.0,1.0,418.33333333333337,0.0,418.33333333333337,0.0,0.0,,,418.33333333333337
+medagentbench,test,task6_25,selfLearnt,fixed:q32:ft,B,0,[95.0],0,0.0,0.0,538.1666666666667,0.0,538.1666666666667,0.0,0.0,,,538.1666666666667
+medagentbench,test,task6_28,selfLearnt,fixed:q32:ft,B,0,[108.0],1,1.0,1.0,442.3888888888889,0.0,442.3888888888889,0.0,0.0,,,442.3888888888889
+medagentbench,test,task6_29,selfLearnt,fixed:q32:ft,B,0,[166.0],1,1.0,1.0,445.33333333333337,0.0,445.33333333333337,0.0,0.0,,,445.33333333333337
+medagentbench,test,task6_30,selfLearnt,fixed:q32:ft,B,0,[126.0],1,1.0,1.0,418.27777777777777,0.0,418.27777777777777,0.0,0.0,,,418.27777777777777
+medagentbench,test,task7_3,selfLearnt,fixed:q32:ft,B,0,[134.0],1,1.0,1.0,634.8888888888889,0.0,634.8888888888889,0.0,0.0,,,634.8888888888889
+medagentbench,test,task7_4,selfLearnt,fixed:q32:ft,B,0,[215.0],1,1.0,1.0,637.6111111111111,0.0,637.6111111111111,0.0,0.0,,,637.6111111111111
+medagentbench,test,task7_5,selfLearnt,fixed:q32:ft,B,0,[134.0],1,1.0,1.0,634.6111111111111,0.0,634.6111111111111,0.0,0.0,,,634.6111111111111
+medagentbench,test,task7_6,selfLearnt,fixed:q32:ft,B,0,[73.0],1,1.0,1.0,634.6666666666667,0.0,634.6666666666667,0.0,0.0,,,634.6666666666667
+medagentbench,test,task7_7,selfLearnt,fixed:q32:ft,B,0,[110.0],1,1.0,1.0,630.3888888888889,0.0,630.3888888888889,0.0,0.0,,,630.3888888888889
+medagentbench,test,task7_12,selfLearnt,fixed:q32:ft,B,0,[79.0],1,1.0,1.0,634.6666666666666,0.0,634.6666666666666,0.0,0.0,,,634.6666666666666
+medagentbench,test,task7_13,selfLearnt,fixed:q32:ft,B,0,[161.0],1,1.0,1.0,637.2777777777778,0.0,637.2777777777778,0.0,0.0,,,637.2777777777778
+medagentbench,test,task7_15,selfLearnt,fixed:q32:ft,B,0,[81.0],1,1.0,1.0,634.5,0.0,634.5,0.0,0.0,,,634.5
+medagentbench,test,task7_17,selfLearnt,fixed:q32:ft,B,0,[107.0],1,1.0,1.0,635.5,0.0,635.5,0.0,0.0,,,635.5
+medagentbench,test,task7_18,selfLearnt,fixed:q32:ft,B,0,[94.0],1,1.0,1.0,634.9444444444445,0.0,634.9444444444445,0.0,0.0,,,634.9444444444445
+medagentbench,test,task7_19,selfLearnt,fixed:q32:ft,B,0,[190.0],1,1.0,1.0,634.5,0.0,634.5,0.0,0.0,,,634.5
+medagentbench,test,task7_20,selfLearnt,fixed:q32:ft,B,0,[85.0],1,1.0,1.0,414.3333333333333,0.0,414.3333333333333,0.0,0.0,,,414.3333333333333
+medagentbench,test,task7_21,selfLearnt,fixed:q32:ft,B,0,[108.0],1,1.0,1.0,634.6666666666667,0.0,634.6666666666667,0.0,0.0,,,634.6666666666667
+medagentbench,test,task7_23,selfLearnt,fixed:q32:ft,B,0,[102.0],1,1.0,1.0,634.3333333333334,0.0,634.3333333333334,0.0,0.0,,,634.3333333333334
+medagentbench,test,task7_27,selfLearnt,fixed:q32:ft,B,0,[94.0],1,1.0,1.0,634.2222222222223,0.0,634.2222222222223,0.0,0.0,,,634.2222222222223
+medagentbench,test,task8_3,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_5,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_9,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_12,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_14,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_16,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_17,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_18,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_19,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_21,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_22,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_24,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_27,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_28,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task8_30,selfLearnt,fixed:q32:ft,B,0,[],1,1.0,1.0,403.22222222222223,0.0,403.22222222222223,0.0,0.0,,,403.22222222222223
+medagentbench,test,task9_1,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1392.1666666666665,0.0,1392.1666666666665,0.0,0.0,,,1392.1666666666665
+medagentbench,test,task9_2,selfLearnt,fixed:q32:ft,B,0,,0,0.0,0.0,2105.3333333333335,0.0,2105.3333333333335,0.0,0.0,,,2105.3333333333335
+medagentbench,test,task9_3,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,2147.277777777778,0.0,2147.277777777778,0.0,0.0,,,2147.277777777778
+medagentbench,test,task9_6,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1155.3333333333335,0.0,1155.3333333333335,0.0,0.0,,,1155.3333333333335
+medagentbench,test,task9_8,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1430.3888888888887,0.0,1430.3888888888887,0.0,0.0,,,1430.3888888888887
+medagentbench,test,task9_10,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1793.8888888888887,0.0,1793.8888888888887,0.0,0.0,,,1793.8888888888887
+medagentbench,test,task9_11,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1391.5,0.0,1391.5,0.0,0.0,,,1391.5
+medagentbench,test,task9_13,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1154.2777777777778,0.0,1154.2777777777778,0.0,0.0,,,1154.2777777777778
+medagentbench,test,task9_15,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1154.3333333333333,0.0,1154.3333333333333,0.0,0.0,,,1154.3333333333333
+medagentbench,test,task9_18,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,2147.4444444444443,0.0,2147.4444444444443,0.0,0.0,,,2147.4444444444443
+medagentbench,test,task9_20,selfLearnt,fixed:q32:ft,B,0,,0,0.0,0.0,2088.444444444445,0.0,2088.444444444445,0.0,0.0,,,2088.444444444445
+medagentbench,test,task9_21,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,2146.0555555555557,0.0,2146.0555555555557,0.0,0.0,,,2146.0555555555557
+medagentbench,test,task9_23,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1128.611111111111,0.0,1128.611111111111,0.0,0.0,,,1128.611111111111
+medagentbench,test,task9_24,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1132.5555555555557,0.0,1132.5555555555557,0.0,0.0,,,1132.5555555555557
+medagentbench,test,task9_26,selfLearnt,fixed:q32:ft,B,0,[],0,0.0,0.0,1996.4444444444443,0.0,1996.4444444444443,0.0,0.0,,,1996.4444444444443
+medagentbench,test,task10_2,selfLearnt,fixed:q32:ft,B,0,"[5.9, ""2023-11-09T03:05:00+00:00""]",1,1.0,1.0,427.05555555555554,0.0,427.05555555555554,0.0,0.0,,,427.05555555555554
+medagentbench,test,task10_4,selfLearnt,fixed:q32:ft,B,0,"[5.4, ""2023-08-01T20:29:00+00:00""]",1,1.0,1.0,447.94444444444446,0.0,447.94444444444446,0.0,0.0,,,447.94444444444446
+medagentbench,test,task10_5,selfLearnt,fixed:q32:ft,B,0,"[6.6, ""2023-11-04T14:54:00+00:00""]",1,1.0,1.0,454.55555555555554,0.0,454.55555555555554,0.0,0.0,,,454.55555555555554
+medagentbench,test,task10_6,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1104.0555555555554,0.0,1104.0555555555554,0.0,0.0,,,1104.0555555555554
+medagentbench,test,task10_7,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1103.8333333333333,0.0,1103.8333333333333,0.0,0.0,,,1103.8333333333333
+medagentbench,test,task10_9,selfLearnt,fixed:q32:ft,B,0,"[5.5, ""2023-10-14T18:44:00+00:00""]",1,1.0,1.0,447.7222222222222,0.0,447.7222222222222,0.0,0.0,,,447.7222222222222
+medagentbench,test,task10_10,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1104.2777777777778,0.0,1104.2777777777778,0.0,0.0,,,1104.2777777777778
+medagentbench,test,task10_12,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1623.111111111111,0.0,1623.111111111111,0.0,0.0,,,1623.111111111111
+medagentbench,test,task10_13,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1624.111111111111,0.0,1624.111111111111,0.0,0.0,,,1624.111111111111
+medagentbench,test,task10_14,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1359.6666666666665,0.0,1359.6666666666665,0.0,0.0,,,1359.6666666666665
+medagentbench,test,task10_19,selfLearnt,fixed:q32:ft,B,0,"[5.9, ""2023-09-22T22:28:00+00:00""]",1,1.0,1.0,474.6111111111111,0.0,474.6111111111111,0.0,0.0,,,474.6111111111111
+medagentbench,test,task10_20,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,623.2777777777778,0.0,623.2777777777778,0.0,0.0,,,623.2777777777778
+medagentbench,test,task10_22,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1623.111111111111,0.0,1623.111111111111,0.0,0.0,,,1623.111111111111
+medagentbench,test,task10_26,selfLearnt,fixed:q32:ft,B,0,[-1],0,0.0,0.0,1623.111111111111,0.0,1623.111111111111,0.0,0.0,,,1623.111111111111
+medagentbench,test,task10_28,selfLearnt,fixed:q32:ft,B,0,"[7.4, ""2023-06-27T23:25:00+00:00""]",1,1.0,1.0,427.3888888888889,0.0,427.3888888888889,0.0,0.0,,,427.3888888888889
+medagentbench,test,task1_2,selfLearnt,untrained:q7,B,0,"[""S6426560""]",1,1.0,1.0,90.72048611111111,0.0,90.72048611111111,0.0,0.0,,,90.72048611111111
+medagentbench,test,task1_6,selfLearnt,untrained:q7,B,0,"[""S2874099""]",1,1.0,1.0,90.64756944444444,0.0,90.64756944444444,0.0,0.0,,,90.64756944444444
+medagentbench,test,task1_7,selfLearnt,untrained:q7,B,0,"[""S6200102""]",1,1.0,1.0,90.82986111111111,0.0,90.82986111111111,0.0,0.0,,,90.82986111111111
+medagentbench,test,task1_8,selfLearnt,untrained:q7,B,0,"[""S6530532""]",1,1.0,1.0,90.79340277777777,0.0,90.79340277777777,0.0,0.0,,,90.79340277777777
+medagentbench,test,task1_11,selfLearnt,untrained:q7,B,0,"[""S6521727""]",1,1.0,1.0,90.76909722222223,0.0,90.76909722222223,0.0,0.0,,,90.76909722222223
+medagentbench,test,task1_13,selfLearnt,untrained:q7,B,0,"[""S2154941""]",1,1.0,1.0,90.68402777777777,0.0,90.68402777777777,0.0,0.0,,,90.68402777777777
+medagentbench,test,task1_16,selfLearnt,untrained:q7,B,0,"[""S6551923""]",1,1.0,1.0,90.74479166666666,0.0,90.74479166666666,0.0,0.0,,,90.74479166666666
+medagentbench,test,task1_17,selfLearnt,untrained:q7,B,0,"[""S2119664""]",1,1.0,1.0,90.68402777777777,0.0,90.68402777777777,0.0,0.0,,,90.68402777777777
+medagentbench,test,task1_21,selfLearnt,untrained:q7,B,0,"[""S0547588""]",1,1.0,1.0,90.78125,0.0,90.78125,0.0,0.0,,,90.78125
+medagentbench,test,task1_22,selfLearnt,untrained:q7,B,0,"[""S0722219""]",1,1.0,1.0,90.76909722222223,0.0,90.76909722222223,0.0,0.0,,,90.76909722222223
+medagentbench,test,task1_23,selfLearnt,untrained:q7,B,0,"[""S3057899""]",1,1.0,1.0,90.86631944444444,0.0,90.86631944444444,0.0,0.0,,,90.86631944444444
+medagentbench,test,task1_24,selfLearnt,untrained:q7,B,0,"[""S6538722""]",1,1.0,1.0,90.75694444444444,0.0,90.75694444444444,0.0,0.0,,,90.75694444444444
+medagentbench,test,task1_26,selfLearnt,untrained:q7,B,0,"[""S3236936""]",1,1.0,1.0,90.81770833333333,0.0,90.81770833333333,0.0,0.0,,,90.81770833333333
+medagentbench,test,task1_27,selfLearnt,untrained:q7,B,0,"[""S3213957""]",1,1.0,1.0,90.78125,0.0,90.78125,0.0,0.0,,,90.78125
+medagentbench,test,task1_29,selfLearnt,untrained:q7,B,0,"[""Patient not found""]",1,1.0,1.0,83.92708333333333,0.0,83.92708333333333,0.0,0.0,,,83.92708333333333
+medagentbench,test,task2_1,selfLearnt,untrained:q7,B,0,"[""16""]",0,0.0,0.0,90.52604166666667,0.0,90.52604166666667,0.0,0.0,,,90.52604166666667
+medagentbench,test,task2_2,selfLearnt,untrained:q7,B,0,"[""60""]",0,0.0,0.0,90.63541666666667,0.0,90.63541666666667,0.0,0.0,,,90.63541666666667
+medagentbench,test,task2_3,selfLearnt,untrained:q7,B,0,"[""58""]",0,0.0,0.0,90.69618055555556,0.0,90.69618055555556,0.0,0.0,,,90.69618055555556
+medagentbench,test,task2_6,selfLearnt,untrained:q7,B,0,"[""13""]",0,0.0,0.0,90.5625,0.0,90.5625,0.0,0.0,,,90.5625
+medagentbench,test,task2_8,selfLearnt,untrained:q7,B,0,"[""89""]",0,0.0,0.0,90.61111111111111,0.0,90.61111111111111,0.0,0.0,,,90.61111111111111
+medagentbench,test,task2_9,selfLearnt,untrained:q7,B,0,"[""48""]",0,0.0,0.0,90.58680555555556,0.0,90.58680555555556,0.0,0.0,,,90.58680555555556
+medagentbench,test,task2_11,selfLearnt,untrained:q7,B,0,"[""34""]",0,0.0,0.0,90.58680555555556,0.0,90.58680555555556,0.0,0.0,,,90.58680555555556
+medagentbench,test,task2_13,selfLearnt,untrained:q7,B,0,"[""71""]",0,0.0,0.0,90.61111111111111,0.0,90.61111111111111,0.0,0.0,,,90.61111111111111
+medagentbench,test,task2_14,selfLearnt,untrained:q7,B,0,"[""55""]",0,0.0,0.0,90.65972222222223,0.0,90.65972222222223,0.0,0.0,,,90.65972222222223
+medagentbench,test,task2_16,selfLearnt,untrained:q7,B,0,"[""56""]",0,0.0,0.0,90.61111111111111,0.0,90.61111111111111,0.0,0.0,,,90.61111111111111
+medagentbench,test,task2_17,selfLearnt,untrained:q7,B,0,"[""46""]",0,0.0,0.0,90.58680555555556,0.0,90.58680555555556,0.0,0.0,,,90.58680555555556
+medagentbench,test,task2_18,selfLearnt,untrained:q7,B,0,"[""64""]",0,0.0,0.0,90.64756944444444,0.0,90.64756944444444,0.0,0.0,,,90.64756944444444
+medagentbench,test,task2_19,selfLearnt,untrained:q7,B,0,"[""28""]",0,0.0,0.0,90.234375,0.0,90.234375,0.0,0.0,,,90.234375
+medagentbench,test,task2_23,selfLearnt,untrained:q7,B,0,"[""52""]",0,0.0,0.0,90.671875,0.0,90.671875,0.0,0.0,,,90.671875
+medagentbench,test,task2_26,selfLearnt,untrained:q7,B,0,"[""59""]",0,0.0,0.0,90.69618055555556,0.0,90.69618055555556,0.0,0.0,,,90.69618055555556
+medagentbench,test,task3_1,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_2,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_3,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_5,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_7,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_11,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_13,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_17,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_18,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_20,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_21,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_24,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_27,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_28,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task3_29,selfLearnt,untrained:q7,B,0,"[""""]",0,0.0,0.0,85.96875,0.0,85.96875,0.0,0.0,,,85.96875
+medagentbench,test,task4_1,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_5,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_6,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_8,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_10,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_11,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_12,selfLearnt,untrained:q7,B,0,[-1],1,1.0,1.0,232.57986111111111,0.0,232.57986111111111,0.0,0.0,,,232.57986111111111
+medagentbench,test,task4_14,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_15,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_16,selfLearnt,untrained:q7,B,0,[-1],1,1.0,1.0,232.57986111111111,0.0,232.57986111111111,0.0,0.0,,,232.57986111111111
+medagentbench,test,task4_17,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_19,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,402.828125,0.0,402.828125,0.0,0.0,,,402.828125
+medagentbench,test,task4_20,selfLearnt,untrained:q7,B,0,[-1],0,0.0,0.0,232.57986111111111,0.0,232.57986111111111,0.0,0.0,,,232.57986111111111
+medagentbench,test,task4_21,selfLearnt,untrained:q7,B,0,[-1],1,1.0,1.0,232.57986111111111,0.0,232.57986111111111,0.0,0.0,,,232.57986111111111
+medagentbench,test,task4_22,selfLearnt,untrained:q7,B,0,[-1],1,1.0,1.0,232.57986111111111,0.0,232.57986111111111,0.0,0.0,,,232.57986111111111
+medagentbench,test,task5_3,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_5,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_7,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_8,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_9,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_10,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_13,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_15,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_16,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_19,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_20,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_21,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_22,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_25,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task5_26,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,413.81423611111114,0.0,413.81423611111114,0.0,0.0,,,413.81423611111114
+medagentbench,test,task6_4,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_8,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_9,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_12,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_14,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_15,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_18,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_20,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_21,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_22,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_24,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_25,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_28,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_29,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task6_30,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,403.8003472222222,0.0,403.8003472222222,0.0,0.0,,,403.8003472222222
+medagentbench,test,task7_3,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_4,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_5,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_6,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_7,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_12,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_13,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_15,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_17,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_18,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_19,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_20,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_21,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_23,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task7_27,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,361.71527777777777,0.0,361.71527777777777,0.0,0.0,,,361.71527777777777
+medagentbench,test,task8_3,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S1478444""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_5,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S6550627""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_9,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S1023381""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_12,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S1521703""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_14,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S3241217""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_16,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S6541609""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_17,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S2111822""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_18,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S6426560""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_19,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S6530813""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_21,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S6330912""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_22,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S1715871""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_24,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S3032536""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_27,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S1579803""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_28,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S3236936""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task8_30,selfLearnt,untrained:q7,B,0,"[""orthopedic surgery referral ordered for patient S0722219""]",0,0.0,0.0,87.59722222222223,0.0,87.59722222222223,0.0,0.0,,,87.59722222222223
+medagentbench,test,task9_1,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,709.4427083333334,0.0,709.4427083333334,0.0,0.0,,,709.4427083333334
+medagentbench,test,task9_2,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,653.625,0.0,653.625,0.0,0.0,,,653.625
+medagentbench,test,task9_3,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,869.8107638888889,0.0,869.8107638888889,0.0,0.0,,,869.8107638888889
+medagentbench,test,task9_6,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,760.8732638888889,0.0,760.8732638888889,0.0,0.0,,,760.8732638888889
+medagentbench,test,task9_8,selfLearnt,untrained:q7,B,0,"[""2023-11-13T10:15:00+00:00""]",0,0.0,0.0,226.40625,0.0,226.40625,0.0,0.0,,,226.40625
+medagentbench,test,task9_10,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,709.4427083333334,0.0,709.4427083333334,0.0,0.0,,,709.4427083333334
+medagentbench,test,task9_11,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,709.4427083333334,0.0,709.4427083333334,0.0,0.0,,,709.4427083333334
+medagentbench,test,task9_13,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,660.6371527777777,0.0,660.6371527777777,0.0,0.0,,,660.6371527777777
+medagentbench,test,task9_15,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,678.2829861111111,0.0,678.2829861111111,0.0,0.0,,,678.2829861111111
+medagentbench,test,task9_18,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,653.625,0.0,653.625,0.0,0.0,,,653.625
+medagentbench,test,task9_20,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,762.4045138888889,0.0,762.4045138888889,0.0,0.0,,,762.4045138888889
+medagentbench,test,task9_21,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,653.625,0.0,653.625,0.0,0.0,,,653.625
+medagentbench,test,task9_23,selfLearnt,untrained:q7,B,0,"[""2023-11-13T10:15:00+00:00""]",0,0.0,0.0,505.1180555555556,0.0,505.1180555555556,0.0,0.0,,,505.1180555555556
+medagentbench,test,task9_24,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,653.625,0.0,653.625,0.0,0.0,,,653.625
+medagentbench,test,task9_26,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,668.9131944444445,0.0,668.9131944444445,0.0,0.0,,,668.9131944444445
+medagentbench,test,task10_2,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_4,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_5,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_6,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_7,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_9,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_10,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,373.7222222222222,0.0,373.7222222222222,0.0,0.0,,,373.7222222222222
+medagentbench,test,task10_12,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,381.9861111111111,0.0,381.9861111111111,0.0,0.0,,,381.9861111111111
+medagentbench,test,task10_13,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_14,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,376.00694444444446,0.0,376.00694444444446,0.0,0.0,,,376.00694444444446
+medagentbench,test,task10_19,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_20,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_22,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_26,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task10_28,selfLearnt,untrained:q7,B,0,,0,0.0,0.0,372.89583333333337,0.0,372.89583333333337,0.0,0.0,,,372.89583333333337
+medagentbench,test,task1_2,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,863.0,0.0,863.0,0.0,0.0,,,863.0
+medagentbench,test,task1_6,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,862.75,0.0,862.75,0.0,0.0,,,862.75
+medagentbench,test,task1_7,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,863.5,0.0,863.5,0.0,0.0,,,863.5
+medagentbench,test,task1_8,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,862.625,0.0,862.625,0.0,0.0,,,862.625
+medagentbench,test,task1_11,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,862.625,0.0,862.625,0.0,0.0,,,862.625
+medagentbench,test,task1_13,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,862.625,0.0,862.625,0.0,0.0,,,862.625
+medagentbench,test,task1_16,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,863.125,0.0,863.125,0.0,0.0,,,863.125
+medagentbench,test,task1_17,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,863.0,0.0,863.0,0.0,0.0,,,863.0
+medagentbench,test,task1_21,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,861.875,0.0,861.875,0.0,0.0,,,861.875
+medagentbench,test,task1_22,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,863.25,0.0,863.25,0.0,0.0,,,863.25
+medagentbench,test,task1_23,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,863.375,0.0,863.375,0.0,0.0,,,863.375
+medagentbench,test,task1_24,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,862.75,0.0,862.75,0.0,0.0,,,862.75
+medagentbench,test,task1_26,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,863.125,0.0,863.125,0.0,0.0,,,863.125
+medagentbench,test,task1_27,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",0,0.0,0.0,862.875,0.0,862.875,0.0,0.0,,,862.875
+medagentbench,test,task1_29,selfLearnt,untrained:q72,B,0,"[""Patient not found""]",1,1.0,1.0,863.75,0.0,863.75,0.0,0.0,,,863.75
+medagentbench,test,task2_1,selfLearnt,untrained:q72,B,0,[58],0,0.0,0.0,931.5,0.0,931.5,0.0,0.0,,,931.5
+medagentbench,test,task2_2,selfLearnt,untrained:q72,B,0,[70],0,0.0,0.0,932.625,0.0,932.625,0.0,0.0,,,932.625
+medagentbench,test,task2_3,selfLearnt,untrained:q72,B,0,[68],1,1.0,1.0,933.5,0.0,933.5,0.0,0.0,,,933.5
+medagentbench,test,task2_6,selfLearnt,untrained:q72,B,0,[39],1,1.0,1.0,931.75,0.0,931.75,0.0,0.0,,,931.75
+medagentbench,test,task2_8,selfLearnt,untrained:q72,B,0,[89],1,1.0,1.0,931.5,0.0,931.5,0.0,0.0,,,931.5
+medagentbench,test,task2_9,selfLearnt,untrained:q72,B,0,[48],1,1.0,1.0,932.125,0.0,932.125,0.0,0.0,,,932.125
+medagentbench,test,task2_11,selfLearnt,untrained:q72,B,0,[44],1,1.0,1.0,932.0,0.0,932.0,0.0,0.0,,,932.0
+medagentbench,test,task2_13,selfLearnt,untrained:q72,B,0,[81],1,1.0,1.0,932.0,0.0,932.0,0.0,0.0,,,932.0
+medagentbench,test,task2_14,selfLearnt,untrained:q72,B,0,[75],1,1.0,1.0,932.5,0.0,932.5,0.0,0.0,,,932.5
+medagentbench,test,task2_16,selfLearnt,untrained:q72,B,0,[67],0,0.0,0.0,931.625,0.0,931.625,0.0,0.0,,,931.625
+medagentbench,test,task2_17,selfLearnt,untrained:q72,B,0,[76],1,1.0,1.0,931.625,0.0,931.625,0.0,0.0,,,931.625
+medagentbench,test,task2_18,selfLearnt,untrained:q72,B,0,[84],1,1.0,1.0,932.125,0.0,932.125,0.0,0.0,,,932.125
+medagentbench,test,task2_19,selfLearnt,untrained:q72,B,0,[28],1,1.0,1.0,928.125,0.0,928.125,0.0,0.0,,,928.125
+medagentbench,test,task2_23,selfLearnt,untrained:q72,B,0,[62],1,1.0,1.0,932.25,0.0,932.25,0.0,0.0,,,932.25
+medagentbench,test,task2_26,selfLearnt,untrained:q72,B,0,[69],1,1.0,1.0,933.0,0.0,933.0,0.0,0.0,,,933.0
+medagentbench,test,task3_1,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_2,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_3,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_5,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_7,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_11,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_13,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_17,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_18,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_20,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_21,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_24,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_27,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_28,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_29,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task4_1,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.25,0.0,885.25,0.0,0.0,,,885.25
+medagentbench,test,task4_5,selfLearnt,untrained:q72,B,0,[2.1],1,1.0,1.0,939.375,0.0,939.375,0.0,0.0,,,939.375
+medagentbench,test,task4_6,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.375,0.0,885.375,0.0,0.0,,,885.375
+medagentbench,test,task4_8,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.125,0.0,885.125,0.0,0.0,,,885.125
+medagentbench,test,task4_10,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.125,0.0,885.125,0.0,0.0,,,885.125
+medagentbench,test,task4_11,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.25,0.0,885.25,0.0,0.0,,,885.25
+medagentbench,test,task4_12,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,884.625,0.0,884.625,0.0,0.0,,,884.625
+medagentbench,test,task4_14,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.25,0.0,885.25,0.0,0.0,,,885.25
+medagentbench,test,task4_15,selfLearnt,untrained:q72,B,0,[2.2],1,1.0,1.0,992.75,0.0,992.75,0.0,0.0,,,992.75
+medagentbench,test,task4_16,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.375,0.0,885.375,0.0,0.0,,,885.375
+medagentbench,test,task4_17,selfLearnt,untrained:q72,B,0,[2.1],1,1.0,1.0,939.375,0.0,939.375,0.0,0.0,,,939.375
+medagentbench,test,task4_19,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.375,0.0,885.375,0.0,0.0,,,885.375
+medagentbench,test,task4_20,selfLearnt,untrained:q72,B,0,[2.0],1,1.0,1.0,992.75,0.0,992.75,0.0,0.0,,,992.75
+medagentbench,test,task4_21,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.125,0.0,885.125,0.0,0.0,,,885.125
+medagentbench,test,task4_22,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.125,0.0,885.125,0.0,0.0,,,885.125
+medagentbench,test,task5_3,selfLearnt,untrained:q72,B,0,"[""The patient's last serum magnesium level within the last 24 hours is 2.0 mg/dL, which is within the normal range. No magnesium replacement is required.""]",0,0.0,0.0,1025.125,0.0,1025.125,0.0,0.0,,,1025.125
+medagentbench,test,task5_5,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.25,0.0,913.25,0.0,0.0,,,913.25
+medagentbench,test,task5_7,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,967.375,0.0,967.375,0.0,0.0,,,967.375
+medagentbench,test,task5_8,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.375,0.0,913.375,0.0,0.0,,,913.375
+medagentbench,test,task5_9,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.125,0.0,913.125,0.0,0.0,,,913.125
+medagentbench,test,task5_10,selfLearnt,untrained:q72,B,0,"[""The patient's last serum magnesium level was 2.0 mg/dL, which is within the normal range. No action is required for magnesium replacement.""]",0,0.0,0.0,971.25,0.0,971.25,0.0,0.0,,,971.25
+medagentbench,test,task5_13,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.25,0.0,913.25,0.0,0.0,,,913.25
+medagentbench,test,task5_15,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.5,0.0,913.5,0.0,0.0,,,913.5
+medagentbench,test,task5_16,selfLearnt,untrained:q72,B,0,"[""The patient's last serum magnesium level was 2.0 mg/dL, which is within the normal range. No action is required for magnesium replacement.""]",0,0.0,0.0,971.25,0.0,971.25,0.0,0.0,,,971.25
+medagentbench,test,task5_19,selfLearnt,untrained:q72,B,0,"[""The patient's last serum magnesium level within the last 24 hours is 2.2 mg/dL, which is within the normal range. No action is required for magnesium replacement.""]",0,0.0,0.0,1025.375,0.0,1025.375,0.0,0.0,,,1025.375
+medagentbench,test,task5_20,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.0,0.0,913.0,0.0,0.0,,,913.0
+medagentbench,test,task5_21,selfLearnt,untrained:q72,B,0,"[""The patient's last serum magnesium level was 1.8 mg/dL, which indicates a mild deficiency. No action is required as per the dosing instructions for mild deficiency, which is 1 g over 1 hour, and no order has been placed.""]",0,0.0,0.0,974.25,0.0,974.25,0.0,0.0,,,974.25
+medagentbench,test,task5_22,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.5,0.0,913.5,0.0,0.0,,,913.5
+medagentbench,test,task5_25,selfLearnt,untrained:q72,B,0,[1.9],0,0.0,0.0,968.125,0.0,968.125,0.0,0.0,,,968.125
+medagentbench,test,task5_26,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,913.5,0.0,913.5,0.0,0.0,,,913.5
+medagentbench,test,task6_4,selfLearnt,untrained:q72,B,0,[99.2],0,0.0,0.0,1393.125,0.0,1393.125,0.0,0.0,,,1393.125
+medagentbench,test,task6_8,selfLearnt,untrained:q72,B,0,[115.0],1,1.0,1.0,941.5,0.0,941.5,0.0,0.0,,,941.5
+medagentbench,test,task6_9,selfLearnt,untrained:q72,B,0,[108.0],1,1.0,1.0,940.75,0.0,940.75,0.0,0.0,,,940.75
+medagentbench,test,task6_12,selfLearnt,untrained:q72,B,0,[188.0],1,1.0,1.0,1117.5,0.0,1117.5,0.0,0.0,,,1117.5
+medagentbench,test,task6_14,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,885.875,0.0,885.875,0.0,0.0,,,885.875
+medagentbench,test,task6_15,selfLearnt,untrained:q72,B,0,[-1],1,1.0,1.0,886.125,0.0,886.125,0.0,0.0,,,886.125
+medagentbench,test,task6_18,selfLearnt,untrained:q72,B,0,[127.0],1,1.0,1.0,941.25,0.0,941.25,0.0,0.0,,,941.25
+medagentbench,test,task6_20,selfLearnt,untrained:q72,B,0,[171.0],0,0.0,0.0,1271.875,0.0,1271.875,0.0,0.0,,,1271.875
+medagentbench,test,task6_21,selfLearnt,untrained:q72,B,0,[102.0],1,1.0,1.0,995.375,0.0,995.375,0.0,0.0,,,995.375
+medagentbench,test,task6_22,selfLearnt,untrained:q72,B,0,[97.0],1,1.0,1.0,941.0,0.0,941.0,0.0,0.0,,,941.0
+medagentbench,test,task6_24,selfLearnt,untrained:q72,B,0,[90.0],1,1.0,1.0,941.5,0.0,941.5,0.0,0.0,,,941.5
+medagentbench,test,task6_25,selfLearnt,untrained:q72,B,0,[93.5],0,0.0,0.0,1210.75,0.0,1210.75,0.0,0.0,,,1210.75
+medagentbench,test,task6_28,selfLearnt,untrained:q72,B,0,[108.0],1,1.0,1.0,995.5,0.0,995.5,0.0,0.0,,,995.5
+medagentbench,test,task6_29,selfLearnt,untrained:q72,B,0,[166.0],1,1.0,1.0,1001.625,0.0,1001.625,0.0,0.0,,,1001.625
+medagentbench,test,task6_30,selfLearnt,untrained:q72,B,0,[126.0],1,1.0,1.0,941.0,0.0,941.0,0.0,0.0,,,941.0
+medagentbench,test,task7_3,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,876.0,0.0,876.0,0.0,0.0,,,876.0
+medagentbench,test,task7_4,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.75,0.0,875.75,0.0,0.0,,,875.75
+medagentbench,test,task7_5,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.75,0.0,875.75,0.0,0.0,,,875.75
+medagentbench,test,task7_6,selfLearnt,untrained:q72,B,0,"[""No recent CBG data found for the patient S0611496 after 2023-11-13T10:15:00+00:00""]",0,0.0,0.0,880.75,0.0,880.75,0.0,0.0,,,880.75
+medagentbench,test,task7_7,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.75,0.0,875.75,0.0,0.0,,,875.75
+medagentbench,test,task7_12,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,876.0,0.0,876.0,0.0,0.0,,,876.0
+medagentbench,test,task7_13,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.875,0.0,875.875,0.0,0.0,,,875.875
+medagentbench,test,task7_15,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.375,0.0,875.375,0.0,0.0,,,875.375
+medagentbench,test,task7_17,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,876.0,0.0,876.0,0.0,0.0,,,876.0
+medagentbench,test,task7_18,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,876.0,0.0,876.0,0.0,0.0,,,876.0
+medagentbench,test,task7_19,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.5,0.0,875.5,0.0,0.0,,,875.5
+medagentbench,test,task7_20,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.625,0.0,875.625,0.0,0.0,,,875.625
+medagentbench,test,task7_21,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.75,0.0,875.75,0.0,0.0,,,875.75
+medagentbench,test,task7_23,selfLearnt,untrained:q72,B,0,[102.0],1,1.0,1.0,1440.25,0.0,1440.25,0.0,0.0,,,1440.25
+medagentbench,test,task7_27,selfLearnt,untrained:q72,B,0,[null],0,0.0,0.0,875.625,0.0,875.625,0.0,0.0,,,875.625
+medagentbench,test,task8_3,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_5,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_9,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_12,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_14,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_16,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_17,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_18,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_19,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_21,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_22,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_24,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_27,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_28,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task8_30,selfLearnt,untrained:q72,B,0,[],1,1.0,1.0,907.75,0.0,907.75,0.0,0.0,,,907.75
+medagentbench,test,task9_1,selfLearnt,untrained:q72,B,0,"[""Checked patient S3241217's most recent potassium level, which was 3.2 mEq/L, indicating a low level. Ordered replacement potassium according to dosing instructions. Paired this order with a morning serum potassium level to be completed the next day at 8am.""]",0,0.0,0.0,3787.375,0.0,3787.375,0.0,0.0,,,3787.375
+medagentbench,test,task9_2,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4821.875,0.0,4821.875,0.0,0.0,,,4821.875
+medagentbench,test,task9_3,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4788.0,0.0,4788.0,0.0,0.0,,,4788.0
+medagentbench,test,task9_6,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4438.0,0.0,4438.0,0.0,0.0,,,4438.0
+medagentbench,test,task9_8,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4549.375,0.0,4549.375,0.0,0.0,,,4549.375
+medagentbench,test,task9_10,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4345.625,0.0,4345.625,0.0,0.0,,,4345.625
+medagentbench,test,task9_11,selfLearnt,untrained:q72,B,0,"[""No recent potassium levels found for patient S3213957. Cannot proceed with ordering replacement potassium without a current potassium level.""]",0,0.0,0.0,1958.75,0.0,1958.75,0.0,0.0,,,1958.75
+medagentbench,test,task9_13,selfLearnt,untrained:q72,B,0,"[""No recent potassium levels found for patient S3057899. Cannot proceed with ordering replacement potassium or scheduling a follow-up test without a current potassium level.""]",0,0.0,0.0,1960.0,0.0,1960.0,0.0,0.0,,,1960.0
+medagentbench,test,task9_15,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4347.375,0.0,4347.375,0.0,0.0,,,4347.375
+medagentbench,test,task9_18,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4344.75,0.0,4344.75,0.0,0.0,,,4344.75
+medagentbench,test,task9_20,selfLearnt,untrained:q72,B,0,"[""No recent potassium levels found for patient S3236936. Cannot proceed with ordering replacement potassium without a current measurement.""]",0,0.0,0.0,1960.0,0.0,1960.0,0.0,0.0,,,1960.0
+medagentbench,test,task9_21,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4403.125,0.0,4403.125,0.0,0.0,,,4403.125
+medagentbench,test,task9_23,selfLearnt,untrained:q72,B,0,"[""No recent potassium levels found for patient S0869531. Ordered replacement potassium and a morning serum potassium level for the next day at 8am.""]",0,0.0,0.0,4764.875,0.0,4764.875,0.0,0.0,,,4764.875
+medagentbench,test,task9_24,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4381.375,0.0,4381.375,0.0,0.0,,,4381.375
+medagentbench,test,task9_26,selfLearnt,untrained:q72,B,0,,0,0.0,0.0,4413.375,0.0,4413.375,0.0,0.0,,,4413.375
+medagentbench,test,task10_2,selfLearnt,untrained:q72,B,0,"[5.9, ""2023-11-09T03:05:00+00:00""]",1,1.0,1.0,961.25,0.0,961.25,0.0,0.0,,,961.25
+medagentbench,test,task10_4,selfLearnt,untrained:q72,B,0,"[5.4, ""2023-08-01T20:29:00+00:00""]",0,0.0,0.0,1631.75,0.0,1631.75,0.0,0.0,,,1631.75
+medagentbench,test,task10_5,selfLearnt,untrained:q72,B,0,"[6.6, ""2023-11-04T14:54:00+00:00""]",0,0.0,0.0,1662.75,0.0,1662.75,0.0,0.0,,,1662.75
+medagentbench,test,task10_6,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.125,0.0,896.125,0.0,0.0,,,896.125
+medagentbench,test,task10_7,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.625,0.0,896.625,0.0,0.0,,,896.625
+medagentbench,test,task10_9,selfLearnt,untrained:q72,B,0,"[5.5, ""2023-10-14T18:44:00+00:00""]",1,1.0,1.0,1007.25,0.0,1007.25,0.0,0.0,,,1007.25
+medagentbench,test,task10_10,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,884.875,0.0,884.875,0.0,0.0,,,884.875
+medagentbench,test,task10_12,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.5,0.0,896.5,0.0,0.0,,,896.5
+medagentbench,test,task10_13,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.5,0.0,896.5,0.0,0.0,,,896.5
+medagentbench,test,task10_14,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.625,0.0,896.625,0.0,0.0,,,896.625
+medagentbench,test,task10_19,selfLearnt,untrained:q72,B,0,"[5.9, ""2023-09-22T22:28:00+00:00""]",0,0.0,0.0,1751.5,0.0,1751.5,0.0,0.0,,,1751.5
+medagentbench,test,task10_20,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.5,0.0,896.5,0.0,0.0,,,896.5
+medagentbench,test,task10_22,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.625,0.0,896.625,0.0,0.0,,,896.625
+medagentbench,test,task10_26,selfLearnt,untrained:q72,B,0,[-1],0,0.0,0.0,896.375,0.0,896.375,0.0,0.0,,,896.375
+medagentbench,test,task10_28,selfLearnt,untrained:q72,B,0,"[7.4, ""2023-06-27T23:25:00+00:00""]",0,0.0,0.0,1541.5,0.0,1541.5,0.0,0.0,,,1541.5
+medagentbench,test,task1_2,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.25,0.0,863.25,0.0,0.0,,,863.25
+medagentbench,test,task1_6,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.0,0.0,863.0,0.0,0.0,,,863.0
+medagentbench,test,task1_7,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.75,0.0,863.75,0.0,0.0,,,863.75
+medagentbench,test,task1_8,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.5,0.0,863.5,0.0,0.0,,,863.5
+medagentbench,test,task1_11,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.25,0.0,863.25,0.0,0.0,,,863.25
+medagentbench,test,task1_13,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,862.75,0.0,862.75,0.0,0.0,,,862.75
+medagentbench,test,task1_16,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.375,0.0,863.375,0.0,0.0,,,863.375
+medagentbench,test,task1_17,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,862.25,0.0,862.25,0.0,0.0,,,862.25
+medagentbench,test,task1_21,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,861.625,0.0,861.625,0.0,0.0,,,861.625
+medagentbench,test,task1_22,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.5,0.0,863.5,0.0,0.0,,,863.5
+medagentbench,test,task1_23,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.5,0.0,863.5,0.0,0.0,,,863.5
+medagentbench,test,task1_24,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.25,0.0,863.25,0.0,0.0,,,863.25
+medagentbench,test,task1_26,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,863.0,0.0,863.0,0.0,0.0,,,863.0
+medagentbench,test,task1_27,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",0,0.0,0.0,862.75,0.0,862.75,0.0,0.0,,,862.75
+medagentbench,test,task1_29,selfLearnt,fixed:q72:ft,B,0,"[""Patient not found""]",1,1.0,1.0,863.875,0.0,863.875,0.0,0.0,,,863.875
+medagentbench,test,task2_1,selfLearnt,fixed:q72:ft,B,0,[59],0,0.0,0.0,931.375,0.0,931.375,0.0,0.0,,,931.375
+medagentbench,test,task2_2,selfLearnt,fixed:q72:ft,B,0,[78],0,0.0,0.0,932.625,0.0,932.625,0.0,0.0,,,932.625
+medagentbench,test,task2_3,selfLearnt,fixed:q72:ft,B,0,[68],1,1.0,1.0,933.125,0.0,933.125,0.0,0.0,,,933.125
+medagentbench,test,task2_6,selfLearnt,fixed:q72:ft,B,0,[39],1,1.0,1.0,931.125,0.0,931.125,0.0,0.0,,,931.125
+medagentbench,test,task2_8,selfLearnt,fixed:q72:ft,B,0,[89],1,1.0,1.0,931.625,0.0,931.625,0.0,0.0,,,931.625
+medagentbench,test,task2_9,selfLearnt,fixed:q72:ft,B,0,[48],1,1.0,1.0,932.375,0.0,932.375,0.0,0.0,,,932.375
+medagentbench,test,task2_11,selfLearnt,fixed:q72:ft,B,0,[44],1,1.0,1.0,931.875,0.0,931.875,0.0,0.0,,,931.875
+medagentbench,test,task2_13,selfLearnt,fixed:q72:ft,B,0,[81],1,1.0,1.0,932.0,0.0,932.0,0.0,0.0,,,932.0
+medagentbench,test,task2_14,selfLearnt,fixed:q72:ft,B,0,[75],1,1.0,1.0,932.125,0.0,932.125,0.0,0.0,,,932.125
+medagentbench,test,task2_16,selfLearnt,fixed:q72:ft,B,0,[67],0,0.0,0.0,931.75,0.0,931.75,0.0,0.0,,,931.75
+medagentbench,test,task2_17,selfLearnt,fixed:q72:ft,B,0,[76],1,1.0,1.0,931.625,0.0,931.625,0.0,0.0,,,931.625
+medagentbench,test,task2_18,selfLearnt,fixed:q72:ft,B,0,[84],1,1.0,1.0,932.125,0.0,932.125,0.0,0.0,,,932.125
+medagentbench,test,task2_19,selfLearnt,fixed:q72:ft,B,0,[28],1,1.0,1.0,928.125,0.0,928.125,0.0,0.0,,,928.125
+medagentbench,test,task2_23,selfLearnt,fixed:q72:ft,B,0,[62],1,1.0,1.0,932.75,0.0,932.75,0.0,0.0,,,932.75
+medagentbench,test,task2_26,selfLearnt,fixed:q72:ft,B,0,[69],1,1.0,1.0,932.625,0.0,932.625,0.0,0.0,,,932.625
+medagentbench,test,task3_1,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_2,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_3,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_5,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_7,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_11,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_13,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_17,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_18,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_20,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_21,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_24,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_27,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_28,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task3_29,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,876.75,0.0,876.75,0.0,0.0,,,876.75
+medagentbench,test,task4_1,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.125,0.0,885.125,0.0,0.0,,,885.125
+medagentbench,test,task4_5,selfLearnt,fixed:q72:ft,B,0,[2.1],1,1.0,1.0,939.625,0.0,939.625,0.0,0.0,,,939.625
+medagentbench,test,task4_6,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.125,0.0,885.125,0.0,0.0,,,885.125
+medagentbench,test,task4_8,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.0,0.0,885.0,0.0,0.0,,,885.0
+medagentbench,test,task4_10,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.25,0.0,885.25,0.0,0.0,,,885.25
+medagentbench,test,task4_11,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.25,0.0,885.25,0.0,0.0,,,885.25
+medagentbench,test,task4_12,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.25,0.0,885.25,0.0,0.0,,,885.25
+medagentbench,test,task4_14,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,884.75,0.0,884.75,0.0,0.0,,,884.75
+medagentbench,test,task4_15,selfLearnt,fixed:q72:ft,B,0,[2.2],1,1.0,1.0,992.75,0.0,992.75,0.0,0.0,,,992.75
+medagentbench,test,task4_16,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.125,0.0,885.125,0.0,0.0,,,885.125
+medagentbench,test,task4_17,selfLearnt,fixed:q72:ft,B,0,[2.1],1,1.0,1.0,939.625,0.0,939.625,0.0,0.0,,,939.625
+medagentbench,test,task4_19,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.0,0.0,885.0,0.0,0.0,,,885.0
+medagentbench,test,task4_20,selfLearnt,fixed:q72:ft,B,0,[2.0],1,1.0,1.0,992.625,0.0,992.625,0.0,0.0,,,992.625
+medagentbench,test,task4_21,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.25,0.0,885.25,0.0,0.0,,,885.25
+medagentbench,test,task4_22,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.375,0.0,885.375,0.0,0.0,,,885.375
+medagentbench,test,task5_3,selfLearnt,fixed:q72:ft,B,0,[2.0],1,1.0,1.0,1020.875,0.0,1020.875,0.0,0.0,,,1020.875
+medagentbench,test,task5_5,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.25,0.0,913.25,0.0,0.0,,,913.25
+medagentbench,test,task5_7,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,967.125,0.0,967.125,0.0,0.0,,,967.125
+medagentbench,test,task5_8,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.375,0.0,913.375,0.0,0.0,,,913.375
+medagentbench,test,task5_9,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.625,0.0,913.625,0.0,0.0,,,913.625
+medagentbench,test,task5_10,selfLearnt,fixed:q72:ft,B,0,[2.0],1,1.0,1.0,967.25,0.0,967.25,0.0,0.0,,,967.25
+medagentbench,test,task5_13,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.125,0.0,913.125,0.0,0.0,,,913.125
+medagentbench,test,task5_15,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.25,0.0,913.25,0.0,0.0,,,913.25
+medagentbench,test,task5_16,selfLearnt,fixed:q72:ft,B,0,[2.0],1,1.0,1.0,968.25,0.0,968.25,0.0,0.0,,,968.25
+medagentbench,test,task5_19,selfLearnt,fixed:q72:ft,B,0,[2.2],1,1.0,1.0,1021.0,0.0,1021.0,0.0,0.0,,,1021.0
+medagentbench,test,task5_20,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.125,0.0,913.125,0.0,0.0,,,913.125
+medagentbench,test,task5_21,selfLearnt,fixed:q72:ft,B,0,[1.8],0,0.0,0.0,967.875,0.0,967.875,0.0,0.0,,,967.875
+medagentbench,test,task5_22,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.25,0.0,913.25,0.0,0.0,,,913.25
+medagentbench,test,task5_25,selfLearnt,fixed:q72:ft,B,0,[1.9],0,0.0,0.0,968.25,0.0,968.25,0.0,0.0,,,968.25
+medagentbench,test,task5_26,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,913.625,0.0,913.625,0.0,0.0,,,913.625
+medagentbench,test,task6_4,selfLearnt,fixed:q72:ft,B,0,[99.2],0,0.0,0.0,1392.75,0.0,1392.75,0.0,0.0,,,1392.75
+medagentbench,test,task6_8,selfLearnt,fixed:q72:ft,B,0,[115.0],1,1.0,1.0,941.5,0.0,941.5,0.0,0.0,,,941.5
+medagentbench,test,task6_9,selfLearnt,fixed:q72:ft,B,0,[108.0],1,1.0,1.0,941.25,0.0,941.25,0.0,0.0,,,941.25
+medagentbench,test,task6_12,selfLearnt,fixed:q72:ft,B,0,[188.0],1,1.0,1.0,1117.75,0.0,1117.75,0.0,0.0,,,1117.75
+medagentbench,test,task6_14,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,886.0,0.0,886.0,0.0,0.0,,,886.0
+medagentbench,test,task6_15,selfLearnt,fixed:q72:ft,B,0,[-1],1,1.0,1.0,885.625,0.0,885.625,0.0,0.0,,,885.625
+medagentbench,test,task6_18,selfLearnt,fixed:q72:ft,B,0,[127.0],1,1.0,1.0,941.125,0.0,941.125,0.0,0.0,,,941.125
+medagentbench,test,task6_20,selfLearnt,fixed:q72:ft,B,0,[169.14285714285714],0,0.0,0.0,1273.875,0.0,1273.875,0.0,0.0,,,1273.875
+medagentbench,test,task6_21,selfLearnt,fixed:q72:ft,B,0,[102.0],1,1.0,1.0,995.25,0.0,995.25,0.0,0.0,,,995.25
+medagentbench,test,task6_22,selfLearnt,fixed:q72:ft,B,0,[97.0],1,1.0,1.0,941.375,0.0,941.375,0.0,0.0,,,941.375
+medagentbench,test,task6_24,selfLearnt,fixed:q72:ft,B,0,[90.0],1,1.0,1.0,940.875,0.0,940.875,0.0,0.0,,,940.875
+medagentbench,test,task6_25,selfLearnt,fixed:q72:ft,B,0,[93.5],0,0.0,0.0,1211.0,0.0,1211.0,0.0,0.0,,,1211.0
+medagentbench,test,task6_28,selfLearnt,fixed:q72:ft,B,0,[108.0],1,1.0,1.0,995.125,0.0,995.125,0.0,0.0,,,995.125
+medagentbench,test,task6_29,selfLearnt,fixed:q72:ft,B,0,[166.0],1,1.0,1.0,1002.25,0.0,1002.25,0.0,0.0,,,1002.25
+medagentbench,test,task6_30,selfLearnt,fixed:q72:ft,B,0,[126.0],1,1.0,1.0,941.25,0.0,941.25,0.0,0.0,,,941.25
+medagentbench,test,task7_3,selfLearnt,fixed:q72:ft,B,0,[134.0],1,1.0,1.0,1439.125,0.0,1439.125,0.0,0.0,,,1439.125
+medagentbench,test,task7_4,selfLearnt,fixed:q72:ft,B,0,[215.0],1,1.0,1.0,1447.5,0.0,1447.5,0.0,0.0,,,1447.5
+medagentbench,test,task7_5,selfLearnt,fixed:q72:ft,B,0,[134.0],1,1.0,1.0,1440.0,0.0,1440.0,0.0,0.0,,,1440.0
+medagentbench,test,task7_6,selfLearnt,fixed:q72:ft,B,0,[73.0],1,1.0,1.0,1438.75,0.0,1438.75,0.0,0.0,,,1438.75
+medagentbench,test,task7_7,selfLearnt,fixed:q72:ft,B,0,[110.0],1,1.0,1.0,1430.25,0.0,1430.25,0.0,0.0,,,1430.25
+medagentbench,test,task7_12,selfLearnt,fixed:q72:ft,B,0,[79.0],1,1.0,1.0,1439.25,0.0,1439.25,0.0,0.0,,,1439.25
+medagentbench,test,task7_13,selfLearnt,fixed:q72:ft,B,0,[161.0],1,1.0,1.0,1447.125,0.0,1447.125,0.0,0.0,,,1447.125
+medagentbench,test,task7_15,selfLearnt,fixed:q72:ft,B,0,[81.0],1,1.0,1.0,1438.75,0.0,1438.75,0.0,0.0,,,1438.75
+medagentbench,test,task7_17,selfLearnt,fixed:q72:ft,B,0,[107.0],1,1.0,1.0,1428.625,0.0,1428.625,0.0,0.0,,,1428.625
+medagentbench,test,task7_18,selfLearnt,fixed:q72:ft,B,0,[94.0],1,1.0,1.0,1440.375,0.0,1440.375,0.0,0.0,,,1440.375
+medagentbench,test,task7_19,selfLearnt,fixed:q72:ft,B,0,[190.0],1,1.0,1.0,1438.875,0.0,1438.875,0.0,0.0,,,1438.875
+medagentbench,test,task7_20,selfLearnt,fixed:q72:ft,B,0,[85.0],1,1.0,1.0,1438.75,0.0,1438.75,0.0,0.0,,,1438.75
+medagentbench,test,task7_21,selfLearnt,fixed:q72:ft,B,0,[108.0],1,1.0,1.0,1441.875,0.0,1441.875,0.0,0.0,,,1441.875
+medagentbench,test,task7_23,selfLearnt,fixed:q72:ft,B,0,[102.0],1,1.0,1.0,1439.5,0.0,1439.5,0.0,0.0,,,1439.5
+medagentbench,test,task7_27,selfLearnt,fixed:q72:ft,B,0,[94.0],1,1.0,1.0,1440.125,0.0,1440.125,0.0,0.0,,,1440.125
+medagentbench,test,task8_3,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_5,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_9,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_12,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_14,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_16,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_17,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_18,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_19,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_21,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_22,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_24,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_27,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_28,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task8_30,selfLearnt,fixed:q72:ft,B,0,[],1,1.0,1.0,907.25,0.0,907.25,0.0,0.0,,,907.25
+medagentbench,test,task9_1,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4381.25,0.0,4381.25,0.0,0.0,,,4381.25
+medagentbench,test,task9_2,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4378.625,0.0,4378.625,0.0,0.0,,,4378.625
+medagentbench,test,task9_3,selfLearnt,fixed:q72:ft,B,0,[],0,0.0,0.0,3706.5,0.0,3706.5,0.0,0.0,,,3706.5
+medagentbench,test,task9_6,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4541.25,0.0,4541.25,0.0,0.0,,,4541.25
+medagentbench,test,task9_8,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,2558.75,0.0,2558.75,0.0,0.0,,,2558.75
+medagentbench,test,task9_10,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4602.125,0.0,4602.125,0.0,0.0,,,4602.125
+medagentbench,test,task9_11,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4552.75,0.0,4552.75,0.0,0.0,,,4552.75
+medagentbench,test,task9_13,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4682.125,0.0,4682.125,0.0,0.0,,,4682.125
+medagentbench,test,task9_15,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4391.625,0.0,4391.625,0.0,0.0,,,4391.625
+medagentbench,test,task9_18,selfLearnt,fixed:q72:ft,B,0,[],0,0.0,0.0,4577.0,0.0,4577.0,0.0,0.0,,,4577.0
+medagentbench,test,task9_20,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4383.125,0.0,4383.125,0.0,0.0,,,4383.125
+medagentbench,test,task9_21,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4488.0,0.0,4488.0,0.0,0.0,,,4488.0
+medagentbench,test,task9_23,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4385.25,0.0,4385.25,0.0,0.0,,,4385.25
+medagentbench,test,task9_24,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4570.375,0.0,4570.375,0.0,0.0,,,4570.375
+medagentbench,test,task9_26,selfLearnt,fixed:q72:ft,B,0,,0,0.0,0.0,4440.125,0.0,4440.125,0.0,0.0,,,4440.125
+medagentbench,test,task10_2,selfLearnt,fixed:q72:ft,B,0,"[5.9, ""2023-11-09T03:05:00+00:00""]",1,1.0,1.0,961.5,0.0,961.5,0.0,0.0,,,961.5
+medagentbench,test,task10_4,selfLearnt,fixed:q72:ft,B,0,"[5.4, ""2023-08-01T20:29:00+00:00""]",0,0.0,0.0,1633.0,0.0,1633.0,0.0,0.0,,,1633.0
+medagentbench,test,task10_5,selfLearnt,fixed:q72:ft,B,0,"[6.6, ""2023-11-04T14:54:00+00:00""]",1,1.0,1.0,1022.625,0.0,1022.625,0.0,0.0,,,1022.625
+medagentbench,test,task10_6,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.5,0.0,896.5,0.0,0.0,,,896.5
+medagentbench,test,task10_7,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.25,0.0,896.25,0.0,0.0,,,896.25
+medagentbench,test,task10_9,selfLearnt,fixed:q72:ft,B,0,"[5.5, ""2023-10-14T18:44:00+00:00""]",1,1.0,1.0,1007.0,0.0,1007.0,0.0,0.0,,,1007.0
+medagentbench,test,task10_10,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.5,0.0,896.5,0.0,0.0,,,896.5
+medagentbench,test,task10_12,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.625,0.0,896.625,0.0,0.0,,,896.625
+medagentbench,test,task10_13,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.375,0.0,896.375,0.0,0.0,,,896.375
+medagentbench,test,task10_14,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.5,0.0,896.5,0.0,0.0,,,896.5
+medagentbench,test,task10_19,selfLearnt,fixed:q72:ft,B,0,"[5.9, ""2023-09-22T22:28:00+00:00""]",1,1.0,1.0,1067.75,0.0,1067.75,0.0,0.0,,,1067.75
+medagentbench,test,task10_20,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.25,0.0,896.25,0.0,0.0,,,896.25
+medagentbench,test,task10_22,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.625,0.0,896.625,0.0,0.0,,,896.625
+medagentbench,test,task10_26,selfLearnt,fixed:q72:ft,B,0,[-1],0,0.0,0.0,896.75,0.0,896.75,0.0,0.0,,,896.75
+medagentbench,test,task10_28,selfLearnt,fixed:q72:ft,B,0,"[7.4, ""2023-06-27T23:25:00+00:00""]",1,1.0,1.0,961.875,0.0,961.875,0.0,0.0,,,961.875
+medagentbench,test,task1_2,selfLearnt,fixed:q7x:ft,B,0,"[""S6426560""]",1,1.0,1.0,90.69618055555556,0.0,90.69618055555556,0.0,0.0,,,90.69618055555556
+medagentbench,test,task1_6,selfLearnt,fixed:q7x:ft,B,0,"[""S2874099""]",1,1.0,1.0,90.63541666666666,0.0,90.63541666666666,0.0,0.0,,,90.63541666666666
+medagentbench,test,task1_7,selfLearnt,fixed:q7x:ft,B,0,"[""S6200102""]",1,1.0,1.0,90.87847222222223,0.0,90.87847222222223,0.0,0.0,,,90.87847222222223
+medagentbench,test,task1_8,selfLearnt,fixed:q7x:ft,B,0,"[""S6530532""]",1,1.0,1.0,90.74479166666666,0.0,90.74479166666666,0.0,0.0,,,90.74479166666666
+medagentbench,test,task1_11,selfLearnt,fixed:q7x:ft,B,0,"[""S6521727""]",1,1.0,1.0,90.74479166666666,0.0,90.74479166666666,0.0,0.0,,,90.74479166666666
+medagentbench,test,task1_13,selfLearnt,fixed:q7x:ft,B,0,"[""S2154941""]",1,1.0,1.0,90.69618055555554,0.0,90.69618055555554,0.0,0.0,,,90.69618055555554
+medagentbench,test,task1_16,selfLearnt,fixed:q7x:ft,B,0,"[""S6551923""]",1,1.0,1.0,90.78125,0.0,90.78125,0.0,0.0,,,90.78125
+medagentbench,test,task1_17,selfLearnt,fixed:q7x:ft,B,0,"[""S2119664""]",1,1.0,1.0,90.671875,0.0,90.671875,0.0,0.0,,,90.671875
+medagentbench,test,task1_21,selfLearnt,fixed:q7x:ft,B,0,"[""S0547588""]",1,1.0,1.0,90.75694444444444,0.0,90.75694444444444,0.0,0.0,,,90.75694444444444
+medagentbench,test,task1_22,selfLearnt,fixed:q7x:ft,B,0,"[""S0722219""]",1,1.0,1.0,90.79340277777777,0.0,90.79340277777777,0.0,0.0,,,90.79340277777777
+medagentbench,test,task1_23,selfLearnt,fixed:q7x:ft,B,0,"[""S3057899""]",1,1.0,1.0,90.82986111111111,0.0,90.82986111111111,0.0,0.0,,,90.82986111111111
+medagentbench,test,task1_24,selfLearnt,fixed:q7x:ft,B,0,"[""S6538722""]",1,1.0,1.0,90.76909722222223,0.0,90.76909722222223,0.0,0.0,,,90.76909722222223
+medagentbench,test,task1_26,selfLearnt,fixed:q7x:ft,B,0,"[""S3236936""]",1,1.0,1.0,90.84201388888889,0.0,90.84201388888889,0.0,0.0,,,90.84201388888889
+medagentbench,test,task1_27,selfLearnt,fixed:q7x:ft,B,0,"[""S3213957""]",1,1.0,1.0,90.84201388888889,0.0,90.84201388888889,0.0,0.0,,,90.84201388888889
+medagentbench,test,task1_29,selfLearnt,fixed:q7x:ft,B,0,"[""Patient not found""]",1,1.0,1.0,83.87847222222223,0.0,83.87847222222223,0.0,0.0,,,83.87847222222223
+medagentbench,test,task2_1,selfLearnt,fixed:q7x:ft,B,0,[60],1,1.0,1.0,90.57465277777777,0.0,90.57465277777777,0.0,0.0,,,90.57465277777777
+medagentbench,test,task2_2,selfLearnt,fixed:q7x:ft,B,0,[70],0,0.0,0.0,90.671875,0.0,90.671875,0.0,0.0,,,90.671875
+medagentbench,test,task2_3,selfLearnt,fixed:q7x:ft,B,0,[67],0,0.0,0.0,90.75694444444444,0.0,90.75694444444444,0.0,0.0,,,90.75694444444444
+medagentbench,test,task2_6,selfLearnt,fixed:q7x:ft,B,0,[40],0,0.0,0.0,90.58680555555556,0.0,90.58680555555556,0.0,0.0,,,90.58680555555556
+medagentbench,test,task2_8,selfLearnt,fixed:q7x:ft,B,0,[88],0,0.0,0.0,90.58680555555556,0.0,90.58680555555556,0.0,0.0,,,90.58680555555556
+medagentbench,test,task2_9,selfLearnt,fixed:q7x:ft,B,0,[48],1,1.0,1.0,90.65972222222223,0.0,90.65972222222223,0.0,0.0,,,90.65972222222223
+medagentbench,test,task2_11,selfLearnt,fixed:q7x:ft,B,0,[44],1,1.0,1.0,90.62326388888889,0.0,90.62326388888889,0.0,0.0,,,90.62326388888889
+medagentbench,test,task2_13,selfLearnt,fixed:q7x:ft,B,0,[71],0,0.0,0.0,90.59895833333334,0.0,90.59895833333334,0.0,0.0,,,90.59895833333334
+medagentbench,test,task2_14,selfLearnt,fixed:q7x:ft,B,0,[75],1,1.0,1.0,90.61111111111111,0.0,90.61111111111111,0.0,0.0,,,90.61111111111111
+medagentbench,test,task2_16,selfLearnt,fixed:q7x:ft,B,0,[66],1,1.0,1.0,90.57465277777777,0.0,90.57465277777777,0.0,0.0,,,90.57465277777777
+medagentbench,test,task2_17,selfLearnt,fixed:q7x:ft,B,0,[75],0,0.0,0.0,90.5625,0.0,90.5625,0.0,0.0,,,90.5625
+medagentbench,test,task2_18,selfLearnt,fixed:q7x:ft,B,0,[84],1,1.0,1.0,90.62326388888889,0.0,90.62326388888889,0.0,0.0,,,90.62326388888889
+medagentbench,test,task2_19,selfLearnt,fixed:q7x:ft,B,0,[28],1,1.0,1.0,90.24652777777777,0.0,90.24652777777777,0.0,0.0,,,90.24652777777777
+medagentbench,test,task2_23,selfLearnt,fixed:q7x:ft,B,0,[62],1,1.0,1.0,90.65972222222223,0.0,90.65972222222223,0.0,0.0,,,90.65972222222223
+medagentbench,test,task2_26,selfLearnt,fixed:q7x:ft,B,0,[70],0,0.0,0.0,90.70833333333334,0.0,90.70833333333334,0.0,0.0,,,90.70833333333334
+medagentbench,test,task3_1,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_2,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_3,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_5,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_7,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_11,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_13,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_17,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_18,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_20,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_21,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_24,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_27,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_28,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task3_29,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,85.23958333333334,0.0,85.23958333333334,0.0,0.0,,,85.23958333333334
+medagentbench,test,task4_1,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.05381944444444,0.0,86.05381944444444,0.0,0.0,,,86.05381944444444
+medagentbench,test,task4_5,selfLearnt,fixed:q7x:ft,B,0,[2.1],1,1.0,1.0,91.36458333333334,0.0,91.36458333333334,0.0,0.0,,,91.36458333333334
+medagentbench,test,task4_6,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.01736111111111,0.0,86.01736111111111,0.0,0.0,,,86.01736111111111
+medagentbench,test,task4_8,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.02951388888889,0.0,86.02951388888889,0.0,0.0,,,86.02951388888889
+medagentbench,test,task4_10,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.01736111111111,0.0,86.01736111111111,0.0,0.0,,,86.01736111111111
+medagentbench,test,task4_11,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.05381944444444,0.0,86.05381944444444,0.0,0.0,,,86.05381944444444
+medagentbench,test,task4_12,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.01736111111111,0.0,86.01736111111111,0.0,0.0,,,86.01736111111111
+medagentbench,test,task4_14,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.06597222222223,0.0,86.06597222222223,0.0,0.0,,,86.06597222222223
+medagentbench,test,task4_15,selfLearnt,fixed:q7x:ft,B,0,[2.2],1,1.0,1.0,96.56597222222223,0.0,96.56597222222223,0.0,0.0,,,96.56597222222223
+medagentbench,test,task4_16,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.06597222222223,0.0,86.06597222222223,0.0,0.0,,,86.06597222222223
+medagentbench,test,task4_17,selfLearnt,fixed:q7x:ft,B,0,[2.1],1,1.0,1.0,91.34027777777777,0.0,91.34027777777777,0.0,0.0,,,91.34027777777777
+medagentbench,test,task4_19,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.09027777777777,0.0,86.09027777777777,0.0,0.0,,,86.09027777777777
+medagentbench,test,task4_20,selfLearnt,fixed:q7x:ft,B,0,[2.0],1,1.0,1.0,96.48090277777777,0.0,96.48090277777777,0.0,0.0,,,96.48090277777777
+medagentbench,test,task4_21,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.06597222222223,0.0,86.06597222222223,0.0,0.0,,,86.06597222222223
+medagentbench,test,task4_22,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.09027777777777,0.0,86.09027777777777,0.0,0.0,,,86.09027777777777
+medagentbench,test,task5_3,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,124.86979166666667,0.0,124.86979166666667,0.0,0.0,,,124.86979166666667
+medagentbench,test,task5_5,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,87.9375,0.0,87.9375,0.0,0.0,,,87.9375
+medagentbench,test,task5_7,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.68055555555556,0.0,42.68055555555556,0.0,0.0,,,42.68055555555556
+medagentbench,test,task5_8,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,103.48090277777777,0.0,103.48090277777777,0.0,0.0,,,103.48090277777777
+medagentbench,test,task5_9,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,87.92534722222223,0.0,87.92534722222223,0.0,0.0,,,87.92534722222223
+medagentbench,test,task5_10,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,119.07291666666667,0.0,119.07291666666667,0.0,0.0,,,119.07291666666667
+medagentbench,test,task5_13,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,138.88194444444446,0.0,138.88194444444446,0.0,0.0,,,138.88194444444446
+medagentbench,test,task5_15,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.68055555555556,0.0,42.68055555555556,0.0,0.0,,,42.68055555555556
+medagentbench,test,task5_16,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,213.18402777777777,0.0,213.18402777777777,0.0,0.0,,,213.18402777777777
+medagentbench,test,task5_19,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,130.21701388888889,0.0,130.21701388888889,0.0,0.0,,,130.21701388888889
+medagentbench,test,task5_20,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,87.88888888888889,0.0,87.88888888888889,0.0,0.0,,,87.88888888888889
+medagentbench,test,task5_21,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,93.17534722222223,0.0,93.17534722222223,0.0,0.0,,,93.17534722222223
+medagentbench,test,task5_22,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,206.41493055555554,0.0,206.41493055555554,0.0,0.0,,,206.41493055555554
+medagentbench,test,task5_25,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,93.13888888888889,0.0,93.13888888888889,0.0,0.0,,,93.13888888888889
+medagentbench,test,task5_26,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,98.34027777777777,0.0,98.34027777777777,0.0,0.0,,,98.34027777777777
+medagentbench,test,task6_4,selfLearnt,fixed:q7x:ft,B,0,[106.0],0,0.0,0.0,135.46701388888889,0.0,135.46701388888889,0.0,0.0,,,135.46701388888889
+medagentbench,test,task6_8,selfLearnt,fixed:q7x:ft,B,0,[115.0],1,1.0,1.0,91.55902777777777,0.0,91.55902777777777,0.0,0.0,,,91.55902777777777
+medagentbench,test,task6_9,selfLearnt,fixed:q7x:ft,B,0,[108.0],1,1.0,1.0,91.48611111111111,0.0,91.48611111111111,0.0,0.0,,,91.48611111111111
+medagentbench,test,task6_12,selfLearnt,fixed:q7x:ft,B,0,[189.0],0,0.0,0.0,108.69444444444444,0.0,108.69444444444444,0.0,0.0,,,108.69444444444444
+medagentbench,test,task6_14,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.15104166666667,0.0,86.15104166666667,0.0,0.0,,,86.15104166666667
+medagentbench,test,task6_15,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,86.09027777777777,0.0,86.09027777777777,0.0,0.0,,,86.09027777777777
+medagentbench,test,task6_18,selfLearnt,fixed:q7x:ft,B,0,[127.0],1,1.0,1.0,91.52256944444446,0.0,91.52256944444446,0.0,0.0,,,91.52256944444446
+medagentbench,test,task6_20,selfLearnt,fixed:q7x:ft,B,0,[173.0],0,0.0,0.0,123.66666666666667,0.0,123.66666666666667,0.0,0.0,,,123.66666666666667
+medagentbench,test,task6_21,selfLearnt,fixed:q7x:ft,B,0,[97.0],0,0.0,0.0,96.77256944444446,0.0,96.77256944444446,0.0,0.0,,,96.77256944444446
+medagentbench,test,task6_22,selfLearnt,fixed:q7x:ft,B,0,[97.0],1,1.0,1.0,91.51041666666667,0.0,91.51041666666667,0.0,0.0,,,91.51041666666667
+medagentbench,test,task6_24,selfLearnt,fixed:q7x:ft,B,0,[90.0],1,1.0,1.0,91.52256944444446,0.0,91.52256944444446,0.0,0.0,,,91.52256944444446
+medagentbench,test,task6_25,selfLearnt,fixed:q7x:ft,B,0,"[89.0, 84.0, 110.0, 98.0, 86.0, 99.0]",0,0.0,0.0,118.14930555555556,0.0,118.14930555555556,0.0,0.0,,,118.14930555555556
+medagentbench,test,task6_28,selfLearnt,fixed:q7x:ft,B,0,[108.0],1,1.0,1.0,96.77256944444446,0.0,96.77256944444446,0.0,0.0,,,96.77256944444446
+medagentbench,test,task6_29,selfLearnt,fixed:q7x:ft,B,0,[116.0],0,0.0,0.0,97.42881944444446,0.0,97.42881944444446,0.0,0.0,,,97.42881944444446
+medagentbench,test,task6_30,selfLearnt,fixed:q7x:ft,B,0,[126.0],1,1.0,1.0,91.48611111111111,0.0,91.48611111111111,0.0,0.0,,,91.48611111111111
+medagentbench,test,task7_3,selfLearnt,fixed:q7x:ft,B,0,[134.0],1,1.0,1.0,140.109375,0.0,140.109375,0.0,0.0,,,140.109375
+medagentbench,test,task7_4,selfLearnt,fixed:q7x:ft,B,0,[215.0],1,1.0,1.0,140.63194444444446,0.0,140.63194444444446,0.0,0.0,,,140.63194444444446
+medagentbench,test,task7_5,selfLearnt,fixed:q7x:ft,B,0,[134.0],1,1.0,1.0,139.95138888888889,0.0,139.95138888888889,0.0,0.0,,,139.95138888888889
+medagentbench,test,task7_6,selfLearnt,fixed:q7x:ft,B,0,[73.0],1,1.0,1.0,140.06076388888889,0.0,140.06076388888889,0.0,0.0,,,140.06076388888889
+medagentbench,test,task7_7,selfLearnt,fixed:q7x:ft,B,0,[110.0],1,1.0,1.0,138.97916666666666,0.0,138.97916666666666,0.0,0.0,,,138.97916666666666
+medagentbench,test,task7_12,selfLearnt,fixed:q7x:ft,B,0,[79.0],1,1.0,1.0,140.02430555555557,0.0,140.02430555555557,0.0,0.0,,,140.02430555555557
+medagentbench,test,task7_13,selfLearnt,fixed:q7x:ft,B,0,[161.0],1,1.0,1.0,140.66840277777777,0.0,140.66840277777777,0.0,0.0,,,140.66840277777777
+medagentbench,test,task7_15,selfLearnt,fixed:q7x:ft,B,0,[81.0],1,1.0,1.0,140.04861111111111,0.0,140.04861111111111,0.0,0.0,,,140.04861111111111
+medagentbench,test,task7_17,selfLearnt,fixed:q7x:ft,B,0,[107.0],1,1.0,1.0,140.07291666666669,0.0,140.07291666666669,0.0,0.0,,,140.07291666666669
+medagentbench,test,task7_18,selfLearnt,fixed:q7x:ft,B,0,[94.0],1,1.0,1.0,139.92708333333334,0.0,139.92708333333334,0.0,0.0,,,139.92708333333334
+medagentbench,test,task7_19,selfLearnt,fixed:q7x:ft,B,0,[190.0],1,1.0,1.0,140.02430555555554,0.0,140.02430555555554,0.0,0.0,,,140.02430555555554
+medagentbench,test,task7_20,selfLearnt,fixed:q7x:ft,B,0,[85.0],1,1.0,1.0,139.97569444444443,0.0,139.97569444444443,0.0,0.0,,,139.97569444444443
+medagentbench,test,task7_21,selfLearnt,fixed:q7x:ft,B,0,[108.0],1,1.0,1.0,140.07291666666666,0.0,140.07291666666666,0.0,0.0,,,140.07291666666666
+medagentbench,test,task7_23,selfLearnt,fixed:q7x:ft,B,0,[102.0],1,1.0,1.0,140.07291666666669,0.0,140.07291666666669,0.0,0.0,,,140.07291666666669
+medagentbench,test,task7_27,selfLearnt,fixed:q7x:ft,B,0,[94.0],1,1.0,1.0,140.01215277777777,0.0,140.01215277777777,0.0,0.0,,,140.01215277777777
+medagentbench,test,task8_3,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_5,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_9,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_12,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_14,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_16,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_17,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_18,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_19,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_21,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_22,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_24,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_27,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.25347222222223,0.0,88.25347222222223,0.0,0.0,,,88.25347222222223
+medagentbench,test,task8_28,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.20486111111111,0.0,88.20486111111111,0.0,0.0,,,88.20486111111111
+medagentbench,test,task8_30,selfLearnt,fixed:q7x:ft,B,0,[],1,1.0,1.0,88.25347222222223,0.0,88.25347222222223,0.0,0.0,,,88.25347222222223
+medagentbench,test,task9_1,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_2,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_3,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_6,selfLearnt,fixed:q7x:ft,B,0,[4.3],1,1.0,1.0,206.30555555555557,0.0,206.30555555555557,0.0,0.0,,,206.30555555555557
+medagentbench,test,task9_8,selfLearnt,fixed:q7x:ft,B,0,[3.8],1,1.0,1.0,124.00694444444446,0.0,124.00694444444446,0.0,0.0,,,124.00694444444446
+medagentbench,test,task9_10,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,92.21527777777777,0.0,92.21527777777777,0.0,0.0,,,92.21527777777777
+medagentbench,test,task9_11,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_13,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_15,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_18,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_20,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_21,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_23,selfLearnt,fixed:q7x:ft,B,0,,0,0.0,0.0,42.20659722222222,0.0,42.20659722222222,0.0,0.0,,,42.20659722222222
+medagentbench,test,task9_24,selfLearnt,fixed:q7x:ft,B,0,[4.3],1,1.0,1.0,102.67881944444444,0.0,102.67881944444444,0.0,0.0,,,102.67881944444444
+medagentbench,test,task9_26,selfLearnt,fixed:q7x:ft,B,0,[4.1],1,1.0,1.0,97.41666666666666,0.0,97.41666666666666,0.0,0.0,,,97.41666666666666
+medagentbench,test,task10_2,selfLearnt,fixed:q7x:ft,B,0,"[5.9, ""2023-11-09T03:05:00+00:00""]",1,1.0,1.0,92.54340277777777,0.0,92.54340277777777,0.0,0.0,,,92.54340277777777
+medagentbench,test,task10_4,selfLearnt,fixed:q7x:ft,B,0,"[5.4, ""2023-08-01T20:29:00+00:00""]",1,1.0,1.0,108.14756944444443,0.0,108.14756944444443,0.0,0.0,,,108.14756944444443
+medagentbench,test,task10_5,selfLearnt,fixed:q7x:ft,B,0,"[6.6, ""2023-11-04T14:54:00+00:00""]",1,1.0,1.0,116.49652777777777,0.0,116.49652777777777,0.0,0.0,,,116.49652777777777
+medagentbench,test,task10_6,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_7,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,134.22743055555554,0.0,134.22743055555554,0.0,0.0,,,134.22743055555554
+medagentbench,test,task10_9,selfLearnt,fixed:q7x:ft,B,0,"[5.5, ""2023-10-14T18:44:00+00:00""]",1,1.0,1.0,144.19270833333334,0.0,144.19270833333334,0.0,0.0,,,144.19270833333334
+medagentbench,test,task10_10,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,134.32465277777777,0.0,134.32465277777777,0.0,0.0,,,134.32465277777777
+medagentbench,test,task10_12,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,134.25173611111111,0.0,134.25173611111111,0.0,0.0,,,134.25173611111111
+medagentbench,test,task10_13,selfLearnt,fixed:q7x:ft,B,0,"[5.8, ""2022-09-09T15:33:00+00:00""]",0,0.0,0.0,103.61458333333333,0.0,103.61458333333333,0.0,0.0,,,103.61458333333333
+medagentbench,test,task10_14,selfLearnt,fixed:q7x:ft,B,0,"[4.8, ""2022-05-18T22:03:00+00:00""]",0,0.0,0.0,97.06423611111111,0.0,97.06423611111111,0.0,0.0,,,97.06423611111111
+medagentbench,test,task10_19,selfLearnt,fixed:q7x:ft,B,0,"[5.6, ""2023-09-02T18:31:00+00:00""]",0,0.0,0.0,142.734375,0.0,142.734375,0.0,0.0,,,142.734375
+medagentbench,test,task10_20,selfLearnt,fixed:q7x:ft,B,0,[-1],0,0.0,0.0,92.23958333333333,0.0,92.23958333333333,0.0,0.0,,,92.23958333333333
+medagentbench,test,task10_22,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_26,selfLearnt,fixed:q7x:ft,B,0,[-1],1,1.0,1.0,134.27604166666669,0.0,134.27604166666669,0.0,0.0,,,134.27604166666669
+medagentbench,test,task10_28,selfLearnt,fixed:q7x:ft,B,0,"[7.4, ""2023-06-27T23:25:00+00:00""]",1,1.0,1.0,92.57986111111111,0.0,92.57986111111111,0.0,0.0,,,92.57986111111111

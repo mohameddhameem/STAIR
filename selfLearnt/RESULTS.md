@@ -411,27 +411,32 @@ two medication types it now places orders but often wrongly (5: 13 -> 7, 9: 14 -
 usually accepted. Seven examples taught it *that* to order more than *when* and *how much*. Those mistakes are visible in
 practice, so the rules can now learn from them.
 
-**With the switching rules** (test 150; W = this 7B, M = 32B; the merged-search designs run without the 72B rung for now,
-`-noS`: its runs from the new 7B's searches are still queued, and no rule has escalated to the 72B in any design so far):
+**With the switching rules** (test 150; W = this 7B, M = 32B, S = 72B; merged-search rules unless marked revision 1):
 
 | Design | Rules learnt | Accuracy | Without task 9 | Cost, person 2 x | Cost, person 1 x | To a person | High-risk failures no one sees |
 |---|---|---|---|---|---|---|---|
 | Approach 3, restart (AL-26 / AL-27, revision 1) | 7B unsure -> 32B; potassium -> a person | 94.0% | 93.3% | 100.0% | 68.3% | 15 | 2 |
-| Approach 3, merged searches (AL-26 / AL-27 `-noS`) | no order placed -> 32B (adds its searches); potassium -> a person; malformed high-risk answer -> a person | 94.7% | 94.1% | 102.2% | 68.9% | 18 | 2 |
-| **Approach 4, search ladder -> answer ladder (AL-30 / AL-31 `-noS`)** | **no order placed -> the 32B writes the answer from the same searches** | **94.7%** | **94.1%** | **70.7%** | **47.3%** | 13 | 2 |
-| Same, with the 4 x penalty for a missed high-risk failure (AL-28 / AL-29, AL-32 / AL-33) | the same rules as without it | same | same | + 4.2 pt | + 4.2 pt | same | 2 |
+| Approach 3, person 2 x (AL-26) | no order placed -> 32B (adds its searches); potassium -> a person; malformed high-risk answer -> a person | 96.0% | 95.6% | 104.1% | 70.8% | 18 | 2 |
+| **Approach 3, person 1 x (AL-27)** | **no order placed -> 32B; on a high-risk task, no order placed -> a person** | **97.3%** | **97.0%** | | **73.2%** | 30 | **0** |
+| **Approach 4, search ladder -> answer ladder (AL-30 / AL-31)** | **no order placed -> the 32B writes the answer from the same searches** | 94.7% | 94.1% | 74.0% | **50.6%** | 13 | 2 |
+| With the 4 x penalty for a missed high-risk failure (AL-28 / AL-29, AL-32 / AL-33) | the same rules as without it | same | same | + 4.2 pt | + 0 / + 4.2 pt | same | same |
 | For comparison: AL-19 (approach 4, the first 7B) | | 86.0% | 85.2% | 9.4% | | 0 | 3 |
 | For comparison: Jonathan, Training 5b (a person on high-risk tasks) | | 76.00% | | | 94.5% | 27 | 2 |
 
-Cost = model calls plus people, as a share of always-strong's cost; a person counts as correct. Approach 4 at
-Jonathan's person price: **94.7% at 47% of always-strong's cost** (always-strong 54.7%, his best router with people
-76.0% at 94.5%). The hand-off works as intended here: the 7B does the searching, and the 32B steps in only for the
-order decision when the 7B placed none; some high-risk tasks still reach a person through the locked rule for
-unfinished attempts. The person's price and the penalty did not change the learnt rules in any of the eight: sending
-the potassium tasks to a person pays off even at 2 x, and the 2 remaining misses (magnesium) never occurred in
-practice, so the penalty only shows as cost on test.
+Cost = model calls plus people, as a share of always-strong's cost; a person counts as correct. The 72B rung (its runs
+from the new 7B's searches finished 6 Nov, on 2 cards) added 1.3 points to approach 3 through the locked rule (an
+unfinished 32B attempt now goes up to the 72B instead of stopping), and nothing to approach 4 but cost (+3.3 pt); the
+provisional results without it (`-noS` files, 5 Nov) are kept beside them.
 
-Open: the 72B rung of AL-26 .. AL-33 (merged searches); the queued job will either confirm these numbers or add it.
+- **The person's price now matters.** At Jonathan's price (1 x) the rules of approach 3 learnt, on their own, the
+  safety rule we had considered imposing: on a high-risk task where no order was placed, a person checks. All 30
+  high-risk test tasks reach a person, no high-risk failure goes unseen, and accuracy is 97.3% at 73% of
+  always-strong's cost. At 2 x the same rule does not pay, and 2 failures stay unseen.
+- **Approach 4 is the cheapest:** 94.7% at 51% of always-strong's cost (person 1 x). The 7B does the searching, and the
+  32B steps in only for the order decision when the 7B placed none.
+- **The penalty changed no rule.** Where failures were left (approach 4, approach 3 at 2 x) they never occurred on the
+  practice tasks, so the penalty only shows as cost on test.
+- Against Jonathan's best with people (76.0% at 94.5%): 97.3% at 73% (approach 3) or 94.7% at 51% (approach 4).
 
 ## Fine-tuning (early stopping on validation loss, `results/common/history/`)
 

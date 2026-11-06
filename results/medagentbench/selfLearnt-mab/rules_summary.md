@@ -34,22 +34,22 @@
 | ... same, cost without the missed-high-risk penalty (AI + person only) | | | 11.0 | | |
 | AL-25 AL-21 (person at 1 x), plus 4 x always-strong for a high-risk task answered wrong without a person: learnt rules (2 changes) | 86.00 | 85.19 | 23.8 | 0 | 3 |
 | ... same, cost without the missed-high-risk penalty (AI + person only) | | | 9.4 | | |
-| AL-26-noS approach 3, W with expert orders (person 2 x) [without S: 72B runs pending]: learnt rules (3 changes) | 94.67 | 94.07 | 102.2 | 18 | 2 |
-| ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 68.9 | 18 | 2 |
-| AL-27-noS approach 3, W with expert orders (person 1 x) [without S: 72B runs pending]: learnt rules (3 changes) | 94.67 | 94.07 | 68.9 | 18 | 2 |
-| AL-28-noS approach 3, W with expert orders (person 2 x, 4 x penalty) [without S: 72B runs pending]: learnt rules (3 changes) | 94.67 | 94.07 | 106.4 | 18 | 2 |
-| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 102.2 | | |
-| ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 73.1 | 18 | 2 |
-| AL-29-noS approach 3, W with expert orders (person 1 x, 4 x penalty) [without S: 72B runs pending]: learnt rules (3 changes) | 94.67 | 94.07 | 73.1 | 18 | 2 |
-| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 68.9 | | |
-| AL-30-noS approach 4, W with expert orders (person 2 x) [without S: 72B runs pending]: learnt rules (1 changes) | 94.67 | 94.07 | 70.7 | 13 | 2 |
-| ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 47.3 | 13 | 2 |
-| AL-31-noS approach 4, W with expert orders (person 1 x) [without S: 72B runs pending]: learnt rules (1 changes) | 94.67 | 94.07 | 47.3 | 13 | 2 |
-| AL-32-noS approach 4, W with expert orders (person 2 x, 4 x penalty) [without S: 72B runs pending]: learnt rules (1 changes) | 94.67 | 94.07 | 74.9 | 13 | 2 |
-| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 70.7 | | |
-| ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 51.5 | 13 | 2 |
-| AL-33-noS approach 4, W with expert orders (person 1 x, 4 x penalty) [without S: 72B runs pending]: learnt rules (1 changes) | 94.67 | 94.07 | 51.5 | 13 | 2 |
-| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 47.3 | | |
+| AL-26 approach 3, W with expert orders (person 2 x): learnt rules (3 changes) | 96.00 | 95.56 | 104.1 | 18 | 2 |
+| ... same, a person priced at 1 x always-strong | 96.00 | 95.56 | 70.8 | 18 | 2 |
+| AL-27 approach 3, W with expert orders (person 1 x): learnt rules (2 changes) | 97.33 | 97.04 | 73.2 | 30 | 0 |
+| AL-28 approach 3, W with expert orders (person 2 x, 4 x penalty): learnt rules (3 changes) | 96.00 | 95.56 | 108.3 | 18 | 2 |
+| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 104.1 | | |
+| ... same, a person priced at 1 x always-strong | 96.00 | 95.56 | 75.0 | 18 | 2 |
+| AL-29 approach 3, W with expert orders (person 1 x, 4 x penalty): learnt rules (2 changes) | 97.33 | 97.04 | 73.2 | 30 | 0 |
+| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 73.2 | | |
+| AL-30 approach 4, W with expert orders (person 2 x): learnt rules (1 changes) | 94.67 | 94.07 | 74.0 | 13 | 2 |
+| ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 50.6 | 13 | 2 |
+| AL-31 approach 4, W with expert orders (person 1 x): learnt rules (1 changes) | 94.67 | 94.07 | 50.6 | 13 | 2 |
+| AL-32 approach 4, W with expert orders (person 2 x, 4 x penalty): learnt rules (1 changes) | 94.67 | 94.07 | 78.2 | 13 | 2 |
+| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 74.0 | | |
+| ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 54.8 | 13 | 2 |
+| AL-33 approach 4, W with expert orders (person 1 x, 4 x penalty): learnt rules (1 changes) | 94.67 | 94.07 | 54.8 | 13 | 2 |
+| ... same, cost without the missed-high-risk penalty (AI + person only) | | | 50.6 | | |
 | Jonathan: always-weak (untrained 7B) | 12.00 | | 18.7 | | |
 | Jonathan: always-strong (untrained 72B) | 54.00 | | 100.0 | | |
 | Jonathan: oracle | 63.33 | | - | | |

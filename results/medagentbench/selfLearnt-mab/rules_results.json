@@ -2243,23 +2243,23 @@
    }
   ]
  },
- "AL-26-noS": {
+ "AL-26": {
   "test": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 1.0219533680797834,
-   "cost_share_no_penalty": 1.0219533680797834,
-   "units": 1270.5324537037038,
+   "acc": 0.96,
+   "acc_no9": 0.9555555555555556,
+   "cost_share": 1.0410881953153581,
+   "cost_share_no_penalty": 1.0410881953153581,
+   "units": 1294.3216203703705,
    "to_person": 18,
    "silent_failures": 2,
    "n": 150
   },
   "test_person_at_1x": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 0.6888664787912517,
-   "cost_share_no_penalty": 0.6888664787912517,
-   "units": 856.4257870370373,
+   "acc": 0.96,
+   "acc_no9": 0.9555555555555556,
+   "cost_share": 0.7080013060268263,
+   "cost_share_no_penalty": 0.7080013060268263,
+   "units": 880.2149537037037,
    "to_person": 18,
    "silent_failures": 2,
    "n": 150
@@ -2277,9 +2277,9 @@
   "seed_test": {
    "acc": 0.84,
    "acc_no9": 0.8296296296296296,
-   "cost_share": 0.5360777249811072,
-   "cost_share_no_penalty": 0.5360777249811072,
-   "units": 666.472824074074,
+   "cost_share": 0.7431952881745664,
+   "cost_share_no_penalty": 0.7431952881745664,
+   "units": 923.9694907407409,
    "to_person": 12,
    "silent_failures": 7,
    "n": 150
@@ -2310,12 +2310,25 @@
      "task8": "accept",
      "task9": "accept",
      "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
     }
    ],
    "sig": [
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,
@@ -2327,60 +2340,60 @@
    {
     "round": 1,
     "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
-    "val_objective": 0.8862198361682914,
-    "before": 0.8425223378561579
+    "val_objective": 0.8771014990540569,
+    "before": 0.8349013096007745
    },
    {
     "round": 2,
     "change": "rung 1 (q7x:ft), task9: accept -> person",
-    "val_objective": 0.9009120466266168,
-    "before": 0.8862198361682914
+    "val_objective": 0.8932910183712333,
+    "before": 0.8771014990540569
    },
    {
     "round": 3,
     "change": "high-risk task: a person if the answer is not a JSON list = True",
     "val_objective": 0.9021734447550069,
-    "before": 0.9009120466266168
+    "before": 0.8932910183712333
    }
   ]
  },
- "AL-27-noS": {
+ "AL-27": {
   "test": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 0.6888664787912517,
-   "cost_share_no_penalty": 0.6888664787912517,
-   "units": 856.4257870370373,
-   "to_person": 18,
-   "silent_failures": 2,
+   "acc": 0.9733333333333334,
+   "acc_no9": 0.9703703703703703,
+   "cost_share": 0.732217393885134,
+   "cost_share_no_penalty": 0.732217393885134,
+   "units": 910.3213425925927,
+   "to_person": 30,
+   "silent_failures": 0,
    "n": 150
   },
   "test_person_at_1x": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 0.6888664787912517,
-   "cost_share_no_penalty": 0.6888664787912517,
-   "units": 856.4257870370373,
-   "to_person": 18,
-   "silent_failures": 2,
+   "acc": 0.9733333333333334,
+   "acc_no9": 0.9703703703703703,
+   "cost_share": 0.732217393885134,
+   "cost_share_no_penalty": 0.732217393885134,
+   "units": 910.3213425925927,
+   "to_person": 30,
+   "silent_failures": 0,
    "n": 150
   },
   "val": {
    "acc": 0.9666666666666667,
    "acc_no9": 0.9629629629629629,
-   "cost_share": 0.655327965408446,
-   "cost_share_no_penalty": 0.655327965408446,
-   "units": 833.1826099537037,
-   "to_person": 6,
+   "cost_share": 0.69150934129628,
+   "cost_share_no_penalty": 0.69150934129628,
+   "units": 879.1835358796295,
+   "to_person": 12,
    "silent_failures": 0,
    "n": 60
   },
   "seed_test": {
    "acc": 0.84,
    "acc_no9": 0.8296296296296296,
-   "cost_share": 0.32685544474138384,
-   "cost_share_no_penalty": 0.32685544474138384,
-   "units": 406.3594907407407,
+   "cost_share": 0.5339730079348428,
+   "cost_share_no_penalty": 0.5339730079348428,
+   "units": 663.8561574074073,
    "to_person": 12,
    "silent_failures": 7,
    "n": 150
@@ -2397,7 +2410,19 @@
      "task6": "accept",
      "task7": "accept",
      "task8": "accept",
-     "task9": "person",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
      "task10": "accept"
     },
     {
@@ -2417,51 +2442,46 @@
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,
    "person_sig": [
-    "bad_format"
+    "no_order"
    ]
   },
   "changes": [
    {
     "round": 1,
     "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
-    "val_objective": 0.8945531695016248,
-    "before": 0.8491890045228245
+    "val_objective": 0.8854348323873903,
+    "before": 0.8415679762674411
    },
    {
     "round": 2,
-    "change": "rung 1 (q7x:ft), task9: accept -> person",
-    "val_objective": 0.9109120466266167,
-    "before": 0.8945531695016248
-   },
-   {
-    "round": 3,
-    "change": "high-risk task: a person if the answer is not a JSON list = True",
-    "val_objective": 0.9121734447550068,
-    "before": 0.9109120466266167
+    "change": "high-risk task: a person if it placed no order = True",
+    "val_objective": 0.9073157984155193,
+    "before": 0.8854348323873903
    }
   ]
  },
- "AL-28-noS": {
+ "AL-28": {
   "test": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 1.0636160409229678,
-   "cost_share_no_penalty": 1.0219533680797834,
-   "units": 1322.3291203703704,
+   "acc": 0.96,
+   "acc_no9": 0.9555555555555556,
+   "cost_share": 1.0827508681585427,
+   "cost_share_no_penalty": 1.0410881953153581,
+   "units": 1346.1182870370371,
    "to_person": 18,
    "silent_failures": 2,
    "n": 150
   },
   "test_person_at_1x": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 0.730529151634436,
-   "cost_share_no_penalty": 0.6888664787912517,
-   "units": 908.222453703704,
+   "acc": 0.96,
+   "acc_no9": 0.9555555555555556,
+   "cost_share": 0.7496639788700108,
+   "cost_share_no_penalty": 0.7080013060268263,
+   "units": 932.0116203703705,
    "to_person": 18,
    "silent_failures": 2,
    "n": 150
@@ -2479,9 +2499,9 @@
   "seed_test": {
    "acc": 0.84,
    "acc_no9": 0.8296296296296296,
-   "cost_share": 0.7565984480653621,
-   "cost_share_no_penalty": 0.5360777249811072,
-   "units": 940.6328240740739,
+   "cost_share": 0.9637160112588212,
+   "cost_share_no_penalty": 0.7431952881745664,
+   "units": 1198.129490740741,
    "to_person": 12,
    "silent_failures": 7,
    "n": 150
@@ -2512,12 +2532,25 @@
      "task8": "accept",
      "task9": "accept",
      "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
     }
    ],
    "sig": [
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,
@@ -2529,60 +2562,60 @@
    {
     "round": 1,
     "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
-    "val_objective": 0.8795531695016248,
-    "before": 0.8291890045228245
+    "val_objective": 0.8704348323873904,
+    "before": 0.8215679762674413
    },
    {
     "round": 2,
     "change": "rung 1 (q7x:ft), task9: accept -> person",
-    "val_objective": 0.9009120466266168,
-    "before": 0.8795531695016248
+    "val_objective": 0.8932910183712333,
+    "before": 0.8704348323873904
    },
    {
     "round": 3,
     "change": "high-risk task: a person if the answer is not a JSON list = True",
     "val_objective": 0.9021734447550069,
-    "before": 0.9009120466266168
+    "before": 0.8932910183712333
    }
   ]
  },
- "AL-29-noS": {
+ "AL-29": {
   "test": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 0.730529151634436,
-   "cost_share_no_penalty": 0.6888664787912517,
-   "units": 908.222453703704,
-   "to_person": 18,
-   "silent_failures": 2,
+   "acc": 0.9733333333333334,
+   "acc_no9": 0.9703703703703703,
+   "cost_share": 0.732217393885134,
+   "cost_share_no_penalty": 0.732217393885134,
+   "units": 910.3213425925927,
+   "to_person": 30,
+   "silent_failures": 0,
    "n": 150
   },
   "test_person_at_1x": {
-   "acc": 0.9466666666666667,
-   "acc_no9": 0.9407407407407408,
-   "cost_share": 0.730529151634436,
-   "cost_share_no_penalty": 0.6888664787912517,
-   "units": 908.222453703704,
-   "to_person": 18,
-   "silent_failures": 2,
+   "acc": 0.9733333333333334,
+   "acc_no9": 0.9703703703703703,
+   "cost_share": 0.732217393885134,
+   "cost_share_no_penalty": 0.732217393885134,
+   "units": 910.3213425925927,
+   "to_person": 30,
+   "silent_failures": 0,
    "n": 150
   },
   "val": {
    "acc": 0.9666666666666667,
    "acc_no9": 0.9629629629629629,
-   "cost_share": 0.655327965408446,
-   "cost_share_no_penalty": 0.655327965408446,
-   "units": 833.1826099537037,
-   "to_person": 6,
+   "cost_share": 0.69150934129628,
+   "cost_share_no_penalty": 0.69150934129628,
+   "units": 879.1835358796295,
+   "to_person": 12,
    "silent_failures": 0,
    "n": 60
   },
   "seed_test": {
    "acc": 0.84,
    "acc_no9": 0.8296296296296296,
-   "cost_share": 0.5473761678256388,
-   "cost_share_no_penalty": 0.32685544474138384,
-   "units": 680.5194907407408,
+   "cost_share": 0.754493731019098,
+   "cost_share_no_penalty": 0.5339730079348428,
+   "units": 938.0161574074075,
    "to_person": 12,
    "silent_failures": 7,
    "n": 150
@@ -2599,7 +2632,19 @@
      "task6": "accept",
      "task7": "accept",
      "task8": "accept",
-     "task9": "person",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
      "task10": "accept"
     },
     {
@@ -2619,41 +2664,36 @@
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,
    "person_sig": [
-    "bad_format"
+    "no_order"
    ]
   },
   "changes": [
    {
     "round": 1,
     "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
-    "val_objective": 0.8878865028349581,
-    "before": 0.8358556711894913
+    "val_objective": 0.8787681657207237,
+    "before": 0.8282346429341078
    },
    {
     "round": 2,
-    "change": "rung 1 (q7x:ft), task9: accept -> person",
-    "val_objective": 0.9109120466266167,
-    "before": 0.8878865028349581
-   },
-   {
-    "round": 3,
-    "change": "high-risk task: a person if the answer is not a JSON list = True",
-    "val_objective": 0.9121734447550068,
-    "before": 0.9109120466266167
+    "change": "high-risk task: a person if it placed no order = True",
+    "val_objective": 0.9073157984155193,
+    "before": 0.8787681657207237
    }
   ]
  },
- "AL-30-noS": {
+ "AL-30": {
   "test": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.706865309950865,
-   "cost_share_no_penalty": 0.706865309950865,
-   "units": 878.8026388888892,
+   "cost_share": 0.7401030819805158,
+   "cost_share_no_penalty": 0.7401030819805158,
+   "units": 920.1251388888892,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -2661,9 +2701,9 @@
   "test_person_at_1x": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.4732477504440125,
-   "cost_share_no_penalty": 0.4732477504440125,
-   "units": 588.360138888889,
+   "cost_share": 0.5064855224736635,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 629.6826388888891,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -2714,13 +2754,38 @@
      "task8": "stay",
      "task9": "stay",
      "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
     }
    ],
    "ret_sig": [
     [],
+    [],
     []
    ],
    "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
     {
      "task1": "accept",
      "task2": "accept",
@@ -2750,6 +2815,7 @@
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,
@@ -2764,13 +2830,13 @@
    }
   ]
  },
- "AL-31-noS": {
+ "AL-31": {
   "test": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.4732477504440125,
-   "cost_share_no_penalty": 0.4732477504440125,
-   "units": 588.360138888889,
+   "cost_share": 0.5064855224736635,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 629.6826388888891,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -2778,9 +2844,9 @@
   "test_person_at_1x": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.4732477504440125,
-   "cost_share_no_penalty": 0.4732477504440125,
-   "units": 588.360138888889,
+   "cost_share": 0.5064855224736635,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 629.6826388888891,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -2831,13 +2897,38 @@
      "task8": "stay",
      "task9": "stay",
      "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
     }
    ],
    "ret_sig": [
     [],
+    [],
     []
    ],
    "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
     {
      "task1": "accept",
      "task2": "accept",
@@ -2867,6 +2958,7 @@
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,
@@ -2881,13 +2973,13 @@
    }
   ]
  },
- "AL-32-noS": {
+ "AL-32": {
   "test": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.7485279827940493,
-   "cost_share_no_penalty": 0.706865309950865,
-   "units": 930.5993055555558,
+   "cost_share": 0.7817657548237004,
+   "cost_share_no_penalty": 0.7401030819805158,
+   "units": 971.9218055555558,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -2895,9 +2987,9 @@
   "test_person_at_1x": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.514910423287197,
-   "cost_share_no_penalty": 0.4732477504440125,
-   "units": 640.1568055555557,
+   "cost_share": 0.5481481953168481,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 681.4793055555557,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -2948,13 +3040,38 @@
      "task8": "stay",
      "task9": "stay",
      "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
     }
    ],
    "ret_sig": [
     [],
+    [],
     []
    ],
    "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
     {
      "task1": "accept",
      "task2": "accept",
@@ -2984,6 +3101,7 @@
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,
@@ -2998,13 +3116,13 @@
    }
   ]
  },
- "AL-33-noS": {
+ "AL-33": {
   "test": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.514910423287197,
-   "cost_share_no_penalty": 0.4732477504440125,
-   "units": 640.1568055555557,
+   "cost_share": 0.5481481953168481,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 681.4793055555557,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -3012,9 +3130,9 @@
   "test_person_at_1x": {
    "acc": 0.9466666666666667,
    "acc_no9": 0.9407407407407408,
-   "cost_share": 0.514910423287197,
-   "cost_share_no_penalty": 0.4732477504440125,
-   "units": 640.1568055555557,
+   "cost_share": 0.5481481953168481,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 681.4793055555557,
    "to_person": 13,
    "silent_failures": 2,
    "n": 150
@@ -3065,13 +3183,38 @@
      "task8": "stay",
      "task9": "stay",
      "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
     }
    ],
    "ret_sig": [
     [],
+    [],
     []
    ],
    "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
     {
      "task1": "accept",
      "task2": "accept",
@@ -3101,6 +3244,7 @@
     [
      "no_order"
     ],
+    [],
     []
    ],
    "vote": false,

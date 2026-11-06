@@ -1,0 +1,114 @@
+{
+ "test": {
+  "acc": 0.96,
+  "acc_no9": 0.9555555555555556,
+  "cost_share": 1.0410881953153581,
+  "cost_share_no_penalty": 1.0410881953153581,
+  "units": 1294.3216203703705,
+  "to_person": 18,
+  "silent_failures": 2,
+  "n": 150
+ },
+ "test_person_at_1x": {
+  "acc": 0.96,
+  "acc_no9": 0.9555555555555556,
+  "cost_share": 0.7080013060268263,
+  "cost_share_no_penalty": 0.7080013060268263,
+  "units": 880.2149537037037,
+  "to_person": 18,
+  "silent_failures": 2,
+  "n": 150
+ },
+ "val": {
+  "acc": 0.9666666666666667,
+  "acc_no9": 0.9629629629629629,
+  "cost_share": 0.9738684171094114,
+  "cost_share_no_penalty": 0.9738684171094114,
+  "units": 1238.1742766203704,
+  "to_person": 6,
+  "silent_failures": 0,
+  "n": 60
+ },
+ "seed_test": {
+  "acc": 0.84,
+  "acc_no9": 0.8296296296296296,
+  "cost_share": 0.7431952881745664,
+  "cost_share_no_penalty": 0.7431952881745664,
+  "units": 923.9694907407409,
+  "to_person": 12,
+  "silent_failures": 7,
+  "n": 150
+ },
+ "rulebook": {
+  "mode": "joint",
+  "end": [
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "person",
+    "task10": "accept"
+   },
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "accept",
+    "task10": "accept"
+   },
+   {
+    "task1": "accept",
+    "task2": "accept",
+    "task3": "accept",
+    "task4": "accept",
+    "task5": "accept",
+    "task6": "accept",
+    "task7": "accept",
+    "task8": "accept",
+    "task9": "accept",
+    "task10": "accept"
+   }
+  ],
+  "sig": [
+   [
+    "no_order"
+   ],
+   [],
+   []
+  ],
+  "vote": false,
+  "person_sig": [
+   "bad_format"
+  ]
+ },
+ "changes": [
+  {
+   "round": 1,
+   "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+   "val_objective": 0.8771014990540569,
+   "before": 0.8349013096007745
+  },
+  {
+   "round": 2,
+   "change": "rung 1 (q7x:ft), task9: accept -> person",
+   "val_objective": 0.8932910183712333,
+   "before": 0.8771014990540569
+  },
+  {
+   "round": 3,
+   "change": "high-risk task: a person if the answer is not a JSON list = True",
+   "val_objective": 0.9021734447550069,
+   "before": 0.8932910183712333
+  }
+ ]
+}
