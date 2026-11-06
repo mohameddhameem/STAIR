@@ -50,6 +50,16 @@
 | ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 54.8 | 13 | 2 |
 | AL-33 approach 4, W with expert orders (person 1 x, 4 x penalty): learnt rules (1 changes) | 94.67 | 94.07 | 54.8 | 13 | 2 |
 | ... same, cost without the missed-high-risk penalty (AI + person only) | | | 50.6 | | |
+| AL-34 approach 3, W with expert orders (person 2 x, 4 x penalty on every wrong answer): learnt rules (3 changes) | 96.00 | 95.56 | 118.5 | 18 | 2 |
+| ... same, cost without the wrong-answer penalty (AI + person only) | | | 104.1 | | |
+| ... same, a person priced at 1 x always-strong | 96.00 | 95.56 | 85.2 | 18 | 2 |
+| AL-35 approach 3, W with expert orders (person 1 x, 4 x penalty on every wrong answer): learnt rules (2 changes) | 97.33 | 97.04 | 83.5 | 30 | 0 |
+| ... same, cost without the wrong-answer penalty (AI + person only) | | | 73.2 | | |
+| AL-36 approach 4, W with expert orders (person 2 x, 4 x penalty on every wrong answer): learnt rules (1 changes) | 94.67 | 94.07 | 92.3 | 13 | 2 |
+| ... same, cost without the wrong-answer penalty (AI + person only) | | | 74.0 | | |
+| ... same, a person priced at 1 x always-strong | 94.67 | 94.07 | 68.9 | 13 | 2 |
+| AL-37 approach 4, W with expert orders (person 1 x, 4 x penalty on every wrong answer): learnt rules (1 changes) | 94.67 | 94.07 | 68.9 | 13 | 2 |
+| ... same, cost without the wrong-answer penalty (AI + person only) | | | 50.6 | | |
 | Jonathan: always-weak (untrained 7B) | 12.00 | | 18.7 | | |
 | Jonathan: always-strong (untrained 72B) | 54.00 | | 100.0 | | |
 | Jonathan: oracle | 63.33 | | - | | |

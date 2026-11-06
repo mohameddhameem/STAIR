@@ -311,7 +311,7 @@ comparison in [`results/medagentbench/selfLearnt-acceptance/`](../results/medage
   medication-order task. All our MedAgentBench results keep the penalty, so they are comparable with each other and with
   his canonical table; under pure temperature 0 the always-strong reference would be about 59%.
 
-## MedAgentBench: our method (AL-16 .. AL-33, 2-5 Nov)
+## MedAgentBench: our method (AL-16 .. AL-37, 2-6 Nov)
 
 Jonathan's patient-disjoint split: the rules learn on 60 practice tasks (`calib_sweep`), the models train on the other
 90 calib tasks, and the 150 test tasks are read once. Accuracy = the benchmark's own grader (refsol, pass / fail); cost
@@ -434,8 +434,11 @@ provisional results without it (`-noS` files, 5 Nov) are kept beside them.
   always-strong's cost. At 2 x the same rule does not pay, and 2 failures stay unseen.
 - **Approach 4 is the cheapest:** 94.7% at 51% of always-strong's cost (person 1 x). The 7B does the searching, and the
   32B steps in only for the order decision when the 7B placed none.
-- **The penalty changed no rule.** Where failures were left (approach 4, approach 3 at 2 x) they never occurred on the
-  practice tasks, so the penalty only shows as cost on test.
+- **The penalty changed no rule**, neither the high-risk one (AL-28, AL-29, AL-32, AL-33) nor 4 x always-strong's cost
+  on every wrong answer no person saw, of any task type (AL-34 .. AL-37, 6 Nov). The system is already right on 58 of
+  the 60 practice tasks, and no escalation fixes the other 2 on both halves, so the rules have nothing left to buy;
+  the remaining test mistakes did not occur in practice and show only as cost: approach 3 at 2 x 104% -> 118%, at
+  1 x 73% -> 84%; approach 4 at 2 x 74% -> 92%, at 1 x 51% -> 69% of always-strong's cost, accuracy unchanged.
 - Against Jonathan's best with people (76.0% at 94.5%): 97.3% at 73% (approach 3) or 94.7% at 51% (approach 4).
 
 ## Fine-tuning (early stopping on validation loss, `results/common/history/`)

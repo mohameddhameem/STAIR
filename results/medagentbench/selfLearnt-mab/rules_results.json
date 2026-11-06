@@ -3258,5 +3258,513 @@
     "before": 0.8371170693178814
    }
   ]
+ },
+ "AL-34": {
+  "test": {
+   "acc": 0.96,
+   "acc_no9": 0.9555555555555556,
+   "cost_share": 1.1851151893169145,
+   "cost_share_no_penalty": 1.0410881953153581,
+   "units": 1473.3816203703705,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.96,
+   "acc_no9": 0.9555555555555556,
+   "cost_share": 0.8520283000283826,
+   "cost_share_no_penalty": 0.7080013060268263,
+   "units": 1059.2749537037037,
+   "to_person": 18,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 1.1067667524391256,
+   "cost_share_no_penalty": 0.9738684171094114,
+   "units": 1407.140943287037,
+   "to_person": 6,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 1.348889955398022,
+   "cost_share_no_penalty": 0.7431952881745664,
+   "units": 1676.9928240740742,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "joint",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "person",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    [],
+    []
+   ],
+   "vote": false,
+   "person_sig": [
+    "bad_format"
+   ]
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.857101499054057,
+    "before": 0.7815679762674411
+   },
+   {
+    "round": 2,
+    "change": "rung 1 (q7x:ft), task9: accept -> person",
+    "val_objective": 0.8799576850379,
+    "before": 0.857101499054057
+   },
+   {
+    "round": 3,
+    "change": "high-risk task: a person if the answer is not a JSON list = True",
+    "val_objective": 0.8888401114216736,
+    "before": 0.8799576850379
+   }
+  ]
+ },
+ "AL-35": {
+  "test": {
+   "acc": 0.9733333333333334,
+   "acc_no9": 0.9703703703703703,
+   "cost_share": 0.8345817150435056,
+   "cost_share_no_penalty": 0.732217393885134,
+   "units": 1037.584675925926,
+   "to_person": 30,
+   "silent_failures": 0,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9733333333333334,
+   "acc_no9": 0.9703703703703703,
+   "cost_share": 0.8345817150435056,
+   "cost_share_no_penalty": 0.732217393885134,
+   "units": 1037.584675925926,
+   "to_person": 30,
+   "silent_failures": 0,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.8244076766259941,
+   "cost_share_no_penalty": 0.69150934129628,
+   "units": 1048.1502025462964,
+   "to_person": 12,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 1.1396676751582986,
+   "cost_share_no_penalty": 0.5339730079348428,
+   "units": 1416.8794907407407,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "joint",
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    [],
+    []
+   ],
+   "vote": false,
+   "person_sig": [
+    "no_order"
+   ]
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "rung 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.8654348323873904,
+    "before": 0.7882346429341077
+   },
+   {
+    "round": 2,
+    "change": "high-risk task: a person if it placed no order = True",
+    "val_objective": 0.893982465082186,
+    "before": 0.8654348323873904
+   }
+  ]
+ },
+ "AL-36": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.922588752812154,
+   "cost_share_no_penalty": 0.7401030819805158,
+   "units": 1146.998472222222,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.6889711933053017,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 856.5559722222224,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.742538037290901,
+   "cost_share_no_penalty": 0.6096397019611869,
+   "units": 944.0613136574073,
+   "to_person": 4,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 1.1032145121506445,
+   "cost_share_no_penalty": 0.4975198449271887,
+   "units": 1371.5594907407406,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "staged",
+   "ret": [
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    }
+   ],
+   "ret_sig": [
+    [],
+    [],
+    []
+   ],
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    [],
+    []
+   ],
+   "vote": false,
+   "person_sig": []
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "answerer 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.9128837595348155,
+    "before": 0.7904504026512147
+   }
+  ]
+ },
+ "AL-37": {
+  "test": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.6889711933053017,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 856.5559722222224,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "test_person_at_1x": {
+   "acc": 0.9466666666666667,
+   "acc_no9": 0.9407407407407408,
+   "cost_share": 0.6889711933053017,
+   "cost_share_no_penalty": 0.5064855224736635,
+   "units": 856.5559722222224,
+   "to_person": 13,
+   "silent_failures": 2,
+   "n": 150
+  },
+  "val": {
+   "acc": 0.9666666666666667,
+   "acc_no9": 0.9629629629629629,
+   "cost_share": 0.5445309224189834,
+   "cost_share_no_penalty": 0.41163258708926953,
+   "units": 692.315480324074,
+   "to_person": 4,
+   "silent_failures": 0,
+   "n": 60
+  },
+  "seed_test": {
+   "acc": 0.84,
+   "acc_no9": 0.8296296296296296,
+   "cost_share": 0.8939922319109214,
+   "cost_share_no_penalty": 0.28829756468746554,
+   "units": 1111.4461574074076,
+   "to_person": 12,
+   "silent_failures": 7,
+   "n": 150
+  },
+  "rulebook": {
+   "mode": "staged",
+   "ret": [
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    },
+    {
+     "task1": "stay",
+     "task2": "stay",
+     "task3": "stay",
+     "task4": "stay",
+     "task5": "stay",
+     "task6": "stay",
+     "task7": "stay",
+     "task8": "stay",
+     "task9": "stay",
+     "task10": "stay"
+    }
+   ],
+   "ret_sig": [
+    [],
+    [],
+    []
+   ],
+   "end": [
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    },
+    {
+     "task1": "accept",
+     "task2": "accept",
+     "task3": "accept",
+     "task4": "accept",
+     "task5": "accept",
+     "task6": "accept",
+     "task7": "accept",
+     "task8": "accept",
+     "task9": "accept",
+     "task10": "accept"
+    }
+   ],
+   "sig": [
+    [
+     "no_order"
+    ],
+    [],
+    []
+   ],
+   "vote": false,
+   "person_sig": []
+  },
+  "changes": [
+   {
+    "round": 1,
+    "change": "answerer 1 (q7x:ft): escalate if it placed no order = True",
+    "val_objective": 0.9195504262014822,
+    "before": 0.7971170693178813
+   }
+  ]
  }
 }
