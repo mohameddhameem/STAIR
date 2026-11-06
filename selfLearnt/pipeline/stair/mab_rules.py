@@ -239,8 +239,10 @@ def play(D, design, book, tid, k_human=None):
     """One task under a rulebook -> (correct, cost in units, path, answer, person?), with the missed-high-risk penalty
     (miss_penalty x always-strong's cost on that task) when the design has one and D.no_penalty is not set."""
     r = _play(D, design, book, tid, k_human)
-    pen = D.M["ladders"][design].get("miss_penalty")
-    if pen and not getattr(D, "no_penalty", False) and _ty(tid) in D.hr and not r[4] and not r[0]:
+    L = D.M["ladders"][design]
+    pen = L.get("miss_penalty")
+    # penalty_all (6 Nov): every wrong answer no person saw, of any task type; otherwise high-risk tasks only
+    if pen and not getattr(D, "no_penalty", False) and (L.get("penalty_all") or _ty(tid) in D.hr) and not r[4] and not r[0]:
         return (r[0], r[1] + pen * D.ss[tid]) + tuple(r[2:])
     return r
 
@@ -603,7 +605,7 @@ def run(cfg, part="all"):
             write_json(os.path.join(wdir(cfg), f"rulebook_{design}{tag}.json"), out[design + tag])
             line(f"{design}{' (revision 1)' if rev == 1 else ''} {L['name']}: learnt rules ({len(hist)} changes)", s)
             if L.get("miss_penalty"):
-                lines.append(f"| ... same, cost without the missed-high-risk penalty (AI + person only) | | | {100 * s['cost_share_no_penalty']:.1f} | | |")
+                lines.append(f"| ... same, cost without the {'wrong-answer' if L.get('penalty_all') else 'missed-high-risk'} penalty (AI + person only) | | | {100 * s['cost_share_no_penalty']:.1f} | | |")
             if L["human"] and s1["to_person"] and L.get("human_cost_factor", D.M["human_cost_factor"]) != 1.0:
                 lines.append(f"| ... same, a person priced at 1 x always-strong | {100 * s1['acc']:.2f} | {100 * s1['acc_no9']:.2f} | "
                              f"{100 * s1['cost_share']:.1f} | {s1['to_person']} | {s1['silent_failures']} |")

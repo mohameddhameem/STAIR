@@ -48,6 +48,11 @@ medagent:
     AL-31: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, name: "approach 4, W with expert orders (person 1 x)"}
     AL-32: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, miss_penalty: 4.0, name: "approach 4, W with expert orders (person 2 x, 4 x penalty)"}
     AL-33: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0, name: "approach 4, W with expert orders (person 1 x, 4 x penalty)"}
+    # 6 Nov: 4 x always-strong's cost for EVERY wrong answer no person saw, of any task type (AL-28 .. AL-33: high-risk only)
+    AL-34: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, rev2_only: true, miss_penalty: 4.0, penalty_all: true, name: "approach 3, W with expert orders (person 2 x, 4 x penalty on every wrong answer)"}
+    AL-35: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: restart, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0, penalty_all: true, name: "approach 3, W with expert orders (person 1 x, 4 x penalty on every wrong answer)"}
+    AL-36: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, miss_penalty: 4.0, penalty_all: true, name: "approach 4, W with expert orders (person 2 x, 4 x penalty on every wrong answer)"}
+    AL-37: {ladder: ["q7x:ft", "q32:ft", "q72:ft"], human: true, mode: handoff, rev2_only: true, human_cost_factor: 1.0, miss_penalty: 4.0, penalty_all: true, name: "approach 4, W with expert orders (person 1 x, 4 x penalty on every wrong answer)"}
   high_risk_types: [task5, task9]   # Jonathan's tau >= 0.8 tier (medication orders): the only tasks a person may take
   human_cost_factor: 2.0       # a person costs 2 x always-strong's cost on that task ("expensive"; Jonathan used 1.0)
   order_weight: 3              # option B: expert attempts that place an order count 3 x in training
