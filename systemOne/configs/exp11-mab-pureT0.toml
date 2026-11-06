@@ -1,0 +1,104 @@
+# Experiment 11: the System One judge on MedAgentBench, by replay of Jonathan's recorded episodes.
+# Plan: docs/experiment-11-plan.md. Job sheet: docs/gpu-jobs-exp11.md. Runs only after the plan's Gate 0.
+#   uv run exp11-mab check --plan configs/exp11-mab.toml                    # the table and the split (CPU)
+#   uv run exp11-mab zeroshot --plan configs/exp11-mab.toml                 # GPU (the deciders)
+#   uv run exp11-mab train --judge nano-jev,minilm,msmarco --plan configs/exp11-mab.toml   # run_cluster: JUDGE=a:b:c
+#   uv run exp11-mab train --judge decider-2b --plan configs/exp11-mab.toml # GPU
+#   uv run exp11-mab select --plan configs/exp11-mab.toml                   # CPU: operating points from val
+#   uv run exp11-mab test --plan configs/exp11-mab.toml                     # CPU: the one test read
+table = "runs/mab/training1_table_pureT0.json"   # sensitivity: Jonathan's pure-temperature-0 table (qs changes on 12 tasks)
+table_sha256 = "def234cdbf89591c82ac94a093333c65b0dcd296a0e9eaac69786b98981c6959"   # his pure-T0 table
+tasks = "data/medagentbench/test_data_v2.json"   # MedAgentBench @ 9926011, for each task's patient (eval_MRN)
+tasks_sha256 = "b6e89b2ef82f1bef27c5778a644a8a66c7b25738bbd6a48d03ab3e5182df6ca8"   # as stair_common's MANIFEST
+his_decisions = ""                        # optional CSV: tid, then one 0/1 column per router of his (1 = escalate)
+out = "runs/exp11-mab-pureT0"
+bootstrap = 5000
+reward_lambda = 0.10                      # his R'
+max_length = 512                          # the zero-shot nano-jev's window (the deciders keep their own)
+
+zero_shot = ["sdmlai/nano-jev@v1.0", "StrandsAgents/strands-decider-2B-hobson-v21",
+             "StrandsAgents/strands-decider-e4b-gemma4-v1-2610"]
+
+# Paired AIQ differences beside each router against the category baseline (names as select.json lists them).
+contrasts = [
+    ["nano-jev", "minilm"],                                     # H11c: decision pretraining at 90 labels
+    ["nano-jev", "msmarco"],
+    ["nano-jev", "category x finished"],                        # H11d: does the attempt add to the template lookup?
+    ["decider-2b", "category x finished"],
+    ["decider-e4b", "category x finished"],
+    ["zero-shot nano-jev", "nano-jev"],                         # H11a, beside gap_closed
+]
+
+# The 33M judges: nano-jev v1.0's own fine-tuning settings, with E1's min_steps (90 tasks are 6 steps an epoch).
+[[judges]]
+name = "nano-jev"
+judge_dir = "judge-nanojev"
+init = "sdmlai/nano-jev@v1.0"
+seeds = [0, 1, 2, 3, 4]
+[judges.train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+min_steps = 150
+
+[[judges]]
+name = "minilm"
+judge_dir = "judge-minilm"
+init = "microsoft/MiniLM-L12-H384-uncased"
+seeds = [0, 1, 2, 3, 4]
+[judges.train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+min_steps = 150
+
+[[judges]]
+name = "msmarco"
+judge_dir = "judge-msmarco"
+init = "cross-encoder/ms-marco-MiniLM-L12-v2"
+seeds = [0, 1, 2, 3, 4]
+[judges.train]
+epochs = 3
+lr = 5e-5
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+max_length = 512
+min_steps = 150
+
+# The deciders: experiment 10's settings, at least 60 steps.
+[[judges]]
+name = "decider-2b"
+judge_dir = "judge-decider-2b"
+init = "StrandsAgents/strands-decider-2B-hobson-v21"
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 1e-4
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+micro_batch = 4
+max_length = 512        # unused by the decider: it keeps its own window
+min_steps = 60
+
+[[judges]]
+name = "decider-e4b"
+judge_dir = "judge-decider-e4b"
+init = "StrandsAgents/strands-decider-e4b-gemma4-v1-2610"
+seeds = [0, 1, 2]
+[judges.train]
+epochs = 2
+lr = 1e-4
+weight_decay = 0.01
+warmup = 0.06
+batch_size = 16
+micro_batch = 2         # as experiment 9's E4B on the L40S
+max_length = 512
+min_steps = 60
