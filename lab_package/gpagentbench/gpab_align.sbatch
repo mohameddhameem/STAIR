@@ -7,6 +7,12 @@
 #   PARSER=strict|tolerant   GEN=model|pure   (model = vLLM applies generation_config.json, i.e. rep. penalty 1.05;
 #                                              pure = --generation-config vllm, plain temperature 0)
 # Usage:  sbatch --export=ALL,PARSER=tolerant,GEN=pure ~/slr/STAIR/lab_package/gpagentbench/gpab_align.sbatch
+# v1.2 (6 Nov, decoding check for the 72B Miss-GP cell): DECODE=pure|model sets the AGENT decoding via gpab_run.py v1.1
+#   (pure = temperature 0 on every agent request, all runs to 5 Nov; model = no temperature sent, so the server's
+#   generation_config.json applies: Qwen2.5 T 0.7 / top-p 0.8 / top-k 20 / rep. penalty 1.05). DECODE=model REQUIRES GEN=model
+#   (a server started with --generation-config vllm has no defaults to apply). Simulator and judge stay at T 0. Output folder
+#   carries _agentsample. Decided by Jonathan 6 Nov 17:02: one run, 72B simulator, strict parser -- a reproduction check of the
+#   paper's likely decoding, NOT a change to our own (pure T 0 stays the standard).
 # v1.1 (5 Nov, simulator ablation): SIMSIZE=7b|32b|72b picks the PATIENT SIMULATOR only (default 72b = the 4 Nov run);
 #   everything else identical, so a run differs from the 4 Nov alignment run in exactly one factor. 7b/32b simulators are served
 #   from a third vLLM server on GPU 0 beside the 7B agent (bf16; 32B at 0.40 of an H200). Output folder carries the simulator size.
@@ -26,18 +32,20 @@ case "${GEN:-}" in model) GEN_CFG="" ;; pure) GEN_CFG="--generation-config vllm"
 export HF_HOME=/common/scratch/users/d/dohyung.ahn.2025/hf_cache
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 SIMSIZE=${SIMSIZE:-72b}
+DECODE=${DECODE:-pure}
+case "$DECODE" in pure) ;; model) [ "$GEN" = model ] || { echo "DECODE=model requires GEN=model"; exit 1; } ;; *) echo "DECODE must be pure|model"; exit 1 ;; esac
 case "$SIMSIZE" in 7b) SIMMODEL=Qwen/Qwen2.5-7B-Instruct; export GPAB_SIM_PARAMS=7 ;; 32b) SIMMODEL=Qwen/Qwen2.5-32B-Instruct; export GPAB_SIM_PARAMS=32 ;; 72b) SIMMODEL=Qwen/Qwen2.5-72B-Instruct; export GPAB_SIM_PARAMS=72 ;; *) echo "SIMSIZE must be 7b|32b|72b"; exit 1 ;; esac
 STAIR=$HOME/slr/STAIR
 PKG=$STAIR/lab_package/gpagentbench
 DATA=/common/scratch/users/d/dohyung.ahn.2025/data/gpagentbench
 CASES=$STAIR/common/stair_common/splits/gpagentbench/pilot60.txt
-OUT=/common/scratch/users/d/dohyung.ahn.2025/runs/gpagentbench/pilot60_align_${PARSER}_${GEN}$([ "$SIMSIZE" = 72b ] && echo "" || echo "_sim${SIMSIZE}")
+OUT=/common/scratch/users/d/dohyung.ahn.2025/runs/gpagentbench/pilot60_align_${PARSER}_${GEN}$([ "$SIMSIZE" = 72b ] && echo "" || echo "_sim${SIMSIZE}")$([ "$DECODE" = pure ] && echo "" || echo "_agentsample")
 VLLM_PY=$HOME/slr/vllm-env/bin/python
 WEAK=Qwen/Qwen2.5-7B-Instruct
 STRONG=Qwen/Qwen2.5-72B-Instruct
 [ -e "$OUT" ] && { echo "REFUSING: $OUT exists"; exit 1; }
 mkdir -p "$OUT"; cd "$OUT"
-echo "PARSER=$PARSER GPAB_TOLERANT=$GPAB_TOLERANT GEN=$GEN GEN_CFG='$GEN_CFG' SIM=$SIMMODEL(bf16, SIMSIZE=$SIMSIZE) STRONG_AGENT=$STRONG(bf16)" | tee condition.txt
+echo "PARSER=$PARSER GPAB_TOLERANT=$GPAB_TOLERANT GEN=$GEN GEN_CFG='$GEN_CFG' DECODE=$DECODE SIM=$SIMMODEL(bf16, SIMSIZE=$SIMSIZE) STRONG_AGENT=$STRONG(bf16)" | tee condition.txt
 sha256sum $PKG/gpab_env.py $PKG/gpab_run.py $PKG/gpab_score.py $PKG/prompts/patient_simulator_v1_1.txt $CASES | tee inputs_sha256.txt
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 wait_up () { for i in $(seq 1 180); do curl -s localhost:$1/v1/models >/dev/null 2>&1 && return 0; sleep 10; done; echo "server on $1 did not start"; tail -n 40 $2; exit 1; }
@@ -54,8 +62,8 @@ fi
 for port in 8002 8001; do curl -s localhost:$port/v1/models | head -c 200; echo; done
 
 # episodes: simulator = the 72B (port 8002) for BOTH agents
-$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag weak   --agent-model $WEAK   --agent-url http://localhost:8001/v1 --sim-model $SIMMODEL --sim-url $SIM_URL
-$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag strong --agent-model $STRONG --agent-url http://localhost:8002/v1 --sim-model $SIMMODEL --sim-url $SIM_URL
+$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag weak   --agent-model $WEAK   --agent-url http://localhost:8001/v1 --sim-model $SIMMODEL --sim-url $SIM_URL --agent-decoding $DECODE
+$VLLM_PY $PKG/gpab_run.py --data $DATA --cases $CASES --out $OUT --agent-tag strong --agent-model $STRONG --agent-url http://localhost:8002/v1 --sim-model $SIMMODEL --sim-url $SIM_URL --agent-decoding $DECODE
 # score: deterministic metrics + FLOPs + Dx/Tx judge (72B bf16, C.2 prompts)
 $VLLM_PY $PKG/gpab_score.py --run $OUT --data $DATA --cases $CASES --judge-url http://localhost:8002/v1 --judge-model $STRONG
 pkill -f "vllm.entrypoints.openai.api_server" || true

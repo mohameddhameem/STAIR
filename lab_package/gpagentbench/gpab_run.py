@@ -34,10 +34,14 @@ SIM_RULES = json.load(open(os.path.join(HERE, "prompts", "patient_simulator_v1_p
 D1_NOTICE = "\n\nYour previous response was not a valid action for this turn. Produce exactly one allowed action."
 
 
-def chat(url, model, prompt, max_tokens, temperature=0.0, timeout=600):
+def chat(url, model, prompt, max_tokens, temperature=0.0, timeout=600, no_penalty=False):
     """One chat completion against a vLLM OpenAI-compatible endpoint. Returns (text, usage_dict)."""
-    body = json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}],
-                       "temperature": temperature, "max_tokens": max_tokens}).encode()
+    payload = {"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": max_tokens}
+    if temperature is not None:          # None = send no temperature -> the server's generation_config.json decides (v1.1)
+        payload["temperature"] = temperature
+    if no_penalty:                       # v1.1: pin the SIMULATOR to no repetition penalty when the server applies model defaults
+        payload["repetition_penalty"] = 1.0
+    body = json.dumps(payload).encode()
     req = urllib.request.Request(url.rstrip("/") + "/chat/completions", data=body,
                                  headers={"Content-Type": "application/json"})
     for attempt in range(3):
@@ -101,14 +105,14 @@ def run_episode(case, a):
     calls = []                                   # every model call: who, prompt_tokens, completion_tokens
     while not ep.done():
         prompt = ep.build_prompt()
-        reply, usage = chat(a.agent_url, a.agent_model, prompt, a.max_tokens)
+        reply, usage = chat(a.agent_url, a.agent_model, prompt, a.max_tokens, a.agent_temperature)
         calls.append({"who": "agent", "round": ep.round + 1, **{k: usage.get(k) for k in ("prompt_tokens", "completion_tokens")}})
         parsed = E.parse_action(reply)
         ok = parsed is not None and ep.allowed_now(parsed[0])
         n_re = 0
         while not ok and n_re < 2:                 # D1: up to TWO re-prompts (paper: evaluation must not confound clinical
             n_re += 1                              #     decisions with parser failures -> give the model the chance to comply)
-            reply, usage = chat(a.agent_url, a.agent_model, prompt + D1_NOTICE, a.max_tokens)
+            reply, usage = chat(a.agent_url, a.agent_model, prompt + D1_NOTICE, a.max_tokens, a.agent_temperature)
             calls.append({"who": "agent_reprompt", "round": ep.round + 1, **{k: usage.get(k) for k in ("prompt_tokens", "completion_tokens")}})
             parsed = E.parse_action(reply)
             ok = parsed is not None and ep.allowed_now(parsed[0])
@@ -122,7 +126,7 @@ def run_episode(case, a):
         obs, need_patient = ep.step(atype, fields, body)
         if need_patient:
             sp = simulator_prompt(case, body, conversation_text(ep))
-            answer, su = chat(a.sim_url, a.sim_model, sp, a.sim_max_tokens)
+            answer, su = chat(a.sim_url, a.sim_model, sp, a.sim_max_tokens, no_penalty=(a.agent_decoding == "model"))
             calls.append({"who": "simulator", "round": ep.round, **{k: su.get(k) for k in ("prompt_tokens", "completion_tokens")}})
             ep.add_patient_reply(answer.strip())
     rec = ep.record()
@@ -141,15 +145,20 @@ def main():
     ap.add_argument("--sim-model", required=True); ap.add_argument("--sim-url", required=True)
     ap.add_argument("--max-tokens", type=int, default=2048); ap.add_argument("--sim-max-tokens", type=int, default=256)
     ap.add_argument("--repeat-tag", default=None, help="write to a separate file (churn measurement), e.g. rep2")
+    ap.add_argument("--agent-decoding", default="pure", choices=["pure", "model"],
+                    help="pure = temperature 0 sent on every AGENT request (all runs to 5 Nov); model = no temperature sent, so the "
+                         "server's generation_config.json applies (Qwen2.5: T 0.7, top-p 0.8, top-k 20, rep. penalty 1.05) -- the "
+                         "serving-library default a paper that reports no decoding most likely ran. Simulator calls stay at T 0 either way.")
     a = ap.parse_args()
+    a.agent_temperature = 0.0 if a.agent_decoding == "pure" else None
     os.makedirs(a.out, exist_ok=True)
     out = os.path.join(a.out, f"episodes_{a.agent_tag}{'_' + a.repeat_tag if a.repeat_tag else ''}.jsonl")
     done = set()
     if os.path.exists(out):
         done = {json.loads(l)["case_id"] for l in open(out) if l.strip()}
     cases = load_cases(a.data, a.cases)
-    man = {"version": "gpab_run v1.0 2026-10-31", "agent": a.agent_tag, "agent_model": a.agent_model, "sim_model": a.sim_model,
-           "max_tokens": a.max_tokens, "sim_max_tokens": a.sim_max_tokens, "temperature": 0.0, "tolerant_parser": E.TOLERANT, "max_rounds": E.MAX_ROUNDS,
+    man = {"version": "gpab_run v1.1 2026-11-06 (agent-decoding switch; pure = v1.0 behaviour)", "agent": a.agent_tag, "agent_model": a.agent_model, "sim_model": a.sim_model,
+           "max_tokens": a.max_tokens, "sim_max_tokens": a.sim_max_tokens, "temperature": a.agent_temperature, "agent_decoding": a.agent_decoding, "sim_temperature": 0.0, "tolerant_parser": E.TOLERANT, "max_rounds": E.MAX_ROUNDS,
            "cases_file": a.cases, "cases_sha256": hashlib.sha256(open(a.cases, "rb").read()).hexdigest(), "n_cases": len(cases),
            "agent_prompt_sha256": hashlib.sha256(open(E.PROMPT_PATH, "rb").read()).hexdigest(),
            "sim_prompt_sha256": hashlib.sha256(SIM_PROMPT.encode()).hexdigest(), "started": time.strftime("%Y-%m-%dT%H:%M:%S")}
