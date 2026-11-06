@@ -24,11 +24,14 @@ export GPAB_SIM_PARAMS=72                                # simulator cost column
 [ -e "$OUT" ] && { echo "REFUSING: $OUT exists"; exit 1; }
 [ -d "$HF_HOME/hub/models--Qwen--Qwen2.5-72B-Instruct-AWQ" ] || { echo "72B-AWQ not in $HF_HOME"; exit 1; }
 mkdir -p "$OUT"; cd "$OUT"
-echo "72B-AWQ agent + 72B-AWQ simulator + judge | GPAB_TOLERANT=0 | --generation-config vllm (pure T=0) | max-model-len 8192 (lab)" | tee condition.txt
+echo "72B-AWQ agent + 72B-AWQ simulator + judge | GPAB_TOLERANT=0 | --generation-config vllm (pure T=0) | max-model-len 8192, util 0.97, enforce-eager (lab v1.1)" | tee condition.txt
 sha256sum $PKG/gpab_env.py $PKG/gpab_run.py $PKG/gpab_score.py $PKG/prompts/patient_simulator_v1_1.txt $CASES | tee inputs_sha256.txt
 nvidia-smi --query-gpu=name,memory.used,memory.total --format=csv,noheader
-"$PY" -m vllm.entrypoints.openai.api_server --model $STRONG --port 8012 --gpu-memory-utilization 0.95 \
+"$PY" -m vllm.entrypoints.openai.api_server --model $STRONG --port 8012 --gpu-memory-utilization 0.97 --enforce-eager \
       --max-model-len 8192 --generation-config vllm > vllm_72b.log 2>&1 &
+# v1.1 (6 Nov): 0.97 + --enforce-eager = the settings that served this model on this card for the MedAgentBench 72B rerun
+# (rerun72b_pureT0_lab.sh). At 0.95 without eager mode the 4 Nov attempt failed at start-up: 0.86 GiB left for KV cache, 2.5 GiB
+# needed for 8,192 tokens (vllm_72b.log in pilot60_72b_lab_strict_pure_ABORTED_4Nov). Eager mode costs speed, not outputs.
 SERVER_PID=$!; trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
 for i in $(seq 1 120); do curl -s localhost:8012/v1/models >/dev/null 2>&1 && break; sleep 10; done
 curl -s localhost:8012/v1/models | head -c 200; echo
