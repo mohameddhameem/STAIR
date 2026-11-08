@@ -1,0 +1,34 @@
+{
+  "version": "tier_prices v1.0 2026-11-08 (DRAFT for Jonathan's review; every input is a working assumption pending citation)",
+  "currency": "SGD",
+  "fx_usd_to_sgd": 1.30,
+  "tau_gate": 0.80,
+  "high_risk_task_types": ["task5", "task9"],
+  "human_cost": {
+    "note": "C_H = minutes / 60 * loaded hourly rate. Minutes = time to do the task by hand (CPOE time-and-motion, to cite). Rate = junior doctor / medical officer, the grade that enters inpatient orders (MOH/MOM salary bands, to cite); 110 (registrar) and 165 (consultant) are sensitivity values, not used by the trainer.",
+    "rate_sgd_per_hour": 70.0,
+    "minutes": {"task5": 4.0, "task9": 6.5}
+  },
+  "failure_cost": {
+    "note": "C_F = rework + p_slip * p_event * cost_of_event. rework = rework_multiplier * C_H (pharmacist query -> cancel -> re-order). p_slip = wrong order passes pharmacist verification and nurse administration check. p_event = share of slipped errors counted as an incident. cost_of_event = sum of the listed components. Same assumptions for both task types (decided 8 Nov: the safety literature does not rank oral potassium above IV magnesium).",
+    "rework_multiplier": 1.5,
+    "p_slip": 0.05,
+    "settings": {
+      "lower": {
+        "label": "rework only (floor)",
+        "p_event": 0.0,
+        "cost_of_event_sgd": {}
+      },
+      "central": {
+        "label": "central harm estimate",
+        "p_event": 0.20,
+        "cost_of_event_sgd": {"treatment_ade_usd5000": 6500.0}
+      },
+      "operating": {
+        "label": "every slipped error is a reportable incident (operating price, decided 8 Nov)",
+        "p_event": 1.0,
+        "cost_of_event_sgd": {"treatment_ade_usd5000": 6500.0, "incident_investigation": 1500.0, "expected_compensation_10pct_of_50000": 5000.0}
+      }
+    }
+  }
+}
