@@ -16,7 +16,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel
 
-VERSION = "training6_test_read v1.0 2026-11-08 (priced reward: model failure costs rho_i hand-offs, a hand-off costs 1; delta on training5_test_read v1.3)"
+VERSION = "training6_test_read v1.1 2026-11-08 (priced reward: model failure costs rho_i hand-offs, a hand-off costs 1; delta on training5_test_read v1.3; v1.1 accepts trainer v1.1 and records rho_cap_in_gradient — the read itself always uses the full rho_i)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 MODEL   = "Qwen/Qwen2.5-1.5B-Instruct"
@@ -50,7 +50,7 @@ a = ap.parse_args()
 ADAPTER = os.path.join(a.run_dir, "best_adapter")
 OUTDIR = a.run_dir
 man = json.load(open(os.path.join(a.run_dir, "manifest.json")))
-assert man["stage"] == "training6_priced_router" and "v1.0" in man["version"], \
+assert man["stage"] == "training6_priced_router" and ("v1.0" in man["version"] or "v1.1" in man["version"]), \
     f"run dir manifest: stage={man.get('stage')}, version={man.get('version')}"
 assert not man.get("smoke"), "refusing to read a smoke run"
 LAMBDA_T = float(man["lambda_t"])
@@ -181,7 +181,7 @@ refs = {"always_deliver": tally(lambda t: "W"), "always_escalate": tally(lambda 
         "oracle_three_way": tally(lambda t: "W" if t["qw"] else ("S" if t["qs"] else ("H" if t["high"] else "S")))}
 
 manifest = {"version": VERSION, "run_dir": a.run_dir, "adapter": ADAPTER, "H_reward": man.get("H_reward"),
-            "failure_term": man.get("failure_term"), "price_setting": PRICE, "rho_by_task": RHO, "C_H_by_task": C_H, "C_F_by_task": C_F,
+            "failure_term": man.get("failure_term"), "rho_cap_in_gradient": man.get("rho_cap_in_gradient"), "price_setting": PRICE, "rho_by_task": RHO, "C_H_by_task": C_H, "C_F_by_task": C_F,
             "prices_file": man["prices_file"], "prices_sha256": man["prices_sha256"],
             "lambda_t": LAMBDA_T, "theta_h": a.theta_h, "Q_H": Q_H,
             "table_sha256": sha256(TABLE), "tau_sha256": sha256(TAU), "tau_scorer": tauj["scorer"],

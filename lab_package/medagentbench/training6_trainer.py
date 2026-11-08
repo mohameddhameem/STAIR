@@ -26,16 +26,16 @@
 # Usage (lab, slr-env):
 #   python3 tier_prices_build.py --inputs tier_prices_v1.json --out /mnt/hdd/jonathan/runs/mab/tier_prices_v1_computed.json
 #   python3 training6_trainer.py --price operating --smoke
-#   python3 training6_trainer.py --price operating --explore-epochs 10 --baseline 0.1890     # the registered run
-#   python3 training6_trainer.py --price central   --explore-epochs 10 --baseline 0.1890     # sensitivity
-#   python3 training6_trainer.py --price lower     --explore-epochs 10 --baseline 0.1890     # sensitivity (floor)
+#   python3 training6_trainer.py --price operating --explore-epochs 10 --baseline 0.2076     # the registered run
+#   python3 training6_trainer.py --price central   --explore-epochs 10 --baseline 0.2076     # sensitivity
+#   python3 training6_trainer.py --price lower     --explore-epochs 10 --baseline 0.2076     # sensitivity (floor)
 # =============================================================================
 import os, sys, json, time, random, argparse, hashlib
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 
-VERSION = "training6_trainer v1.0 2026-11-08 (priced reward on the high tier: model failure costs rho_i = C_F/C_H hand-offs, a hand-off costs 1; H reward outcome-free; delta on training5_trainer v1.3c)"
+VERSION = "training6_trainer v1.1 2026-11-08 (priced reward on the high tier: model failure costs rho_i = C_F/C_H hand-offs, a hand-off costs 1; H reward outcome-free; v1.1 adds --rho-cap: the penalty that reaches the GRPO advantage is min(rho_i, cap); evaluation, manifest and test read keep the full rho_i; no cap = v1.0 behaviour)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 TAU_GATE = 0.80
@@ -153,6 +153,9 @@ def main():
                     help="default: runs/mab/training6_priced_<price>")
     ap.add_argument("--price", choices=["lower", "central", "operating"], required=True,
                     help="price setting from tier_prices_v1_computed.json: operating = the registered run; central / lower = sensitivity")
+    ap.add_argument("--rho-cap", type=float, default=None, dest="rho_cap",
+                    help="Training 6b: cap on rho_i in the TRAINING penalty only (gradient); full rho_i is kept for evaluation, "
+                         "the manifest and the test read. Default None = no cap (v1.0 behaviour). Registered value: 15.")
 
     ap.add_argument("--G", type=int, default=8, help="rollouts per instance")
     ap.add_argument("--epochs", type=int, default=40,
@@ -165,7 +168,7 @@ def main():
                     help="v1.3c: epochs during which rollouts are sampled uniformly over the allowed actions (default 0 = policy sampling throughout)")
     a = ap.parse_args()
     if a.outdir is None:
-        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training6_priced_{a.price}"
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training6_priced_{a.price}" + (f"_cap{a.rho_cap:g}" if a.rho_cap is not None else "")
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
     os.makedirs(a.outdir, exist_ok=True)
@@ -290,7 +293,8 @@ def main():
                 c = random.choices(ACT[:len(probs)], weights=probs)[0]
                 rew = r["rp"][c]
                 if c != "H":
-                    rew -= failure_penalty(r["high"], r["acc"][c] == 0, r["rho"])
+                    rho_grad = r["rho"] if a.rho_cap is None else min(r["rho"], a.rho_cap)   # v1.1: cap in the gradient only
+                    rew -= failure_penalty(r["high"], r["acc"][c] == 0, rho_grad)
                 draws.append((c, rew))
             rewards = [d[1] for d in draws]
             mu = sum(rewards) / a.G
@@ -343,6 +347,7 @@ def main():
     manifest = {"stage": "training6_priced_router", "version": VERSION,
                 "price_setting": a.price, "prices_file": PRICES, "prices_sha256": sha256(PRICES),
                 "rho_by_task": rho, "C_H_by_task": C_H, "C_F_by_task": C_F, "lambda_t": LAMBDA_T,
+                "rho_cap_in_gradient": a.rho_cap,
                 "H_reward": "Q_H - lambda*C_weak/C_SS_i - lambda_t*1 (outcome-free; one hand-off = one unit)",
                 "failure_term": "lambda_t*rho_i*1[AI action failed], W and S, tau>=gate; rho_i = C_F,i/C_H,i", "Q_H": Q_H,
                 "tau_file": TAU, "tau_sha256": sha256(TAU), "tau_gate": TAU_GATE,
