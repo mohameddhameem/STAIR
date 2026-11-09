@@ -1,111 +1,153 @@
-# Custom LLM Router
+# systemOne: a System One judge decides when the small model is enough
 
-Cost-aware routing between question-answering models on HotpotQA (distractor setting). The
-question under test: does an evidence-sufficiency signal from a small cross-encoder route better
-than a matched question-only router?
+Part of STAIR / RightRoute. **A small typed decision model (the "System One" judge) reads the question and the
+retrieved passages, and sometimes the small model's answer, then decides per question whether to pay for the large
+model.** The judge is [nano-jev](https://huggingface.co/sdmlai/nano-jev) (33M parameters), fine-tuned on our routing
+labels; experiment 9 swaps in Amazon's [Strands Decider](https://github.com/strands-labs/strands-decider) 2B / 4B.
+
+**Since 2026-10-21 the headline is the team's HotpotQA golden set**, Jonathan's Stage-Level Routing setup:
+- the test split is `slr-test` (1,481 questions);
+- answers are scored with the standard lenient ruler;
+- costs are AgentTTS Table 5 prices.
+
+See `stair_common` 0.3.0 in [common/](../common/README.md) and
+[the write-up](docs/experiments/2026-10-21-slr-standard.md). The earlier settings are kept below as history.
+
+- Results, experiment by experiment: [RESULTS.md](RESULTS.md) (full write-ups in [docs/experiments/](docs/experiments/))
+- The judges published on Hugging Face: nano-jev (2026-10-25), and the Strands Decider 2B / E4B on pair A and
+  menu A (2026-10-26): [MODELS.md](MODELS.md)
+- What nano-jev's typed decisions add, tested on HotpotQA, MuSiQue and 2WikiMultiHopQA: [the Jev
+  programme](#the-jev-novelty-programme-2026-10-23-to-25)
+- Other team branches:
+  - [`jonathan`](https://github.com/mohameddhameem/STAIR/tree/jonathan): Stage-Level Routing; the golden set;
+  - [`nonLLM`](https://github.com/mohameddhameem/STAIR/tree/nonLLM): non-LLM stage routers, sampling budgets;
+  - [`selfLearnt`](https://github.com/mohameddhameem/STAIR/tree/selfLearnt): fine-tuned ladders and a learnt
+    rulebook.
+
+## The pipeline
+
+```
+question + 10 HotpotQA passages
+  └─ nano-jev ranks the passages (evidence)
+       └─ judge: "will the large model help?"          33M (nano-jev) or 2B / 4B (decider)
+            ├─ no  → small model answers on the top 2 passages   e.g. Qwen2.5-1.5B, ~1,050 GFLOPs
+            └─ yes → large model answers                          e.g. Qwen2.5-7B, ~22,800 GFLOPs
+```
+
+Two judge inputs: **qp** (question + passages, decides before any answer) and **qpa** (adds the small model's
+answer, so the small model always runs first). Labels: `large-helps` = the small answer is wrong (F1 < τ = 0.8)
+and the large one is right.
+
+**On menu A** (experiment 10, the golden set), the same judge decides at two stages, weak-first like Jonathan's
+routers:
+- **retrieval:** do Qwen2.5-7B's selected passages hold what the answer needs, or does Qwen2.5-72B retrieve?
+- **answer:** will Llama-3.2-3B's answer do, or does Llama-3.1-70B answer?
+
+The labels are his.
 
 ## Setup
 
-Requires Python 3.12 and [uv](https://docs.astral.sh/uv/).
+| | |
+|---|---|
+| **Golden set** (experiments 7–10 since 2026-10-21) | `slr-train` / `slr-val` / `slr-test` (4,814 / 1,110 / 1,481, all from the 7,405 dev questions); thresholds chosen on `slr-val`, reported once on `slr-test` and on the 1,303 questions nano-jev never saw; the standard lenient ruler; Table 5 prices per call, weak-first, strong-everything = 929; each judge also with its own price (`budget()` at its measured tokens) |
+| Data (until 2026-10-17) | HotpotQA distractor setting. Router-train (12,000) and calib (2,000) are drawn from the train split, excluding nano-jev's own training questions; test is the full dev set (7,405) |
+| Model pairs | A: Qwen2.5-1.5B (top 2) / 7B (all 10), the main pair; B: 1.5B / 14B; C: 3B / 7B |
+| Cost | GFLOPs per question, 2 × parameters × tokens, the judge's own cost included |
+| Metric | Answer F1 / EM (official normalisation); **AIQ** = mean F1 along a policy's cost–accuracy hull between always-small and always-large (RouterBench); paired bootstrap, 1,000 resamples |
+| Baselines | Always small / large, random, small-model entropy, logistic regression on question / evidence / small-answer features, oracle |
+| Experiment 8 | A second setting on **AgentTTS's 500 test questions**: five answer options (Llama 3.2 3B ×1 / ×10 / ×20 / ×40 fused, Llama 3.1 70B), AgentTTS cost units, an LLM grader (Qwen2.5-14B) on each model's short committed answer |
 
-```sh
-uv sync
-uv run prepare-hotpotqa   # writes data/hotpotqa/distractor_{train,validation}.parquet
-uv run nanojev-ids        # writes data/hotpotqa/nanojev_{train,validation}_ids.txt
-uv run make-splits --exclude data/hotpotqa/nanojev_train_ids.txt   # writes splits.json
-uv run pytest
-```
+## Headline results: the golden set (`slr-test`, 1,481 questions)
 
-`prepare-hotpotqa --sample 500` exports a random subset per split; `--jsonl` also writes JSON
-Lines. `nanojev-ids` lists the questions nano-jev v1.0 was trained or tuned on, so router data
-and the clean test report can leave them out. `make-splits` keeps only `level == "hard"` train
-questions by default (12k router-train, 2k calib), because every validation question is hard;
-`--level any` keeps all levels.
-
-## Pipeline
-
-Two experts (`small`, `large`) and one decision: answer with small or escalate to large. A run
-directory holds cached expert outputs, trained routers and the report.
-
-```sh
-uv sync --extra llm       # torch + transformers; not needed for configs/smoke.toml
-R=runs/cpu-pilot
-uv run run-experts --config configs/cpu.toml --data data/hotpotqa/distractor_train.parquet \
-    --split router_train --limit 50 --run $R --name router_train
-uv run run-experts --config configs/cpu.toml --data data/hotpotqa/distractor_train.parquet \
-    --split calib --limit 20 --run $R --name calib
-uv run run-experts --config configs/cpu.toml --data data/hotpotqa/distractor_validation.parquet \
-    --limit 20 --run $R --name test
-uv run train-router --run $R --tau 0.8
-uv run eval-routing --run $R   # writes $R/report.json and $R/curves.csv
-uv run eval-routing --run $R --exclude data/hotpotqa/nanojev_validation_ids.txt   # report-clean.json
-uv run tau-sweep --run $R   # retrain and evaluate at tau 0.5-1.0: $R/tau-sweep.csv
-uv run cascade --expert small=results/gpu:small ... --cascade small,large14 --out results/cascade  # multi-stage
-uv run judge all --plan configs/system-one.toml   # System One router (experiment 7, GPU: docs/gpu-jobs-system-one.md)
-```
-
-| Config | Scorer | Experts | Use |
+| Experiment | Policy | Result | Against |
 |---|---|---|---|
-| `configs/smoke.toml` | lexical | heuristic stand-ins, no model | checking the pipeline |
-| `configs/cpu.toml` | nano-jev | Qwen2.5-0.5B (top-2) / 1.5B (all 10) | CPU pilot, tens of questions |
-| `configs/gpu.toml` | nano-jev | Qwen2.5-1.5B (top-2) / 7B (all 10) | the minimal first experiment |
-| `configs/gpu-vllm.toml` | nano-jev | vLLM: Qwen2.5-1.5B (top-2) / 7B (all 10) | the same, faster; 24 GB+ GPU |
-| `configs/gpu-large-top3.toml`, `-top5` | nano-jev | Qwen2.5-1.5B (top-2) / 7B (top-3 or top-5) | experiment 3, [gpu-jobs.md](docs/gpu-jobs.md) |
-| `configs/gpu-large-14b.toml` | nano-jev | Qwen2.5-1.5B (top-2) / 14B (all 10) | experiment 4 |
-| `configs/gpu-small-3b.toml` | nano-jev | Qwen2.5-3B (top-2) / 7B (all 10) | experiment 5 |
+| 8: cheap retrieval + sampling | nano-jev top 5 → Llama 3B, 20 samples fused | **75.08 lenient at a price of 31.6** (3.4% of 929) | ties always-strong (76.77 at 929): −1.69 [−4.19, +0.68]; ties both of Jonathan's routers |
+| 10: the judge on menu A | Strands Decider E4B, fine-tuned, qpa | AIQ **0.736**; 0.730 with its own price | Jonathan's routers 0.724 / 0.726: better before its price ([+0.004, +0.021], [+0.003, +0.019]), tied with it |
+| | | at his operating rule (3 seeds): **76.70 at 737.5** | his label router: 76.70 at 834.8 |
+| | Strands Decider 2B, fine-tuned, qpa | AIQ 0.731; 0.730 with its price | better than his label router before its price, tied with it |
+| | nano-jev (33M) | AIQ 0.719 | slightly worse than his routers |
+| 7 / 9: pair A (Qwen 1.5B / 7B) | one 2B decider judge, qpa, with its price (1.3 a call) | AIQ 0.677–0.682 | better than entropy (0.665) for all three seeds; ties the LR cascade router (0.676) |
+| H2 | Llama 70B with Jonathan's prompt on his 72B's selections | 76.23 | his always-strong 76.77: reproduced. On nano-jev's top 5: 69.82, so retrieval is the gap |
 
-nano-jev is loaded from the Hub (`sdmlai/nano-jev@v1.0`) unless `scorer.path` is a local folder;
-`kind = "reranker"` with an MS MARCO cross-encoder still works as a relevance-only stand-in.
+- **The deciders gain by reading the weak answer.** Their qpa versions beat their qp versions on pair A and on menu
+  A. For nano-jev the two tie.
+- **From about 2B parameters, a qpa judge beats entropy.** Before its own price, it also beats Jonathan's label
+  router.
+- **Cheap evidence plus sampling nearly closes the gap to the strongest pipeline:**
+  - a 33M ranker plus 20 fused 3B answers sits within noise of 72B retrieval + 70B answering, at about a thirtieth of
+    the price;
+  - the 72B's advantage is that it writes question-focused evidence, which already holds the answer for 85% of
+    questions.
+- **The judge's own price matters at Table 5 prices.**
+  - On pair A, a 4B judge's call costs nearly half the 7B's answer. One 2B judge is the best router once priced.
+  - Averaging three seeds never pays there.
 
-Routers `question`, `question+evidence` and `evidence` (an ablation) share model, labels, data
-and tuning (C picked from one grid by 5-fold CV); only the input differs. Each is trained on two
-labels, `small-fails` and `large-helps` (small wrong and large right), giving six routers named
-`<inputs>/<label>`. Four more, `evidence+small` and `question+evidence+small`, are cascade
-routers: they also see the small expert's answer (token entropy, length, yes/no), so they decide
-after it has run and pay for both experts when they escalate. `eval-routing` compares them with random, oracle and a small-model entropy
-threshold on F1-vs-cost curves (AIQ, CPT 50%/80%), and picks an operating point on `calib`
-(≤1% F1 below always-large). It also temperature-scales each router on `calib` and reports ECE
-and reliability bins before and after, with breakdowns by bridge/comparison and yes/no vs span.
-A paired bootstrap over test questions (`--bootstrap 1000`, the default) gives 95% intervals for
-every AIQ, for each router's AIQ minus the entropy and random baselines', and for each operating
-point's F1 minus always-large's. Cost defaults to GFLOPs, 2 × `params` × tokens,
-with `params` (billions) set per expert in the config; `--cost tokens` and `--cost seconds` are
-the alternatives.
+## The Jev novelty programme (2026-10-23 to 25)
 
-`run-experts` works in stages (`--stage evidence|small|large|merge`, default all) and saves
-chunks of 500 questions under `<run>/<name>.parts/`. Rerunning a command skips finished chunks.
-`--reuse-from <run>` copies the finished chunks of any stage whose settings match that run.
-On a GPU, run one stage per command so only one model holds GPU memory. `--limit N` takes a
-seeded random sample (`--seed`). A run directory is pinned to its first config: a config that
-would change outputs is refused (`batch_size`, `gpu_memory_utilization`, `device` and
-`max_model_len` may change). Caches keep raw signals (all ten paragraph scores, sufficiency over
-the top 2 and top 3, per-token entropies, prompt and generated token counts), and every command
-appends its environment, git commit and resolved model revisions to `<run>/provenance.jsonl`.
-An expert's `revision` key pins a Hub commit.
+**What it tested:** what nano-jev's typed-decision pretraining adds to a router. It was pre-registered before any new
+answers existed.
+- **Datasets:** HotpotQA (the golden set) is exploratory. MuSiQue and 2WikiMultiHopQA are confirmatory.
+- **Rule:** a claim is *confirmed* when it holds on both confirmatory datasets.
+- **Results:** [the write-up](docs/experiments/2026-10-25-jev-novelty.md), [the
+  pre-registration](docs/experiments/2026-10-24-jev-preregistration.md), [the files](results/jev/).
 
-### GPU cluster over SSH
+| Claim (pair A, δ = 0.010 AIQ) | Status | HotpotQA / MuSiQue / 2Wiki |
+|---|---|---|
+| Starting from nano-jev beats the same 33M MiniLM without decision training (qp) | **Confirmed** | +0.021 / +0.010 / +0.019 |
+| The passages, not the question, decide escalation | **Confirmed** | +0.011 / +0.025 (MuSiQue / 2Wiki) |
+| Non-inferior to entropy, the LR routers and every cheap weak-model signal, including a hidden-state probe | **Confirmed** | non-inferior; better only for qp on 2Wiki |
+| One untrained typed question recovers most of a trained judge's gain | **Confirmed** | 77% / 86% / 83% |
+| The advantage is largest with few labels | Fails | the gap grows with labels |
+| The typed head beats a plain head | Fails | |
+| A question-only judge routes at chance | Fails on both | it beats random |
+| On menu A, one 4-option question beats two stage decisions | Exploratory | +0.004; the first nano-jev judge not significantly below Jonathan's 1.5B router |
+| Speed | Measured | CPU 123 ms against 4.8 s for the 1.5B router; GPU only 1.8× faster |
 
-```sh
-bash scripts/run_cluster.sh prepare   # data, splits, model downloads (needs internet: login node)
-bash scripts/run_cluster.sh pilot     # 500 questions: F1 of both experts and a time estimate
-bash scripts/run_cluster.sh full      # all caches, then routers and reports
+## Earlier settings (history)
+
+| Setting | Policy | AIQ | Note |
+|---|---|---|---|
+| Exp. 7, pair A, 7,405 dev | Entropy threshold | 0.662 | baseline |
+| | Best logistic regression before the answer | 0.665 | |
+| | **nano-jev judge, qp** | **0.673** | +0.004 to +0.011 over LR; judge costs 3% of the small model |
+| Exp. 9, pair A, 7,405 dev | Strands Decider 2B, fine-tuned, qpa | **0.708** (0.702 with its cost) | +0.030 to +0.039 over nano-jev qp |
+| | Strands Decider 4B, fine-tuned, qpa | 0.713 (0.700 with its cost) | |
+| Exp. 8, AgentTTS's 500 | Llama 70B alone (graded) | accuracy **0.748** at 96 AgentTTS units with its commit step (31% of strong-everything's 311) | the fused 3B ×40 scores 0.632 graded, 0.746 lenient at 71 units |
+| | Judge (nano-jev, five options) | ties the fixed-policy hull | |
+| Common standard (2026-10-18), AgentTTS's 500 | one 2B / E4B decider, qpa, with its cost | AIQ 0.724 | beats entropy and nano-jev, ties the LR cascade router ([write-up](docs/experiments/2026-10-18-common-redo.md)) |
+
+- **Lenient scoring misleads on long answers.** Gold-contained scoring favoured long fused answers by up to 0.14.
+  An LLM grader on a committed short answer reverses the ranking (70B > fused 3B).
+- **Corrected 2026-10-23:** the 2026-10-17 version of this page compared units with Table 5 prices. Its "10.3% of
+  strong-everything" and "280× cheaper retrieval, 4–10× cheaper overall" are wrong; see the branch
+  [README](../README.md#corrections-to-the-2026-10-17-snapshot).
+
+## Quick start
+
+Run everything from this folder (`systemOne/`), with [uv](https://docs.astral.sh/uv/) and Python 3.12.
+
+```bash
+uv sync                                   # CPU; GPU runs: uv sync --extra llm --extra decider
+uv run pytest tests                       # 117 tests
+CONFIG=configs/smoke.toml RUN=runs/smoke bash scripts/run_cluster.sh prepare   # data, splits (downloads HotpotQA)
+CONFIG=configs/smoke.toml RUN=runs/smoke bash scripts/run_cluster.sh pilot     # tiny end-to-end CPU check
 ```
 
-Set `CONFIG` (default `configs/gpu.toml`; `configs/gpu-vllm.toml` is faster), `RUN`, `HF_HOME`
-(a disk with ~20 GB free) and, on nodes without internet, `HF_HUB_OFFLINE=1`. An SSH (PuTTY)
-disconnect kills foreground jobs: run inside `tmux`, or `nohup bash scripts/run_cluster.sh full
-> full.log 2>&1 &`. Every step resumes when rerun.
+GPU runs used SMU's OMEGA cluster (PBS, one L40S per job): `qsub -v STEP=<step> scripts/omega.pbs`, where the steps
+are listed at the top of [scripts/run_cluster.sh](scripts/run_cluster.sh) (for example `full`, `judge`,
+`exp8-answer`, `exp9-judge7`). Every step resumes after an interruption. On another cluster, run
+`bash scripts/run_cluster.sh <step>` inside your own job script.
 
-On omega (PBS Pro, NVIDIA L40S), run `prepare` on the login node and submit the GPU steps with
-`qsub -v STEP=pilot scripts/omega.pbs`; see [docs/omega-cluster.md](docs/omega-cluster.md).
+## Repo map
 
-## Docs
+| Path | What |
+|---|---|
+| `src/stair/` | The package: `run_experts` (answer with small / large models), `router` + `evaluate_routing` (baselines, AIQ, bootstrap; AgentTTS units or Table 5 prices), `judge` (nano-jev judge: zero-shot, fine-tune, eval), `decider` (Strands Decider wrapper), `exp8_*`, `pools`, `rescore` (LLM grader), `slr` (reads and verifies the golden set at a pinned commit), `exp10_slr` (the judge on menu A), `make_splits` / `subset_cache` / `export_common` (the team's splits and results layout); for the Jev programme, `prepare_multihop` (MuSiQue and 2Wiki in the HotpotQA layout), `nanojev_pretrain`, `label_curve`, `signals` (weak-model confidence baselines), `zero_label`, `risk_control`, `latency` and `confirm` (the pre-registered tests) |
+| `configs/` | One TOML per run: `gpu*.toml` (experts), `system-one*.toml` (experiment 7 / 9 judges), `exp8*.toml` (experiment 8); `*-common.toml` (the 2026-10-18 common standard); `slr.toml`, `*-slr.toml`, `exp10-slr.toml` (the golden set); `e1-*`, `e2-*`, `e5-transfer`, `e7-evidence`, `gpu-2wiki`, `gpu-musique`, `gpu-pairD` (the Jev programme) |
+| `scripts/` | `run_cluster.sh` (every step), `omega.pbs` / `omega-cpu.pbs` (PBS wrappers) |
+| `results/` | Each run's `report.json` / `report-clean.json`, curves, configs and per-seed `done.json` (training history). Per-question caches, job logs and provenance records are not included |
+| `docs/` | Method notes and one write-up per experiment |
+| `tests/` | Unit tests (CPU) |
 
-- [docs/research-report.md](docs/research-report.md): the plan and the prior work behind it.
-- [docs/experiment-protocol.md](docs/experiment-protocol.md): splits, leakage rules, scoring.
-- [docs/reference-projects.md](docs/reference-projects.md): nano-jev and rizzo-flow.
-- [docs/omega-cluster.md](docs/omega-cluster.md): running on omega's GPU node (PBS).
-- [docs/experiments.md](docs/experiments.md): headline numbers of every run against published
-  HotpotQA results; per-run write-ups in [docs/experiments/](docs/experiments/).
-- [docs/research-notes/](docs/research-notes/): source notes with citations. Items marked
-  unverified or `[bg]` must be checked before citing.
+Some code comments and write-ups mention cluster job sheets (`docs/gpu-jobs*.md`), job logs and job-id lists
+(`*-jobs.txt`) that are kept in the development repo; the commands they describe are the `run_cluster.sh` steps above.
