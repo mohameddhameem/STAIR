@@ -1,0 +1,21 @@
+{
+ "n": 485,
+ "by_label": {
+  "diagnose_and_manage": 284,
+  "abstain_and_refer": 201
+ },
+ "by_category": {
+  "manage_in_gp": 273,
+  "refer": 188,
+  "manage_after_tests": 11,
+  "urgent_refer": 13
+ },
+ "by_urgency": {
+  "none": 284,
+  "urgent": 149,
+  "routine": 37,
+  "emergency": 15
+ },
+ "pilot60_subset": 60,
+ "sha256": "d868fabbf5712ff0c3af7885b44ec5d716db0accafcd0a011ac80a97a3818591"
+}
