@@ -114,6 +114,8 @@ def main():
     a = ap.parse_args()
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
+    if os.path.exists(a.outdir) and not a.smoke:      # overwrite guard added 9 Nov 2026 (incident 9 Nov 00:05); no other change to v1.0
+        raise SystemExit(f"REFUSING: {a.outdir} exists — a registered run dir is never re-entered; pass a new --outdir")
     os.makedirs(a.outdir, exist_ok=True)
 
     random.seed(a.seed); torch.manual_seed(a.seed)

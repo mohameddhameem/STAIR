@@ -35,7 +35,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 
-VERSION = "training6_trainer v1.1 2026-11-08 (priced reward on the high tier: model failure costs rho_i = C_F/C_H hand-offs, a hand-off costs 1; H reward outcome-free; v1.1 adds --rho-cap: the penalty that reaches the GRPO advantage is min(rho_i, cap); evaluation, manifest and test read keep the full rho_i; no cap = v1.0 behaviour)"
+VERSION = "training6_trainer v1.2 2026-11-09 (priced reward on the high tier: model failure costs rho_i = C_F/C_H hand-offs, a hand-off costs 1; H reward outcome-free; v1.1 adds --rho-cap: the penalty that reaches the GRPO advantage is min(rho_i, cap); evaluation, manifest and test read keep the full rho_i; no cap = v1.0 behaviour; v1.2 adds --explore-below-gate-only: the uniform warm-up applies to below-gate rows only, tier rows sample from the policy from epoch 0; and an overwrite guard on --outdir)"
 TABLE   = "/mnt/hdd/jonathan/runs/mab/training1_table.json"
 TAU     = "/mnt/hdd/jonathan/runs/mab/tau_scores_v2.json"
 TAU_GATE = 0.80
@@ -153,6 +153,9 @@ def main():
                     help="default: runs/mab/training6_priced_<price>")
     ap.add_argument("--price", choices=["lower", "central", "operating"], required=True,
                     help="price setting from tier_prices_v1_computed.json: operating = the registered run; central / lower = sensitivity")
+    ap.add_argument("--explore-below-gate-only", action="store_true", dest="explore_below_gate_only",
+                    help="v1.2: during --explore-epochs, sample uniformly on BELOW-GATE rows only; tier rows (H available) sample from the "
+                         "policy from epoch 0. Default off = v1.1 behaviour (uniform on every row).")
     ap.add_argument("--rho-cap", type=float, default=None, dest="rho_cap",
                     help="Training 6b: cap on rho_i in the TRAINING penalty only (gradient); full rho_i is kept for evaluation, "
                          "the manifest and the test read. Default None = no cap (v1.0 behaviour). Registered value: 15.")
@@ -168,9 +171,11 @@ def main():
                     help="v1.3c: epochs during which rollouts are sampled uniformly over the allowed actions (default 0 = policy sampling throughout)")
     a = ap.parse_args()
     if a.outdir is None:
-        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training6_priced_{a.price}" + (f"_cap{a.rho_cap:g}" if a.rho_cap is not None else "")
+        a.outdir = f"/mnt/hdd/jonathan/runs/mab/training6_priced_{a.price}" + (f"_cap{a.rho_cap:g}" if a.rho_cap is not None else "") + ("_xbg" if a.explore_below_gate_only else "")
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
+    if os.path.exists(a.outdir) and not a.smoke:      # v1.2 overwrite guard (incident 9 Nov 00:05)
+        raise SystemExit(f"REFUSING: {a.outdir} exists — a registered run dir is never re-entered; pass a new --outdir")
     os.makedirs(a.outdir, exist_ok=True)
 
     random.seed(a.seed); torch.manual_seed(a.seed)
@@ -286,7 +291,7 @@ def main():
             # ---- one GRPO group: G rollouts over the allowed actions ---------
             lp = logprobs(r)
             probs = lp.exp().detach().tolist()      # sampling distribution (no grad)
-            if ep < a.explore_epochs:               # v1.3c warm-up: uniform over allowed actions
+            if ep < a.explore_epochs and not (a.explore_below_gate_only and r["high"]):   # v1.3c warm-up: uniform over allowed actions; v1.2: tier rows excluded when the flag is set
                 probs = [1.0 / len(probs)] * len(probs)
             draws = []
             for _ in range(a.G):
@@ -347,7 +352,7 @@ def main():
     manifest = {"stage": "training6_priced_router", "version": VERSION,
                 "price_setting": a.price, "prices_file": PRICES, "prices_sha256": sha256(PRICES),
                 "rho_by_task": rho, "C_H_by_task": C_H, "C_F_by_task": C_F, "lambda_t": LAMBDA_T,
-                "rho_cap_in_gradient": a.rho_cap,
+                "rho_cap_in_gradient": a.rho_cap, "explore_below_gate_only": a.explore_below_gate_only,
                 "H_reward": "Q_H - lambda*C_weak/C_SS_i - lambda_t*1 (outcome-free; one hand-off = one unit)",
                 "failure_term": "lambda_t*rho_i*1[AI action failed], W and S, tau>=gate; rho_i = C_F,i/C_H,i", "Q_H": Q_H,
                 "tau_file": TAU, "tau_sha256": sha256(TAU), "tau_gate": TAU_GATE,
