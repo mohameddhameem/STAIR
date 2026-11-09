@@ -18,13 +18,16 @@
 #   from a third vLLM server on GPU 0 beside the 7B agent (bf16; 32B at 0.40 of an H200). Output folder carries the simulator size.
 # Servers (2 x H200, started IN SEQUENCE -- lesson of job 346578): 72B bf16 tensor-parallel 2 on port 8002 (agent for the
 # strong runs, simulator for both, Dx/Tx judge), then the 7B on port 8001 (weak agent). Judge prompts C.2 unchanged.
+# v1.3 (9 Nov, the 485-case run): CASESET=pilot60|test485 picks the case list and the output-folder prefix (default pilot60 =
+#   every run to date). test485 = the full test split (sha d868fabb…); both agents + judge ≈ 8× the pilot's 30 min → --time 08:00.
+#   Usage: sbatch --export=ALL,PARSER=strict,GEN=model,DECODE=model,CASESET=test485 ~/slr/STAIR/lab_package/gpagentbench/gpab_align.sbatch
 #SBATCH --job-name=gpab_align
 #SBATCH --account=zhoupanresearch
 #SBATCH --partition=researchshort
 #SBATCH --gres=gpu:h200:2
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=200G
-#SBATCH --time=04:00:00
+#SBATCH --time=08:00:00
 #SBATCH --output=gpab_align.%j.log
 set -euo pipefail
 case "${PARSER:-}" in strict) export GPAB_TOLERANT=0 ;; tolerant) export GPAB_TOLERANT=1 ;; *) echo "set PARSER=strict|tolerant"; exit 1 ;; esac
@@ -33,19 +36,21 @@ export HF_HOME=/common/scratch/users/d/dohyung.ahn.2025/hf_cache
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 SIMSIZE=${SIMSIZE:-72b}
 DECODE=${DECODE:-pure}
+CASESET=${CASESET:-pilot60}
+case "$CASESET" in pilot60|test485) ;; *) echo "CASESET must be pilot60|test485"; exit 1 ;; esac
 case "$DECODE" in pure) ;; model) [ "$GEN" = model ] || { echo "DECODE=model requires GEN=model"; exit 1; } ;; *) echo "DECODE must be pure|model"; exit 1 ;; esac
 case "$SIMSIZE" in 7b) SIMMODEL=Qwen/Qwen2.5-7B-Instruct; export GPAB_SIM_PARAMS=7 ;; 32b) SIMMODEL=Qwen/Qwen2.5-32B-Instruct; export GPAB_SIM_PARAMS=32 ;; 72b) SIMMODEL=Qwen/Qwen2.5-72B-Instruct; export GPAB_SIM_PARAMS=72 ;; *) echo "SIMSIZE must be 7b|32b|72b"; exit 1 ;; esac
 STAIR=$HOME/slr/STAIR
 PKG=$STAIR/lab_package/gpagentbench
 DATA=/common/scratch/users/d/dohyung.ahn.2025/data/gpagentbench
-CASES=$STAIR/common/stair_common/splits/gpagentbench/pilot60.txt
-OUT=/common/scratch/users/d/dohyung.ahn.2025/runs/gpagentbench/pilot60_align_${PARSER}_${GEN}$([ "$SIMSIZE" = 72b ] && echo "" || echo "_sim${SIMSIZE}")$([ "$DECODE" = pure ] && echo "" || echo "_agentsample")
+CASES=$STAIR/common/stair_common/splits/gpagentbench/${CASESET}.txt
+OUT=/common/scratch/users/d/dohyung.ahn.2025/runs/gpagentbench/${CASESET}_align_${PARSER}_${GEN}$([ "$SIMSIZE" = 72b ] && echo "" || echo "_sim${SIMSIZE}")$([ "$DECODE" = pure ] && echo "" || echo "_agentsample")
 VLLM_PY=$HOME/slr/vllm-env/bin/python
 WEAK=Qwen/Qwen2.5-7B-Instruct
 STRONG=Qwen/Qwen2.5-72B-Instruct
 [ -e "$OUT" ] && { echo "REFUSING: $OUT exists"; exit 1; }
 mkdir -p "$OUT"; cd "$OUT"
-echo "PARSER=$PARSER GPAB_TOLERANT=$GPAB_TOLERANT GEN=$GEN GEN_CFG='$GEN_CFG' DECODE=$DECODE SIM=$SIMMODEL(bf16, SIMSIZE=$SIMSIZE) STRONG_AGENT=$STRONG(bf16)" | tee condition.txt
+echo "CASESET=$CASESET PARSER=$PARSER GPAB_TOLERANT=$GPAB_TOLERANT GEN=$GEN GEN_CFG='$GEN_CFG' DECODE=$DECODE SIM=$SIMMODEL(bf16, SIMSIZE=$SIMSIZE) STRONG_AGENT=$STRONG(bf16)" | tee condition.txt
 sha256sum $PKG/gpab_env.py $PKG/gpab_run.py $PKG/gpab_score.py $PKG/prompts/patient_simulator_v1_1.txt $CASES | tee inputs_sha256.txt
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 wait_up () { for i in $(seq 1 180); do curl -s localhost:$1/v1/models >/dev/null 2>&1 && return 0; sleep 10; done; echo "server on $1 did not start"; tail -n 40 $2; exit 1; }
