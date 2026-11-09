@@ -48,10 +48,26 @@ OUT=/common/scratch/users/d/dohyung.ahn.2025/runs/gpagentbench/${CASESET}_align_
 VLLM_PY=$HOME/slr/vllm-env/bin/python
 WEAK=Qwen/Qwen2.5-7B-Instruct
 STRONG=Qwen/Qwen2.5-72B-Instruct
-[ -e "$OUT" ] && { echo "REFUSING: $OUT exists"; exit 1; }
+# v1.4 (9 Nov): RESUME=1 re-enters an existing $OUT to finish a run cut off by the time limit -- gpab_run.py's replay cache skips
+#   every (case, agent) already in episodes_<tag>.jsonl, so only the missing episodes and the judge run. Input hashes must match.
+RESUME=${RESUME:-0}
+if [ -e "$OUT" ] && [ "$RESUME" != 1 ]; then echo "REFUSING: $OUT exists (RESUME=1 to finish a cut-off run)"; exit 1; fi
+if [ "$RESUME" = 1 ]; then
+  [ -f "$OUT/inputs_sha256.txt" ] || { echo "RESUME: no inputs_sha256.txt in $OUT"; exit 1; }
+  diff <(awk '{print $1}' "$OUT/inputs_sha256.txt") <(sha256sum $PKG/gpab_env.py $PKG/gpab_run.py $PKG/gpab_score.py $PKG/prompts/patient_simulator_v1_1.txt $CASES | awk '{print $1}') \
+    || { echo "RESUME: input hashes differ from the original run -- refusing"; exit 1; }
+  for f in "$OUT"/episodes_weak.jsonl "$OUT"/episodes_strong.jsonl; do   # a job killed mid-write can leave a truncated last line
+    [ -f "$f" ] && $VLLM_PY -c "import json,sys,shutil; p=sys.argv[1]; L=open(p).read().splitlines(); ok=[]
+for l in L:
+    try: json.loads(l); ok.append(l)
+    except Exception: pass
+if len(ok)!=len([l for l in L if l.strip()]): shutil.copy(p,p+'.pre_resume'); open(p,'w').write('\n'.join(ok)+'\n'); print('RESUME: dropped',len(L)-len(ok),'bad line(s) from',p)" "$f"
+  done
+  echo "RESUME $(date -Is): $(wc -l < "$OUT/episodes_weak.jsonl" 2>/dev/null || echo 0) weak, $(wc -l < "$OUT/episodes_strong.jsonl" 2>/dev/null || echo 0) strong episodes on disk" | tee -a "$OUT/resume.log"
+fi
 mkdir -p "$OUT"; cd "$OUT"
-echo "CASESET=$CASESET PARSER=$PARSER GPAB_TOLERANT=$GPAB_TOLERANT GEN=$GEN GEN_CFG='$GEN_CFG' DECODE=$DECODE SIM=$SIMMODEL(bf16, SIMSIZE=$SIMSIZE) STRONG_AGENT=$STRONG(bf16)" | tee condition.txt
-sha256sum $PKG/gpab_env.py $PKG/gpab_run.py $PKG/gpab_score.py $PKG/prompts/patient_simulator_v1_1.txt $CASES | tee inputs_sha256.txt
+[ "$RESUME" = 1 ] || echo "CASESET=$CASESET PARSER=$PARSER GPAB_TOLERANT=$GPAB_TOLERANT GEN=$GEN GEN_CFG='$GEN_CFG' DECODE=$DECODE SIM=$SIMMODEL(bf16, SIMSIZE=$SIMSIZE) STRONG_AGENT=$STRONG(bf16)" | tee condition.txt
+[ "$RESUME" = 1 ] || sha256sum $PKG/gpab_env.py $PKG/gpab_run.py $PKG/gpab_score.py $PKG/prompts/patient_simulator_v1_1.txt $CASES | tee inputs_sha256.txt
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 wait_up () { for i in $(seq 1 180); do curl -s localhost:$1/v1/models >/dev/null 2>&1 && return 0; sleep 10; done; echo "server on $1 did not start"; tail -n 40 $2; exit 1; }
 $VLLM_PY -m vllm.entrypoints.openai.api_server --model $STRONG --port 8002 --tensor-parallel-size 2 --gpu-memory-utilization 0.78 --max-model-len 16384 --dtype bfloat16 $GEN_CFG > vllm_72b.log 2>&1 &
