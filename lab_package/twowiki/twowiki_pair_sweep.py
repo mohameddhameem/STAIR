@@ -97,8 +97,12 @@ for name, (rf, qf) in PAIRS.items():
                        "cost_pct_of_SS": round(100*r[1], 1), "tied_with_best": r[0] >= best[0] - se} for r in res]
                      ).to_excel(os.path.join(RUN, "sweep_val400.xlsx"), index=False)
         print(f"  grid saved: {RUN}/sweep_val400.xlsx")
-    except Exception as e:
-        print("  (Excel not written:", e, ")")
+    except Exception as e:                                                                # no pandas -> CSV (opens in Excel)
+        with open(os.path.join(RUN, "sweep_val400.csv"), "w", newline="") as f:
+            w = csv.writer(f); w.writerow(["t_ret", "t_qaW", "t_qaS", "val_lenient_pct", "cost_pct_of_SS", "tied_with_best"])
+            for r in res:
+                w.writerow([r[2], r[3], r[4], round(100*r[0], 2), round(100*r[1], 1), r[0] >= best[0] - se])
+        print(f"  (Excel not written: {e}) -> grid saved as CSV: {RUN}/sweep_val400.csv")
     lock = os.path.join(RUN, "LOCKED_thresholds.json")
     if os.path.exists(lock):
         print(f"  LOCK exists, not overwritten: {lock}")
