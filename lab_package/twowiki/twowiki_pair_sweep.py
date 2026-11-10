@@ -27,8 +27,12 @@ P    = {"retr": {"W": 7.0, "S": 72.0}, "qa": {"W": 3.0, "S": 70.0}}             
 CELLS = ["WW", "WS", "SW", "SS"]                                                          # c = 0, 1, 2, 3 as in PRICE
 
 
-def store(name):                                                                          # 2W
-    return {r["k"]: r["v"] for r in map(json.loads, open(os.path.join(L, name + ".jsonl"))) }
+def store(name):                                                                          # 2W: = twowiki_cells_score.load_store
+    d = {}                                                                                # (meta records carry n_in/n_out at top level, no "v")
+    for line in open(os.path.join(L, name + ".jsonl"), encoding="utf-8"):
+        if line.strip():
+            r = json.loads(line); d[r["k"]] = r["v"] if "v" in r else r
+    return d
 
 
 def u(kind, w, m):                                                                        # 2W
