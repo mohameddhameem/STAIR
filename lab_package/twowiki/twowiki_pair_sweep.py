@@ -14,9 +14,11 @@
 #  * C_SS = mean standalone SS cost (rS + qS|S), the budget without the router -- as HotpotQA's 929
 #  * added: the registered Rule B point (highest accuracy; within 1 SE of it = tied; cheapest tie wins) and the
 #    router's own greedy point; the full grid saved to Excel; the Rule B point LOCKED to a file (refuses to overwrite)
-import csv, json, math, os, sys
-sys.path.insert(0, "/mnt/hdd/jonathan/STAIR/common")                                      # 2W
-from stair_common.cost import units                                                       # 2W
+import csv, json, math, os, sys, importlib.util
+# 2W: load stair_common/cost.py directly -- the package __init__ imports tomllib, absent on the lab's Python 3.10
+_spec = importlib.util.spec_from_file_location("stair_cost", "/mnt/hdd/jonathan/STAIR/common/stair_common/cost.py")
+_cost = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_cost)
+units = _cost.units                                                                       # 2W
 
 L    = "/mnt/hdd/jonathan/runs/twowiki/labels6000_merged/val400"                          # 2W
 RUN  = "/mnt/hdd/jonathan/runs/twowiki/grpo_2w_a1_fresh_ep6_objective"                    # 2W
