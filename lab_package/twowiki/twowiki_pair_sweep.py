@@ -4,6 +4,7 @@
 # DRAFT v1.0 2026-11-10 for Jonathan's line-by-line review. Never reads test600.
 # v1.1 2026-11-11: optional argv 'sft' sweeps the SFT (label) pair into runs/twowiki/sft_2w_pair (lines marked # 2W-SFT).
 # v1.2 2026-11-11: argv 'reward' sweeps the SFT (label) + Reward pair into runs/twowiki/reward_2w_pair (# 2W-REWARD).
+# v1.3 2026-11-11: argv 'warm-sft' / 'warm-hotpotqa' sweep the two §13 warm-start GRPO pairs in their own outdirs (# 2W-WARM).
 #
 # What changes for 2Wiki, and why (# 2W):
 #  * verdicts: the reviewed cells scorer's per-instance file for val400 (lenient = standard ruler, the same ruler as
@@ -31,6 +32,10 @@ if MODE == "sft":                                                               
 if MODE == "reward":                                                                      # 2W-REWARD v1.2 11 Nov: SFT (label) + Reward pair
     RUN = "/mnt/hdd/jonathan/runs/twowiki/reward_2w_pair"
     os.makedirs(RUN, exist_ok=True)
+if MODE == "warm-sft":                                                                    # 2W-WARM v1.3 11 Nov: SFT (label) + GRPO (Reward)
+    RUN = "/mnt/hdd/jonathan/runs/twowiki/grpo_2w_warm_sft_ep3_standard"                  # trainer outdir holds ret/qa_val_scores.jsonl
+if MODE == "warm-hotpotqa":                                                               # 2W-WARM: HotpotQA-warmed GRPO (Reward)
+    RUN = "/mnt/hdd/jonathan/runs/twowiki/grpo_2w_warm_hotpotqa_ep3_objective"
 OFF  = 5000                                                                               # 2W: staged idx of val400 position 0
 P    = {"retr": {"W": 7.0, "S": 72.0}, "qa": {"W": 3.0, "S": 70.0}}                       # 2W: as twowiki_cells_score.py
 CELLS = ["WW", "WS", "SW", "SS"]                                                          # c = 0, 1, 2, 3 as in PRICE
@@ -68,7 +73,9 @@ ss_acc = sum(g["em"][3] for g in val) / len(val)
 T = [i/20 for i in range(21)]
 print(f"validation n={len(val)} | always-SS {100*ss_acc:.2f} at 100%  (C_SS = {C_SS:.1f} units/question)")
 
-PAIRS = {"GRPO(Reward) fresh adapter, 2Wiki": (f"{RUN}/ret_val_scores.jsonl", f"{RUN}/qa_val_scores.jsonl")}  # 2W
+PAIRNAME = {"grpo": "GRPO(Reward) fresh adapter, 2Wiki", "warm-sft": "SFT (label) + GRPO (Reward), 2Wiki",      # 2W-WARM
+            "warm-hotpotqa": "HotpotQA-warmed GRPO (Reward), 2Wiki"}.get(MODE, MODE)
+PAIRS = {PAIRNAME: (f"{RUN}/ret_val_scores.jsonl", f"{RUN}/qa_val_scores.jsonl")}  # 2W (+ 2W-WARM: name by mode)
 if MODE == "sft":                                                                         # 2W-SFT: label-trained adapters' val_scores
     S5 = "/mnt/hdd/jonathan/runs/twowiki"
     PAIRS = {"SFT (label), 2Wiki": (f"{S5}/sft_2w_router5_ret/val_scores.jsonl", f"{S5}/sft_2w_router5_qa/val_scores.jsonl")}
@@ -122,7 +129,7 @@ for name, (rf, qf) in PAIRS.items():
     if os.path.exists(lock):
         print(f"  LOCK exists, not overwritten: {lock}")
     else:
-        json.dump({"version": "twowiki_pair_sweep v1.2 2026-11-11", "pair": name, "rule": "Rule B (1 SE ties, cheapest)",
+        json.dump({"version": "twowiki_pair_sweep v1.3 2026-11-11", "pair": name, "rule": "Rule B (1 SE ties, cheapest)",
                    "t_ret": ruleB[2], "t_qaW": ruleB[3], "t_qaS": ruleB[4],
                    "val_lenient": round(ruleB[0], 4), "val_cost_pct_of_SS": round(100*ruleB[1], 1),
                    "greedy": {"val_lenient": round(greedy[0], 4), "val_cost_pct_of_SS": round(100*greedy[1], 1)},
