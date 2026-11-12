@@ -7,12 +7,15 @@ a stochastic forward (confirmed 12 Nov 09:46-09:49: store-vs-dump mean|d| 0.012,
 re-score noise in eval mode exactly 0). The stores score in eval mode and are right; the sweeps/locks used the noisy dumps.
 This script writes <outdir>/ret_val_scores_eval.jsonl and qa_val_scores_eval.jsonl (deterministic, eval mode, same prompt module
 as training: --prompts objective activates the objective prompt) and prints the deviation of the old dump from the new one.
-Original files are NOT touched. Usage: python3 -I twowiki_grpo_val_redump.py --run <outdir> --prompts standard|objective
+v1.1 (09:55): sets SLR_POOL_K=110 before importing run_labels4 and asserts the pool is untrimmed -- v1.0 omitted this and
+scored trimmed/reordered pools (mean|d| 0.32); its outputs were deleted. Original files are NOT touched. Usage: python3 -I twowiki_grpo_val_redump.py --run <outdir> --prompts standard|objective
 """
 import argparse, json, os, sys, torch
+os.environ["SLR_POOL_K"] = "110"   # BEFORE importing run_labels4 -- exactly as the 2Wiki trainers (pools are 100-104: trim is a no-op)
 LAB_PKG = "/mnt/hdd/jonathan/slr/stage-level-routing/lab_package"
 sys.path.insert(0, LAB_PKG)
 import run_labels4 as R
+assert R.POOL_K == 110, R.POOL_K
 import router_prompts as RP
 ap = argparse.ArgumentParser(); ap.add_argument("--run", required=True); ap.add_argument("--prompts", choices=["standard", "objective"], required=True)
 a = ap.parse_args()
@@ -45,6 +48,7 @@ for rline in open(os.path.join(GRID, "ret_labels", "ret_labels.jsonl")):
     if r["split"] != "val":
         continue
     i = r["idx"]; inst = data[i]; pool = R.trim_pool(inst)                      # as the trainer's build_rows
+    assert pool == inst["ctxs_candidate"], f"pool altered for idx {i} -- SLR_POOL_K not in effect"   # 12 Nov 09:52 guard
     sel_w = R.parse_selection(retr["W"][str(i)], len(pool))
     ret_user = RP.INSTR_RET2.format(q=inst["question"], n_sel=len(sel_w), selections=RP.format_selections(sel_w, pool))
     qa_user = {}
