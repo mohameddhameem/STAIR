@@ -101,7 +101,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True, help="merged split folder: tts_test_2wiki_adapted.json + retr_weak/retr_strong.jsonl")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--cells", nargs="+", default=["U-S", "U-W", "SWxk", "S-all", "W-all"],
+    ap.add_argument("--cells", nargs="+", default=["U-S", "U-W", "S-all", "W-all"],   # K = 1 by default; SWxk only when named (deferred, 12 Nov 13:44)
                     choices=["U-S", "U-W", "SWxk", "S-all", "W-all"])
     ap.add_argument("--k", type=int, default=50); ap.add_argument("--temp", type=float, default=0.7)
     ap.add_argument("--top-p", type=float, default=0.9); ap.add_argument("--seed", type=int, default=20261112)

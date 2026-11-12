@@ -45,7 +45,7 @@ def load_store(path):
 
 def vote(samples):
     c = collections.Counter(normalize_answer(s) for s in samples)
-    best = max(c.values());
+    best = max(c.values())
     for s in samples:                       # earliest sample among the tied modes
         if c[normalize_answer(s)] == best:
             return s
