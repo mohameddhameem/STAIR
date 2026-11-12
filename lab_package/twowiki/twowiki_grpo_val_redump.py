@@ -8,10 +8,12 @@ re-score noise in eval mode exactly 0). The stores score in eval mode and are ri
 This script writes <outdir>/ret_val_scores_eval.jsonl and qa_val_scores_eval.jsonl (deterministic, eval mode, same prompt module
 as training: --prompts objective activates the objective prompt) and prints the deviation of the old dump from the new one.
 v1.1 (09:55): sets SLR_POOL_K=110 before importing run_labels4 and asserts the pool is untrimmed -- v1.0 omitted this and
-scored trimmed/reordered pools (mean|d| 0.32); its outputs were deleted. Original files are NOT touched. Usage: python3 -I twowiki_grpo_val_redump.py --run <outdir> --prompts standard|objective
+scored trimmed/reordered pools (mean|d| 0.32); its outputs were deleted. v1.2 (09:58): also SLR_SHUFFLE=off (the per-row
+guard caught v1.1: trim_pool shuffles unless this is set; the trainers and stores all set it). Original files are NOT touched. Usage: python3 -I twowiki_grpo_val_redump.py --run <outdir> --prompts standard|objective
 """
 import argparse, json, os, sys, torch
 os.environ["SLR_POOL_K"] = "110"   # BEFORE importing run_labels4 -- exactly as the 2Wiki trainers (pools are 100-104: trim is a no-op)
+os.environ["SLR_SHUFFLE"] = "off"  # v1.2: and NO pool shuffle -- every 2Wiki trainer/store sets this; v1.1 omitted it and the guard fired
 LAB_PKG = "/mnt/hdd/jonathan/slr/stage-level-routing/lab_package"
 sys.path.insert(0, LAB_PKG)
 import run_labels4 as R
