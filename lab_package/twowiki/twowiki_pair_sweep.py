@@ -5,6 +5,8 @@
 # v1.1 2026-11-11: optional argv 'sft' sweeps the SFT (label) pair into runs/twowiki/sft_2w_pair (lines marked # 2W-SFT).
 # v1.2 2026-11-11: argv 'reward' sweeps the SFT (label) + Reward pair into runs/twowiki/reward_2w_pair (# 2W-REWARD).
 # v1.3 2026-11-11: argv 'warm-sft' / 'warm-hotpotqa' sweep the two §13 warm-start GRPO pairs in their own outdirs (# 2W-WARM).
+# v1.4 2026-11-12: flag --eval-scores reads *_val_scores_eval.jsonl (eval-mode re-dump; the trainer's dumps were train-mode, dropout on)
+#                  and writes LOCKED_thresholds_eval.json instead of LOCKED_thresholds.json.
 #
 # What changes for 2Wiki, and why (# 2W):
 #  * verdicts: the reviewed cells scorer's per-instance file for val400 (lenient = standard ruler, the same ruler as
@@ -25,6 +27,8 @@ units = _cost.units                                                             
 
 L    = "/mnt/hdd/jonathan/runs/twowiki/labels6000_merged/val400"                          # 2W
 RUN  = "/mnt/hdd/jonathan/runs/twowiki/grpo_2w_a1_fresh_ep6_objective"                    # 2W
+EVAL = "--eval-scores" in sys.argv                                                        # v1.4 12 Nov: use the eval-mode re-dump
+sys.argv = [x for x in sys.argv if x != "--eval-scores"]
 MODE = sys.argv[1] if len(sys.argv) > 1 else "grpo"                                        # 2W-SFT v1.1 11 Nov: "sft" = the
 if MODE == "sft":                                                                         # SFT (label) pair; nothing else changes
     RUN = "/mnt/hdd/jonathan/runs/twowiki/sft_2w_pair"                                    # outputs + lock live here
@@ -75,7 +79,8 @@ print(f"validation n={len(val)} | always-SS {100*ss_acc:.2f} at 100%  (C_SS = {C
 
 PAIRNAME = {"grpo": "GRPO(Reward) fresh adapter, 2Wiki", "warm-sft": "SFT (label) + GRPO (Reward), 2Wiki",      # 2W-WARM
             "warm-hotpotqa": "HotpotQA-warmed GRPO (Reward), 2Wiki"}.get(MODE, MODE)
-PAIRS = {PAIRNAME: (f"{RUN}/ret_val_scores.jsonl", f"{RUN}/qa_val_scores.jsonl")}  # 2W (+ 2W-WARM: name by mode)
+SUF = "_eval" if EVAL else ""                                                              # v1.4: GRPO modes may use *_val_scores_eval.jsonl
+PAIRS = {PAIRNAME: (f"{RUN}/ret_val_scores{SUF}.jsonl", f"{RUN}/qa_val_scores{SUF}.jsonl")}  # 2W (+ 2W-WARM: name by mode)
 if MODE == "sft":                                                                         # 2W-SFT: label-trained adapters' val_scores
     S5 = "/mnt/hdd/jonathan/runs/twowiki"
     PAIRS = {"SFT (label), 2Wiki": (f"{S5}/sft_2w_router5_ret/val_scores.jsonl", f"{S5}/sft_2w_router5_qa/val_scores.jsonl")}
@@ -125,11 +130,11 @@ for name, (rf, qf) in PAIRS.items():
             for r in res:
                 w.writerow([r[2], r[3], r[4], round(100*r[0], 2), round(100*r[1], 1), r[0] >= best[0] - se])
         print(f"  (Excel not written: {e}) -> grid saved as CSV: {RUN}/sweep_val400.csv")
-    lock = os.path.join(RUN, "LOCKED_thresholds.json")
+    lock = os.path.join(RUN, "LOCKED_thresholds_eval.json" if EVAL else "LOCKED_thresholds.json")   # v1.4
     if os.path.exists(lock):
         print(f"  LOCK exists, not overwritten: {lock}")
     else:
-        json.dump({"version": "twowiki_pair_sweep v1.3 2026-11-11", "pair": name, "rule": "Rule B (1 SE ties, cheapest)",
+        json.dump({"version": "twowiki_pair_sweep v1.4 2026-11-12", "eval_mode_scores": EVAL, "pair": name, "rule": "Rule B (1 SE ties, cheapest)",
                    "t_ret": ruleB[2], "t_qaW": ruleB[3], "t_qaS": ruleB[4],
                    "val_lenient": round(ruleB[0], 4), "val_cost_pct_of_SS": round(100*ruleB[1], 1),
                    "greedy": {"val_lenient": round(greedy[0], 4), "val_cost_pct_of_SS": round(100*greedy[1], 1)},

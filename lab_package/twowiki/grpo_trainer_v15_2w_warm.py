@@ -86,7 +86,7 @@ from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 from configb_reward_train_ret import tokenF1, PATH, C_SS, LAMBDA
 from lenient_match_agenttts import LEN     # reporting only
 
-VERSION = "grpo_trainer v1.5-2W-warm 2026-11-11 (v1.5-2W byte-identical except the lines marked # WARM)"
+VERSION = "grpo_trainer v1.5-2W-warm 2026-11-12 (v1.5-2W byte-identical except the lines marked # WARM; eval-mode val dump FIX 12 Nov)"
 DATA   = "/mnt/hdd/jonathan/runs/twowiki/grpo_grid/tts_2wiki_trainval.json"   # 2W: train5000 + val400, staged
 GRID   = "/mnt/hdd/jonathan/runs/twowiki/grpo_grid"                           # 2W: staged stores + ret_labels
 RET_ROWS = os.path.join(GRID, "ret_labels", "ret_labels.jsonl")   # rows + splits only
@@ -366,6 +366,7 @@ def main():
         return PeftModel.from_pretrained(base, os.path.join(a.outdir, sub)).eval()
     ret_model, qa_model = reload("ret_best_adapter"), reload("qa_best_adapter")
     final = evaluate(rows["val"])
+    ret_model.eval(); qa_model.eval()   # FIX 12 Nov: evaluate() leaves the models in train mode (LoRA dropout ON); the dump must be deterministic
     with torch.no_grad(), \
          open(os.path.join(a.outdir, "ret_val_scores.jsonl"), "w") as fr, \
          open(os.path.join(a.outdir, "qa_val_scores.jsonl"), "w") as fq:

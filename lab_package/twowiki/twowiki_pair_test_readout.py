@@ -15,7 +15,8 @@ units = _cost.units
 L    = "/mnt/hdd/jonathan/runs/twowiki/labels6000_merged/test600"
 import argparse                                                           # PAIR
 _ap = argparse.ArgumentParser(); _ap.add_argument("--pair", choices=["reward", "warm-sft", "warm-hotpotqa"], required=True)
-PAIRCHOICE = _ap.parse_args().pair
+_ap.add_argument("--eval-scores", action="store_true")
+_args = _ap.parse_args(); PAIRCHOICE, EVALS = _args.pair, _args.eval_scores
 S5 = "/mnt/hdd/jonathan/runs/twowiki"
 RUN = {"reward": f"{S5}/reward_2w_pair", "warm-sft": f"{S5}/grpo_2w_warm_sft_ep3_standard",
        "warm-hotpotqa": f"{S5}/grpo_2w_warm_hotpotqa_ep3_objective"}[PAIRCHOICE]           # PAIR: lock + test600 live here
@@ -62,7 +63,7 @@ C_SS = ss_units / N
 ret = {r["idx"]: r["pW"] for r in map(json.loads, open(os.path.join(STO, "ret_scores.jsonl")))}
 qa = {(r["idx"], r["ret_choice"]): r["pW"] for r in map(json.loads, open(os.path.join(STO, "qa_scores.jsonl")))}
 assert len(ret) == N and len(qa) == 2 * N
-lock = json.load(open(os.path.join(RUN, "LOCKED_thresholds.json")))
+lock = json.load(open(os.path.join(RUN, "LOCKED_thresholds_eval.json" if EVALS else "LOCKED_thresholds.json")))   # 12 Nov
 POINTS = [("LOCKED (Rule B on val400)", lock["t_ret"], lock["t_qaW"], lock["t_qaS"]), ("greedy", 0.50, 0.50, 0.50),
           ("SECONDARY ties-SS on val (labelled; claim NOT tested here)", *SECONDARY)]                       # PAIR
 

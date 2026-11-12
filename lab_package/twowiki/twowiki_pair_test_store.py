@@ -21,7 +21,8 @@ import run_labels4 as R
 import router_prompts as RP
 import argparse                                                                              # PAIR
 _ap = argparse.ArgumentParser(); _ap.add_argument("--pair", choices=["reward", "warm-sft", "warm-hotpotqa"], required=True)
-PAIRCHOICE = _ap.parse_args().pair
+_ap.add_argument("--eval-scores", action="store_true", help="gate against *_val_scores_eval.jsonl and read LOCKED_thresholds_eval.json (12 Nov fix)")
+_args = _ap.parse_args(); PAIRCHOICE, EVALS = _args.pair, _args.eval_scores
 S5 = "/mnt/hdd/jonathan/runs/twowiki"
 PAIRS = {  # name: (ret adapter, qa adapter, ret val_scores file, sweep/lock folder, objective prompt?)
     "reward":        (f"{S5}/reward_2w_ret/best_adapter", f"{S5}/reward_2w_qa/best_adapter",
@@ -32,6 +33,9 @@ PAIRS = {  # name: (ret adapter, qa adapter, ret val_scores file, sweep/lock fol
                       f"{S5}/grpo_2w_warm_hotpotqa_ep3_objective/ret_val_scores.jsonl", f"{S5}/grpo_2w_warm_hotpotqa_ep3_objective", True),
 }
 AD_RET, AD_QA, VALREF, PAIR, OBJ = PAIRS[PAIRCHOICE]                                        # PAIR
+if EVALS:                                                                                    # 12 Nov: eval-mode re-dump + its lock
+    VALREF = VALREF.replace("ret_val_scores.jsonl", "ret_val_scores_eval.jsonl")
+LOCKNAME = "LOCKED_thresholds_eval.json" if EVALS else "LOCKED_thresholds.json"
 if OBJ:
     import router_prompts_objective
     router_prompts_objective.activate()  # trainer parity for the objective-prompt pair
@@ -135,7 +139,7 @@ def main():
            "prompt": "objective prompt" if OBJ else "SFT router prompt (objective NOT activated)",
            "gate": gate, "data_sha256": sha(DATA_2W),
            "stores_sha256": {k: sha(os.path.join(CELLS, k)) for k in ("retr_weak.jsonl", "retr_strong.jsonl", "qa_weak.jsonl")},
-           "locked": json.load(open(os.path.join(PAIR, "LOCKED_thresholds.json"))),          # SFT
+           "locked": json.load(open(os.path.join(PAIR, LOCKNAME))), "eval_scores": EVALS,   # 12 Nov
            "created": datetime.datetime.now().isoformat(timespec="seconds")}
     json.dump(man, open(os.path.join(OUT, "manifest.json"), "w"), indent=1)
     print("wrote ret_scores.jsonl, qa_scores.jsonl, manifest.json -- scores only, no outcomes touched")
