@@ -22,6 +22,8 @@ RUN = {"reward": f"{S5}/reward_2w_pair", "warm-sft": f"{S5}/grpo_2w_warm_sft_ep3
        "warm-hotpotqa": f"{S5}/grpo_2w_warm_hotpotqa_ep3_objective"}[PAIRCHOICE]           # PAIR: lock + test600 live here
 # PAIR: the labelled SECONDARY point per pair, declared in the registration BEFORE the read (11 Nov 18:26 / 19:55 / 12 Nov 09:38):
 SECONDARY = {"reward": (0.90, 1.00, 0.60), "warm-sft": (0.50, 0.90, 0.75), "warm-hotpotqa": (0.25, 0.10, 0.50)}[PAIRCHOICE]
+if EVALS and PAIRCHOICE == "warm-sft":                                     # 12 Nov 09:58: ties-SS of the EVAL-mode sweep (registered before the read)
+    SECONDARY = (0.55, 0.95, 0.50)
 STO  = os.path.join(RUN, "test600")                                      # SFT: twowiki_sft_test_store.py output
 OUT  = os.path.join(STO, "readout.json")
 N    = 600
