@@ -90,3 +90,13 @@ copy), under `runs/budget/<dataset>[_shift]/`.
   spend-to-peak > spend-all at B = 100 % by > 2 SE; curve falls toward 54 at 100 %); Training 1 reported as the saturated contrast.
 - Script v1.2 sha f0b2f302… (committed 17 Nov 21:50). Real run after Jonathan's read: both datasets, plain and `--shift`, 1,000 bundles;
   MedAgentBench with `--run training3_router --kh 0 5 10 15` and `--run training1_router` as contrast.
+
+## 9. Deferred extension — K > 1 as an allocation option (Jonathan, 17 Nov 21:40: "we can use K > 1 within fixed budget, not just only
+selection of strong or weak. This can be next experiment.")
+Under a cumulative budget, k weak calls with a vote become one more purchasable action per query (1 weak · k weak + vote · 1 strong, each
+priced); the allocator still decides which resource each query gets — right routing over a richer menu, consistent with the 13 Nov scope
+decision that rejected sampling as a substitute for routing. NOT part of ERP I. Order after 27 Nov: 2Wiki first (sampling cells already
+scripted in `twowiki_newpaths_cells.py` §15-B, never run; AgentTTS evidence that weak×50 beats always-strong there), then decide on
+HotpotQA (AgentTTS ≈ always-strong → little expected) and MedAgentBench (k weak episodes ≈ one strong at k ≈ 5; stochastic
+trajectories, vote over episodes — methodologically different). Mentioned in the ERP I proposal (possible methods) and final report
+(future work) as the extension of the budget component.
