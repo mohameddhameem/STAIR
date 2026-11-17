@@ -243,6 +243,8 @@ def main():
     os.makedirs(a.out, exist_ok=True); rng = random.Random(a.seed)
     test, val, meta = (load_hotpotqa if a.dataset == "hotpotqa" else load_medagentbench)(a)
     N = a.N or (200 if a.dataset == "hotpotqa" else 100)
+    if a.full:
+        N, a.bundles, a.shift = len(test), 1, False                      # v1.5: the whole held-out set, once
     vcurve = curve_of(val); tstar = theta_star(vcurve, len(val))
     def levels(items, key):
         vals = [it[key] for it in items] if key else [v for it in items for v in (it["path_at"][0.5],)]
@@ -259,8 +261,6 @@ def main():
     print(f"{a.dataset}: test {len(test)} val {len(val)} | theta* (val) = {tstar} at {meta['val_spend_at_theta_star']} % spend, "
           f"val acc {meta['val_acc_at_theta_star']} | groups {meta['groups']} | N {N} bundles {a.bundles} shift {a.shift} kh {khs}", flush=True)
 
-    if a.full:
-        N, a.bundles, a.shift = len(test), 1, False
     def draw():
         if a.full: return list(test)
         if not a.shift or len(gnames) < 2: return [rng.choice(test) for _ in range(N)]
