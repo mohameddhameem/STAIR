@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
-v1.4 17 Nov 2026 (22:05; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+v1.5 17 Nov 2026 (22:25; --full = the whole held-out set as the one bundle, i.e. the dataset-level budget — Jonathan's reading of Prof. Archan's 'fixed budget'; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
 stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
 RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
@@ -236,6 +236,7 @@ def main():
     ap.add_argument("--root", default=None); ap.add_argument("--out", required=True)
     ap.add_argument("--N", type=int, default=None); ap.add_argument("--bundles", type=int, default=1000)
     ap.add_argument("--shift", action="store_true"); ap.add_argument("--kh", nargs="*", type=int, default=[0])
+    ap.add_argument("--full", action="store_true", help="v1.5: ONE bundle = the whole held-out set (no resampling) -- the dataset-level budget; bootstrap runs give the SEs")
     ap.add_argument("--seed", type=int, default=20261117)
     a = ap.parse_args()
     a.run = a.run or ("grpo_ret_qa_a1_fresh_ep6_guided" if a.dataset == "hotpotqa" else "training1_router")
@@ -258,7 +259,10 @@ def main():
     print(f"{a.dataset}: test {len(test)} val {len(val)} | theta* (val) = {tstar} at {meta['val_spend_at_theta_star']} % spend, "
           f"val acc {meta['val_acc_at_theta_star']} | groups {meta['groups']} | N {N} bundles {a.bundles} shift {a.shift} kh {khs}", flush=True)
 
+    if a.full:
+        N, a.bundles, a.shift = len(test), 1, False
     def draw():
+        if a.full: return list(test)
         if not a.shift or len(gnames) < 2: return [rng.choice(test) for _ in range(N)]
         w = [rng.gammavariate(1.0, 1.0) for _ in gnames]; s = sum(w); w = [x / s for x in w]
         return [rng.choice(groups[rng.choices(gnames, w)[0]]) for _ in range(N)]
@@ -288,7 +292,7 @@ def main():
         if (b + 1) % 200 == 0: print(f"  bundles {b + 1}/{a.bundles}", flush=True)
 
     order = [p[0] for p in POL]
-    summary = {"version": "budget_allocation v1.4 2026-11-17 (+ --data question type for HotpotQA shift)", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
+    summary = {"version": "budget_allocation v1.5 2026-11-17 (+ --full: dataset-level budget)", "full": a.full, "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
                "shift": a.shift, "theta0": a.theta0, "budgets": BUDGETS, "khs": khs,
                "curve": {str(t): {"spend_pct": round(sum(x[0] for x in v) / len(v), 2), "acc": round(sum(x[1] for x in v) / len(v), 2)}
                          for t, v in curve_acc.items()}, "results": {}}
