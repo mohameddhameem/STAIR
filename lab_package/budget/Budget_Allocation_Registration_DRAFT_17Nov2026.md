@@ -68,3 +68,25 @@ MedAgentBench; 4–6 % of HotpotQA instances) — hence the question whether the
 smoke run with `--bundles 20` whose bounds order holds (oracle ≥ oracle_B ≥ allocators ≥ random; always_SS = spend-all at B = 100 %);
 validation files present (the script refuses otherwise). Outputs: `budget_<dataset>.json`, `_per_bundle.csv`, `.xlsx` (Jonathan's check
 copy), under `runs/budget/<dataset>[_shift]/`.
+
+## 8. Smoke results and AMENDMENTS (17 Nov 2026, 21:33–21:45 SGT; 20 bundles each on the lab; numbers are checks, not results)
+- Checks passed: script sha ce79d1c5… on the lab = repo; validation files present (`grpo_ret_qa_a1_fresh_ep6_guided/{ret,qa}_val_scores.jsonl`;
+  `training1_router/val_scores.jsonl`); bounds order holds; always_SS = spend-all at B = 100 % on both datasets.
+- Full-test anchors (CPU): HotpotQA always-strong 76.77, four-cell oracle **81.5** (Config B 7B/72B, lenient) — the deck's "+9.1 at a
+  third of the cost" belongs to the preliminary 1.5B/7B pair; the ERP paper must cite 81.5 for this pair.
+- Finding 1 — **saturation**: Training 1's pDeliver has 39 distinct levels on test (44 of 150 ≥ 0.999, 50 ≤ 0.001 → 63 % saturated;
+  val 23 levels, 37 of 60). Smoke: θ* (exact argmax) = 1.0 → 95.6 % spend, 63.05 vs greedy 55.8 % / 62.05 — the curve is flat
+  (+1.0 pt for +40 cost points). A threshold family needs a ranking; a saturated router offers few levels, so bundle allocation
+  cannot place spend finely. **Amendment A:** the allocation router on MedAgentBench is **Training 3 (round-2; ECE 0.04, AUC 0.91)**
+  with its own table (`training3_table.json`, escalation = cw2 + cs) and score files (`training3_router/{val,test}_scores.jsonl`, on
+  disk); Training 1 is kept as the contrast that shows the saturation effect. Script v1.2: `--run training3_router` (table auto-selected),
+  `score_levels` diagnostic in the manifest.
+- Finding 2 — **exact argmax over-spends**: HotpotQA θ* = 0.95 → 90.6 % spend for 75.45 vs the registered cap-70 point 75.15.
+  **Amendment B (tie rule made operational):** θ* = the CHEAPEST θ whose validation accuracy is within ONE validation instance of the
+  maximum (1/400 = 0.25 pt HotpotQA; 1/60 = 1.67 pt MedAgentBench). Script v1.2 `theta_star(vcurve, n_val)`.
+- HotpotQA behaves as predicted: accuracy rises to always-strong (75.47 = SS on the bundles) and not above; spend-all vs spend-to-peak
+  0.02 apart at B = 100 %. Expected answer: the peak is the bar, reached at ~70 % with Amendment B; the remainder is saving.
+- Predictions unchanged except: MedAgentBench's primary comparison is now made with Training 3 (prediction: θ* at 55–70 % spend;
+  spend-to-peak > spend-all at B = 100 % by > 2 SE; curve falls toward 54 at 100 %); Training 1 reported as the saturated contrast.
+- Script v1.2 sha f0b2f302… (committed 17 Nov 21:50). Real run after Jonathan's read: both datasets, plain and `--shift`, 1,000 bundles;
+  MedAgentBench with `--run training3_router --kh 0 5 10 15` and `--run training1_router` as contrast.

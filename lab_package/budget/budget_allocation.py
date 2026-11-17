@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
-v1.1 17 Nov 2026 -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+v1.2 17 Nov 2026 (21:45; tolerance tie rule for theta*; --run training3_router / --table for the round-2 router) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
 stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
 RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
@@ -89,7 +89,8 @@ def load_hotpotqa(a):
 
 def load_medagentbench(a):
     R = a.root or "/mnt/hdd/jonathan/runs/mab"
-    table = json.load(open(f"{R}/training1_table.json"))
+    table_name = a.table or ("training3_table.json" if a.run.startswith("training3") else "training1_table.json")
+    table = json.load(open(f"{R}/{table_name}"))
     taus = {s["tid"]: s["tau"] for s in json.load(open(f"{R}/tau_scores_v2.json"))["scores"]}
     def scores(path): return {r["tid"]: r["pDeliver"] for r in map(json.loads, open(path))}
     sc_t, sc_v = scores(f"{R}/{a.run}/test_scores.jsonl"), scores(f"{R}/{a.run}/val_scores.jsonl")
@@ -99,13 +100,15 @@ def load_medagentbench(a):
             if t["split"] != split or t["tid"] not in sc: continue
             p = sc[t["tid"]]
             # actions: 0 deliver weak (cw) | 1 escalate (cw + cs) | 2 hand-off (cw; Q_H = 1, tier only)
-            out.append(_item(t["tid"], t["tid"].split("_")[0], [float(t["qw"]), float(t["qs"]), 1.0], [t["cw"], t["cw"] + t["cs"], t["cw"]],
+            esc = (t["cw2"] + t["cs"]) if "cw2" in t else (t["cw"] + t["cs"])      # Training 3: round-2 escalation = cw2 + cs
+            out.append(_item(t["tid"], t["tid"].split("_")[0], [float(t["qw"]), float(t["qs"]), 1.0], [t["cw"], esc, t["cw"]],
                              {th: (0 if p >= th else 1) for th in THETAS}, 1, tau=taus[t["tid"]], p=p))
         return out
     test, val = build("test", sc_t), build("val", sc_v)
     assert len(test) == 150, len(test); assert val, "no validation rows scored -- val_scores.jsonl missing"
-    files = [f"{R}/training1_table.json", f"{R}/tau_scores_v2.json", f"{R}/{a.run}/test_scores.jsonl", f"{R}/{a.run}/val_scores.jsonl"]
-    return test, val, {"root": R, "run": a.run, "n_test": len(test), "n_val": len(val), "tau_gate": 0.8,
+    files = [f"{R}/{table_name}", f"{R}/tau_scores_v2.json", f"{R}/{a.run}/test_scores.jsonl", f"{R}/{a.run}/val_scores.jsonl"]
+    return test, val, {"root": R, "run": a.run, "table": table_name, "n_test": len(test), "n_val": len(val), "tau_gate": 0.8,
+                       "escalation_cost": "cw2 + cs (round-2)" if any("cw2" in t for t in table) else "cw + cs",
                        "inputs_sha256": {os.path.relpath(f, R): sha(f) for f in files}}
 
 
@@ -125,10 +128,11 @@ def curve_of(items):
     return out
 
 
-def theta_star(vcurve):
-    """validation argmax accuracy; ties -> the cheaper theta."""
-    best = max(vcurve.values(), key=lambda v: v[1])[1]
-    return min((t for t, v in vcurve.items() if abs(v[1] - best) < 1e-12), key=lambda t: vcurve[t][0])
+def theta_star(vcurve, n_val):
+    """AMENDED 17 Nov 21:40: the CHEAPEST theta whose validation accuracy is within ONE validation instance (1/n_val) of the
+    maximum -- the registration's 'tie -> cheaper' made operational (exact argmax picked a +0.3-pt point at +20 pts of cost)."""
+    best = max(v[1] for v in vcurve.values()); tol = 1.0 / n_val + 1e-12
+    return min((t for t, v in vcurve.items() if v[1] >= best - tol), key=lambda t: (vcurve[t][0], t))
 
 
 def largest_theta_within(bundle, Bfrac, cap=1.0):
@@ -211,6 +215,7 @@ def main():
     ap.add_argument("--dataset", required=True, choices=["hotpotqa", "medagentbench"])
     ap.add_argument("--tag", default="grpo_fresh_guided", help="hotpotqa TEST score files ret_<tag>/qa_<tag> (the three-insights read)")
     ap.add_argument("--run", default=None, help="run folder holding the VAL score dumps (hotpotqa: grpo_ret_qa_a1_fresh_ep6_guided; mab: training1_router)")
+    ap.add_argument("--table", default=None, help="medagentbench replay table (default: training1_table.json, or training3_table.json when --run starts with training3)")
     ap.add_argument("--theta0", type=float, default=0.5, help="the registered per-query operating point (greedy)")
     ap.add_argument("--root", default=None); ap.add_argument("--out", required=True)
     ap.add_argument("--N", type=int, default=None); ap.add_argument("--bundles", type=int, default=1000)
@@ -221,7 +226,13 @@ def main():
     os.makedirs(a.out, exist_ok=True); rng = random.Random(a.seed)
     test, val, meta = (load_hotpotqa if a.dataset == "hotpotqa" else load_medagentbench)(a)
     N = a.N or (200 if a.dataset == "hotpotqa" else 100)
-    vcurve = curve_of(val); tstar = theta_star(vcurve)
+    vcurve = curve_of(val); tstar = theta_star(vcurve, len(val))
+    def levels(items, key):
+        vals = [it[key] for it in items] if key else [v for it in items for v in (it["path_at"][0.5],)]
+        return len(set(round(v, 3) for v in vals))
+    if a.dataset == "medagentbench":
+        meta["score_levels"] = {"test_distinct_p": levels(test, "p"), "val_distinct_p": levels(val, "p"),
+                                "test_saturated_pct": round(100 * sum(it["p"] >= 0.999 or it["p"] <= 0.001 for it in test) / len(test), 1)}
     meta.update({"theta_star_val": tstar, "val_spend_at_theta_star": round(100 * vcurve[tstar][0], 1),
                  "val_acc_at_theta_star": round(100 * vcurve[tstar][1], 2)})
     groups = collections.defaultdict(list)
@@ -261,7 +272,7 @@ def main():
         if (b + 1) % 200 == 0: print(f"  bundles {b + 1}/{a.bundles}", flush=True)
 
     order = [p[0] for p in POL]
-    summary = {"version": "budget_allocation v1.1 2026-11-17", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
+    summary = {"version": "budget_allocation v1.2 2026-11-17 (tolerance tie rule; Training 3 support)", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
                "shift": a.shift, "theta0": a.theta0, "budgets": BUDGETS, "khs": khs,
                "curve": {str(t): {"spend_pct": round(sum(x[0] for x in v) / len(v), 2), "acc": round(sum(x[1] for x in v) / len(v), 2)}
                          for t, v in curve_acc.items()}, "results": {}}
