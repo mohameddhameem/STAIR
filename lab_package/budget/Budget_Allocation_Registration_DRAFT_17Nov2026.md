@@ -122,3 +122,16 @@ escalation price. All MedAgentBench spend figures above shift down (~12 pts for 
 (ii) θ* from 60 validation instances did not transfer on Training 3 (val 0.33 → test 59.97 vs greedy 0.5 → 63.34): the registration's
 stop-rule case for the peak LOCATION — reported as such; the peak's EXISTENCE (63 → 54 as spend → 100 %) is not in doubt. (iii) HotpotQA
 shift needs a question-type key; pending the row keys.
+
+## 11. SECOND RUN — MedAgentBench on the corrected cost axis (17 Nov 2026, 21:53 SGT; v1.3 sha 9075fa2b…; 1,000 bundles; N = 100) — FINAL
+Denominator = always-strong cw + cs. Check: the registered greedy point θ = 0.5 (per-query) reads **63.34 @ 81.4 %** = the October held-out
+read (63.33 @ 81.5 %). **Training 3, B = 100 %:** spend-all (= escalate-all at round 2) 54.04 @ 86.9 % · spend-to-peak (val θ* = 0.33)
+59.97 @ 79.0 % · θ = 0.5 63.34 @ 81.4 % · spend-to-peak + K_H = 5 / 10 / 15 hand-offs **64.94 @ 67.4 % · 69.12 @ 58.4 % · 71.48 @ 54.6 %**,
+tier failures with no human 13.9 → 9.0 / 4.8 / 2.4 · oracle (two models) 63.34 @ 44.2 % · oracle_B + 15 hand-offs 76.28 @ 43.4 % (1.0
+tier failures). Pacing = spend-to-peak exactly at B = 100 %. **Shifted task mix:** spend-to-peak + 15 → 68.77 @ 60.0 % (SE 0.37); θ = 0.5
+62.95; same ordering. **Training 1 (contrast)** unchanged from §10 (its escalation price = the denominator): 62.66 @ 94.9 %; + 15 hand-offs
+71.56 @ 76.0 %. **Answer of record (MedAgentBench):** the accuracy peak lies at ≈ 45–80 % of the always-strong budget; spending the
+remainder on strong calls lowers accuracy to always-strong's 54; spending it on hand-offs raises accuracy to 71.5 at 55 % of the budget
+and cuts unseen high-risk failures by 83 %. Decision rule §6: spend-to-peak (with or without hand-offs) > spend-all by ≫ 2 SE ⇒ NO, do not
+spend it all. Caveat (ii) of §10 stands: θ* from 60 validation instances (59.97) under-performs the registered greedy point (63.34) by 3.4
+pts — both reported; the peak's existence is not in doubt. Pending: HotpotQA `--shift` with question types (v1.4, `--data tts_test.json`).
