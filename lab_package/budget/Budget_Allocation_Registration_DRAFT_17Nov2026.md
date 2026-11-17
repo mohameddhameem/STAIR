@@ -185,3 +185,6 @@ B = 100 % by > 2 bootstrap SE, K > 1 enters the menu for HotpotQA; otherwise it 
 - **17 Nov 2026 22:48 — §13 inputs staged on the cluster.** First smoke (job 367962) cancelled before start: `~/slr/hotpotqa_stores/` held only
   `retr_strong.jsonl`. `retr_weak.jsonl` located on the lab at `runs/config_b/` (6.6 MB, 8 Oct) and copied via laptop; shas on the cluster = lab:
   retr_weak 50296feb…, retr_strong be53e8af… (same build, same 110-passage pool). No H200 free at 22:47; the smoke queues overnight.
+- **17 Nov 2026 22:49 — §13 SMOKE SUBMITTED by Jonathan (cluster job 367972; `SPLIT=test ARGS="--end 10"`, OUT `samplek_smoke`; pending, priority).** Pass
+  criteria: 20 rows in `samples_test.jsonl` (10 × {W, S}) with 40 samples each; `n_seq_out` 40, 0 truncations; samples read as short answers. Then
+  `SPLIT=val` and `SPLIT=test` full runs into `samplek_k40` (same OUT, no ARGS).
