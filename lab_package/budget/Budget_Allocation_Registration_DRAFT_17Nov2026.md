@@ -182,3 +182,6 @@ B = 100 % by > 2 bootstrap SE, K > 1 enters the menu for HotpotQA; otherwise it 
   conditional ablation if K > 1 shows a gain; (2) K = 40, ladder {1, 5, 10, 20, 40} (22:34) after the budget check — SW×40 = 931 < 1,009 per
   question, 92 % of the set's budget if every question took it, ceiling k = 66; (3) per-call price 3 units per weak answer call as the headline
   (the harsher price for K), measured tokens alongside (22:35, "OK if this is within the budget" — it is, see (2)).
+- **17 Nov 2026 22:48 — §13 inputs staged on the cluster.** First smoke (job 367962) cancelled before start: `~/slr/hotpotqa_stores/` held only
+  `retr_strong.jsonl`. `retr_weak.jsonl` located on the lab at `runs/config_b/` (6.6 MB, 8 Oct) and copied via laptop; shas on the cluster = lab:
+  retr_weak 50296feb…, retr_strong be53e8af… (same build, same 110-passage pool). No H200 free at 22:47; the smoke queues overnight.
