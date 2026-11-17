@@ -1,175 +1,201 @@
 #!/usr/bin/env python3
 """
-budget_allocation.py -- ERP I component: allocation of a FIXED CUMULATIVE BUDGET over a bundle of queries.
-DRAFT v1.0 17 Nov 2026 for Jonathan's line-by-line review. CPU only. Reads ONLY stored held-out outcomes and the routers'
-stored per-instance scores (no model is run, no new test exposure: every file below was written by a declared test read).
+budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
+v1.1 17 Nov 2026 -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
-QUESTION (Prof. Archan, item 2): given an expected bundle of N queries and a total budget B, how should the router's decisions
-be allocated so that the bundle's spend stays within B -- as opposed to optimising a per-query cost term.
+RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
+the whole budget be spent to reach the highest accuracy, or is the peak reached below it?
 
-FORMULATION. maximise sum_i E[correct_i(a_i)]  s.t.  sum_i cost_i(a_i) <= B.  The Lagrangian relaxation gives the per-query rule
-"act to maximise p_i(a) - lambda * c_i(a)"; for a two-action stage with a calibrated score p_i (= the router's P(weak is enough)),
-that rule is a THRESHOLD: deliver weak iff p_i >= theta(lambda). Our routers already use such thresholds; R' = correctness -
-0.10 * cost fixes lambda = 0.10 for every query. The budget component is: choose theta FOR THE BUNDLE so the cumulative spend
-meets B -- offline when the bundle is known, online (pacing) when queries arrive one by one.
+FORMULATION. maximise sum_i E[correct_i(a_i)]  s.t.  sum_i cost_i(a_i) <= B  over a bundle of N queries. The Lagrangian relaxation
+gives the per-query rule "maximise p_i(a) - lambda * c_i(a)"; for a two-action stage with a calibrated score p_i = P(weak is
+enough) that is a THRESHOLD: deliver weak iff p_i >= theta. Higher theta = more escalation = more spend. Our routers already act
+through such thresholds (R' fixes lambda = 0.10 for every query). The budget component sets theta FOR THE BUNDLE.
 
-POLICIES (all use the same stored scores; they differ only in how theta is set)
-  per-query   theta fixed in advance (the registered operating point), blind to B -> reports its REALISED spend and whether it
-              violates B on each bundle
-  bundle      theta chosen on the bundle itself: the largest escalation level whose spend <= B (sorts queries by score)
-  pacing      online: queries in random order; before each query theta is re-set from the remaining budget per remaining
-              query, using the cost-vs-theta curve measured on the VALIDATION split (never on the bundle's own outcomes)
-  oracle_B    knapsack on the TRUE outcomes (greedy by accuracy gain per unit cost over the cheapest-correct path) -- upper bound
-  random_B    escalate uniformly random queries to the strongest path until B is spent -- lower bound
-  always_SS   reference (spend = 100 % by definition)
+POLICIES (same stored scores; they differ only in how theta is set and what the remainder buys)
+  spend-all      the largest theta whose bundle spend <= B                       (the naive reading of "use the budget")
+  spend-to-peak  theta* = argmax accuracy on the VALIDATION curve (tie -> cheaper), capped so spend <= B; the remainder is banked;
+                 on MedAgentBench the remainder's instances are NOT escalated -- instead up to K_H hand-offs go to the high-risk
+                 tier's lowest-confidence queries (second resource; person assumed correct = Training 6 convention)
+  per-query      theta0 fixed in advance (registered operating point 0.5), blind to B -> realised spend, violation of B
+  pacing         online: queries arrive one by one; theta_t = min(theta*, largest theta whose VALIDATION spend <= remaining budget
+                 per remaining query) -- spend-to-peak executed without seeing the bundle
+  oracle_B       knapsack on TRUE outcomes within B (greedy by accuracy gain per unit cost) -- upper bound under the budget
+  oracle         unconstrained per-instance best (the ceiling) ; always_SS = strong everywhere (100 % by definition)
+  random_B       escalate uniformly random queries to the strongest path until B is spent -- lower bound
 
-DATASETS (both from the lab's run folders)
-  hotpotqa   rows = router_data_standard.jsonl (split == test, 1,481; em_standard = [WW, WS, SW, SS] lenient outcomes), prices
-             PRICE = [80, 195, 894, 1009] units, C_SS = 929 (Table 5 convention, as every HotpotQA number); scores = test_scores/
-             ret_<tag>.jsonl (idx, pW) and qa_<tag>.jsonl (idx, ret_choice, pW). A common theta drives all three gates
-             (ret, qa|W, qa|S), i.e. the one-parameter family through the greedy point (0.5, 0.5, 0.5).
-  medagentbench  rows = training1_table.json (split == test, 150; qw/qs outcomes, cw/cs costs; tid = task<k>_<j>); scores =
-             training1_router/test_scores.jsonl (pDeliver); tau from tau_scores_v2.json. Deliver = cw, escalate = cw + cs
-             (weak-first). HUMAN OPTION on the tau >= 0.8 tier: a SECOND cumulative resource -- at most K_H hand-offs per bundle;
-             the allocator hands off the tier queries with the lowest pDeliver first; Q_H = 1 (person assumed correct, the
-             Training 6 convention -- stated as an assumption); a hand-off costs cw (weak already run) and no strong call.
+DATASETS (lab run folders)
+  hotpotqa   rows: router_data_standard.jsonl (split test 1,481 / val; em_standard = [WW, WS, SW, SS] lenient); PRICE [80, 195,
+             894, 1009], C_SS 929 (Table 5 convention); TEST scores: test_scores/ret_<tag>.jsonl, qa_<tag>.jsonl (idx, ret_choice,
+             pW); VAL scores: <run>/ret_val_scores.jsonl, qa_val_scores.jsonl (the trainer's dumps). One theta drives all three
+             gates (ret, qa|W, qa|S): the one-parameter family through the greedy point (0.5, 0.5, 0.5).
+  medagentbench  rows: training1_table.json (split test 150 / val 60; qw/qs outcomes; cw/cs costs; tid task<k>_<j>); TEST
+             scores: training1_router/test_scores.jsonl (pDeliver); VAL scores: training1_router/val_scores.jsonl; tau from
+             tau_scores_v2.json; tier = tau >= 0.8. deliver = cw, escalate = cw + cs (weak-first), hand-off = cw.
+  Validation files are REQUIRED (theta* and the pacing curve come from validation, never from the bundle's outcomes).
 
-BUNDLES. n_bundles bootstrap samples (with replacement) of size N from the test rows; optional COMPOSITION SHIFT: a group key
-(HotpotQA: question type if the row carries one; MedAgentBench: task type from tid) and a Dirichlet re-weighting of group shares,
-so bundles differ from the validation mix the per-query theta was tuned on.
+BUNDLES. --bundles bootstrap samples (with replacement) of size N from the test rows; --shift re-weights groups (HotpotQA question
+type if the rows carry one; MedAgentBench task type from tid) by a Dirichlet(1,...,1) draw per bundle.
 
-OUTPUTS <out>/budget_<dataset>.json (+ per-bundle CSV, + .xlsx when openpyxl is present): for each budget level and policy --
-mean accuracy, mean realised spend (% of the bundle's always-SS cost), violation rate P(spend > B), mean overshoot, regret to
-oracle_B; MedAgentBench adds tier failures with no human and hand-offs used.
+OUTPUTS <out>/budget_<dataset>.json, _per_bundle.csv, .xlsx (if openpyxl): per B and policy -- mean accuracy (+SE over bundles),
+realised spend (% of the bundle's always-SS cost), P(spend > B), overshoot, regret to oracle_B; the accuracy-spend CURVE over theta
+(bundle means) with s* = spend at the validation theta*; MedAgentBench: tier failures with no human, hand-offs used.
 
-USAGE (lab, python3 -I; seconds to a minute)
-  python3 -I budget_allocation.py --dataset hotpotqa --tag grpo_fresh_guided --out <dir> [--N 200 --bundles 1000 --shift]
-  python3 -I budget_allocation.py --dataset medagentbench --out <dir> [--N 100 --bundles 1000 --shift --kh 0 5 10 15]
+USAGE (lab, slr-env or plain python3 -I)
+  python3 -I budget_allocation.py --dataset hotpotqa --tag grpo_fresh_guided --run grpo_ret_qa_a1_fresh_ep6_guided --out <dir>
+  python3 -I budget_allocation.py --dataset medagentbench --out <dir> --kh 0 5 10 15
+  optional: --N --bundles --shift --seed --theta0
 """
-import argparse, bisect, collections, csv, json, math, os, random, statistics, sys
+import argparse, collections, csv, hashlib, json, math, os, random, statistics
+
+
+def sha(path):
+    return hashlib.sha256(open(path, 'rb').read()).hexdigest()
 
 BUDGETS = [40, 50, 60, 70, 80, 90, 100, 110, 120]           # % of the bundle's always-strong cost
-THETAS = [i / 100 for i in range(0, 101)]                      # the one-parameter family
+THETAS = [i / 100 for i in range(0, 101)]                      # higher theta -> more escalation -> more spend
 
 
 # ----------------------------------------------------------------------------------------------------- loaders
+def _item(id_, group, acc, cost, path_at, strong, **extra):
+    d = {"id": id_, "group": group or "all", "acc": acc, "cost": cost, "path_at": path_at, "strong": strong}; d.update(extra); return d
+
+
 def load_hotpotqa(a):
     B = a.root or "/mnt/hdd/jonathan/runs/config_b"
-    PRICE, C_SS = [80, 195, 894, 1009], 929
+    PRICE = [80, 195, 894, 1009]
     rows = [json.loads(l) for l in open(f"{B}/router_data_standard.jsonl") if l.strip()]
-    def scores(fn):
-        return {(r["idx"], r.get("ret_choice")): r["pW"] for r in map(json.loads, open(f"{B}/test_scores/{fn}.jsonl"))}
-    ret, qa = scores(f"ret_{a.tag}"), scores(f"qa_{a.tag}")
-    def path(i, theta):                                      # the router's own decision structure, common theta
+    def scores(path):
+        return {(r["idx"], r.get("ret_choice")): r["pW"] for r in map(json.loads, open(path))}
+    ret_t, qa_t = scores(f"{B}/test_scores/ret_{a.tag}.jsonl"), scores(f"{B}/test_scores/qa_{a.tag}.jsonl")
+    ret_v, qa_v = scores(f"{B}/{a.run}/ret_val_scores.jsonl"), scores(f"{B}/{a.run}/qa_val_scores.jsonl")
+    def path(ret, qa, i, theta):                            # the router's own decision structure, one theta for all gates
         if ret[(i, None)] >= theta: return 0 if qa[(i, "W")] >= theta else 1
         return 2 if qa[(i, "S")] >= theta else 3
-    items = []
-    for g in rows:
-        if g["split"] != "test": continue
-        i, em = g["idx"], g["em_standard"]
-        grp = g.get("type") or g.get("qtype")
-        items.append({"id": i, "group": grp or "all", "acc": [float(x) for x in em], "cost": PRICE,
-                      "path_at": {t: path(i, t) for t in THETAS}, "strong": 3})
-    val = [g for g in rows if g["split"] == "val"]
-    val_items = [{"acc": [float(x) for x in g["em_standard"]], "cost": PRICE, "path_at": {t: path(g["idx"], t) for t in THETAS}}
-                 for g in val if (g["idx"], None) in ret]
-    return items, val_items, C_SS, {"B": B, "tag": a.tag, "n_test": len(items), "n_val_scored": len(val_items)}
+    def build(split, ret, qa):
+        out = []
+        for g in rows:
+            if g["split"] != split or (g["idx"], None) not in ret: continue
+            out.append(_item(g["idx"], g.get("type") or g.get("qtype"), [float(x) for x in g["em_standard"]], PRICE,
+                             {t: path(ret, qa, g["idx"], t) for t in THETAS}, 3))
+        return out
+    test, val = build("test", ret_t, qa_t), build("val", ret_v, qa_v)
+    assert len(test) == 1481, len(test); assert val, "no validation rows scored -- val score files missing"
+    files = [f"{B}/router_data_standard.jsonl", f"{B}/test_scores/ret_{a.tag}.jsonl", f"{B}/test_scores/qa_{a.tag}.jsonl",
+             f"{B}/{a.run}/ret_val_scores.jsonl", f"{B}/{a.run}/qa_val_scores.jsonl"]
+    return test, val, {"root": B, "tag": a.tag, "run": a.run, "n_test": len(test), "n_val": len(val), "price": PRICE,
+                       "inputs_sha256": {os.path.relpath(f, B): sha(f) for f in files}}
 
 
 def load_medagentbench(a):
     R = a.root or "/mnt/hdd/jonathan/runs/mab"
     table = json.load(open(f"{R}/training1_table.json"))
     taus = {s["tid"]: s["tau"] for s in json.load(open(f"{R}/tau_scores_v2.json"))["scores"]}
-    sc = {r["tid"]: r["pDeliver"] for r in map(json.loads, open(f"{R}/training1_router/test_scores.jsonl"))}
-    vsc = {}
-    vpath = f"{R}/training1_router/val_scores.jsonl"
-    if os.path.exists(vpath):
-        vsc = {r["tid"]: r["pDeliver"] for r in map(json.loads, open(vpath))}
-    def mk(t, p):
-        # actions: 0 = deliver weak (cw), 1 = escalate (cw + cs), 2 = hand off (cw; Q_H = 1; tier only)
-        acc = [float(t["qw"]), float(t["qs"]), 1.0]; cost = [t["cw"], t["cw"] + t["cs"], t["cw"]]
-        return {"id": t["tid"], "group": t["tid"].split("_")[0], "acc": acc, "cost": cost, "tau": taus[t["tid"]],
-                "p": p, "path_at": {th: (0 if p >= th else 1) for th in THETAS}, "strong": 1, "css": t["cs"] + t["cw"]}
-    items = [mk(t, sc[t["tid"]]) for t in table if t["split"] == "test"]
-    val_items = [mk(t, vsc[t["tid"]]) for t in table if t["split"] == "val" and t["tid"] in vsc]
-    return items, val_items, None, {"root": R, "n_test": len(items), "n_val_scored": len(val_items), "tau_gate": 0.8}
+    def scores(path): return {r["tid"]: r["pDeliver"] for r in map(json.loads, open(path))}
+    sc_t, sc_v = scores(f"{R}/{a.run}/test_scores.jsonl"), scores(f"{R}/{a.run}/val_scores.jsonl")
+    def build(split, sc):
+        out = []
+        for t in table:
+            if t["split"] != split or t["tid"] not in sc: continue
+            p = sc[t["tid"]]
+            # actions: 0 deliver weak (cw) | 1 escalate (cw + cs) | 2 hand-off (cw; Q_H = 1, tier only)
+            out.append(_item(t["tid"], t["tid"].split("_")[0], [float(t["qw"]), float(t["qs"]), 1.0], [t["cw"], t["cw"] + t["cs"], t["cw"]],
+                             {th: (0 if p >= th else 1) for th in THETAS}, 1, tau=taus[t["tid"]], p=p))
+        return out
+    test, val = build("test", sc_t), build("val", sc_v)
+    assert len(test) == 150, len(test); assert val, "no validation rows scored -- val_scores.jsonl missing"
+    files = [f"{R}/training1_table.json", f"{R}/tau_scores_v2.json", f"{R}/{a.run}/test_scores.jsonl", f"{R}/{a.run}/val_scores.jsonl"]
+    return test, val, {"root": R, "run": a.run, "n_test": len(test), "n_val": len(val), "tau_gate": 0.8,
+                       "inputs_sha256": {os.path.relpath(f, R): sha(f) for f in files}}
 
 
 # ----------------------------------------------------------------------------------------------------- helpers
 def spend_acc(bundle, paths):
-    c = sum(it["cost"][p] for it, p in zip(bundle, paths)); q = sum(it["acc"][p] for it, p in zip(bundle, paths))
-    return c, q
+    return (sum(it["cost"][p] for it, p in zip(bundle, paths)), sum(it["acc"][p] for it, p in zip(bundle, paths)))
 
 
-def css_of(bundle):
-    return sum(it["cost"][it["strong"]] for it in bundle)
+def css_of(bundle): return sum(it["cost"][it["strong"]] for it in bundle)
 
 
-def theta_curve(items):
-    """spend fraction of always-SS at each theta (monotone: lower theta -> more escalation -> more spend)."""
-    css = css_of(items); return {t: spend_acc(items, [it["path_at"][t] for it in items])[0] / css for t in THETAS}
+def curve_of(items):
+    """per theta: (spend fraction of always-SS, accuracy) -- used on VALIDATION to pick theta* and to pace."""
+    css, n = css_of(items), len(items); out = {}
+    for t in THETAS:
+        c, q = spend_acc(items, [it["path_at"][t] for it in items]); out[t] = (c / css, q / n)
+    return out
 
 
-def policy_per_query(bundle, theta0, **_):
-    return [it["path_at"][theta0] for it in bundle]
+def theta_star(vcurve):
+    """validation argmax accuracy; ties -> the cheaper theta."""
+    best = max(vcurve.values(), key=lambda v: v[1])[1]
+    return min((t for t, v in vcurve.items() if abs(v[1] - best) < 1e-12), key=lambda t: vcurve[t][0])
 
 
-def policy_bundle(bundle, Bfrac, **_):
-    """largest escalation (smallest theta) whose spend <= B; falls back to theta = 1 (deliver everything) if even that exceeds B."""
-    css = css_of(bundle); best = None
-    for t in THETAS:                                         # ascending theta = descending spend
-        paths = [it["path_at"][t] for it in bundle]
-        if spend_acc(bundle, paths)[0] <= Bfrac * css: best = paths; break
-    return best if best is not None else [it["path_at"][1.0] for it in bundle]
+def largest_theta_within(bundle, Bfrac, cap=1.0):
+    css = css_of(bundle); chosen = THETAS[0]
+    for t in THETAS:
+        if t > cap: break
+        if spend_acc(bundle, [it["path_at"][t] for it in bundle])[0] <= Bfrac * css: chosen = t
+    return chosen
 
 
-def policy_pacing(bundle, Bfrac, curve, rng, **_):
-    """online: for each arriving query choose theta whose VALIDATION spend fraction <= remaining budget per remaining query."""
+def pol_spend_all(bundle, Bf, **_):
+    t = largest_theta_within(bundle, Bf); return [it["path_at"][t] for it in bundle]
+
+
+def pol_spend_to_peak(bundle, Bf, tstar, **_):
+    t = largest_theta_within(bundle, Bf, cap=tstar); return [it["path_at"][t] for it in bundle]
+def pol_per_query(bundle, theta0, **_):  return [it["path_at"][theta0] for it in bundle]
+
+
+def pol_pacing(bundle, Bf, vcurve, tstar, rng, **_):
     order = list(range(len(bundle))); rng.shuffle(order)
-    css_mean = css_of(bundle) / len(bundle); remaining = Bfrac * css_of(bundle); paths = [None] * len(bundle)
-    ts = sorted(THETAS, key=lambda t: curve[t])              # ascending spend
+    css_mean = css_of(bundle) / len(bundle); remaining = Bf * css_of(bundle); paths = [None] * len(bundle)
     for k, j in enumerate(order):
-        left = len(bundle) - k; target = remaining / left / css_mean
-        t = ts[0]
-        for cand in ts:
-            if curve[cand] <= target: t = cand
-            else: break
-        p = bundle[j]["path_at"][t]; paths[j] = p; remaining -= bundle[j]["cost"][p]
+        target = remaining / (len(bundle) - k) / css_mean; t = THETAS[0]
+        for cand in THETAS:
+            if cand > tstar: break
+            if vcurve[cand][0] <= target: t = cand
+        paths[j] = bundle[j]["path_at"][t]; remaining -= bundle[j]["cost"][paths[j]]
     return paths
 
 
-def policy_oracle(bundle, Bfrac, **_):
-    """start from the cheapest path per query; buy upgrades that increase accuracy, best gain-per-unit-cost first, within B."""
-    css = css_of(bundle); paths = [min(range(len(it["cost"])), key=lambda p: it["cost"][p]) for it in bundle]
-    # exclude the hand-off action for the oracle unless allowed (handled by caller via 'allow_h'); here all actions in cost list
-    budget = Bfrac * css - spend_acc(bundle, paths)[0]
-    cands = []
+def pol_oracle_B(bundle, Bf, allow_h=False, **_):
+    """cheapest path per query, then buy the best accuracy-per-cost upgrades within B (greedy knapsack)."""
+    acts = lambda it: range(len(it["cost"])) if allow_h else range(min(len(it["cost"]), 1 + it["strong"]))
+    paths = [min(acts(it), key=lambda p: it["cost"][p]) for it in bundle]
+    budget = Bf * css_of(bundle) - spend_acc(bundle, paths)[0]; cands = []
     for j, it in enumerate(bundle):
         base = paths[j]
-        for p in range(len(it["cost"])):
+        for p in acts(it):
             dq, dc = it["acc"][p] - it["acc"][base], it["cost"][p] - it["cost"][base]
-            if dq > 0 and dc > 0: cands.append((dq / dc, j, p, dq, dc))
-            elif dq > 0 and dc <= 0: paths[j] = p; budget -= dc; base = p
-    cands.sort(reverse=True); taken = set()
-    for ratio, j, p, dq, dc in cands:
-        if j in taken or dc > budget: continue
-        paths[j] = p; budget -= dc; taken.add(j)
+            if dq > 0 and dc <= 0: paths[j] = p; budget -= dc; base = p
+        for p in acts(it):
+            dq, dc = it["acc"][p] - it["acc"][paths[j]], it["cost"][p] - it["cost"][paths[j]]
+            if dq > 0 and dc > 0: cands.append((dq / dc, j, p, dc))
+    cands.sort(reverse=True); done = set()
+    for _, j, p, dc in cands:
+        if j in done or dc > budget: continue
+        paths[j] = p; budget -= dc; done.add(j)
     return paths
 
 
-def policy_random(bundle, Bfrac, rng, **_):
-    css = css_of(bundle); paths = [0] * len(bundle); budget = Bfrac * css - spend_acc(bundle, paths)[0]
+def pol_oracle(bundle, **_):             return [max(range(1 + it["strong"]), key=lambda p: (it["acc"][p], -it["cost"][p])) for it in bundle]
+def pol_always_ss(bundle, **_):          return [it["strong"] for it in bundle]
+
+
+def pol_random_B(bundle, Bf, rng, **_):
+    paths = [0] * len(bundle); budget = Bf * css_of(bundle) - spend_acc(bundle, paths)[0]
     for j in rng.sample(range(len(bundle)), len(bundle)):
         dc = bundle[j]["cost"][bundle[j]["strong"]] - bundle[j]["cost"][0]
         if dc <= budget: paths[j] = bundle[j]["strong"]; budget -= dc
     return paths
 
 
-def apply_handoffs(bundle, paths, kh, by_oracle=False, tau_gate=0.8):
-    """MedAgentBench only: up to kh hand-offs on the tau >= gate tier; allocator = lowest pDeliver first; oracle = both-fail first."""
-    tier = [j for j, it in enumerate(bundle) if it["tau"] >= tau_gate]
-    if by_oracle: tier.sort(key=lambda j: -(1 - max(bundle[j]["acc"][0], bundle[j]["acc"][1])))
-    else:         tier.sort(key=lambda j: bundle[j]["p"])
+def with_handoffs(bundle, paths, kh, by_oracle=False, gate=0.8):
+    """MedAgentBench: up to kh hand-offs on the tier; allocator = lowest pDeliver first; oracle = both-fail first."""
+    tier = [j for j, it in enumerate(bundle) if it["tau"] >= gate]
+    tier.sort(key=(lambda j: -(1 - max(bundle[j]["acc"][0], bundle[j]["acc"][1]))) if by_oracle else (lambda j: bundle[j]["p"]))
     out = list(paths)
     for j in tier[:kh]: out[j] = 2
     return out
@@ -183,86 +209,94 @@ def mean_se(xs):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", required=True, choices=["hotpotqa", "medagentbench"])
-    ap.add_argument("--tag", default="grpo_fresh_guided", help="hotpotqa score files: ret_<tag>/qa_<tag> (the F6g read)")
-    ap.add_argument("--theta0", type=float, default=0.5, help="the registered per-query operating point (greedy = 0.5)")
+    ap.add_argument("--tag", default="grpo_fresh_guided", help="hotpotqa TEST score files ret_<tag>/qa_<tag> (the three-insights read)")
+    ap.add_argument("--run", default=None, help="run folder holding the VAL score dumps (hotpotqa: grpo_ret_qa_a1_fresh_ep6_guided; mab: training1_router)")
+    ap.add_argument("--theta0", type=float, default=0.5, help="the registered per-query operating point (greedy)")
     ap.add_argument("--root", default=None); ap.add_argument("--out", required=True)
     ap.add_argument("--N", type=int, default=None); ap.add_argument("--bundles", type=int, default=1000)
-    ap.add_argument("--shift", action="store_true", help="composition-shifted bundles (Dirichlet over groups)")
-    ap.add_argument("--kh", nargs="*", type=int, default=[0], help="medagentbench: hand-off caps per bundle")
+    ap.add_argument("--shift", action="store_true"); ap.add_argument("--kh", nargs="*", type=int, default=[0])
     ap.add_argument("--seed", type=int, default=20261117)
     a = ap.parse_args()
+    a.run = a.run or ("grpo_ret_qa_a1_fresh_ep6_guided" if a.dataset == "hotpotqa" else "training1_router")
     os.makedirs(a.out, exist_ok=True); rng = random.Random(a.seed)
-    items, val_items, _, meta = (load_hotpotqa if a.dataset == "hotpotqa" else load_medagentbench)(a)
+    test, val, meta = (load_hotpotqa if a.dataset == "hotpotqa" else load_medagentbench)(a)
     N = a.N or (200 if a.dataset == "hotpotqa" else 100)
-    curve = theta_curve(val_items if val_items else items)   # pacing uses VALIDATION; falls back to test only if no val scores (flagged)
-    meta["pacing_curve_source"] = "validation" if val_items else "TEST (no val scores found -- flag in the write-up)"
+    vcurve = curve_of(val); tstar = theta_star(vcurve)
+    meta.update({"theta_star_val": tstar, "val_spend_at_theta_star": round(100 * vcurve[tstar][0], 1),
+                 "val_acc_at_theta_star": round(100 * vcurve[tstar][1], 2)})
     groups = collections.defaultdict(list)
-    for it in items: groups[it["group"]].append(it)
+    for it in test: groups[it["group"]].append(it)
     gnames = sorted(groups); meta["groups"] = {g: len(groups[g]) for g in gnames}
-    print(f"{a.dataset}: test items {len(items)} | groups {meta['groups']} | N {N} | bundles {a.bundles} | shift {a.shift} | "
-          f"pacing curve from {meta['pacing_curve_source']}", flush=True)
+    khs = a.kh if a.dataset == "medagentbench" else [0]
+    print(f"{a.dataset}: test {len(test)} val {len(val)} | theta* (val) = {tstar} at {meta['val_spend_at_theta_star']} % spend, "
+          f"val acc {meta['val_acc_at_theta_star']} | groups {meta['groups']} | N {N} bundles {a.bundles} shift {a.shift} kh {khs}", flush=True)
 
     def draw():
-        if not a.shift or len(gnames) < 2: return [rng.choice(items) for _ in range(N)]
-        w = [rng.gammavariate(1.0, 1.0) for _ in gnames]; s = sum(w); w = [x / s for x in w]   # Dirichlet(1,...,1)
+        if not a.shift or len(gnames) < 2: return [rng.choice(test) for _ in range(N)]
+        w = [rng.gammavariate(1.0, 1.0) for _ in gnames]; s = sum(w); w = [x / s for x in w]
         return [rng.choice(groups[rng.choices(gnames, w)[0]]) for _ in range(N)]
 
-    khs = a.kh if a.dataset == "medagentbench" else [0]
-    agg = collections.defaultdict(list); per_bundle = []
+    POL = [("spend-all", pol_spend_all), ("spend-to-peak", pol_spend_to_peak), ("per-query", pol_per_query), ("pacing", pol_pacing),
+           ("oracle_B", pol_oracle_B), ("random_B", pol_random_B), ("oracle", pol_oracle), ("always_SS", pol_always_ss)]
+    agg = collections.defaultdict(list); per_bundle = []; curve_acc = collections.defaultdict(list)
     for b in range(a.bundles):
         bundle = draw(); css = css_of(bundle); n = len(bundle)
-        ss_acc = spend_acc(bundle, [it["strong"] for it in bundle])[1] / n
+        for t in THETAS:                                     # the test accuracy-spend curve (bundle means), for s*
+            c, q = spend_acc(bundle, [it["path_at"][t] for it in bundle]); curve_acc[t].append((100 * c / css, 100 * q / n))
         for Bp in BUDGETS:
             Bf = Bp / 100
-            pols = {"per-query": policy_per_query(bundle, a.theta0), "bundle": policy_bundle(bundle, Bf),
-                    "pacing": policy_pacing(bundle, Bf, curve, rng), "oracle_B": policy_oracle(bundle, Bf),
-                    "random_B": policy_random(bundle, Bf, rng)}
             for kh in khs:
-                for name, paths in pols.items():
-                    pp = paths
-                    if a.dataset == "medagentbench" and kh:
-                        pp = apply_handoffs(bundle, paths, kh, by_oracle=(name == "oracle_B"))
-                    c, q = spend_acc(bundle, pp)
+                for name, fn in POL:
+                    paths = fn(bundle, Bf=Bf, tstar=tstar, theta0=a.theta0, vcurve=vcurve, rng=rng, allow_h=False)
+                    if a.dataset == "medagentbench" and kh and name in ("spend-to-peak", "pacing", "oracle_B"):
+                        paths = with_handoffs(bundle, paths, kh, by_oracle=(name == "oracle_B"))
+                    c, q = spend_acc(bundle, paths)
                     rec = {"bundle": b, "B": Bp, "kh": kh, "policy": name, "acc": 100 * q / n, "spend_pct": 100 * c / css,
-                           "violation": int(c > Bf * css + 1e-9), "overshoot_pct": max(0.0, 100 * (c - Bf * css) / css),
-                           "ss_acc": 100 * ss_acc}
+                           "violation": int(c > Bf * css + 1e-9), "overshoot_pct": max(0.0, 100 * (c - Bf * css) / css)}
                     if a.dataset == "medagentbench":
                         tier = [j for j, it in enumerate(bundle) if it["tau"] >= 0.8]
-                        rec["tier_n"] = len(tier)
-                        rec["tier_fail_no_human"] = sum(1 for j in tier if pp[j] != 2 and bundle[j]["acc"][pp[j]] == 0)
-                        rec["handoffs"] = sum(1 for p in pp if p == 2)
+                        rec.update({"tier_n": len(tier), "handoffs": sum(1 for p in paths if p == 2),
+                                    "tier_fail_no_human": sum(1 for j in tier if paths[j] != 2 and bundle[j]["acc"][paths[j]] == 0)})
                     per_bundle.append(rec); agg[(Bp, kh, name)].append(rec)
         if (b + 1) % 200 == 0: print(f"  bundles {b + 1}/{a.bundles}", flush=True)
 
-    summary = {"version": "budget_allocation v1.0 2026-11-17", "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
-               "shift": a.shift, "theta0": a.theta0, "budgets": BUDGETS, "results": {}}
-    print(f"\n{'B%':>4s} {'kh':>3s} {'policy':10s} {'acc':>6s} {'±SE':>5s} {'spend%':>7s} {'viol%':>6s} {'over%':>6s} {'regret':>7s}"
-          + ("  tierFailNoH  handoffs" if a.dataset == "medagentbench" else ""))
-    for (Bp, kh, name), recs in sorted(agg.items(), key=lambda k: (k[0][0], k[0][1], ["per-query", "bundle", "pacing", "oracle_B", "random_B"].index(k[0][2]))):
+    order = [p[0] for p in POL]
+    summary = {"version": "budget_allocation v1.1 2026-11-17", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
+               "shift": a.shift, "theta0": a.theta0, "budgets": BUDGETS, "khs": khs,
+               "curve": {str(t): {"spend_pct": round(sum(x[0] for x in v) / len(v), 2), "acc": round(sum(x[1] for x in v) / len(v), 2)}
+                         for t, v in curve_acc.items()}, "results": {}}
+    pk = max(summary["curve"].items(), key=lambda kv: (kv[1]["acc"], -kv[1]["spend_pct"]))
+    summary["test_curve_peak"] = {"theta": float(pk[0]), **pk[1]}; summary["s_star_from_val_theta"] = summary["curve"][str(tstar)]
+    hdr = f"{'B%':>4s} {'kh':>3s} {'policy':14s} {'acc':>6s} {'±SE':>5s} {'spend%':>7s} {'viol%':>6s} {'over%':>6s} {'regret':>7s}"
+    print("\n" + hdr + ("  tierFailNoH  handoffs" if a.dataset == "medagentbench" else ""))
+    for (Bp, kh, name), recs in sorted(agg.items(), key=lambda k: (k[0][0], k[0][1], order.index(k[0][2]))):
         acc, se = mean_se([r["acc"] for r in recs]); sp = sum(r["spend_pct"] for r in recs) / len(recs)
         viol = 100 * sum(r["violation"] for r in recs) / len(recs); over = sum(r["overshoot_pct"] for r in recs) / len(recs)
-        orc = sum(r["acc"] for r in agg[(Bp, kh, "oracle_B")]) / len(recs); regret = orc - acc
+        orc = sum(r["acc"] for r in agg[(Bp, kh, "oracle_B")]) / len(recs)
         row = {"acc": round(acc, 2), "se": round(se, 2), "spend_pct": round(sp, 1), "violation_pct": round(viol, 1),
-               "overshoot_pct": round(over, 2), "regret_to_oracle": round(regret, 2)}
-        line = f"{Bp:4d} {kh:3d} {name:10s} {acc:6.2f} {se:5.2f} {sp:7.1f} {viol:6.1f} {over:6.2f} {regret:7.2f}"
+               "overshoot_pct": round(over, 2), "regret_to_oracle_B": round(orc - acc, 2)}
+        line = f"{Bp:4d} {kh:3d} {name:14s} {acc:6.2f} {se:5.2f} {sp:7.1f} {viol:6.1f} {over:6.2f} {orc - acc:7.2f}"
         if a.dataset == "medagentbench":
             tf = sum(r["tier_fail_no_human"] for r in recs) / len(recs); ho = sum(r["handoffs"] for r in recs) / len(recs)
             row.update({"tier_fail_no_human": round(tf, 2), "handoffs": round(ho, 2)}); line += f"  {tf:11.2f}  {ho:8.2f}"
         summary["results"][f"B{Bp}|kh{kh}|{name}"] = row; print(line)
-    summary["always_SS_acc"] = round(sum(r["ss_acc"] for r in per_bundle) / len(per_bundle), 2)
+    print(f"\ntheta* (val) {tstar}: test spend {summary['s_star_from_val_theta']['spend_pct']} % acc {summary['s_star_from_val_theta']['acc']} | "
+          f"test-curve peak theta {summary['test_curve_peak']['theta']}: spend {summary['test_curve_peak']['spend_pct']} % acc {summary['test_curve_peak']['acc']}")
     json.dump(summary, open(os.path.join(a.out, f"budget_{a.dataset}.json"), "w"), indent=1)
     with open(os.path.join(a.out, f"budget_{a.dataset}_per_bundle.csv"), "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(per_bundle[0])); w.writeheader(); w.writerows(per_bundle)
     try:
         import openpyxl
         wb = openpyxl.Workbook(); ws = wb.active; ws.title = "summary"
-        ws.append(["B%", "kh", "policy"] + list(next(iter(summary["results"].values()))))
+        first = next(iter(summary["results"].values())); ws.append(["B%", "kh", "policy"] + list(first))
         for k, v in summary["results"].items():
-            Bp, kh, name = k.split("|"); ws.append([int(Bp[1:]), int(kh[2:]), name] + list(v.values()))
+            Bp, kh, name = k.split("|"); ws.append([int(Bp[1:]), int(kh[2:]), name] + [v.get(c) for c in first])
+        ws2 = wb.create_sheet("curve"); ws2.append(["theta", "spend_pct", "acc"])
+        for t, v in summary["curve"].items(): ws2.append([float(t), v["spend_pct"], v["acc"]])
         wb.save(os.path.join(a.out, f"budget_{a.dataset}.xlsx"))
     except ModuleNotFoundError:
         pass
-    print("always-SS accuracy (bundle mean):", summary["always_SS_acc"], "| wrote", os.path.join(a.out, f"budget_{a.dataset}.json"))
+    print("wrote", os.path.join(a.out, f"budget_{a.dataset}.json"))
 
 
 if __name__ == "__main__":
