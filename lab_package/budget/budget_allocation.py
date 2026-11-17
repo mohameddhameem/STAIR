@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
-v1.3 17 Nov 2026 (22:00; MedAgentBench budget denominator = always-strong cw + cs, fixing the round-2 axis) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+v1.4 17 Nov 2026 (22:05; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
 stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
 RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
@@ -72,18 +72,31 @@ def load_hotpotqa(a):
     def path(ret, qa, i, theta):                            # the router's own decision structure, one theta for all gates
         if ret[(i, None)] >= theta: return 0 if qa[(i, "W")] >= theta else 1
         return 2 if qa[(i, "S")] >= theta else 3
+    qtype_of = {}
+    if a.data:                                               # v1.4: question type for --shift (rows carry none)
+        data = json.load(open(a.data, encoding="utf-8"))
+        try:
+            import sys; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "common"))
+            from stair_common.qtype import question_type
+        except Exception:
+            question_type = None
+        for i, rec in enumerate(data):
+            t = rec.get("type")
+            if not t and question_type and rec.get("question"): t = question_type("hotpotqa", rec["question"])
+            qtype_of[i] = t or "unknown"
     def build(split, ret, qa):
         out = []
         for g in rows:
             if g["split"] != split or (g["idx"], None) not in ret: continue
-            out.append(_item(g["idx"], g.get("type") or g.get("qtype"), [float(x) for x in g["em_standard"]], PRICE,
+            out.append(_item(g["idx"], qtype_of.get(g["idx"]) or g.get("type") or g.get("qtype"), [float(x) for x in g["em_standard"]], PRICE,
                              {t: path(ret, qa, g["idx"], t) for t in THETAS}, 3))
         return out
     test, val = build("test", ret_t, qa_t), build("val", ret_v, qa_v)
     assert len(test) == 1481, len(test); assert val, "no validation rows scored -- val score files missing"
     files = [f"{B}/router_data_standard.jsonl", f"{B}/test_scores/ret_{a.tag}.jsonl", f"{B}/test_scores/qa_{a.tag}.jsonl",
-             f"{B}/{a.run}/ret_val_scores.jsonl", f"{B}/{a.run}/qa_val_scores.jsonl"]
-    return test, val, {"root": B, "tag": a.tag, "run": a.run, "n_test": len(test), "n_val": len(val), "price": PRICE,
+             f"{B}/{a.run}/ret_val_scores.jsonl", f"{B}/{a.run}/qa_val_scores.jsonl"] + ([a.data] if a.data else [])
+    return test, val, {"root": B, "tag": a.tag, "run": a.run, "n_test": len(test), "n_val": len(val), "price": PRICE, "data": a.data,
+                       "type_source": ("data 'type' field / wording rule" if qtype_of else "none (rows carry no type)"),
                        "inputs_sha256": {os.path.relpath(f, B): sha(f) for f in files}}
 
 
@@ -217,6 +230,7 @@ def main():
     ap.add_argument("--dataset", required=True, choices=["hotpotqa", "medagentbench"])
     ap.add_argument("--tag", default="grpo_fresh_guided", help="hotpotqa TEST score files ret_<tag>/qa_<tag> (the three-insights read)")
     ap.add_argument("--run", default=None, help="run folder holding the VAL score dumps (hotpotqa: grpo_ret_qa_a1_fresh_ep6_guided; mab: training1_router)")
+    ap.add_argument("--data", default=None, help="hotpotqa: the store's data file (tts_test.json) indexed by idx, for question type under --shift")
     ap.add_argument("--table", default=None, help="medagentbench replay table (default: training1_table.json, or training3_table.json when --run starts with training3)")
     ap.add_argument("--theta0", type=float, default=0.5, help="the registered per-query operating point (greedy)")
     ap.add_argument("--root", default=None); ap.add_argument("--out", required=True)
@@ -274,7 +288,7 @@ def main():
         if (b + 1) % 200 == 0: print(f"  bundles {b + 1}/{a.bundles}", flush=True)
 
     order = [p[0] for p in POL]
-    summary = {"version": "budget_allocation v1.3 2026-11-17 (MedAgentBench budget denominator = always-strong cw+cs)", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
+    summary = {"version": "budget_allocation v1.4 2026-11-17 (+ --data question type for HotpotQA shift)", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
                "shift": a.shift, "theta0": a.theta0, "budgets": BUDGETS, "khs": khs,
                "curve": {str(t): {"spend_pct": round(sum(x[0] for x in v) / len(v), 2), "acc": round(sum(x[1] for x in v) / len(v), 2)}
                          for t, v in curve_acc.items()}, "results": {}}
