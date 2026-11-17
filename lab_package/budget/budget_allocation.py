@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
-v1.2 17 Nov 2026 (21:45; tolerance tie rule for theta*; --run training3_router / --table for the round-2 router) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+v1.3 17 Nov 2026 (22:00; MedAgentBench budget denominator = always-strong cw + cs, fixing the round-2 axis) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
 stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
 RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
@@ -102,13 +102,15 @@ def load_medagentbench(a):
             # actions: 0 deliver weak (cw) | 1 escalate (cw + cs) | 2 hand-off (cw; Q_H = 1, tier only)
             esc = (t["cw2"] + t["cs"]) if "cw2" in t else (t["cw"] + t["cs"])      # Training 3: round-2 escalation = cw2 + cs
             out.append(_item(t["tid"], t["tid"].split("_")[0], [float(t["qw"]), float(t["qs"]), 1.0], [t["cw"], esc, t["cw"]],
-                             {th: (0 if p >= th else 1) for th in THETAS}, 1, tau=taus[t["tid"]], p=p))
+                             {th: (0 if p >= th else 1) for th in THETAS}, 1, tau=taus[t["tid"]], p=p,
+                             css=t["cw"] + t["cs"]))                      # v1.3: budget denominator = always-strong (weak-first), NOT the round-2 escalation price
         return out
     test, val = build("test", sc_t), build("val", sc_v)
     assert len(test) == 150, len(test); assert val, "no validation rows scored -- val_scores.jsonl missing"
     files = [f"{R}/{table_name}", f"{R}/tau_scores_v2.json", f"{R}/{a.run}/test_scores.jsonl", f"{R}/{a.run}/val_scores.jsonl"]
     return test, val, {"root": R, "run": a.run, "table": table_name, "n_test": len(test), "n_val": len(val), "tau_gate": 0.8,
                        "escalation_cost": "cw2 + cs (round-2)" if any("cw2" in t for t in table) else "cw + cs",
+                       "budget_denominator": "always-strong = cw + cs per instance (weak-first); the 'always_SS' policy row is escalate-all at the router's escalation price",
                        "inputs_sha256": {os.path.relpath(f, R): sha(f) for f in files}}
 
 
@@ -117,7 +119,7 @@ def spend_acc(bundle, paths):
     return (sum(it["cost"][p] for it, p in zip(bundle, paths)), sum(it["acc"][p] for it, p in zip(bundle, paths)))
 
 
-def css_of(bundle): return sum(it["cost"][it["strong"]] for it in bundle)
+def css_of(bundle): return sum(it.get("css", it["cost"][it["strong"]]) for it in bundle)   # v1.3: 'css' overrides when present (MedAgentBench)
 
 
 def curve_of(items):
@@ -272,7 +274,7 @@ def main():
         if (b + 1) % 200 == 0: print(f"  bundles {b + 1}/{a.bundles}", flush=True)
 
     order = [p[0] for p in POL]
-    summary = {"version": "budget_allocation v1.2 2026-11-17 (tolerance tie rule; Training 3 support)", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
+    summary = {"version": "budget_allocation v1.3 2026-11-17 (MedAgentBench budget denominator = always-strong cw+cs)", "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
                "shift": a.shift, "theta0": a.theta0, "budgets": BUDGETS, "khs": khs,
                "curve": {str(t): {"spend_pct": round(sum(x[0] for x in v) / len(v), 2), "acc": round(sum(x[1] for x in v) / len(v), 2)}
                          for t, v in curve_acc.items()}, "results": {}}

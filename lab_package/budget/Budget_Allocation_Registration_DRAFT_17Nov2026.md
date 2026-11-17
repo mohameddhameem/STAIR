@@ -100,3 +100,25 @@ scripted in `twowiki_newpaths_cells.py` §15-B, never run; AgentTTS evidence tha
 HotpotQA (AgentTTS ≈ always-strong → little expected) and MedAgentBench (k weak episodes ≈ one strong at k ≈ 5; stochastic
 trajectories, vote over episodes — methodologically different). Mentioned in the ERP I proposal (possible methods) and final report
 (future work) as the extension of the budget component.
+
+## 10. FIRST FULL RUN (17 Nov 2026, 21:46 SGT; script v1.2 f0b2f302…; 1,000 bundles; lab) — read, and AMENDMENT C
+**HotpotQA (N = 200; val 1,110 scored; θ* = 0.92 → 86.1 % val spend).** Curve: 71.67 @ 39.5 % · 73.75 @ 49.7 · 74.79 @ 59.4 · 75.56 @
+69.3 · 76.38 @ 79.3 · 76.62 @ 89.0 · 76.69 @ 100 (= always-strong 76.69; test-curve peak 76.69 @ 91.9 %). At B = 100 %: spend-all 76.69
+@ 100 % vs spend-to-peak 76.54 @ 85.5 % (Δ 0.15, bootstrap SE ≈ 0.14 → indifferent) ⇒ **highest accuracy = the bar; 14.5 % of the
+budget is pure saving.** oracle_B = oracle 81.41 @ 21.5 % (the Config B four-cell ceiling). Per-query θ₀ = 0.5: 74.35 @ 56.7 %; violates
+B = 40 / 50 % on 100 / 99 % of bundles, B = 60 % on 14 %. Pacing = offline allocator within 0.1 pt; its violation rate at tight budgets
+(15–64 %) is the price of not seeing the bundle (overshoot ≤ 0.07 %). `--shift` was a no-op (rows carry no question type → one group).
+**MedAgentBench, Training 3 (N = 100; θ* = 0.33 on 60 val instances).** At B = 100 %: spend-all 54.04 @ 100 % (= always-strong) ·
+spend-to-peak 59.97 @ 91 % · registered greedy θ = 0.5 (per-query) 63.34 @ 93.7 % = test oracle 63.34 · with the saved budget turned
+into hand-offs (K_H = 5 / 10 / 15): **64.94 @ 77.6 % · 69.12 @ 67.2 % · 71.48 @ 62.8 %, tier failures with no human 13.9 → 9.0 / 4.8 /
+2.4**; oracle_B with hand-offs 68.3 / 73.1 / 76.3. **Spending the whole budget on strong calls is the WORST policy at B = 100 %.**
+Shifted bundles: same picture (spend-to-peak 59.4; θ = 0.5 62.95). **Training 1 contrast:** θ* = 1.0 (deliver only p = 1.000) → 62.66 @
+94.9 %; greedy 0.5 61.34 @ 54.4 %; nothing placeable in between (saturation); with K_H = 15: 71.56 @ 76.0 % — the hand-off effect is
+router-independent; the saturation shows as coarse spend placement.
+**Caveats found in the read:** (i) MedAgentBench spend was measured against the router's escalation price (cw2 + cs for Training 3), not
+always-strong (cw + cs) — hence θ = 0.5 at "93.7 %" where the October read reported 81.5 %. **Amendment C (v1.3, sha 9075fa2b…):**
+budget denominator = always-strong cw + cs per instance for both routers; the 'always_SS' row = escalate-all at the router's own
+escalation price. All MedAgentBench spend figures above shift down (~12 pts for Training 3); the ordering is unaffected. Re-run required.
+(ii) θ* from 60 validation instances did not transfer on Training 3 (val 0.33 → test 59.97 vs greedy 0.5 → 63.34): the registration's
+stop-rule case for the peak LOCATION — reported as such; the peak's EXISTENCE (63 → 54 as spend → 100 %) is not in doubt. (iii) HotpotQA
+shift needs a question-type key; pending the row keys.
