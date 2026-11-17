@@ -135,3 +135,21 @@ remainder on strong calls lowers accuracy to always-strong's 54; spending it on 
 and cuts unseen high-risk failures by 83 %. Decision rule §6: spend-to-peak (with or without hand-offs) > spend-all by ≫ 2 SE ⇒ NO, do not
 spend it all. Caveat (ii) of §10 stands: θ* from 60 validation instances (59.97) under-performs the registered greedy point (63.34) by 3.4
 pts — both reported; the peak's existence is not in doubt. Pending: HotpotQA `--shift` with question types (v1.4, `--data tts_test.json`).
+
+## 12. HotpotQA SHIFT RUN (17 Nov 2026, 21:57 SGT; v1.4 sha 3ae99642…; `--data tts_test.json`; groups = HotpotQA's own labels, bridge
+1,184 / comparison 297; 1,000 bundles, N = 200) — EXPERIMENT CLOSED
+Under a Dirichlet-shifted type mix: always-strong 76.13 · spend-to-peak 75.93 @ 76.1 % · pacing 75.93 @ 76.1 % · per-query (θ₀ = 0.5)
+74.18 @ **45.8 %** (plain mix: 56.7 %) — the fixed per-query threshold's realised spend moves 11 points with the mix and violates B = 60 %
+on 12.3 % of shifted bundles (overshoot 0.34 %); bundle allocators 0 %; pacing 25 % at B = 60 % with overshoot 0.02 %. Oracle 80.15 @
+17.5 %. Same curve shape as the plain run (§10).
+**Results of record for ERP I (both datasets, B = always-strong cost):**
+- HotpotQA: highest accuracy = the always-strong bar (76.7); the router reaches it at ~85 % of the budget (within 0.15 pt from ~80 %);
+  the remainder buys no accuracy. Cumulative-budget compliance requires a bundle-level threshold (offline or paced); the per-query
+  threshold cannot guarantee it under a changing mix.
+- MedAgentBench: highest accuracy is reached at ~45–80 % of the budget (63.3 at the registered router point, 81 %); spending the rest on
+  strong calls lowers it to 54.0; spending it on hand-offs raises it to 71.5 at 55 % of the budget with unseen high-risk failures 13.9 →
+  2.4 per 100 tasks; robust to the router (Training 1: 71.6) and to the task mix (68.8).
+- Caveats carried into the write-up: θ* from a 60-instance validation set under-performs the registered greedy point by 3.4 pts on
+  MedAgentBench (both shown); the person is assumed correct (Training 6 convention); bootstrap SEs are over bundles drawn from one
+  held-out set, not independent samples; all inputs are stored outputs of declared test reads (a second analysis of the same outcomes).
+Output folders (lab): `runs/budget/{hotpotqa, hotpotqa_shift_v14, mab_t3_v13, mab_t3_v13_shift, mab_t1_v13}` (+ `mab_t1` from §10, identical).
