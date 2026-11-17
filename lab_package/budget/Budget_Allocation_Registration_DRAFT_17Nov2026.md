@@ -178,3 +178,7 @@ HotpotQA, more weak calls do not substitute for one strong call — measured, no
 B = 100 % by > 2 bootstrap SE, K > 1 enters the menu for HotpotQA; otherwise it is reported as a negative with the equal-price pairs.
 **Settings to confirm one by one (not assumed):** (1) temperature 0.7 / top-p 0.9; (2) K = 40 with the ladder {1, 5, 10, 20, 40}; (3) the Table
 5 per-call price of 3 units per weak answer call as the headline accounting (measured tokens as the alternative).
+- **17 Nov 2026 22:35 — §13 SETTINGS CONFIRMED by Jonathan one by one:** (1) temperature 0.7 / top-p 0.9 (22:33), temperature sweep only as a
+  conditional ablation if K > 1 shows a gain; (2) K = 40, ladder {1, 5, 10, 20, 40} (22:34) after the budget check — SW×40 = 931 < 1,009 per
+  question, 92 % of the set's budget if every question took it, ceiling k = 66; (3) per-call price 3 units per weak answer call as the headline
+  (the harsher price for K), measured tokens alongside (22:35, "OK if this is within the budget" — it is, see (2)).
