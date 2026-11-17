@@ -153,3 +153,28 @@ on 12.3 % of shifted bundles (overshoot 0.34 %); bundle allocators 0 %; pacing 2
   MedAgentBench (both shown); the person is assumed correct (Training 6 convention); bootstrap SEs are over bundles drawn from one
   held-out set, not independent samples; all inputs are stored outputs of declared test reads (a second analysis of the same outcomes).
 Output folders (lab): `runs/budget/{hotpotqa, hotpotqa_shift_v14, mab_t3_v13, mab_t3_v13_shift, mab_t1_v13}` (+ `mab_t1` from §10, identical).
+
+## 13. K > 1 FOR THE WEAK ANSWERER WITHIN THE FIXED BUDGET — HotpotQA (registered 17 Nov 2026, 22:40 SGT; DRAFT until Jonathan's read; nothing launched)
+**Rule (Jonathan, 21:45):** the strong model is called at most once per stage; if the weak model is chosen it may be called k times,
+k ∈ {1, 5, 10, 20, 40}, answers combined by majority vote (no fuser). **Scope (21:41):** HotpotQA and MedAgentBench for ERP I; the K > 1
+cells are made on HotpotQA only — on MedAgentBench a weak "call" is a whole agent episode (k = 5 ≈ one strong call; voting over
+trajectories is a different method), so MedAgentBench stays W / S / H. **Budget (22:29):** the allocation is read inside the fixed budget
+= the always-strong cost of the test set, exactly as on slide 150; the cells are the measurement step only.
+**Cells** (`hotpotqa_samplek_cells.py` v1.0 + `hotpotqa_samplek.sbatch`; Config B runner unchanged; weak answerer Llama-3.2-3B): for every
+question of slr-val (1,110) and slr-test (1,481), WW×40 (stored weak-retriever picks → 40 sampled weak answers) and SW×40 (stored
+strong-retriever picks → 40 sampled weak answers); one batched generate per question per context; temperature 0.7, top-p 0.9 (OUR settings;
+nothing to match), seed 20261117 + position; every sample stored. Smoke `--end 10` first. ~1–1.5 h on one H200 per split.
+**Scoring** (`hotpotqa_samplek_score.py` v1.0, CPU): vote@k over the first k samples (normalize_answer; tie → earliest), lenient ruler
+against the gold aliases (= em_standard's ruler); reference WW/WS/SW/SS on the same questions; prices by the Table 5 per-call
+convention — WW×k = 77 + 3k, SW×k = 811 + 3k (WW 80, WS 195, SW 894, SS 1,009) — measured tokens alongside. Equal-price comparisons the
+scorer prints: WW×40 (197) vs WS (195); SW×40 (931) vs SS (1,009).
+**Allocation** (budget_allocation.py extension, after the cells exist): per question the menu is weak×k (k from the ladder) or strong×1,
+each priced; the family "deliver weak×k iff the router's score ≥ θ, else strong" with one (k, θ) per set chosen on validation subject to
+the budget; plotted as five curves (k = 1 = today's slide 150) on the same axes; fixed paths WW×k and SW×k as points; oracle over the
+extended menu. Budget = always-strong cost of the test set (100 %); every reported point ≤ 100 % spend.
+**Predictions:** vote@k lifts the weak answerer by a few points and saturates by k ≈ 10–20; SW×40 < SS (AgentTTS reproduced ≈ SS on
+HotpotQA); WW×40 < WS at equal price; at the always-strong budget the best k > 1 family gains ≤ 1 pt over k = 1. Expected answer: on
+HotpotQA, more weak calls do not substitute for one strong call — measured, not argued. Decision rule: if any k > 1 family beats k = 1 at
+B = 100 % by > 2 bootstrap SE, K > 1 enters the menu for HotpotQA; otherwise it is reported as a negative with the equal-price pairs.
+**Settings to confirm one by one (not assumed):** (1) temperature 0.7 / top-p 0.9; (2) K = 40 with the ladder {1, 5, 10, 20, 40}; (3) the Table
+5 per-call price of 3 units per weak answer call as the headline accounting (measured tokens as the alternative).
