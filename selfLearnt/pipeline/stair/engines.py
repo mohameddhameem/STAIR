@@ -175,7 +175,8 @@ class MockEngine:
             return "Query: ...\nSelected references: " + " ".join(f"[{i}] some details" for i in sel), good
         if kind in ("qa", "qa_direct", "qa_free"):
             good = rng.random() < sk * (1.0 if m.get("has_gold", True) else 0.55)
-            a = m["gold"] if good else rng.choice(["unknown", "Paris", "1999", "John Smith", "no"])
+            gd = m["gold"][0] if isinstance(m["gold"], list) else m["gold"]
+            a = gd if good else rng.choice(["unknown", "Paris", "1999", "John Smith", "no"])
             if kind == "qa_direct":
                 return f"Answer: {a}", good
             if kind == "qa_free":
@@ -183,9 +184,10 @@ class MockEngine:
             return f"Reasoning...\nAnswer: {a}\nConfidence: {rng.randint(70, 99) if good else rng.randint(40, 95)}", good
         if kind == "fuse":
             resp = m.get("responses", [])
-            golds = [r for r in resp if m["gold"].lower() in r.lower()]
+            gd = m["gold"][0] if isinstance(m["gold"], list) else m["gold"]
+            golds = [r for r in resp if gd.lower() in r.lower()]
             good = (len(golds) * 2 > len(resp)) or (golds and rng.random() < sk)
-            return (f"The best supported answer is {m['gold']}." if good else "The responses disagree; most likely unknown."), bool(good)
+            return (f"The best supported answer is {gd}." if good else "The responses disagree; most likely unknown."), bool(good)
         if kind == "atts_plan":
             cands = []
             for _ in range(m.get("batch", 10)):

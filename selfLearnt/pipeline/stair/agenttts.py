@@ -469,13 +469,15 @@ def ss_compare(cfg, split="test"):
                      "units_answer": ua, "units_fuse": 0.0, "units_router": 0.0, "ms_router": None, "models": tag,
                      "price": price(cfg, rm, "retrieve") + price(cfg, am, "answer")})
     df = pd.DataFrame(rows, columns=COLUMNS + ["price"])
-    validate(df)
-    out = os.path.join(cfg["paths"]["results_dir"], f"AL-02-replication-{cfg['data'].get('dataset', 'hotpotqa')}-{split_name(cfg, split)}-seed{cfg.get('seed', 0)}.csv")
+    validate(df, splits_dir=D.splits_dir(cfg))
+    exp = cfg["workstreams"].get("ws2", {}).get("exp_id", "AL-02")
+    exp = "AL-02-replication" if exp == "AL-02" else exp         # other configs name the row by their own experiment ID
+    out = os.path.join(cfg["paths"]["results_dir"], f"{exp}-{cfg['data'].get('dataset', 'hotpotqa')}-{split_name(cfg, split)}-seed{cfg.get('seed', 0)}.csv")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     df.to_csv(out, index=False)
     log(f"our greedy always-strong: {len(df)} questions, lenient {df.lenient.mean():.3f}, {df.units.mean():.0f} units -> {out}")
     ref_p = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),   # repo root
-                         "results", "common", f"jonathan-ss-hotpotqa-{split_name(cfg, split)}.csv")
+                         "results", "common", f"jonathan-ss-{cfg['data'].get('dataset', 'hotpotqa')}-{split_name(cfg, split)}.csv")
     if not os.path.exists(ref_p):
         log(f"shared rows not found ({ref_p}): git pull, then run --part compare again")
         return

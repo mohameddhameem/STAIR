@@ -1,0 +1,32 @@
+# 2WikiMultiHopQA on Jonathan's setup (branch jonathan, lab_package/twowiki; registered split of 1 Nov, split6000_manifest.json):
+#   train5000 : train_extra[0:5000] (official dev[1000:], entity-filtered against val and test) - fine-tuning only
+#   val400    : dev[100:500] - checkpoints (validation loss) and rule learning (halves A / B)
+#   test600   : dev[0:100] (AgentTTS's 100) + dev[500:1000] - read once
+# Candidate passages: his pools as built (twowiki_pools.py v1.1: Elasticsearch over the dev supporting-fact sentences,
+# gold + top-100 hits, shuffled with seed 17 per question); gold answers = his `answers` list (gold + Wikidata aliases),
+# scored with the team's lenient ruler. Put his pool files (pools_<part>.json, or chunks/ + chunks_manifest.json) in
+# ${project_dir}/2wiki/pools6000 (or set STAIR_2WIKI_POOLS).
+#   AL-38 = AL-04's design on 2Wiki (fine-tuned 3 + 3 models, self-learnt rules); AL-39 = always-strong (greedy Qwen 72B ->
+#   Llama 70B, AgentTTS's prompts, K = 1: Jonathan's protocol), our own rows on the same passages.
+#   python jobs/submit_all.py --config configs/twowiki.yaml --phases 2 --as-job      (AL-38)
+#   python jobs/submit_all.py --config configs/twowiki.yaml --ss --as-job            (AL-39)
+include: default.yaml
+run_name: twowiki_v1
+history_tag: twowiki
+data:
+  dataset: 2wikimultihopqa
+  pool_source: jonathan_2wiki
+  pools_dir: ${STAIR_2WIKI_POOLS}
+  val_part: val400
+  test_part: test600
+  train_part: train5000
+workstreams:
+  ws1: null          # AgentTTS: Jonathan's reproduction (70.3 on test600) is cited, not rerun
+  ws2: {exp_id: AL-39}
+  ws3: null
+  ws4: {exp_id: AL-38}
+  ws5: null
+  ws6: null
+finetune:
+  retrievers:
+    q72: {save_every_questions: 96}    # as golden.yaml: the 72B's QLoRA run is pre-empted on the shared partition

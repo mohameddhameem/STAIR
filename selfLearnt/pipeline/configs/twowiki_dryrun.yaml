@@ -1,0 +1,23 @@
+# CPU dry run of configs/twowiki.yaml (fake models, small sets). Not a result.
+include: twowiki.yaml
+run_name: twowiki_dryrun
+backend: mock
+paths:
+  results_dir: ${project_dir}/runs/twowiki_dryrun/results_common
+progress: {github: false}
+data:
+  n_search: 12
+  limit: {val: 120, test: 60, train: 40}
+finetune:
+  defaults: {grad_accum: 4, micro_batch: 2, save_every_questions: 20, max_epochs: 2, evals_per_epoch: 2, patience: 2, n_val_loss: 6, n_val_metric: 6}
+  retrievers:
+    q7:  {method: lora, n_train: 40}
+    q32: {method: qlora, n_train: 20, gpus: 1, n_val_loss: 6, n_val_metric: 6}
+    q72: {method: qlora, n_train: 20, gpus: 2, n_val_loss: 6, n_val_metric: 6}
+  answerers:
+    l3:  {method: lora, n_train: 40}
+    l8:  {method: lora, n_train: 40}
+    l70: {method: qlora, n_train: 20, gpus: 2, n_val_loss: 6, n_val_metric: 6}
+rules:
+  rounds: 2
+  random_control_draws: 4

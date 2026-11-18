@@ -124,6 +124,111 @@ def _tts_sets(cfg, val_ids, test_ids):
     return out
 
 
+# ----------------------------------------------------------------------------------
+# 2WikiMultiHopQA on Jonathan's setup (branch jonathan, lab_package/twowiki): his split of the official dev file
+# (split6000_manifest.json: test600 / val400 / train5000) and his pre-built candidate pools (twowiki_pools.py v1.1,
+# Elasticsearch over the dev supporting-fact sentences, gold + top-100, shuffled with random.Random("17:<_id>")).
+# The pools are used as he built them: nothing inside a record is changed; gold = his `answers` list (gold + aliases).
+# ----------------------------------------------------------------------------------
+TWOWIKI_PARTS = {"val": "val400", "test": "test600", "train": "train5000"}
+TWOWIKI_N = {"val400": 400, "test600": 600, "train5000": 5000}
+TWOWIKI_SPLIT_DIR = "common/stair_common/splits/2wikimultihopqa"
+
+
+def _repo_root():
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+
+def jonathan_ids(dataset, part):
+    """One part of Jonathan's split, read from branch jonathan (our copy of common/ still has the older split)."""
+    import subprocess
+    r = subprocess.run(["git", "-C", _repo_root(), "show", f"origin/jonathan:{TWOWIKI_SPLIT_DIR}/{part}.txt"],
+                       capture_output=True, text=True)
+    if r.returncode:
+        raise SystemExit(f"run `git fetch origin jonathan` first (the {dataset} split {part} is on that branch)")
+    return [x.strip() for x in r.stdout.splitlines() if x.strip()]
+
+
+def _sha(p):
+    import hashlib
+    return hashlib.sha256(open(p, "rb").read()).hexdigest()
+
+
+def _jon_records(pools_dir):
+    """Every record of his pool files: pools_<part>.json, or the chunk files of his cluster array (chunks/<part>_kk.json,
+    each checked against chunks_manifest.json)."""
+    recs, used = {}, {}
+    files = [os.path.join(pools_dir, f"pools_{p}.json") for p in TWOWIKI_N]
+    if all(os.path.exists(f) for f in files):
+        for f in files:
+            used[os.path.basename(f)] = _sha(f)
+            for r in json.load(open(f, encoding="utf-8")):
+                recs[r["_id"]] = r
+        return recs, used
+    cdir = pools_dir if os.path.exists(os.path.join(pools_dir, "chunks_manifest.json")) else os.path.join(pools_dir, "chunks")
+    man_p = os.path.join(cdir, "chunks_manifest.json")
+    if not os.path.exists(man_p):
+        raise SystemExit(f"Jonathan's 2Wiki pools not found in {pools_dir}: expected pools_test600/val400/train5000.json, "
+                         "or chunks/ with chunks_manifest.json")
+    man = json.load(open(man_p))
+    for name, info in man["chunks"].items():
+        p = os.path.join(cdir, name + ".json")
+        got = _sha(p)
+        assert got == info["sha256"], f"{name}: sha256 {got[:12]}... does not match the manifest ({info['sha256'][:12]}...)"
+        used[name] = got
+        for r in json.load(open(p, encoding="utf-8")):
+            recs[r["_id"]] = r
+    return recs, used
+
+
+def _jon_row(r):
+    cands = r["ctxs_candidate"]
+    assert set(r["ctxs_gt"]) <= set(cands), f"{r['_id']}: a gold sentence is not in its pool"
+    g = r.get("answers") or [r["answer"]]
+    return {"qid": r["_id"], "question": r["question"], "answer": g[0] if len(g) == 1 else list(g), "type": r.get("type"),
+            "level": None, "ret_answers": [cands.index(s) for s in dict.fromkeys(r["ctxs_gt"])], "ctxs_candidate": cands}
+
+
+def _build_twowiki(cfg, out):
+    d = cfg["data"]
+    pdir = d.get("pools_dir") or ""
+    if not pdir or "${" in pdir:                 # STAIR_2WIKI_POOLS not set: the default place under the project folder
+        pdir = os.path.join(cfg["paths"]["project_dir"], "2wiki", "pools6000")
+    recs, used = _jon_records(pdir)
+    sets, ids_of = {}, {}
+    for split, part in TWOWIKI_PARTS.items():
+        ids = jonathan_ids(d["dataset"], part)
+        assert len(ids) == TWOWIKI_N[part], f"{part}: {len(ids)} ids, expected {TWOWIKI_N[part]}"
+        miss = [i for i in ids if i not in recs]
+        assert not miss, f"{part}: {len(miss)} ids have no pool record (first {miss[0]})"
+        sets[split], ids_of[split] = [_jon_row(recs[i]) for i in ids], ids
+    assert not (set(ids_of["train"]) & (set(ids_of["val"]) | set(ids_of["test"]))) and not (set(ids_of["val"]) & set(ids_of["test"]))
+    lim = d.get("limit") or {}
+    for k in ("val", "test", "train"):
+        if lim.get(k):
+            sets[k] = sets[k][:int(lim[k])]
+    sets["search"] = sets["val"][:int(d.get("n_search", 50))]
+    # his split files, for the team schema check of our results tables (stair_common.schema.validate)
+    sd = os.path.join(out, "splits", d["dataset"])
+    os.makedirs(sd, exist_ok=True)
+    for split, part in TWOWIKI_PARTS.items():
+        open(os.path.join(sd, f"{part}.txt"), "w").write("\n".join(ids_of[split]) + "\n")
+    for name in SPLITS:
+        json.dump(sets[name], open(os.path.join(out, f"{name}.json"), "w", encoding="utf-8"), ensure_ascii=False)
+        pools = [len(q["ctxs_candidate"]) for q in sets[name]]
+        golds = [len(q["ret_answers"]) for q in sets[name]]
+        log(f"{name}: {len(sets[name])} questions, {min(pools)}-{max(pools)} candidate sentences, "
+            f"{min(golds)}-{max(golds)} gold sentences each")
+    write_json(os.path.join(out, "data_config.json"), dict(d, splits={k: len(v) for k, v in sets.items()},
+                                                          parts=TWOWIKI_PARTS, pool_files_sha256=used))
+
+
+def splits_dir(cfg):
+    """Where the team schema check finds the split files of this run's results (None = the installed common package)."""
+    p = os.path.join(cfg["paths"]["data_dir"], "splits")
+    return p if cfg["data"].get("pool_source") == "jonathan_2wiki" else None
+
+
 def build(cfg):
     d = cfg["data"]
     out = cfg["paths"]["data_dir"]
@@ -131,6 +236,8 @@ def build(cfg):
         log(f"question sets already built in {out}")
         return
     os.makedirs(out, exist_ok=True)
+    if d.get("pool_source") == "jonathan_2wiki":
+        return _build_twowiki(cfg, out)
     nr = int(d["n_retrieve"])
     ds = d.get("dataset", "hotpotqa")
     dv = _load_hotpot(d["hotpot_dev"], d.get("hotpot_dev_url"))

@@ -138,7 +138,8 @@ def direct_qa_prompt(question, refs):
 
 
 def ans_target(ex):
-    return "Answer: " + ex["answer"]
+    g = ex["answer"]
+    return "Answer: " + (g[0] if isinstance(g, list) else g)     # a list = gold + aliases (2Wiki): train on the gold
 
 
 def selected_refs(ex, sel):

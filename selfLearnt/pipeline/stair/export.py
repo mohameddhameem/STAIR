@@ -12,6 +12,7 @@ import os
 from .agenttts import wdir
 from .common import log, read_json
 from .config import split_name, workstreams
+from .data import splits_dir
 
 COLS = None
 
@@ -54,7 +55,7 @@ def export(cfg):
         df = pd.DataFrame(rows, columns=COLUMNS + ["price"])
         if df["price"].isna().any():          # rows from before prices were recorded: no price column (it is optional)
             df = df.drop(columns="price")
-        validate(df)
+        validate(df, splits_dir=splits_dir(cfg))
         p = os.path.join(d, f"{exp_id}-{cfg['data'].get('dataset', 'hotpotqa')}-{split_name(cfg, 'test')}-seed{cfg.get('seed', 0)}.csv")
         df.to_csv(p, index=False)
         written.append(p)

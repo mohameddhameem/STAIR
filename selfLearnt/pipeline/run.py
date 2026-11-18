@@ -105,8 +105,9 @@ def stage_setup(cfg, only):
         elif not os.path.exists(os.path.join(path, "config.json")):
             log(f"MISSING: {repo} -> copy it into {path}")
             failed.append(repo)
-    files = [(cfg["data"]["hotpot_dev"], cfg["data"].get("hotpot_dev_url"))]
-    if cfg["data"].get("train_source", "train") != "dev":
+    twowiki = cfg["data"].get("pool_source") == "jonathan_2wiki"     # 2Wiki: Jonathan's pool files, no HotpotQA download
+    files = [] if twowiki else [(cfg["data"]["hotpot_dev"], cfg["data"].get("hotpot_dev_url"))]
+    if not twowiki and cfg["data"].get("train_source", "train") != "dev":
         files.append((cfg["data"]["hotpot_train"], cfg["data"].get("hotpot_train_url")))
     for split_file, url in files:
         if not os.path.exists(split_file):
