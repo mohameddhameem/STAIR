@@ -194,3 +194,5 @@ B = 100 % by > 2 bootstrap SE, K > 1 enters the menu for HotpotQA; otherwise it 
   `SPLIT=val` / `SPLIT=test` into `samplek_k40` to be submitted by Jonathan.
 - **18 Nov 2026 08:58 — §13 FULL RUNS SUBMITTED by Jonathan: job 368176 (`SPLIT=val`, 1,110) and 368177 (`SPLIT=test`, 1,481), OUT `samplek_k40`; both
   pending (priority). Logs under `runs/hotpotqa/samplek_smoke/` (submission directory).**
+- **18 Nov 2026 11:55 — §13 CELLS COMPLETE (jobs 368176 val, 368177 test; ~1.1 s per question on one H200).** `samplek_k40/`: samples_val 2,220 rows,
+  samples_test 2,962 rows (= 1,110 × 2 and 1,481 × 2), 40 samples each, 0 truncations. Packed (455 KB) for the lab; scoring and allocation next.
