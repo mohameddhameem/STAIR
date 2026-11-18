@@ -4,6 +4,8 @@
 # Usage:  source /mnt/hdd/jonathan/slr-env/bin/activate && bash lab_package/budget/hotpotqa_samplek_lab_sweep.sh 0.3 1.0 1.3
 set -euo pipefail
 export SLR_POOL_K=110 SLR_SHUFFLE=off
+# Config B weak answerer (the lab runner defaults to Qwen2.5-1.5B otherwise); id confirmed from runs/config_b/meta_qa_weak.jsonl
+export SLR_QA_WEAK=${SLR_QA_WEAK:?set SLR_QA_WEAK to the Config B Llama-3.2-3B id used by the grid}
 SCRIPT=/mnt/hdd/jonathan/STAIR/lab_package/budget/hotpotqa_samplek_cells.py
 ROOT=/mnt/hdd/jonathan/runs/hotpotqa
 for T in "$@"; do

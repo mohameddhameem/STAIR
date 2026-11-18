@@ -94,6 +94,8 @@ def main():
     a = ap.parse_args()
     assert os.environ.get("SLR_POOL_K") == "110" and os.environ.get("SLR_SHUFFLE") == "off", "run with SLR_POOL_K=110 SLR_SHUFFLE=off"
     assert L.POOL_K == 110 and L.SHUFFLE_SCHEME == "as-given/no-shuffle", (L.POOL_K, L.SHUFFLE_SCHEME)
+    # v1.2 guard (18 Nov): the Config B weak answerer is Llama-3.2-3B; the lab runner defaults to Qwen2.5-1.5B unless SLR_QA_WEAK is set
+    assert "llama-3.2-3b" in L.QA_WEAK.lower(), f"weak answerer must be Llama-3.2-3B (Config B); runner has QA_WEAK={L.QA_WEAK!r} -- set SLR_QA_WEAK"
     os.makedirs(a.out, exist_ok=True)
 
     data = json.load(open(a.data, encoding="utf-8"))
@@ -105,7 +107,7 @@ def main():
     rw, rs = load_store(f"{a.stores}/retr_weak.jsonl"), load_store(f"{a.stores}/retr_strong.jsonl")
     for i in positions[:3]: assert str(i) in rw and str(i) in rs, f"position {i} missing in the retrieval stores"
 
-    manifest = {"version": "hotpotqa_samplek_cells v1.1 2026-11-18 (--runner lab)", "runner_kind": _RUNNER, "split": a.split, "n": len(positions), "range": [a.start, a.start + len(positions)],
+    manifest = {"version": "hotpotqa_samplek_cells v1.2 2026-11-18 (--runner lab; QA_WEAK guard)", "runner_kind": _RUNNER, "split": a.split, "n": len(positions), "range": [a.start, a.start + len(positions)],
                 "k": a.k, "temp": a.temp, "top_p": a.top_p, "seed": a.seed, "dtype": a.dtype, "qa_out": L.QA_OUT, "maxlen": L.MAXLEN,
                 "qa_weak_model": L.QA_WEAK, "sys_qa": SYS_QA, "runner": L.__file__, "started": datetime.datetime.now().isoformat(timespec="seconds"),
                 "sha256": {"script": sha(os.path.abspath(__file__)), "runner": sha(L.__file__), "data": sha(a.data), "ids": sha(ids_file),
