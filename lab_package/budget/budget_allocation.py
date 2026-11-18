@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
-v1.5 17 Nov 2026 (22:25; --full = the whole held-out set as the one bundle, i.e. the dataset-level budget — Jonathan's reading of Prof. Archan's 'fixed budget'; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+v1.6 18 Nov 2026 (09:10; --samplek + --k-weak: the weak answerer called k times with a vote, paths WW/SW priced 77+3k / 811+3k; v1.5 22:25; --full = the whole held-out set as the one bundle, i.e. the dataset-level budget — Jonathan's reading of Prof. Archan's 'fixed budget'; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
 stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
 RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
@@ -93,11 +93,26 @@ def load_hotpotqa(a):
         return out
     test, val = build("test", ret_t, qa_t), build("val", ret_v, qa_v)
     assert len(test) == 1481, len(test); assert val, "no validation rows scored -- val score files missing"
+    if a.samplek and a.k_weak > 1:                           # v1.6: K > 1 for the weak answerer (vote@k outcomes replace the greedy WW / SW cells)
+        votes = {}
+        for line in open(a.samplek):
+            if line.strip():
+                r = json.loads(line)
+                if r["k"] == a.k_weak: votes[(r["split"], r["i"], r["ctx"])] = (float(r["correct"]), r["price_units"])
+        n_miss = 0
+        for split, items in (("test", test), ("val", val)):
+            for it in items:
+                w, sv = votes.get((split, it["id"], "W")), votes.get((split, it["id"], "S"))
+                if w is None or sv is None: n_miss += 1; continue
+                it["acc"] = [w[0], it["acc"][1], sv[0], it["acc"][3]]
+                it["cost"] = [w[1], PRICE[1], sv[1], PRICE[3]]
+        assert n_miss == 0, f"{n_miss} questions without vote@{a.k_weak} outcomes in {a.samplek}"
     files = [f"{B}/router_data_standard.jsonl", f"{B}/test_scores/ret_{a.tag}.jsonl", f"{B}/test_scores/qa_{a.tag}.jsonl",
-             f"{B}/{a.run}/ret_val_scores.jsonl", f"{B}/{a.run}/qa_val_scores.jsonl"] + ([a.data] if a.data else [])
+             f"{B}/{a.run}/ret_val_scores.jsonl", f"{B}/{a.run}/qa_val_scores.jsonl"] + ([a.data] if a.data else []) + ([a.samplek] if a.samplek else [])
     return test, val, {"root": B, "tag": a.tag, "run": a.run, "n_test": len(test), "n_val": len(val), "price": PRICE, "data": a.data,
                        "type_source": ("data 'type' field / wording rule" if qtype_of else "none (rows carry no type)"),
-                       "inputs_sha256": {os.path.relpath(f, B): sha(f) for f in files}}
+                       "k_weak": a.k_weak, "samplek": a.samplek,
+                       "inputs_sha256": {os.path.basename(f) if not f.startswith(B) else os.path.relpath(f, B): sha(f) for f in files}}
 
 
 def load_medagentbench(a):
@@ -230,6 +245,8 @@ def main():
     ap.add_argument("--dataset", required=True, choices=["hotpotqa", "medagentbench"])
     ap.add_argument("--tag", default="grpo_fresh_guided", help="hotpotqa TEST score files ret_<tag>/qa_<tag> (the three-insights read)")
     ap.add_argument("--run", default=None, help="run folder holding the VAL score dumps (hotpotqa: grpo_ret_qa_a1_fresh_ep6_guided; mab: training1_router)")
+    ap.add_argument("--samplek", default=None, help="hotpotqa: samplek_outcomes.jsonl from hotpotqa_samplek_score.py (vote@k outcomes per question/ctx)")
+    ap.add_argument("--k-weak", type=int, default=1, help="hotpotqa: with --samplek, the weak answerer is called k times (vote); paths WW/SW take the vote@k outcome and price 77+3k / 811+3k")
     ap.add_argument("--data", default=None, help="hotpotqa: the store's data file (tts_test.json) indexed by idx, for question type under --shift")
     ap.add_argument("--table", default=None, help="medagentbench replay table (default: training1_table.json, or training3_table.json when --run starts with training3)")
     ap.add_argument("--theta0", type=float, default=0.5, help="the registered per-query operating point (greedy)")
@@ -292,7 +309,7 @@ def main():
         if (b + 1) % 200 == 0: print(f"  bundles {b + 1}/{a.bundles}", flush=True)
 
     order = [p[0] for p in POL]
-    summary = {"version": "budget_allocation v1.5 2026-11-17 (+ --full: dataset-level budget)", "full": a.full, "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
+    summary = {"version": "budget_allocation v1.6 2026-11-18 (+ --samplek/--k-weak: K>1 weak answerer)", "full": a.full, "script_sha256": sha(os.path.abspath(__file__)), "dataset": a.dataset, "meta": meta, "N": N, "bundles": a.bundles,
                "shift": a.shift, "theta0": a.theta0, "budgets": BUDGETS, "khs": khs,
                "curve": {str(t): {"spend_pct": round(sum(x[0] for x in v) / len(v), 2), "acc": round(sum(x[1] for x in v) / len(v), 2)}
                          for t, v in curve_acc.items()}, "results": {}}
