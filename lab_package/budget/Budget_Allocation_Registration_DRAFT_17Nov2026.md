@@ -256,13 +256,13 @@ rule as §13. If a temperature beats 0.7 by > 2 pts on validation vote@40 (not p
 **What was wrong.** v1.3–v1.6 priced the budget weak-first: HotpotQA 1,009 = 77 (weak retrieval, run first) + 814 + 118; MedAgentBench cw + cs per task.
 Under that convention "escalate every task" can never exceed 100 % by construction (it read 86.9 % on MedAgentBench only because the Training 3
 table's weak pass cw2 is cheaper than cw). But a deployer who always uses the strong model does not run the weak model at all, so the budget
-Prof. Archan's question refers to is the **strong model alone**: **932 per HotpotQA question (814 + 118)** and **cs per MedAgentBench task**. The
+Prof. Archan's question refers to is the **strong model alone**: **929 per HotpotQA question (814 + 115 — the trainer's C_SS; corrected 13:30 from 932, which had left the weak answer call of 3 units in)** and **cs per MedAgentBench task**. The
 weak pass is overhead the router must pay for out of that budget; escalate-all pays weak + strong on every instance and therefore reads **> 100 %**.
 **Change — `budget_allocation.py` v1.7 (sha 4f3199b9bd7a…): `--budget strong-only` (new default) | `weak-first` (reproduces v1.3–v1.6).** Only the
-denominator `css` changes (HotpotQA PRICE[3] − 77 = 932; MedAgentBench cs); per-path prices, outcomes, thresholds, θ* rule, policies unchanged.
-Consequences by arithmetic before any re-run: HotpotQA always-SS/escalate-all = 1,009 / 932 = **108.3 %** (inadmissible); every earlier spend %
-multiplies by 1,009 / 932 = 1.083 → spend-to-peak 85.5 → **92.6 %**, per-query 56.8 → **61.5 %**, oracle 21.5 → 23.3 %; "spend-all" becomes the
-largest θ whose spend ≤ 932 per question (a new point, < always-SS). MedAgentBench rows scale by (cw + cs)/cs per task (table on the lab).
+denominator `css` changes (HotpotQA PRICE[3] − 80 = 929; MedAgentBench cs); per-path prices, outcomes, thresholds, θ* rule, policies unchanged.
+Consequences by arithmetic before any re-run: HotpotQA always-SS/escalate-all = 1,009 / 929 = **108.6 %** (inadmissible); every earlier spend %
+multiplies by 1,009 / 929 = 1.086 → spend-to-peak 85.5 → **92.9 %**, per-query 56.8 → **61.7 %**, oracle 21.5 → 23.4 %; "spend-all" becomes the
+largest θ whose spend ≤ 929 per question (a new point, < always-SS). MedAgentBench rows scale by (cw + cs)/cs per task (table on the lab).
 **Predictions.** HotpotQA: spend-to-peak reaches the always-strong accuracy (76.6–76.8) within the strong-only budget at ≈ 93 %; the budget-feasible
 "spend-all" point sits ≤ 0.3 pt below always-SS; the answer "the whole budget need not be spent" stands. MedAgentBench: the router's point and the
 hand-off rows stay below 100 % (they were ≤ 81 % weak-first and cw ≪ cs); escalate-all > 100 %; the hand-off rows remain the only policies above
