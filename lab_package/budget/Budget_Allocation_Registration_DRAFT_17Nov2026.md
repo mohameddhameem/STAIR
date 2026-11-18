@@ -323,3 +323,11 @@ temperature (best validation vote@40 from §15), action set. **Prediction:** gai
   (14:20) met: champion ≥ F6g at the budget (76.70 vs 76.77 @ 99.9 — equal within 0.1), same bar. **Training 1 B = 100 (`mab_t1_full_d`):** spend-all
   = spend-to-peak 61.33 @ 76.3 % (saturated probabilities: no gain over its registered 61.33 @ 66.6 %), pacing 62.00 @ 93.7 %, oracle 63.33 @ 59.6 %,
   escalate-all 123.0 %. Slides 150–151 switch the HotpotQA router to the champion.
+- **18 Nov 2026 15:03 — ANSWER-STAGE FIXED-k ON THE HEADLINE ROUTER (lab; scorer v1.1 re-score `samplek_k40_scored_v11`: SW×k prices 894 / 906 / 921 /
+  951 / 1,011, accuracies as §14; `budget_allocation.py` v1.8 `--full --samplek --k-weak k`, folders `hotpotqa_champ_full_d_k{5,10,20,40}`).** Router rows
+  IDENTICAL for every k: spend-all = spend-to-peak 76.70 @ 97.7 %, per-instance 74.21 @ 54.2 %, locked 75.89 @ 69.7 % (the headline router, like the
+  three-insights one, keeps no answer stage weak on these paths). Oracle with W×k at the answer stage: 82.11 @ 24.8 % (k = 5), 81.84 @ 25.7 (10),
+  81.77 @ 28.2 (20), 81.77 @ 33.1 (40) — ceiling +0.6 pt over the two-model oracle 81.50, as §14. §17(2) prediction stands. Slide 153 fixed-k row filled.
+  **Gap made explicit by Jonathan (14:49–14:53): k has only been measured at the ANSWER stage (WW×k, SW×k); the RETRIEVAL stage (weak retriever ×k,
+  i.e. WS and WW with k retrievals) is unmeasured, and WS is the path the router buys most (53 % at θ = 0.5). The router cannot be offered k at the
+  retrieval stage without those outcomes → retrieval-stage k measurement to be registered (§18, draft below) before the k-router (§17(2)).**
