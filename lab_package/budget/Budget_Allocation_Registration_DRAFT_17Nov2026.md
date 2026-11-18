@@ -222,3 +222,21 @@ the temperature with the best vote@40 on VALIDATION, read once on test; allocati
 Predictions: higher temperature raises diversity but lowers per-sample accuracy — vote@40 moves by at most ±2 pts vs 0.7; the 13.6-pt equal-price
 gap to one strong answer (WW×40 vs WS) does not close; no k > 1 family beats k = 1 within the always-strong budget at any temperature. Decision
 rule as §13. If a temperature beats 0.7 by > 2 pts on validation vote@40 (not predicted), it is read on test and the allocation re-run with it.
+- **18 Nov 2026 12:12 — WRONG-MODEL INCIDENT (caught at the smoke; no result affected).** The first lab smoke printed `[weak] Qwen/Qwen2.5-1.5B-Instruct
+  loaded`: the lab runner `run_labels4.py` defaults `WEAK_MODEL` to Qwen2.5-1.5B and `QA_WEAK = os.environ.get("SLR_QA_WEAK", WEAK_MODEL)`; v1.1 of the
+  cells script and the sweep driver never set `SLR_QA_WEAK`. The Config B cells were produced on the CLUSTER (`run_labels_agenttts.py`, `QA_WEAK =
+  meta-llama/Llama-3.2-3B-Instruct`; `configb_stores.tgz` in `runs/config_b/` is the cluster bundle), so no lab Config B run had ever exercised this
+  default. The sweep (T = 0.3 val) had started on the wrong model: stopped by Jonathan; `samplek_k40_t0.3` and `samplek_lab_smoke` deleted (`ls`
+  showed only `samplek_k40` afterwards). Id confirmed from the lab's own AgentTTS reference (`agenttts_archon_hotpotqa_reference.py` lines 659–670:
+  `--generate_model_name meta-llama/Llama-3.2-3B-Instruct`).
+- **FIX — `hotpotqa_samplek_cells.py` v1.2 (sha 80868c0bf477…), `hotpotqa_samplek_lab_sweep.sh` (sha 4a625e962b07…), commit bc8b709:** hard guard
+  `assert "llama-3.2-3b" in L.QA_WEAK.lower()` before any model load; the driver requires `SLR_QA_WEAK` to be exported (`${SLR_QA_WEAK:?…}`) instead
+  of relying on the runner default. Only the weak answerer is loaded by this script (retrieval = stored Config B picks; strong model never called), so
+  `SLR_QA_WEAK` is the only model variable that matters.
+- **18 Nov 2026 12:19 — RE-SMOKE PASSED** (`--end 10`, T = 0.3, `SLR_QA_WEAK=meta-llama/Llama-3.2-3B-Instruct`): guard passed, `[weak]
+  meta-llama/Llama-3.2-3B-Instruct loaded` (cached; 65 s), `SAMPLEK DONE`; 20 rows, 40 samples per cell; position 4 ctx W: first five samples all
+  "Greenwich Village" (low-T agreement as expected). Smoke folder deleted.
+- **18 Nov 2026 12:20:52 — SWEEP STARTED** on the lab (tmux `sweep`; log `runs/hotpotqa/sweep_18nov.log`): `hotpotqa_samplek_lab_sweep.sh 0.3 1.0 1.3`,
+  val then test per temperature, OUT `runs/hotpotqa/samplek_k40_t{0.3,1.0,1.3}`. Input shas identical to the §13 cluster cells: `tts_test.json`
+  f65d5813…, `retr_weak` 50296feb…, `retr_strong` be53e8af…; lab runner `run_labels4.py` 318fb60c…. The only variable across the four temperatures is T.
+  Expected ≈ 5–6 h total. Next: `hotpotqa_samplek_score.py --cells <folder>` per temperature (inside slr-env), selection on validation per the §15 rule.
