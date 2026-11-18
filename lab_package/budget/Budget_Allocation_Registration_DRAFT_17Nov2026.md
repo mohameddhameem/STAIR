@@ -192,3 +192,5 @@ B = 100 % by > 2 bootstrap SE, K > 1 enters the menu for HotpotQA; otherwise it 
   40, 0 truncations, 1–4 s per batched call; samples are short HotpotQA answers; on easy questions all 40 agree (vote = greedy), so K > 1 can
   gain only where the weak answerer is uncertain. Measured output ≈ 3–7 tokens per sample (far below the 3-unit per-call price). Full splits
   `SPLIT=val` / `SPLIT=test` into `samplek_k40` to be submitted by Jonathan.
+- **18 Nov 2026 08:58 — §13 FULL RUNS SUBMITTED by Jonathan: job 368176 (`SPLIT=val`, 1,110) and 368177 (`SPLIT=test`, 1,481), OUT `samplek_k40`; both
+  pending (priority). Logs under `runs/hotpotqa/samplek_smoke/` (submission directory).**
