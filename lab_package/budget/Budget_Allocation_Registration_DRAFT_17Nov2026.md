@@ -293,3 +293,15 @@ model is never repeated. Reward as in (1) (the guard now matters), trained from 
 constraint at inference. Settings to be confirmed one by one before the code is written: K_max (40 = stored samples; 50 needs a new sampling run),
 temperature (best validation vote@40 from §15), action set. **Prediction:** gain ≤ +0.6 pt over K = 1 (the enlarged-menu oracle's headroom, §14).
 **Slides:** 150–152 rebuilt from the strong-only re-runs (§16) and (1)–(2); V01-084's 151–152 are placeholders in the weak-first convention until then.
+- **18 Nov 2026 13:31 — §16 WHOLE-SET RUNS UNDER THE STRONG-ONLY BUDGET (lab, v1.7 sha 74776cac125a…, `--full`; new folders `hotpotqa_full_d`,
+  `mab_t3_full_d`).** Header `budget strong-only`, css 929 / cs. **HotpotQA (n = 1,481):** always-SS 76.77 @ 100 (baseline; the router's escalate-all
+  path costs **108.6 % — infeasible**, violation 100 %) · spend-all **76.77 @ 99.9 %** (largest feasible θ = 0.96) · spend-to-peak **76.64 @ 92.9 %**
+  (val θ* 0.92; test spend 92.87) · per-query θ = 0.5 74.48 @ 61.7 % · pacing 76.64 @ 92.9 · oracle 81.50 @ 23.3 % · random_B 74.61 @ 100. Prediction
+  (§16) met: bar reached inside the budget at ≈ 93 %; nothing above it. **MedAgentBench (n = 150):** always-strong 54.00 @ 100 · escalate-all
+  **106.9 % — infeasible** · spend-all **62.67 @ 99.7 %** (+8.67 vs always-strong, within budget) · spend-to-peak 60.00 @ 97.3 % (val θ* 0.33) ·
+  **per-query θ = 0.5: 63.33 @ 100.2 % — 0.2 % OVER the strict budget (violation)**, so the registered router point is admissible only through the
+  set-level threshold · test-curve peak θ 0.39: 63.33 @ 100.23 % (over) · oracle 63.33 @ 54.0 % · hand-offs (`--kh` counts are per the 150-task set:
+  5 / 10 / 15 = 3.3 / 6.7 / 10 per 100) spend-to-peak + 5 / 10 / 15 → 63.33 @ 87.8 / 66.67 @ 77.5 / 70.00 @ 69.0; tier failures with no human 21 → 16 /
+  11 / 6; oracle_B + 15 = 73.33 @ 54.0. Prediction (§16) met: router point and hand-off rows < 100 %; escalate-all > 100 %; hand-off rows the only
+  policies above the two-model oracle. Next: `mab_t3_full_d2` with `--kh 0 8 15 23` (≈ 5 / 10 / 15 per 100) and the two 1,000-bundle runs for the
+  figure (`hotpotqa_d`, `mab_t3_d`); slides 150–151 rebuilt from these.
