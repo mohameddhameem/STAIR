@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
-v1.6 18 Nov 2026 (09:10; --samplek + --k-weak: the weak answerer called k times with a vote, paths WW/SW priced 77+3k / 811+3k; v1.5 22:25; --full = the whole held-out set as the one bundle, i.e. the dataset-level budget — Jonathan's reading of Prof. Archan's 'fixed budget'; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+v1.6 18 Nov 2026 (09:10; --samplek + --k-weak: the weak answerer called k times with a vote, paths WW/SW priced 77+3k / 891+3k (weak-first; the scorer's v1.0 wrote 811+3k, corrected 18 Nov 12:50); v1.5 22:25; --full = the whole held-out set as the one bundle, i.e. the dataset-level budget — Jonathan's reading of Prof. Archan's 'fixed budget'; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
 stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
 RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
@@ -246,7 +246,7 @@ def main():
     ap.add_argument("--tag", default="grpo_fresh_guided", help="hotpotqa TEST score files ret_<tag>/qa_<tag> (the three-insights read)")
     ap.add_argument("--run", default=None, help="run folder holding the VAL score dumps (hotpotqa: grpo_ret_qa_a1_fresh_ep6_guided; mab: training1_router)")
     ap.add_argument("--samplek", default=None, help="hotpotqa: samplek_outcomes.jsonl from hotpotqa_samplek_score.py (vote@k outcomes per question/ctx)")
-    ap.add_argument("--k-weak", type=int, default=1, help="hotpotqa: with --samplek, the weak answerer is called k times (vote); paths WW/SW take the vote@k outcome and price 77+3k / 811+3k")
+    ap.add_argument("--k-weak", type=int, default=1, help="hotpotqa: with --samplek, the weak answerer is called k times (vote); paths WW/SW take the vote@k outcome and price 77+3k / 891+3k")
     ap.add_argument("--data", default=None, help="hotpotqa: the store's data file (tts_test.json) indexed by idx, for question type under --shift")
     ap.add_argument("--table", default=None, help="medagentbench replay table (default: training1_table.json, or training3_table.json when --run starts with training3)")
     ap.add_argument("--theta0", type=float, default=0.5, help="the registered per-query operating point (greedy)")

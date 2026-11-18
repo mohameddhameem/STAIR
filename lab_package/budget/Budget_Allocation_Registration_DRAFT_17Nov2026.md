@@ -240,3 +240,14 @@ rule as §13. If a temperature beats 0.7 by > 2 pts on validation vote@40 (not p
   val then test per temperature, OUT `runs/hotpotqa/samplek_k40_t{0.3,1.0,1.3}`. Input shas identical to the §13 cluster cells: `tts_test.json`
   f65d5813…, `retr_weak` 50296feb…, `retr_strong` be53e8af…; lab runner `run_labels4.py` 318fb60c…. The only variable across the four temperatures is T.
   Expected ≈ 5–6 h total. Next: `hotpotqa_samplek_score.py --cells <folder>` per temperature (inside slr-env), selection on validation per the §15 rule.
+- **18 Nov 2026 12:50 — PRICE CORRECTION to §13/§14 (found while drafting the ERP I slide; my error).** `budget_allocation.py` prices the paths
+  weak-first: WW 80 = 77 + 3, WS 195 = 77 + 118, SW 894 = 77 + 814 + 3, SS 1,009 = 77 + 814 + 118 — a strong-retrieval path includes the weak
+  retrieval call that ran first, so "strong retrieval" costs **891**, not 811. `hotpotqa_samplek_score.py` v1.0 used `S_RET = 811`, so every SW×k
+  price in §13/§14 is 80 units low. Corrected SW×k = 891 + 3k: 894 / 906 / 921 / 951 / **1,011** for k = 1 / 5 / 10 / 20 / 40 (v1.0 wrote 814 / 826 /
+  841 / 871 / 931). WW×k = 77 + 3k is correct. **Consequences:** (1) the §13 budget check "SW×40 = 931 < 1,009" was wrong — SW×40 at 1,011 exceeds one
+  SS call by 2 units; SW×20 (951) is the largest k inside it. (2) Accuracies unchanged (prices do not enter the vote). (3) Allocation results of §14
+  unchanged: the router selected no WW/SW path at any k, so no selected cost used the wrong price; only the oracle's COST at k > 1 can move by a few
+  units (its accuracy cannot). (4) The §14 reading is strengthened: SW×40 is now both dearer than SS and 14.65 pts worse (62.12 vs 76.77); the equal-
+  price pair becomes SW×20 at 951 = 61.99 vs SS at 1,009 = 76.77. Fix: scorer v1.1 (sha below), `budget_allocation.py` docstring/help; the
+  `samplek_summary.json` / `samplek_outcomes.jsonl` of the T = 0.7 cells to be RE-SCORED on the lab (seconds) before any number is quoted; §14's
+  statement of record stands with the corrected prices. ERP I slides carry the corrected prices.

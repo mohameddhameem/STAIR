@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
 hotpotqa_samplek_score.py -- vote@k outcomes for the K > 1 weak-answerer cells (hotpotqa_samplek_cells.py). CPU, seconds.
-DRAFT v1.0 17 Nov 2026 for Jonathan's line-by-line review.
+DRAFT v1.0 17 Nov 2026 for Jonathan's line-by-line review. v1.1 18 Nov 2026: SW×k price corrected to 891 + 3k (was 811 + 3k; accuracies unchanged).
 
 For each (question, ctx in {W, S}) and each k in --ks: majority vote over the FIRST k stored samples (stair_common.score.normalize_answer;
 tie -> earliest sample), scored with the standard lenient ruler against the gold alias list -- the same ruler as em_standard.
 Also reports the single-call reference cells from router_data_standard.jsonl (WW, WS, SW, SS) on the same questions, so the
 k = 1 sample can be checked against the stored greedy WW / SW (expected: close, not identical -- greedy vs one sample).
 
-PRICES (Table 5 per-call): WWxk = 77 + 3k, SWxk = 811 + 3k; measured tokens from the meta sidecar reported alongside.
+PRICES (weak-first, as budget_allocation.py): WWxk = 77 + 3k, SWxk = 891 + 3k (SW×1 = 894, SW×40 = 1,011 > SS 1,009); measured tokens from the meta sidecar reported alongside.
 
 OUTPUT  <out>/samplek_outcomes.jsonl   {"i", "split", "ctx", "k", "correct", "price_units", "n_out_total"} -- consumed by budget_allocation.py (--samplek)
         <out>/samplek_summary.json     accuracy by (split, ctx, k) + reference cells + the equal-price comparison WWx40 vs WS
@@ -24,7 +24,7 @@ except ModuleNotFoundError:
     import tomli as _t; sys.modules["tomllib"] = _t
 from stair_common.score import lenient, normalize_answer  # noqa: E402
 
-W_RET, S_RET, W_ANS = 77, 811, 3
+W_RET, S_RET, W_ANS = 77, 891, 3   # v1.1 18 Nov: S_RET = 77 (weak retrieval, run first) + 814 (strong retrieval) = 891, matching budget_allocation.py's weak-first PRICE [80, 195, 894, 1009]; v1.0 had 811 (wrong: 80 units low)
 
 
 def vote(samples):
@@ -66,7 +66,7 @@ def main():
                              "n_out_total": (round(per_sample_out * k, 1) if per_sample_out is not None else None)})
     with open(os.path.join(a.out, "samplek_outcomes.jsonl"), "w") as f:
         for r in rows: f.write(json.dumps(r) + "\n")
-    summ = {"version": "hotpotqa_samplek_score v1.0 2026-11-17", "ks": a.ks, "by": {}, "reference": {}}
+    summ = {"version": "hotpotqa_samplek_score v1.1 2026-11-18 (S_RET 891)", "ks": a.ks, "by": {}, "reference": {}}
     for split in ("val", "test"):
         qs = sorted({r["i"] for r in rows if r["split"] == split})
         if not qs: continue
@@ -81,7 +81,7 @@ def main():
                 acc = 100 * sum(r["correct"] for r in rs) / len(rs); price = rs[0]["price_units"]
                 note = ""
                 if ctx == "W" and k == 40: note = f"WS = {ref['WS']} at 195"
-                if ctx == "S" and k == 40: note = f"SS = {ref['SS']} at 1009"
+                if ctx == "S" and k in (20, 40): note = f"SS = {ref['SS']} at 1009" + (" (SWx40 at 1011 EXCEEDS one SS call)" if k == 40 else "")
                 summ["by"][f"{split}|{ctx}|{k}"] = {"acc": round(acc, 2), "price_units": price, "n": len(rs)}
                 print(f"  {ctx:3s} {k:3d} {acc:6.2f} {price:6d}  {note}")
     json.dump(summ, open(os.path.join(a.out, "samplek_summary.json"), "w"), indent=1); print("wrote", os.path.join(a.out, "samplek_summary.json"))
