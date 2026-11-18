@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-hotpotqa_samplek_cells.py -- K > 1 FOR THE WEAK ANSWERER (HotpotQA). DRAFT v1.0 17 Nov 2026 for Jonathan's line-by-line review;
-nothing launched. Cluster, GPU. Imports the Config B grid runner (~/slr/run_labels_agenttts.py) unchanged: same pools, same QA
+hotpotqa_samplek_cells.py -- K > 1 FOR THE WEAK ANSWERER (HotpotQA). v1.1 18 Nov 2026 (--runner lab: same script on the lab GPU via run_labels4.py; v1.0 ran the K = 40 / T = 0.7 cells on the cluster, jobs 368176/368177).
+GPU. Imports the Config B grid runner (~/slr/run_labels_agenttts.py) unchanged: same pools, same QA
 prompt, same "[n] passage" block, same models; the ONLY difference from the stored WW / SW cells is that the weak answerer
 (Llama-3.2-3B) is SAMPLED K times instead of decoded once.
 
@@ -32,9 +32,18 @@ USAGE  SLR_POOL_K=110 SLR_SHUFFLE=off python3 hotpotqa_samplek_cells.py --split 
 import argparse, datetime, hashlib, json, os, sys, time
 
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
-sys.path.insert(0, os.path.expanduser("~/slr"))
-import torch                                                      # noqa: E402
-import run_labels_agenttts as L                                   # noqa: E402
+# v1.1 (18 Nov): --runner lab imports the lab's copy of the same runner (run_labels4.py, identical API) with the lab paths as defaults
+_RUNNER = "lab" if "--runner" in sys.argv and sys.argv[sys.argv.index("--runner") + 1] == "lab" else "cluster"
+if _RUNNER == "lab":
+    sys.path.insert(0, "/mnt/hdd/jonathan/slr/stage-level-routing/lab_package")
+    import torch                                                  # noqa: E402
+    import run_labels4 as L                                       # noqa: E402
+    DEF_DATA, DEF_STORES, DEF_IDS = "/mnt/hdd/jonathan/data/tts_test.json", "/mnt/hdd/jonathan/runs/config_b", "/mnt/hdd/jonathan/STAIR/common/stair_common/splits/hotpotqa"
+else:
+    sys.path.insert(0, os.path.expanduser("~/slr"))
+    import torch                                                  # noqa: E402
+    import run_labels_agenttts as L                               # noqa: E402
+    DEF_DATA, DEF_STORES, DEF_IDS = os.path.expanduser("~/slr/data/tts_test.json"), os.path.expanduser("~/slr/hotpotqa_stores"), os.path.expanduser("~/slr/STAIR/common/stair_common/splits/hotpotqa")
 
 SYS_QA = "You are a helpful assistant."                           # the runner's QA system message
 ID_KEYS = ("_id", "id", "qid", "question_id")
@@ -76,9 +85,8 @@ def generate_samples(model, tok, user, max_new, k, temp, top_p, seed):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", required=True, choices=["val", "test"])
-    ap.add_argument("--data", default=os.path.expanduser("~/slr/data/tts_test.json"))
-    ap.add_argument("--stores", default=os.path.expanduser("~/slr/hotpotqa_stores"))
-    ap.add_argument("--ids-dir", default=os.path.expanduser("~/slr/STAIR/common/stair_common/splits/hotpotqa"))
+    ap.add_argument("--runner", default="cluster", choices=["cluster", "lab"])
+    ap.add_argument("--data", default=DEF_DATA); ap.add_argument("--stores", default=DEF_STORES); ap.add_argument("--ids-dir", default=DEF_IDS)
     ap.add_argument("--out", required=True); ap.add_argument("--k", type=int, default=40)
     ap.add_argument("--temp", type=float, default=0.7); ap.add_argument("--top-p", type=float, default=0.9)
     ap.add_argument("--seed", type=int, default=20261117); ap.add_argument("--dtype", default="fp16")
@@ -97,7 +105,7 @@ def main():
     rw, rs = load_store(f"{a.stores}/retr_weak.jsonl"), load_store(f"{a.stores}/retr_strong.jsonl")
     for i in positions[:3]: assert str(i) in rw and str(i) in rs, f"position {i} missing in the retrieval stores"
 
-    manifest = {"version": "hotpotqa_samplek_cells v1.0 2026-11-17", "split": a.split, "n": len(positions), "range": [a.start, a.start + len(positions)],
+    manifest = {"version": "hotpotqa_samplek_cells v1.1 2026-11-18 (--runner lab)", "runner_kind": _RUNNER, "split": a.split, "n": len(positions), "range": [a.start, a.start + len(positions)],
                 "k": a.k, "temp": a.temp, "top_p": a.top_p, "seed": a.seed, "dtype": a.dtype, "qa_out": L.QA_OUT, "maxlen": L.MAXLEN,
                 "qa_weak_model": L.QA_WEAK, "sys_qa": SYS_QA, "runner": L.__file__, "started": datetime.datetime.now().isoformat(timespec="seconds"),
                 "sha256": {"script": sha(os.path.abspath(__file__)), "runner": sha(L.__file__), "data": sha(a.data), "ids": sha(ids_file),
