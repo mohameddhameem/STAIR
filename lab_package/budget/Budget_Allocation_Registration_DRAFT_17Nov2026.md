@@ -314,3 +314,12 @@ temperature (best validation vote@40 from §15), action set. **Prediction:** gai
   strong-only axis; nothing else changes. Note: on this axis the locked point will read ABOVE 69.7 % because the SS path costs 1,009 here vs 929 in the
   sweep's accounting (the weak pass is paid). Runs: `hotpotqa_champ_full_d` (`--full --theta-locked 0.80 0.05 0.05`) and `hotpotqa_champ_d` (N = 200 ×
   1,000). Prediction: champion curve ≥ F6g curve at every spend, same bar (76.8) at ≤ 100 %; locked point ≈ 75.9 @ 72–75 %.
+- **18 Nov 2026 14:17 — CHAMPION WHOLE-SET RUN (lab, v1.8 sha 2eed562c7aa6…, `hotpotqa_champ_full_d`, `--theta-locked 0.80 0.05 0.05`).** The
+  registered points REPRODUCE EXACTLY on the strong-only axis: per-query (greedy) **74.21 @ 54.2 %**, locked cap point **75.89 @ 69.7 %** — i.e. the
+  28 Oct "evaluation accounting" (C_SS 929, weak-first path prices) IS the strong-only budget convention; the 14:20 note's expectation that the locked
+  point would read above 69.7 % was wrong and is withdrawn. Under the budget: spend-all = spend-to-peak **76.70 @ 97.7 %** (largest feasible θ);
+  the curve's own peak θ = 0.98 is **76.84 @ 104.2 %** — above always-SS (76.77) but 4 % over budget, inadmissible; validation θ* = 0.98 (103.9 %),
+  so the cap, not θ*, sets the point; pacing 76.70 @ 100.0 (one 0.03 % overshoot); oracle 81.50 @ 23.3; escalate-all 108.6 % infeasible. Prediction
+  (14:20) met: champion ≥ F6g at the budget (76.70 vs 76.77 @ 99.9 — equal within 0.1), same bar. **Training 1 B = 100 (`mab_t1_full_d`):** spend-all
+  = spend-to-peak 61.33 @ 76.3 % (saturated probabilities: no gain over its registered 61.33 @ 66.6 %), pacing 62.00 @ 93.7 %, oracle 63.33 @ 59.6 %,
+  escalate-all 123.0 %. Slides 150–151 switch the HotpotQA router to the champion.
