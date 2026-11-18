@@ -331,3 +331,24 @@ temperature (best validation vote@40 from §15), action set. **Prediction:** gai
   **Gap made explicit by Jonathan (14:49–14:53): k has only been measured at the ANSWER stage (WW×k, SW×k); the RETRIEVAL stage (weak retriever ×k,
   i.e. WS and WW with k retrievals) is unmeasured, and WS is the path the router buys most (53 % at θ = 0.5). The router cannot be offered k at the
   retrieval stage without those outcomes → retrieval-stage k measurement to be registered (§18, draft below) before the k-router (§17(2)).**
+
+## 18. k WEAK RETRIEVALS — the retrieval-stage outcomes for the k-router (registered 18 Nov 2026, 15:20 SGT; DRAFT until Jonathan's line-by-line read; nothing submitted)
+**Why (Jonathan 14:49–15:02):** k has only been measured at the answer stage (WW×k, SW×k), the two paths the K = 1 router never buys; the path it
+buys most is WS (53 % at θ = 0.5), where k means repeating the WEAK RETRIEVER. The router can only decide among actions it has outcomes for, so
+these cells are the training signal, not a hand-picked experiment. **Settings (Jonathan 15:10, one by one):** (1) Config B models; (2) k_ret ∈ {1, 5,
+10} — 20/40 excluded (WS = 1,658 / 3,198 > 929 per-instance budget); k_ret = 1 = the stored greedy cell; (3) combination NOT fixed — union and
+vote (≥ ⌈k/2⌉) both measured so the router may choose; (4) retriever sampling T 0.7 / top-p 0.9 (answer-stage temperature may follow tonight's
+sweep); (5) answer stage measured both ways on every combined context — strong ×1 greedy (WS(k_ret)) and weak ×40 samples (WW(k_ret, k_ans));
+(6) splits val 1,110 / test 1,481; (7) cluster, two H200s, one job per split; nothing to copy (runner, data, ids, clone already there); (8) prices:
+per-call weak-first as the headline axis (WS(k_ret) = 77 k_ret + 118 → 503 / 888; WW = 77 k_ret + 3 k_ans) AND measured tokens → AgentTTS units
+alongside (a union context is longer; the per-call price understates it).
+**Code:** `hotpotqa_retrk_cells.py` v1.0 (delta on the reviewed answer-stage script; `# RETRK` marks the new parts; model guards assert the
+Config B ids; resume-safe per phase) + `hotpotqa_retrk.sbatch` (SPLIT env, OUT `runs/hotpotqa/retrk_k10`). Phases: retr (7B, 10 samples/question,
+RETR_OUT 768) → qa_strong (70B fp16, greedy, 4 contexts) → qa_weak (3B, 40 samples × 4 contexts). Estimate ≈ 2.5–3 h per split.
+**Checks before submission:** hashes (script, runner = the answer-stage job's runner sha), 10-question smoke (`ARGS="--end 10"`): retrk rows
+have 10 pick-lists each with 1–20 passage numbers inside the pool, u5 ⊇ v5, u10 ⊇ u5; qa_strong rows are short answers; samples rows 40 strings;
+manifest models = Qwen2.5-7B / Llama-3.2-3B / Llama-3.1-70B.
+**Predictions:** union lifts WS by +1 to +2 pt at k_ret = 5 on validation (2Wiki §15-A: +1.5), ≤ +0.5 more at 10; vote lifts less than union;
+WW(k_ret, k_ans) stays within ±0.5 of the answer-stage result. Decision rule: if WS(k_ret = 5, union or vote) ≥ 65.5 on validation, the
+retrieval-stage k action enters the k-router's menu as a live option; otherwise HotpotQA's statement stays "k buys nothing; the strong call is the
+only purchase", with the retrieval stage now measured rather than assumed. Scorer (`hotpotqa_retrk_score.py`) and the k-router trainer follow.
