@@ -1,11 +1,14 @@
 # 2WikiMultiHopQA on Jonathan's setup (branch jonathan, lab_package/twowiki; registered split of 1 Nov, split6000_manifest.json):
 #   train5000 : train_extra[0:5000] (official dev[1000:], entity-filtered against val and test) - fine-tuning only
 #   val400    : dev[100:500] - checkpoints (validation loss) and rule learning (halves A / B)
-#   test600   : dev[0:100] (AgentTTS's 100) + dev[500:1000] - read once
+#   test600   : dev[0:100] (AgentTTS's 100) + dev[500:1000] - read once. Headline = positions 100-599 of test600 (dev[500:1000],
+#               the 500 AgentTTS (reproduced) is scored on); all 600 reported alongside. Cost = measured units, % of
+#               always-strong on the same questions. Non-inferiority: within 3 points of always-strong.
 # Candidate passages: his pools as built (twowiki_pools.py v1.1: Elasticsearch over the dev supporting-fact sentences,
 # gold + top-100 hits, shuffled with seed 17 per question); gold answers = his `answers` list (gold + Wikidata aliases),
 # scored with the team's lenient ruler. Put his pool files (pools_<part>.json, or chunks/ + chunks_manifest.json) in
-# ${project_dir}/2wiki/pools6000 (or set STAIR_2WIKI_POOLS).
+# ${project_dir}/2wiki/pools6000 (or set STAIR_2WIKI_POOLS). His copy: 21 chunks + chunks_manifest.json (each chunk's sha256
+# is checked); 20 train5000 records have one supporting fact outside their pool (kept, as in his runs).
 #   AL-38 = AL-04's design on 2Wiki (fine-tuned 3 + 3 models, self-learnt rules); AL-39 = always-strong (greedy Qwen 72B ->
 #   Llama 70B, AgentTTS's prompts, K = 1: Jonathan's protocol), our own rows on the same passages.
 #   python jobs/submit_all.py --config configs/twowiki.yaml --phases 2 --as-job      (AL-38)

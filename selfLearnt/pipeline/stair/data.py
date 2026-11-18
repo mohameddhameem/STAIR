@@ -183,10 +183,11 @@ def _jon_records(pools_dir):
 
 def _jon_row(r):
     cands = r["ctxs_candidate"]
-    assert set(r["ctxs_gt"]) <= set(cands), f"{r['_id']}: a gold sentence is not in its pool"
     g = r.get("answers") or [r["answer"]]
+    gold = [s for s in dict.fromkeys(r["ctxs_gt"]) if s in cands]    # (20 train5000 records have one supporting fact
     return {"qid": r["_id"], "question": r["question"], "answer": g[0] if len(g) == 1 else list(g), "type": r.get("type"),
-            "level": None, "ret_answers": [cands.index(s) for s in dict.fromkeys(r["ctxs_gt"])], "ctxs_candidate": cands}
+            "level": None, "ret_answers": [cands.index(s) for s in gold], "ctxs_candidate": cands,     # out of range: kept)
+            "_gold_missing": len(set(r["ctxs_gt"])) - len(gold)}
 
 
 def _build_twowiki(cfg, out):
@@ -201,7 +202,12 @@ def _build_twowiki(cfg, out):
         assert len(ids) == TWOWIKI_N[part], f"{part}: {len(ids)} ids, expected {TWOWIKI_N[part]}"
         miss = [i for i in ids if i not in recs]
         assert not miss, f"{part}: {len(miss)} ids have no pool record (first {miss[0]})"
-        sets[split], ids_of[split] = [_jon_row(recs[i]) for i in ids], ids
+        rows = [_jon_row(recs[i]) for i in ids]
+        short = sum(q.pop("_gold_missing") > 0 for q in rows)
+        if short:
+            log(f"{part}: {short} questions have a supporting fact outside their pool (kept, as Jonathan's runs)")
+        assert all(q["ret_answers"] for q in rows), f"{part}: a question has no gold sentence in its pool"
+        sets[split], ids_of[split] = rows, ids
     assert not (set(ids_of["train"]) & (set(ids_of["val"]) | set(ids_of["test"]))) and not (set(ids_of["val"]) & set(ids_of["test"]))
     lim = d.get("limit") or {}
     for k in ("val", "test", "train"):
