@@ -213,3 +213,12 @@ not substitute for one strong call; the strong call is the only purchase that mo
 beats the strong model; the dataset decides.* k = 1 run reproduces slide 150 (76.64 / 76.77 / 74.48 on the full set vs 76.54 / 76.69 / 74.35
 bundle means). Note: the `--full` run shows `groups {'all'}` because `--data` was not passed (type is irrelevant without `--shift`).
 **Budget component CLOSED for ERP I.** Deliverables next: slides (proposal addition; final report section incl. K > 1 negative), paper §.
+
+## 15. TEMPERATURE ABLATION for K = 40 (registered 18 Nov 2026, 12:10 SGT; Jonathan 12:06 "can we sweep temperatures to check if we can improve
+accuracy within the budget?"; on the LAB GPU, 12:06 "can we do this in the lab?")
+Design: temperatures {0.3, 1.0, 1.3} added to the 0.7 of §13; top-p 0.9, K = 40, both contexts, both splits; `hotpotqa_samplek_cells.py` v1.1
+`--runner lab` (same script; the lab's `run_labels4.py` = same API) via `hotpotqa_samplek_lab_sweep.sh`; 10-question smoke first. Selection rule:
+the temperature with the best vote@40 on VALIDATION, read once on test; allocation as §13/§14 with `--samplek` from that temperature.
+Predictions: higher temperature raises diversity but lowers per-sample accuracy — vote@40 moves by at most ±2 pts vs 0.7; the 13.6-pt equal-price
+gap to one strong answer (WW×40 vs WS) does not close; no k > 1 family beats k = 1 within the always-strong budget at any temperature. Decision
+rule as §13. If a temperature beats 0.7 by > 2 pts on validation vote@40 (not predicted), it is read on test and the allocation re-run with it.
