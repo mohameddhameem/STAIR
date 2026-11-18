@@ -305,3 +305,12 @@ temperature (best validation vote@40 from §15), action set. **Prediction:** gai
   11 / 6; oracle_B + 15 = 73.33 @ 54.0. Prediction (§16) met: router point and hand-off rows < 100 %; escalate-all > 100 %; hand-off rows the only
   policies above the two-model oracle. Next: `mab_t3_full_d2` with `--kh 0 8 15 23` (≈ 5 / 10 / 15 per 100) and the two 1,000-bundle runs for the
   figure (`hotpotqa_d`, `mab_t3_d`); slides 150–151 rebuilt from these.
+- **18 Nov 2026 14:20 — ROUTER CORRECTION + v1.8 (Jonathan 14:12: "we need to use 75.89 at 69.7 % with GRPO (Reward), label-free").** The HotpotQA
+  budget runs so far used the THREE-INSIGHTS router (`grpo_fresh_guided`, F6g: greedy 74.48 @ 61.7 %, cap 75.15 @ 68.3 %). The paper's headline
+  router is the LABEL-FREE CHAMPION (fresh adapter, goal-stated prompt, `grpo_ret_qa_a1_fresh_ep6_objective`; test_scores tag `grpo_fresh_objective`;
+  28 Oct read: greedy 74.21 @ 54.2 %, locked cap point t = 0.80/0.05/0.05 → **75.89 @ 69.7 %**, evaluation accounting with SS = 929). ERP I slides
+  150–151 switch to the champion; F6g runs stay on record as the 17 Nov sensitivity. **v1.8 (sha 2eed562c7aa6…): `--theta-locked T_RET T_QAW T_QAS`**
+  adds one policy row `locked` = the router at its registered thresholds (decision rule identical to `grpo_pair_sweep.py` lines 36–37), priced on the
+  strong-only axis; nothing else changes. Note: on this axis the locked point will read ABOVE 69.7 % because the SS path costs 1,009 here vs 929 in the
+  sweep's accounting (the weak pass is paid). Runs: `hotpotqa_champ_full_d` (`--full --theta-locked 0.80 0.05 0.05`) and `hotpotqa_champ_d` (N = 200 ×
+  1,000). Prediction: champion curve ≥ F6g curve at every spend, same bar (76.8) at ≤ 100 %; locked point ≈ 75.9 @ 72–75 %.

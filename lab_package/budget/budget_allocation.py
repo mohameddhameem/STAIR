@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 budget_allocation.py -- ERP I component: accuracy within a FIXED CUMULATIVE BUDGET over a bundle of queries.
-v1.7 18 Nov 2026 (13:00; --budget strong-only|weak-first, Amendment D: the budget is the STRONG MODEL ALONE -- 929 per HotpotQA question, cs per MedAgentBench task -- so escalate-all, which pays the weak pass too, reads > 100 %; weak-first reproduces the earlier runs) / v1.6 (09:10; --samplek + --k-weak: the weak answerer called k times with a vote, paths WW/SW priced 77+3k / 891+3k (weak-first; the scorer's v1.0 wrote 811+3k, corrected 18 Nov 12:50); v1.5 22:25; --full = the whole held-out set as the one bundle, i.e. the dataset-level budget — Jonathan's reading of Prof. Archan's 'fixed budget'; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
+v1.8 18 Nov 2026 (14:20; --theta-locked T_RET T_QAW T_QAS adds the policy row 'locked' = the router at its registered locked thresholds, hotpotqa only) / v1.7 (13:00; --budget strong-only|weak-first, Amendment D: the budget is the STRONG MODEL ALONE -- 929 per HotpotQA question, cs per MedAgentBench task -- so escalate-all, which pays the weak pass too, reads > 100 %; weak-first reproduces the earlier runs) / v1.6 (09:10; --samplek + --k-weak: the weak answerer called k times with a vote, paths WW/SW priced 77+3k / 891+3k (weak-first; the scorer's v1.0 wrote 811+3k, corrected 18 Nov 12:50); v1.5 22:25; --full = the whole held-out set as the one bundle, i.e. the dataset-level budget — Jonathan's reading of Prof. Archan's 'fixed budget'; v1.3 fixed the MedAgentBench budget denominator = always-strong cw + cs; v1.4 adds --data for HotpotQA question type under --shift) -- DRAFT for Jonathan's line-by-line review; CPU only; reads ONLY stored held-out outcomes and the routers'
 stored per-instance scores (no model is run; every input file was written by a declared test read or by validation).
 
 RESEARCH QUESTION (Jonathan, 17 Nov): how to improve accuracy within a fixed budget equal to the always-strong cost -- and must
@@ -72,6 +72,10 @@ def load_hotpotqa(a):
     def path(ret, qa, i, theta):                            # the router's own decision structure, one theta for all gates
         if ret[(i, None)] >= theta: return 0 if qa[(i, "W")] >= theta else 1
         return 2 if qa[(i, "S")] >= theta else 3
+    def _locked(ret, qa, i, t):                              # v1.8: three locked thresholds (grpo_pair_sweep.py lines 36-37 rule)
+        tr, tw, ts = t
+        if ret[(i, None)] >= tr: return 0 if qa[(i, "W")] >= tw else 1
+        return 2 if qa[(i, "S")] >= ts else 3
     qtype_of = {}
     if a.data:                                               # v1.4: question type for --shift (rows carry none)
         data = json.load(open(a.data, encoding="utf-8"))
@@ -90,7 +94,8 @@ def load_hotpotqa(a):
             if g["split"] != split or (g["idx"], None) not in ret: continue
             out.append(_item(g["idx"], qtype_of.get(g["idx"]) or g.get("type") or g.get("qtype"), [float(x) for x in g["em_standard"]], PRICE,
                              {t: path(ret, qa, g["idx"], t) for t in THETAS}, 3,
-                             css=(PRICE[3] - 80) if a.budget == "strong-only" else PRICE[3]))   # v1.7 Amendment D: strong-only budget = 929 = 814 + 115 (SS without the weak retrieval 77 and weak answer 3 that ran first) = the trainer's C_SS
+                             css=(PRICE[3] - 80) if a.budget == "strong-only" else PRICE[3],   # v1.7 Amendment D
+                             locked=(None if a.theta_locked is None else _locked(ret, qa, g["idx"], a.theta_locked))))   # v1.8: strong-only budget = 929 = 814 + 115 (SS without the weak retrieval 77 and weak answer 3 that ran first) = the trainer's C_SS
         return out
     test, val = build("test", ret_t, qa_t), build("val", ret_v, qa_v)
     assert len(test) == 1481, len(test); assert val, "no validation rows scored -- val score files missing"
@@ -110,7 +115,7 @@ def load_hotpotqa(a):
         assert n_miss == 0, f"{n_miss} questions without vote@{a.k_weak} outcomes in {a.samplek}"
     files = [f"{B}/router_data_standard.jsonl", f"{B}/test_scores/ret_{a.tag}.jsonl", f"{B}/test_scores/qa_{a.tag}.jsonl",
              f"{B}/{a.run}/ret_val_scores.jsonl", f"{B}/{a.run}/qa_val_scores.jsonl"] + ([a.data] if a.data else []) + ([a.samplek] if a.samplek else [])
-    return test, val, {"root": B, "tag": a.tag, "run": a.run, "n_test": len(test), "n_val": len(val), "price": PRICE, "data": a.data, "budget": a.budget, "css_per_q": (PRICE[3] - 80) if a.budget == "strong-only" else PRICE[3],
+    return test, val, {"root": B, "tag": a.tag, "run": a.run, "n_test": len(test), "n_val": len(val), "price": PRICE, "data": a.data, "budget": a.budget, "theta_locked": a.theta_locked, "css_per_q": (PRICE[3] - 80) if a.budget == "strong-only" else PRICE[3],
                        "type_source": ("data 'type' field / wording rule" if qtype_of else "none (rows carry no type)"),
                        "k_weak": a.k_weak, "samplek": a.samplek,
                        "inputs_sha256": {os.path.basename(f) if not f.startswith(B) else os.path.relpath(f, B): sha(f) for f in files}}
@@ -181,6 +186,7 @@ def pol_spend_all(bundle, Bf, **_):
 def pol_spend_to_peak(bundle, Bf, tstar, **_):
     t = largest_theta_within(bundle, Bf, cap=tstar); return [it["path_at"][t] for it in bundle]
 def pol_per_query(bundle, theta0, **_):  return [it["path_at"][theta0] for it in bundle]
+def pol_locked(bundle, **_):               return [it["locked"] for it in bundle]                          # v1.8
 
 
 def pol_pacing(bundle, Bf, vcurve, tstar, rng, **_):
@@ -253,6 +259,7 @@ def main():
     ap.add_argument("--theta0", type=float, default=0.5, help="the registered per-query operating point (greedy)")
     ap.add_argument("--root", default=None); ap.add_argument("--out", required=True)
     ap.add_argument("--N", type=int, default=None); ap.add_argument("--bundles", type=int, default=1000)
+    ap.add_argument("--theta-locked", nargs=3, type=float, default=None, metavar=("T_RET","T_QAW","T_QAS"), help="v1.8: hotpotqa only -- add the policy row 'locked' = the router at its registered locked thresholds (e.g. 0.80 0.05 0.05, the label-free champion's cap point), priced on the same axis; no other change")
     ap.add_argument("--budget", default="strong-only", choices=["strong-only", "weak-first"], help="v1.7 Amendment D: strong-only (default) = the budget is the cost of the strong model ALONE (no weak pass): HotpotQA 929 = 814 + 115 per question, MedAgentBench cs per task; weak-first = the earlier convention (1,009 / cw + cs), kept to reproduce v1.3-v1.6 runs");
     ap.add_argument("--shift", action="store_true"); ap.add_argument("--kh", nargs="*", type=int, default=[0])
     ap.add_argument("--full", action="store_true", help="v1.5: ONE bundle = the whole held-out set (no resampling) -- the dataset-level budget; bootstrap runs give the SEs")
@@ -288,6 +295,7 @@ def main():
 
     POL = [("spend-all", pol_spend_all), ("spend-to-peak", pol_spend_to_peak), ("per-query", pol_per_query), ("pacing", pol_pacing),
            ("oracle_B", pol_oracle_B), ("random_B", pol_random_B), ("oracle", pol_oracle), ("always_SS", pol_always_ss)]
+    if a.dataset == "hotpotqa" and a.theta_locked is not None: POL.insert(3, ("locked", pol_locked))             # v1.8
     agg = collections.defaultdict(list); per_bundle = []; curve_acc = collections.defaultdict(list)
     for b in range(a.bundles):
         bundle = draw(); css = css_of(bundle); n = len(bundle)
