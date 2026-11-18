@@ -196,3 +196,20 @@ B = 100 % by > 2 bootstrap SE, K > 1 enters the menu for HotpotQA; otherwise it 
   pending (priority). Logs under `runs/hotpotqa/samplek_smoke/` (submission directory).**
 - **18 Nov 2026 11:55 — §13 CELLS COMPLETE (jobs 368176 val, 368177 test; ~1.1 s per question on one H200).** `samplek_k40/`: samples_val 2,220 rows,
   samples_test 2,962 rows (= 1,110 × 2 and 1,481 × 2), 40 samples each, 0 truncations. Packed (455 KB) for the lab; scoring and allocation next.
+
+## 14. §13 READ — K > 1 FOR THE WEAK ANSWERER, HotpotQA (18 Nov 2026, 12:03 SGT; cells `samplek_k40` 368176/368177; `hotpotqa_samplek_score.py`; `budget_allocation.py` v1.6 `--full --samplek --k-weak k`) — CLOSED, NEGATIVE
+**Vote@k (test 1,481; val 1,110 in brackets):** WW×1 50.17 (49.82) · ×5 50.24 (50.54) · ×10 50.84 (50.72) · ×20 50.64 (51.17) · ×40 **50.44** (51.71); greedy
+WW 50.30 (52.25). SW×1 61.72 (60.27) · ×5 61.17 (62.25) · ×10 62.05 (62.97) · ×20 61.99 (63.06) · ×40 **62.12** (63.15); greedy SW 61.78 (63.15).
+Majority voting converges to the weak model's own greedy answer — it removes sampling noise, it does not add knowledge. **Equal-price pairs
+(Table 5 per-call):** WW×40 at 197 units = 50.44 vs WS at 195 = **64.01** (one strong answer wins by 13.6 pts); SW×40 at 931 = 62.12 vs SS at
+1,009 = 76.77. Measured output ≈ 3–7 tokens per sample (per-call is the conservative price).
+**Allocation within the always-strong budget (`--full`, one bundle = the test set):** IDENTICAL for k ∈ {1, 5, 10, 20, 40} — spend-to-peak
+76.64 @ 85.5 %, spend-all 76.77 @ 100 %, per-query (θ = 0.5) 74.48 @ 56.8 %; only the oracle moves (81.50 → 82.11 / 81.84 / 81.77 / 81.77).
+Cause, verified on the stored scores: the router's chosen paths contain NO weak answer — θ = 0.5: WS 53.5 % + SS 46.5 %; θ = 0.92: WS 18.0 % +
+SS 82.0 % (WW = SW = 0 %). The router's only live decision on HotpotQA is the retrieval choice; the weak answerer is never trusted, and the
+vote results show that judgement was right. **Decision rule (§13): no k > 1 family beats k = 1 ⇒ K > 1 does not enter the HotpotQA menu;
+the conditional temperature ablation is not triggered.** Statement of record: *within the always-strong budget on HotpotQA, more weak calls do
+not substitute for one strong call; the strong call is the only purchase that moves accuracy — the opposite of 2Wiki, where AgentTTS's 3B×50
+beats the strong model; the dataset decides.* k = 1 run reproduces slide 150 (76.64 / 76.77 / 74.48 on the full set vs 76.54 / 76.69 / 74.35
+bundle means). Note: the `--full` run shows `groups {'all'}` because `--data` was not passed (type is irrelevant without `--shift`).
+**Budget component CLOSED for ERP I.** Deliverables next: slides (proposal addition; final report section incl. K > 1 negative), paper §.
