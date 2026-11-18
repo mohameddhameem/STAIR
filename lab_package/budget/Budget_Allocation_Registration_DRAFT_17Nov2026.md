@@ -269,3 +269,27 @@ hand-off rows stay below 100 % (they were ≤ 81 % weak-first and cw ≪ cs); es
 the two-model oracle. **Re-runs (lab, CPU, beside the GPU sweep), outputs in NEW folders, old folders kept:** `hotpotqa_full_d` (`--full`),
 `hotpotqa_d` (bundles N = 200 × 1,000, figure), `mab_t3_d` (`--run training3_router --kh 0 5 10 15`, 1,000 bundles), `mab_t3_full_d` (`--full`).
 Slides 150–151 and the paper section are rebuilt from these; §10–§12 numbers remain on record as the weak-first convention.
+
+## 17. ERP I EXPERIMENT PLAN — ROUTING WITHIN THE BUDGET, COST AS A CONSTRAINT (Jonathan, 18 Nov 2026 13:05–13:28; "keep the same routing method but the cost is the constraint, not optimization factor"; "this is only for ERP I")
+**Scope:** HotpotQA and MedAgentBench; budget = the strong model alone on the whole held-out set (Amendment D). Routing method unchanged; the only
+change is the cost component of the reward. Whether this enters the paper is decided later.
+**(1) K = 1 — reward without the cost term.** R′ᵢ = Qᵢ(token-F1) − max(0, Cᵢ/C_SS,ᵢ − 1) [− λt·hand-off term, MedAgentBench only]. The per-instance
+guard max(0, Cᵢ/C_SS,ᵢ − 1) is kept (Jonathan 13:25: "we shouldn't avoid over spending compared to the budget"); in the trainer's prices it is 0 on all
+four K = 1 paths (WW 80, WS 195, SW 894, SS = C_SS 929) and bites only on W×k paths (SW×k > 929 for k ≥ 13). The budget then enters ONLY at inference,
+as the set-level threshold (`budget_allocation.py --budget strong-only`). Trainer: `lab_package/hotpotqa/trainers/grpo_trainer_v17_lam.py` v1.7
+(sha 0f45a36a740a…) = the three-insights trainer with a `--lam` flag (default LAMBDA 0.10, old commands reproduce identically) and the guard; the
+λ-free run uses `--lam 0`. **Before launch on the lab:** diff the lab's trainer file that produced `grpo_ret_qa_a1_fresh_ep6_guided` against the repo's
+v1.5 (the lab also had a "v1.6 twoinsights" variant) — v1.7 must be a 7-line diff on THAT file; Jonathan's line-by-line read; three checks; register.
+Command (to validate): identical to the three-insights launch — `--baseline` OMITTED (the 0.6892 bar is a cost-inclusive R′ and is not comparable;
+the bar for this run is the validation always-SS mean token-F1 / lenient, read from the trainer's own eval lines) `--from-scratch --epochs 6 --prompts
+guided --lam 0 --outdir /mnt/hdd/jonathan/runs/config_b/grpo_ret_qa_a1_fresh_ep6_guided_lam0`; seed 17, G = 8. ≈ 2–3 h on the lab GPU, after the
+temperature sweep. Then: store → one validation sweep → `budget_allocation.py --budget strong-only --full` with the new tag; one declared held-out read.
+**Predictions (K = 1, λ = 0):** the router reaches the always-strong accuracy within the strong-only budget at a spend close to the current router's
+spend-to-peak (≈ 93 %); it does not beat always-strong by more than noise (the two-model oracle bounds it at 81.5). Risk: on the ~52 % of questions
+where all four paths tie on F1 the λ = 0 reward has zero gradient, so the router's scores may rank those questions less usefully for the set-level
+threshold — if its spend at the bar is HIGHER than the λ = 0.10 router's, the cost term was a useful tie-breaker and that is the reported finding.
+**(2) K > 1 as a routing action (HotpotQA; after (1)).** At the answer stage the router chooses among {W×1, W×5, W×10, W×20, W×K_max, S×1}; the strong
+model is never repeated. Reward as in (1) (the guard now matters), trained from the STORED vote@k outcomes (no new model calls); budget = the set-level
+constraint at inference. Settings to be confirmed one by one before the code is written: K_max (40 = stored samples; 50 needs a new sampling run),
+temperature (best validation vote@40 from §15), action set. **Prediction:** gain ≤ +0.6 pt over K = 1 (the enlarged-menu oracle's headroom, §14).
+**Slides:** 150–152 rebuilt from the strong-only re-runs (§16) and (1)–(2); V01-084's 151–152 are placeholders in the weak-first convention until then.

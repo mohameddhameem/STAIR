@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# grpo_trainer.py — VERSION: v1.6 2026-11-18 (--lam: cost weight in the reward, default LAMBDA unchanged; --lam 0 = cost is a CONSTRAINT on the set at inference, not an optimisation term; per-instance over-budget guard max(0, C/C_SS - 1) added, = 0 on all four K = 1 paths; Jonathan 18 Nov 13:25) / previous: v1.1 2026-10-21 (AMENDMENT A1, approved by Jonathan)
+# grpo_trainer.py — VERSION: v1.7 2026-11-18 (--lam: cost weight in the reward, default LAMBDA unchanged; --lam 0 = cost is a CONSTRAINT on the set at inference, not an optimisation term; per-instance over-budget guard max(0, C/C_SS - 1) added, = 0 on all four K = 1 paths; Jonathan 18 Nov 13:25) / previous: v1.1 2026-10-21 (AMENDMENT A1, approved by Jonathan)
 #
 # AMENDMENT A1 (21 Oct, after the registered v1.0 run FAILED the kill
 # criterion — best 0.6316 vs bar 0.6892, with over-cheapening: ret P(W)
@@ -79,7 +79,7 @@ import router_prompts as RP
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 from configb_reward_train_ret import tokenF1, PATH, C_SS, LAMBDA
-LAM = LAMBDA   # v1.6: overridden by --lam in main() before build_rows() is called
+LAM = LAMBDA   # v1.7: overridden by --lam in main() before build_rows() is called
 from lenient_match_agenttts import LEN     # reporting only
 
 VERSION = "grpo_trainer v1.5 2026-10-25 (v1.4 + objective prompt choice, default standard unchanged)"
@@ -147,7 +147,7 @@ def build_rows(data):
                               weak_answer=str(qa_w[f"{i}|{sfx}"]))
             for qc, store in (("W", qa_w), ("S", qa_s)):
                 delivered = str(store[f"{i}|{sfx}"])
-                rprime[rc + qc] = tokenF1(delivered, golds) - max(0.0, PATH[(rc, qc)] / C_SS - 1.0) - LAM * PATH[(rc, qc)] / C_SS   # v1.6: LAM = --lam (default LAMBDA); over-budget guard is 0 on all four K = 1 paths
+                rprime[rc + qc] = tokenF1(delivered, golds) - max(0.0, PATH[(rc, qc)] / C_SS - 1.0) - LAM * PATH[(rc, qc)] / C_SS   # v1.7: LAM = --lam (default LAMBDA); over-budget guard is 0 on all four K = 1 paths
                 # lenient verdict for reporting only
                 rprime[rc + qc + "_len"] = LEN(delivered, golds)
         rows[r["split"]].append({"idx": i, "ret_user": ret_user,
@@ -160,7 +160,7 @@ def main():
     ap.add_argument("--outdir", default="/mnt/hdd/jonathan/runs/config_b/grpo_ret_qa_a1")
     ap.add_argument("--G", type=int, default=8, help="rollouts per question")
     ap.add_argument("--epochs", type=int, default=EPOCHS, help="training epochs; default 3 unchanged")
-    ap.add_argument("--lam", type=float, default=LAMBDA, help="v1.6 (18 Nov, Jonathan): cost weight in the reward; default = LAMBDA unchanged; 0 = cost is a constraint on the whole set at inference, not an optimisation term")
+    ap.add_argument("--lam", type=float, default=LAMBDA, help="v1.7 (18 Nov, Jonathan): cost weight in the reward; default = LAMBDA unchanged; 0 = cost is a constraint on the whole set at inference, not an optimisation term")
     ap.add_argument("--prompts", choices=["standard","guided","objective"], default="standard", help="router system prompt variant; standard = byte-identical to all previous runs")
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--from-scratch", action="store_true", dest="from_scratch")
@@ -169,7 +169,7 @@ def main():
     ap.add_argument("--seed", type=int, default=SEED,
                     help="training seed (default 17, the registered run's; vary for the seed-robustness run)")
     a = ap.parse_args()
-    global LAM; LAM = a.lam   # v1.6
+    global LAM; LAM = a.lam   # v1.7
     if a.smoke:
         a.outdir = a.outdir.rstrip("/") + "_smoke"
     os.makedirs(a.outdir, exist_ok=True)
