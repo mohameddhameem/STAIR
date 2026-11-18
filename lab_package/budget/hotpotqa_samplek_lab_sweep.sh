@@ -14,7 +14,7 @@ for T in "$@"; do
             /mnt/hdd/jonathan/runs/config_b/retr_weak.jsonl /mnt/hdd/jonathan/runs/config_b/retr_strong.jsonl | tee -a "$OUT/inputs_sha256.txt"
   for S in val test; do
     echo "=== T=$T split=$S  $(date)"
-    python3 "$SCRIPT" --runner lab --split "$S" --out "$OUT" --k 40 --temp "$T" --top-p 0.9 --seed 20261117 2>&1 | grep -v "max_new_tokens" | tee -a "$OUT/run_${S}.log"
+    python3 "$SCRIPT" --runner lab --split "$S" --out "$OUT" --k 40 --temp "$T" --top-p 0.9 --seed 20261117 2>&1 | grep --line-buffered -v "max_new_tokens" | tee -a "$OUT/run_${S}.log"
   done
 done
 echo "SWEEP DONE $(date)"
