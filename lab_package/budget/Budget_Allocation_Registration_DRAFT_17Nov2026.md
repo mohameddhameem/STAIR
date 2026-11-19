@@ -352,3 +352,13 @@ manifest models = Qwen2.5-7B / Llama-3.2-3B / Llama-3.1-70B.
 WW(k_ret, k_ans) stays within ±0.5 of the answer-stage result. Decision rule: if WS(k_ret = 5, union or vote) ≥ 65.5 on validation, the
 retrieval-stage k action enters the k-router's menu as a live option; otherwise HotpotQA's statement stays "k buys nothing; the strong call is the
 only purchase", with the retrieval stage now measured rather than assumed. Scorer (`hotpotqa_retrk_score.py`) and the k-router trainer follow.
+- **19 Nov 2026 17:35 — §18 SMOKE READ (job 368524, 10 val questions, 23.6 min, exit 0) + PILOT AMENDMENT.** Content correct: 10 pick-lists per
+  question (1–2 passages, inside the pool), v5 ⊆ u5, 40 strong answers, 40 × 40 weak samples, models Qwen2.5-7B / Llama-3.2-3B / Llama-3.1-70B.
+  Speed is the problem: the retrieval prompt is 12.8–15.2k tokens (110-passage pool) and the 10-wide sampled decode runs until the longest sample
+  stops (≤ 768 tokens) → **32–236 s per question (mean ≈ 116 s)**; full val ≈ 36 h, test ≈ 48 h — infeasible by 27 Nov. Answer phases: 2 min per
+  40 calls each (≈ 3.7 h per phase per split). **Pilot (Jonathan 17:34: "pilot first and decide"):** validation positions 0–399 of slr-val only;
+  `--retr-out 320` for the sampled retrievals (greedy cell ≈ 100 tokens; a cut-off sample still parses the [n] it emitted — recorded in the
+  manifest next to the runner's 768); retr phase in two one-GPU chunks (0–200, 200–400; v1.1 writes one chunk file each), then qa_strong + qa_weak
+  on two GPUs. Expected ≈ 3 h + 1.5 h. The §18 decision rule is read on this pilot (WS(k_ret = 5) ≥ 65.5 on validation → live option → test run;
+  else settled on validation, no test run). Files: cells v1.1 sha 771b2f65b20b…? (see git), `hotpotqa_retrk_pilot.sbatch`, scorer v1.1 (chunk files).
+  ERP I priority unchanged: the pilot is a bonus; λ = 0 retrain, paper section and decks come first.

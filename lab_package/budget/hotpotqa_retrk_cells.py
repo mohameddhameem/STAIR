@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-hotpotqa_retrk_cells.py -- k WEAK RETRIEVALS (HotpotQA): the outcomes the k-router needs at the RETRIEVAL stage. DRAFT v1.0 18 Nov 2026
+hotpotqa_retrk_cells.py -- k WEAK RETRIEVALS (HotpotQA): the outcomes the k-router needs at the RETRIEVAL stage. DRAFT v1.0 18 Nov 2026; v1.1 19 Nov (--retr-out cap for the sampled retrievals; retr phase run in --start/--end chunks)
 for Jonathan's line-by-line review (§18 of the budget registration). Cluster (two H200s, Config B runner ~/slr/run_labels_agenttts.py imported
 unchanged -- same pools, same retrieval prompt, same QA prompt, same models). Delta on hotpotqa_samplek_cells.py (reviewed 17 Nov): new parts
 are marked # RETRK.
@@ -13,7 +13,8 @@ decides it: one greedy strong answer (Llama-3.1-70B -> the WS(k_ret) cells) and 
 top-p 0.9 -> the WW(k_ret, k_ans) cells, vote@k formed by the scorer for k_ans <= 40). Nothing here is a routing decision.
 
 PHASES (resume-safe, --phase retr | qa_strong | qa_weak | all; run per split):
-  retr       weak retriever x k_ret samples per question -> <out>/retrk_<split>.jsonl  {"i","id","sels":[[...]*k_ret],"texts":[...]}
+  retr       weak retriever x k_ret samples per question -> <out>/retrk_<split>[_<start>-<end>].jsonl  {"i","id","sels":[[...]*k_ret],"texts":[...]}
+             (v1.1: a --start/--end chunk writes its own file; the qa phases read every chunk file of the split)
   qa_strong  strong answerer, greedy, on u5/v5/u10/v10     -> <out>/qa_strong_retrk_<split>.jsonl  key "<i>|<ctx>" -> answer text
   qa_weak    weak answerer x k_ans samples on u5/v5/u10/v10 -> <out>/samples_retrk_<split>.jsonl key "<i>|<ctx>" -> {"samples":[...]}
   meta sidecars (n_in, n_out, secs, truncated) for every call -> measured-token pricing (AgentTTS units) alongside the per-call price.
@@ -82,6 +83,7 @@ def main():
     ap.add_argument("--data", default=DEF_DATA); ap.add_argument("--ids-dir", default=DEF_IDS)
     ap.add_argument("--out", required=True)
     ap.add_argument("--kret", type=int, default=10); ap.add_argument("--kans", type=int, default=40)
+    ap.add_argument("--retr-out", type=int, default=None, help="v1.1: max new tokens for the SAMPLED retrievals (default = runner RETR_OUT 768; the pilot uses 320 -- a cut-off sample still parses the [n] it has emitted)")
     ap.add_argument("--temp", type=float, default=0.7); ap.add_argument("--top-p", type=float, default=0.9)
     ap.add_argument("--seed", type=int, default=20261118); ap.add_argument("--dtype", default="fp16")
     ap.add_argument("--start", type=int, default=0); ap.add_argument("--end", type=int, default=None)
@@ -103,15 +105,23 @@ def main():
 
     man_path = os.path.join(a.out, f"manifest_{a.split}.json")
     manifest = json.load(open(man_path)) if os.path.exists(man_path) else {}
-    manifest.update({"version": "hotpotqa_retrk_cells v1.0 2026-11-18", "split": a.split, "n": len(positions), "range": [a.start, a.start + len(positions)],
+    manifest.update({"version": "hotpotqa_retrk_cells v1.1 2026-11-19 (--retr-out cap; chunked retr phase)", "split": a.split, "n": len(positions), "range": [a.start, a.start + len(positions)],
                      "k_ret": a.kret, "k_ret_levels": list(KRETS), "rules": ["union", "vote>=ceil(k/2)"], "k_ans": a.kans, "temp": a.temp, "top_p": a.top_p,
-                     "seed": a.seed, "dtype": a.dtype, "retr_out": L.RETR_OUT, "qa_out": L.QA_OUT, "maxlen": L.MAXLEN,
+                     "seed": a.seed, "dtype": a.dtype, "retr_out": (a.retr_out or L.RETR_OUT), "retr_out_runner": L.RETR_OUT, "qa_out": L.QA_OUT, "maxlen": L.MAXLEN,
                      "models": {"retr_weak": L.RETR_WEAK, "qa_weak": L.QA_WEAK, "qa_strong": L.QA_STRONG}, "runner": L.__file__,
                      "sha256": {"script": sha(os.path.abspath(__file__)), "runner": sha(L.__file__), "data": sha(a.data), "ids": sha(ids_file)}})
     manifest.setdefault("phases", {})
     print(f"{a.split}: {len(positions)} questions, phase {a.phase}, k_ret {a.kret} (levels {KRETS}), k_ans {a.kans}, T {a.temp} top_p {a.top_p}", flush=True)
     phases = ["retr", "qa_strong", "qa_weak"] if a.phase == "all" else [a.phase]
-    retr_store = L.Store(os.path.join(a.out, f"retrk_{a.split}.jsonl"))
+    # v1.1: the retr phase writes its own chunk file (parallel chunks never share a file); the qa phases read every chunk of the split
+    import glob
+    chunk = f"_{a.start}-{a.start + len(positions)}" if (a.start or a.end is not None) else ""
+    retr_store = L.Store(os.path.join(a.out, f"retrk_{a.split}{chunk}.jsonl"))
+    retr_all = {}
+    for f in sorted(glob.glob(os.path.join(a.out, f"retrk_{a.split}*.jsonl"))):
+        for line in open(f):
+            if line.strip():
+                r = json.loads(line); retr_all[r["k"]] = r["v"]
 
     def progress(done, t0, n, tag):
         if done % 50 == 0:
@@ -121,13 +131,13 @@ def main():
         manifest["phases"][ph] = {"started": datetime.datetime.now().isoformat(timespec="seconds")}; json.dump(manifest, open(man_path, "w"), indent=1)
         t0 = time.time(); done = 0
         if ph == "retr":                                          # RETRK: k_ret sampled retrievals per question
-            meta = L.MetaLog(os.path.join(a.out, f"meta_retrk_{a.split}.jsonl"))
+            meta = L.MetaLog(os.path.join(a.out, f"meta_retrk_{a.split}{chunk}.jsonl"))
             m, tok = L.load_model("weak", a.dtype, stage="retr"); print(f"[retr weak] {L.RETR_WEAK} loaded", flush=True)
             for i in positions:
                 if str(i) in retr_store: continue
                 inst = dict(data[i]); inst["ctxs_candidate"] = L.trim_pool(inst); npool = len(inst["ctxs_candidate"])
                 assert npool == len(data[i]["ctxs_candidate"]), f"position {i}: pool trimmed"
-                texts, mt = generate_samples(m, tok, L.SYS_RETR, L.retr_prompt(inst), L.RETR_OUT, a.kret, a.temp, a.top_p, a.seed + i)
+                texts, mt = generate_samples(m, tok, L.SYS_RETR, L.retr_prompt(inst), (a.retr_out or L.RETR_OUT), a.kret, a.temp, a.top_p, a.seed + i)
                 sels = [L.parse_selection(t, npool) for t in texts]
                 retr_store.put(str(i), json.dumps({"i": i, "id": rec_id(data[i]), "split": a.split, "sels": sels, "texts": texts})); meta.put(str(i), mt)
                 done += 1; progress(done, t0, len(positions), "retr")
@@ -138,8 +148,8 @@ def main():
             meta = L.MetaLog(os.path.join(a.out, f"meta_{ph}_retrk_{a.split}.jsonl"))
             m, tok = L.load_model(which, a.dtype, stage="qa"); print(f"[qa {which}] {L.QA_STRONG if which == 'strong' else L.QA_WEAK} loaded", flush=True)
             for i in positions:
-                assert str(i) in retr_store, f"position {i}: run --phase retr first"
-                row = json.loads(retr_store[str(i)])          # Store.__getitem__ (runner)
+                assert str(i) in retr_all, f"position {i}: run --phase retr first (no chunk file holds it)"
+                row = json.loads(retr_all[str(i)])
                 inst = dict(data[i]); inst["ctxs_candidate"] = L.trim_pool(inst)
                 for ctx, block in contexts_of(row, inst).items():
                     key = f"{i}|{ctx}"

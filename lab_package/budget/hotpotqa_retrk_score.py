@@ -61,11 +61,13 @@ def main():
     a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
     data = json.load(open(a.data, encoding="utf-8"))
     grid = {g["idx"]: g for g in map(json.loads, (l for l in open(a.grid) if l.strip()))}
-    rows, summ = [], {"version": "hotpotqa_retrk_score v1.0 2026-11-18", "by": {}, "reference": {}}
+    rows, summ = [], {"version": "hotpotqa_retrk_score v1.1 2026-11-19 (chunk files)", "by": {}, "reference": {}}
     for split in ("val", "test"):
-        f_retr = os.path.join(a.cells, f"retrk_{split}.jsonl")
-        if not os.path.exists(f_retr): continue
-        m_retr = load_meta(os.path.join(a.cells, f"meta_retrk_{split}.jsonl"))
+        import glob
+        f_retrs = sorted(glob.glob(os.path.join(a.cells, f"retrk_{split}*.jsonl")))      # v1.1: chunk files of the split
+        if not f_retrs: continue
+        m_retr = {}
+        for mf in sorted(glob.glob(os.path.join(a.cells, f"meta_retrk_{split}*.jsonl"))): m_retr.update(load_meta(mf))
         m_qs = load_meta(os.path.join(a.cells, f"meta_qa_strong_retrk_{split}.jsonl"))
         m_qw = load_meta(os.path.join(a.cells, f"meta_qa_weak_retrk_{split}.jsonl"))
         qs = {}; qw = {}
@@ -74,7 +76,7 @@ def main():
         for l in open(os.path.join(a.cells, f"samples_retrk_{split}.jsonl")):
             if l.strip(): r = json.loads(l); qw[r["k"]] = json.loads(r["v"])["samples"]
         qids = []
-        for l in open(f_retr):
+        for l in (line for f in f_retrs for line in open(f)):
             if not l.strip(): continue
             r = json.loads(l); v = json.loads(r["v"]); i = v["i"]; qids.append(i); g = golds(data[i])
             u_retr = meas(m_retr.get(str(i)), PARAMS["retr_weak"])          # 10 sampled retrievals, prompt once
