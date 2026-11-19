@@ -373,3 +373,16 @@ only purchase", with the retrieval stage now measured rather than assumed. Score
   `grpo_ret_qa_a1_fresh_ep6_objective_lam0`. Identical to the headline run except the reward's cost term. Cosmetic: the FINAL record's inner
   `version` string still says v1.5 (header v1.7; the reward string identifies the code) — fixed in the repo copy after launch, not in the running file.
   Temperature sweep (§15): died at T = 0.3 val question 1,036 (CUDA OOM — a foreign 16 GB process on the 44 GB card); resume-safe; restarts after this run.
+- **19 Nov 2026 21:48 — §17(1) λ = 0 RETRAIN: RESULT (negative for λ = 0; the router still needs the cost term).** Run `grpo_ret_qa_a1_fresh_ep6_objective_lam0`
+  (trainer v1.7, `--lam 0`, 6 epochs, 124 min, exit clean). Training: from step 100 validation mean F1 0.757 / lenient 76.76 % = the always-strong level
+  on validation, at mean cost 926–929 (= the strong price); p(W) at retrieval 0.001–0.06 in epochs 0–1 — the router converged to "escalate (nearly)
+  everything"; later epochs drift cheaper (cost 690–900, p(W) ≤ 0.29) at the same accuracy, but the best-objective checkpoint is the all-strong one.
+  Store: `grpo_lam0_test_store.py` (sha 710e3726e788…, = the registered store script with run folder and tag changed; best adapters) → test_scores
+  `*_grpo_fresh_objective_lam0.jsonl`. **Allocation** (`budget_allocation.py` v1.8 `--full --budget strong-only`, `hotpotqa_lam0_full_d`): per-instance
+  (greedy) **76.77 @ 108.6 % — identical to escalate-all, over budget**; spend-all = spend-to-peak **75.49 @ 97.1 %** vs the λ = 0.10 router's 76.70 @
+  97.7 % (**−1.21 pt at the same spend**); curve peak 76.77 only at 108.2 %; val θ* = 0.10 at 105.4 % (the validation curve never fits the budget);
+  pacing 75.89 @ 100.0. Guard max(0, C/C_SS − 1) never fired (as predicted: 0 on all K = 1 paths). **Reading (statement of record):** removing the
+  per-instance cost term does not make the router "budget-ready"; it removes the only training signal on the ~52 % tied questions and the strong ≥
+  weak majority, so the scores become nearly flat and the set-level threshold has little to rank. Cost as a CONSTRAINT at inference fixes the operating
+  point; the cost TERM in training is what makes the router allocatable. Part 2 sub-question (a): the router still needs the cost term. The §17
+  prediction ("reaches the bar at ≈ 93 %") was wrong in the optimistic direction; the registered risk ("tie-breaker") is the mechanism observed.
