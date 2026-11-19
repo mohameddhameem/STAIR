@@ -362,3 +362,14 @@ only purchase", with the retrieval stage now measured rather than assumed. Score
   on two GPUs. Expected ≈ 3 h + 1.5 h. The §18 decision rule is read on this pilot (WS(k_ret = 5) ≥ 65.5 on validation → live option → test run;
   else settled on validation, no test run). Files: cells v1.1 sha 771b2f65b20b…? (see git), `hotpotqa_retrk_pilot.sbatch`, scorer v1.1 (chunk files).
   ERP I priority unchanged: the pilot is a bonus; λ = 0 retrain, paper section and decks come first.
+- **19 Nov 2026 17:53 — λ = 0 RETRAIN (§17(1)) SMOKE PASSED AND RUN LAUNCHED (lab, tmux `lam0`).** Pre-launch: lab trainer that trained the headline
+  router = `grpo_trainer_v15_backup.py` sha cddc2533e0bb = repo `grpo_trainer_v15.py` (byte-identical); v1.7 (sha 0f45a36a740a) = that file + the
+  seven registered lines, diff read by Jonathan; copied beside the lab's helper modules; py_compile clean; GPU idle; root disk 100 % (1.4 G free —
+  outputs go to /mnt/hdd; administrator to be told). Smoke (`--smoke --from-scratch --prompts objective --lam 0`): FINAL record shows the reward
+  `tokenF1 - max(0, C_path/C_SS - 1) - 0.0*C_path/C_SS`, lambda 0.0 / lambda_default 0.1, prompts objective, fresh adapters, rows sha 6bbff27e…,
+  c_ss 929; objective 0.679 → 0.730 over 3 smoke epochs with mean cost 468 → 677 (the router escalates more once nothing in the reward says
+  "cheap" — expected). Incident: the first smoke survived an SSH drop and ran beside the tmux one for ~1 min; killed (PID 1170188); smoke folder
+  deleted before the real run. **Run:** `--from-scratch --epochs 6 --prompts objective --lam 0`, no `--baseline` (registered), seed 17, G 8, out
+  `grpo_ret_qa_a1_fresh_ep6_objective_lam0`. Identical to the headline run except the reward's cost term. Cosmetic: the FINAL record's inner
+  `version` string still says v1.5 (header v1.7; the reward string identifies the code) — fixed in the repo copy after launch, not in the running file.
+  Temperature sweep (§15): died at T = 0.3 val question 1,036 (CUDA OOM — a foreign 16 GB process on the 44 GB card); resume-safe; restarts after this run.
