@@ -386,3 +386,14 @@ only purchase", with the retrieval stage now measured rather than assumed. Score
   weak majority, so the scores become nearly flat and the set-level threshold has little to rank. Cost as a CONSTRAINT at inference fixes the operating
   point; the cost TERM in training is what makes the router allocatable. Part 2 sub-question (a): the router still needs the cost term. The §17
   prediction ("reaches the bar at ≈ 93 %") was wrong in the optimistic direction; the registered risk ("tie-breaker") is the mechanism observed.
+- **20 Nov 2026 13:43 — §15 SWEEP: SECOND RESTART (incident, no result affected).** The 19 Nov 21:59 restart ran in a plain SSH window, not in tmux
+  `sweep` (the `(attached)` client was a shell inside the tmux window, mistaken for the run); it died when the SSH session closed at ≈ 22:20, with
+  T = 0.3 test at 393 / 1,481 stored. Restarted inside tmux `sweep` (green status bar verified) with the same command and `SLR_QA_WEAK`; resumed
+  2,220 val entries and 393 test entries, recomputed nothing; log `runs/hotpotqa/samplek_sweep.log`. Hashes identical to the 18 Nov start.
+- **20 Nov 2026 15:05 — §15 READ, T = 0.3 (scorer v1.1 sha 865e75c37fd4…, out `samplek_k40_t0.3_scored`; val 2,220 / test 2,962 rows = complete).**
+  **Vote@k val (test in brackets):** WW×1 51.17 (50.44) · ×5 51.17 (50.44) · ×10 51.53 (50.57) · ×20 51.53 (50.44) · ×40 **51.80** (50.71); greedy
+  WW 52.25 (50.30). SW×1 62.88 (62.39) · ×5 62.70 (62.26) · ×10 62.79 (62.26) · ×20 62.70 (62.19) · ×40 **62.79** (62.12); greedy SW 63.15 (61.78).
+  vs T = 0.7 validation vote@40: WW 51.80 vs 51.71 (+0.09), SW 62.79 vs 63.15 (−0.36) — inside the predicted ±2 pts; the selection rule does not
+  fire. Equal-price pairs unchanged in substance: WW×40 at 197 = 50.71 vs WS at 195 = 64.01 (−13.3); SW×20 at 951 = 62.19 vs SS at 1,009 = 76.77
+  (−14.6). Reading: lower temperature makes the samples agree with the greedy answer more often (the k = 1 sample is already within 1 pt of greedy),
+  so voting has even less to remove; it adds no knowledge. T = 1.0 and 1.3 follow (expected ≈ 18:20); one read each, same rule.
