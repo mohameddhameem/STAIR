@@ -503,3 +503,9 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   §18 test retrieval moved to the lab GPU (15:34) and the sweep would hold the only H200 node exactly when the §18 test qa_strong job and the §20
   fuser read need it before the 27 Nov deadline. The sweep is deferred, not dropped: resubmit with the same command after the §18/§20 reads.
   §20 smoke submitted: job 379772 (`ARGS="--end 10"`, any GPU, OUT `fuser_smoke`).
+- **24 Nov 2026 15:50 — §20 SMOKE 379772 FAILED on a Tesla V100-SXM3-32GB (`torch.AcceleratorError: no kernel image is available for execution on the
+  device`): slr-env's torch build has no sm_70 kernels. Not a script fault — the banner and model load printed (`test: 10 questions, ctx S, fuser
+  over first 40 samples, T 0.3 top_p 1.0 max_new 512`; `[fuser] unsloth/Llama-3.2-3B-Instruct loaded`). Resubmitted pinned to an Ampere card:
+  job 379776 (`--gres=gpu:a5000:1`). Rule from now on for any-GPU jobs: request a named Ampere-or-newer type (a5000 / 3090 / a40 / l40s / a100 /
+  h100 / h200), never V100 / P100 / RTX 8000.** Model id recorded: the cluster runner's QA_WEAK is `unsloth/Llama-3.2-3B-Instruct` (a re-upload of
+  Meta's Llama-3.2-3B-Instruct weights) — the same runner and id that produced the stored SW×40 samples, so fuser = generator, as in their design.
