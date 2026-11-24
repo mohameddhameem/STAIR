@@ -462,3 +462,17 @@ rests on §13–§15 and the §18 pilot at T = 0.7.
   **Reading:** the union of 10 sampled retrievals is a real gain on validation (p < 0.01); the 5-sample union is borderline at n = 400; vote is
   significantly harmful (it discards evidence); u10 remains significantly below SS. Gate 2 cleared for u10. Remaining gate: one held-out test
   read of the union action (u10 primary, u5 secondary) — registered next step; nothing on test has been read.
+- **24 Nov 2026 15:34 — §18 HELD-OUT TEST RUN, retrieval phase STARTED on the LAB GPU (tmux `retrk`; log `runs/hotpotqa/retrk_test1481.log`;
+  out `retrk_test1481`).** Jonathan 15:11–15:13: the union result contradicts AgentTTS's selected strategy (Strong retrieval ×1 → Weak answerer ×40 +
+  fuser, chosen on their 50 training instances), so the claim is validated like for like: (a) the union action on all 1,481 held-out test questions,
+  (b) AgentTTS's design on our pipeline and the same questions (§20, to be registered when the fuser model/prompt are confirmed from the
+  reference code — never assumed). Script v1.2 (sha 14f9018c1850…, commit 284003a): `--runner lab` imports the lab runner (run_labels4.py,
+  same API); the only change is the import switch; sampling, prompts, combination and storage are untouched. Env guards: SLR_RETR_WEAK =
+  Qwen/Qwen2.5-7B-Instruct, SLR_QA_WEAK = Llama-3.2-3B-Instruct, SLR_QA_STRONG = Llama-3.1-70B-Instruct (asserted at start; only the retriever
+  loads in this phase). Settings identical to the pilot: k_ret 10 (levels 5 / 10), T 0.7 / top-p 0.9, seed 20261118, fp16, `--retr-out 320`,
+  SLR_POOL_K 110, no shuffle; `--split test --start 0 --end 1481` (one chunk file `retrk_test_0-1481.jsonl`; resume-safe). Smoke (10 q.,
+  `retrk_smoke_lab`): 10 rows, 15.9–16.7 s/question → full run ≈ 6.8 h, expected done ≈ 22:30. The qa_strong phase (70B) runs on the cluster
+  afterwards (the pilot sbatch with SPLIT=test; qa_weak not run — WW with k on retrieval is not the question). **Predictions (test, 1,481):**
+  u10 − WS(k = 1) in [+1.5, +6.25] (the validation CI), point estimate ≈ +3; u5 ≈ +2; vote variants negative; u10 remains below SS (76.77);
+  measured cost ×1.1–1.3 of WS. Decision rule: u10 beats WS(k = 1) on test with McNemar p < 0.05 → ③ stands as "retrieval-stage K > 1 pays";
+  otherwise ③ is reduced to the answer-stage negative and the validation result is reported as not replicated.
