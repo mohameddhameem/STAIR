@@ -444,3 +444,13 @@ rests on §13–§15 and the §18 pilot at T = 0.7.
   answerer uses; vote discards it. The §18 decision rule fires (WS(k = 5) ≥ k = 1 + 0.45 on validation). Before any claim: (1) measured cost
   of the union context vs WS/SS, (2) paired significance vs WS(k = 1) on the 400 (10 questions = +2.5 pts), (3) one held-out test read of the
   union action — the next registered step. Nothing on test has been read.
+- **24 Nov 2026 14:10 — §18 MEASURED COST (scorer v1.3, sha 7597fbebbb75…; v1.2 implemented the documented `--meta-retr1/--meta-qa1`, v1.3
+  added `--meta-retr1s` for SS and charges the retrieval PROMPT once in full for a k_ret < batch context — v1.1/v1.2 pro-rated the prompt, which
+  made u5 look cheaper than one WS call (×0.71), an artefact). Measured units = AgentTTS-normalised FLOPs from the Config B meta sidecars
+  (`stair_common.cost.units`; retr 7 B / 72 B, QA 3 B / 70 B; the 72 B strong-retriever count is Jonathan's to confirm). Same 400 validation
+  questions: **WS(k = 1) 214.0; u5 237.7 (×1.11); u10 259.5 (×1.21); v5 219.3; v10 231.5; SS 1,825.8 (×8.53 WS)**. Reading: in measured compute
+  the union action is cheap — u10 buys +3.75 pts for 21 % more than one WS call, at 14 % of SS — because a k-sample retrieval batch processes
+  the 12k-token pool prompt once (Eq. 8) and only the generated picks and the longer union context are extra. The per-call price axis (u10 = 888
+  vs SS 1,009, 88 %) counts each sample as a full call and is the conservative bound; both axes are reported. SS measures ×8.5 of WS (vs ×5.2
+  per-call): the 72 B retriever reading the pool dominates. Accuracies unchanged from the 14:04 read. Still open before any claim: paired
+  significance vs WS(k = 1) on the 400; one held-out test read.
