@@ -5,6 +5,10 @@ the registered k_ret = 1 cells. CPU, seconds. DRAFT v1.0 18 Nov 2026 for Jonatha
 v1.2 24 Nov 2026: --meta-retr1 / --meta-qa1 implemented (they were documented but never parsed in v1.1): the measured units of the registered
 WS(k_ret = 1) call on the same questions = units(7B, meta_retr_weak[i]) + units(70B, meta_qa_strong["i|weak"]), printed in the reference
 line and as a Δ on every S row, so the union context's longer strong call is compared like for like.
+v1.3 24 Nov 2026: (a) --meta-retr1s (Config B meta_retr_strong.jsonl) adds the measured SS(k = 1) = units(72B, meta_retr_strong[i]) +
+units(70B, meta_qa_strong["i|strong"]) -- the budget reference; (b) the retrieval share of a k_ret < batch context now charges the PROMPT
+once in full and only the generated tokens pro-rata (v1.1/v1.2 charged k_ret/batch of the prompt too, which understated u5/v5 -- if only
+k_ret samples were drawn the whole prompt would still be processed once). Accuracies unchanged.
 
 Rulers: lenient (stair_common.score.lenient over the gold alias list) = the headline ruler of every HotpotQA board; vote@k = majority over the
 first k samples (normalize_answer; tie -> earliest), as hotpotqa_samplek_score.py.
@@ -28,7 +32,7 @@ from stair_common.score import lenient, normalize_answer  # noqa: E402
 from stair_common.cost import units                        # noqa: E402
 
 W_RET, S_RET, W_ANS, S_ANS = 77, 814, 3, 115
-PARAMS = {"retr_weak": 7.0, "qa_weak": 3.0, "qa_strong": 70.0}
+PARAMS = {"retr_weak": 7.0, "retr_strong": 72.0, "qa_weak": 3.0, "qa_strong": 70.0}
 KANS = [1, 5, 10, 20, 40]
 
 
@@ -63,11 +67,12 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--meta-retr1", default=None, help="Config B meta_retr_weak.jsonl (flat lines, k = idx)")
     ap.add_argument("--meta-qa1", default=None, help="Config B meta_qa_strong.jsonl (flat lines, k = idx|weak / idx|strong)")
+    ap.add_argument("--meta-retr1s", default=None, help="Config B meta_retr_strong.jsonl (flat lines, k = idx) -> measured SS(k = 1) reference")
     a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
     data = json.load(open(a.data, encoding="utf-8"))
     grid = {g["idx"]: g for g in map(json.loads, (l for l in open(a.grid) if l.strip()))}
-    m_r1, m_q1 = load_meta(a.meta_retr1), load_meta(a.meta_qa1)   # v1.2: k_ret = 1 reference sidecars (empty dicts if not given)
-    rows, summ = [], {"version": "hotpotqa_retrk_score v1.2 2026-11-24 (k_ret=1 measured reference)", "by": {}, "reference": {}}
+    m_r1, m_q1, m_r1s = load_meta(a.meta_retr1), load_meta(a.meta_qa1), load_meta(a.meta_retr1s)   # v1.2/v1.3: k_ret = 1 reference sidecars
+    rows, summ = [], {"version": "hotpotqa_retrk_score v1.3 2026-11-24 (WS/SS measured reference; prompt-once retrieval share)", "by": {}, "reference": {}}
     for split in ("val", "test"):
         import glob
         f_retrs = sorted(glob.glob(os.path.join(a.cells, f"retrk_{split}*.jsonl")))      # v1.1: chunk files of the split
@@ -85,10 +90,11 @@ def main():
         for l in (line for f in f_retrs for line in open(f)):
             if not l.strip(): continue
             r = json.loads(l); v = json.loads(r["v"]); i = v["i"]; qids.append(i); g = golds(data[i])
-            u_retr = meas(m_retr.get(str(i)), PARAMS["retr_weak"])          # 10 sampled retrievals, prompt once
+            mr = m_retr.get(str(i)); u_retr = meas(mr, PARAMS["retr_weak"])    # 10 sampled retrievals, prompt once (Eq. 8)
             for ctx in ("u5", "v5", "u10", "v10"):
                 k_ret, rule = int(ctx[1:]), ("union" if ctx[0] == "u" else "vote")
-                retr_units = (u_retr * k_ret / len(v["sels"])) if u_retr is not None else None   # share of the sampled batch for the first k
+                retr_units = (units(PARAMS["retr_weak"], mr["n_in"], mr.get("n_out_total", mr.get("n_out", 0)) * k_ret / len(v["sels"]))
+                              if mr else None)   # v1.3: prompt once in full, generated tokens pro-rata for the first k_ret samples
                 key = f"{i}|{ctx}"
                 if key in qs:
                     us = meas(m_qs.get(key), PARAMS["qa_strong"])
@@ -107,9 +113,14 @@ def main():
         ws1 = [meas(m_r1.get(str(i)), PARAMS["retr_weak"]) + meas(m_q1.get(f"{i}|weak"), PARAMS["qa_strong"]) for i in qids
                if m_r1.get(str(i)) and m_q1.get(f"{i}|weak")]                                   # v1.2: measured WS(k_ret = 1), same questions
         ws1_mean = (sum(ws1) / len(ws1)) if ws1 else None
-        summ["reference"][split] = {"n": len(qids), **ref, "WS_meas_units": (round(ws1_mean, 1) if ws1_mean else None), "WS_meas_n": len(ws1)}
+        ss1 = [meas(m_r1s.get(str(i)), PARAMS["retr_strong"]) + meas(m_q1.get(f"{i}|strong"), PARAMS["qa_strong"]) for i in qids
+               if m_r1s.get(str(i)) and m_q1.get(f"{i}|strong")]                                 # v1.3: measured SS(k_ret = 1), same questions
+        ss1_mean = (sum(ss1) / len(ss1)) if ss1 else None
+        summ["reference"][split] = {"n": len(qids), **ref, "WS_meas_units": (round(ws1_mean, 1) if ws1_mean else None), "WS_meas_n": len(ws1),
+                                    "SS_meas_units": (round(ss1_mean, 1) if ss1_mean else None), "SS_meas_n": len(ss1)}
         print(f"\n{split} n={len(qids)}  k_ret=1 reference: WW {ref['WW']} @ 80   WS {ref['WS']} @ 195   SW {ref['SW']} @ 894   SS {ref['SS']} @ 1009"
-              + (f"   | WS measured {ws1_mean:.1f} units (n={len(ws1)})" if ws1_mean else "   | WS measured: n/a (give --meta-retr1/--meta-qa1)"))
+              + (f"   | WS measured {ws1_mean:.1f} units (n={len(ws1)})" if ws1_mean else "   | WS measured: n/a (give --meta-retr1/--meta-qa1)")
+              + (f"   SS measured {ss1_mean:.1f} units (×{ss1_mean / ws1_mean:.2f} WS)" if (ss1_mean and ws1_mean) else ""))
         print(f"  {'ctx':4s} {'rule':5s} {'ans':3s} {'k_ans':>5s} {'acc':>6s} {'price':>6s} {'meas':>7s}  note")
         for ctx in ("u5", "v5", "u10", "v10"):
             for ans, ks in (("S", [1]), ("W", KANS)):
