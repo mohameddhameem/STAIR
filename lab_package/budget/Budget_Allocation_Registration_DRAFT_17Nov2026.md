@@ -454,3 +454,11 @@ rests on §13–§15 and the §18 pilot at T = 0.7.
   vs SS 1,009, 88 %) counts each sample as a full call and is the conservative bound; both axes are reported. SS measures ×8.5 of WS (vs ×5.2
   per-call): the 72 B retriever reading the pool dominates. Accuracies unchanged from the 14:04 read. Still open before any claim: paired
   significance vs WS(k = 1) on the 400; one held-out test read.
+- **24 Nov 2026 14:12 — §18 PAIRED SIGNIFICANCE on the 400 (`analysis/retrk_paired_test.py`: exact two-sided McNemar on discordant pairs;
+  10,000-resample paired bootstrap of the mean difference, seed 20261124; inputs `retrk_outcomes.jsonl` + `router_data_standard.jsonl`).**
+  vs WS(k = 1) = 70.0: **u10 +3.75 (wins 20 / losses 5, p = 0.004, CI [+1.5, +6.25])**; u5 +2.50 (16 / 6, p = 0.053, CI [+0.25, +4.75]);
+  v5 −3.50 (4 / 18, p = 0.004); v10 −2.50 (4 / 14, p = 0.031). u10 vs u5 +1.25 (8 / 3, p = 0.23, n.s.). u10 vs SS −5.00 (9 / 29, p = 0.002).
+  Mechanism: of the 43 questions SS answers and WS(k = 1) misses, u10 recovers 18 (u5: 13) while breaking 5 of WS's 280 correct answers.
+  **Reading:** the union of 10 sampled retrievals is a real gain on validation (p < 0.01); the 5-sample union is borderline at n = 400; vote is
+  significantly harmful (it discards evidence); u10 remains significantly below SS. Gate 2 cleared for u10. Remaining gate: one held-out test
+  read of the union action (u10 primary, u5 secondary) — registered next step; nothing on test has been read.
