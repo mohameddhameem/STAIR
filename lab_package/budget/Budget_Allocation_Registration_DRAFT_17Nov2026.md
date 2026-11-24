@@ -397,3 +397,16 @@ only purchase", with the retrieval stage now measured rather than assumed. Score
   fire. Equal-price pairs unchanged in substance: WW×40 at 197 = 50.71 vs WS at 195 = 64.01 (−13.3); SW×20 at 951 = 62.19 vs SS at 1,009 = 76.77
   (−14.6). Reading: lower temperature makes the samples agree with the greedy answer more often (the k = 1 sample is already within 1 pt of greedy),
   so voting has even less to remove; it adds no knowledge. T = 1.0 and 1.3 follow (expected ≈ 18:20); one read each, same rule.
+- **24 Nov 2026 13:39 — §15 READ, T = 1.0 and T = 1.3 (sweep `SWEEP DONE` 20 Nov 18:27; scorer v1.1; outs `samplek_k40_t1.0_scored`, `samplek_k40_t1.3_scored`;
+  all six cell files complete: val 2,220 / test 2,962 rows each). §15 CLOSED — the selection rule does not fire; the registered T = 0.7 cells stand.**
+  **T = 1.0, vote@k val (test):** WW×1 47.48 (48.41) · ×5 49.37 (49.83) · ×10 50.27 (50.17) · ×20 50.90 (50.17) · ×40 **51.71** (50.84);
+  SW×1 57.03 (60.43) · ×5 59.28 (60.90) · ×10 60.81 (60.97) · ×20 61.62 (62.26) · ×40 **62.07** (62.59).
+  **T = 1.3, vote@k val (test):** WW×1 44.14 (44.63) · ×5 48.20 (47.81) · ×10 49.19 (49.49) · ×20 50.90 (50.91) · ×40 **50.54** (50.71);
+  SW×1 52.34 (56.18) · ×5 58.74 (58.34) · ×10 60.09 (60.09) · ×20 61.53 (62.39) · ×40 **61.44** (62.73).
+  **Validation vote@40 vs T = 0.7 (51.71 / 63.15):** T = 0.3 +0.09 / −0.36; T = 1.0 +0.00 / −1.08; T = 1.3 −1.17 / −1.71 — all inside the predicted ±2 pts;
+  no temperature beats 0.7 by > 2 pts, so no new test read is used for allocation. **Reading (statement of record):** temperature moves the single-sample
+  accuracy a lot (WW×1 val 51.17 → 47.48 → 44.14 for T = 0.3 → 1.0 → 1.3) and the vote at k = 40 recovers exactly that loss and no more: every
+  temperature converges to the same ceiling, the weak model's own greedy answer (WW 52.25 / SW 63.15 on val). Voting repairs what temperature
+  breaks; it does not add knowledge. Equal-price pairs unchanged in substance at every T (test): WW×40 at 197 = 50.4–50.8 vs WS at 195 = 64.01;
+  SW×20 at 951 = 62.0–62.4 vs SS at 1,009 = 76.77. Answer-stage K > 1 on HotpotQA is closed negative at all four temperatures; the only open
+  K > 1 question is retrieval-stage k (§18 pilot, cluster job 371659).
