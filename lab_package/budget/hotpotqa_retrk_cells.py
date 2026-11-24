@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-hotpotqa_retrk_cells.py -- k WEAK RETRIEVALS (HotpotQA): the outcomes the k-router needs at the RETRIEVAL stage. DRAFT v1.0 18 Nov 2026; v1.1 19 Nov (--retr-out cap for the sampled retrievals; retr phase run in --start/--end chunks)
+hotpotqa_retrk_cells.py -- k WEAK RETRIEVALS (HotpotQA): the outcomes the k-router needs at the RETRIEVAL stage. DRAFT v1.0 18 Nov 2026; v1.1 19 Nov (--retr-out cap for the sampled retrievals; retr phase run in --start/--end chunks); v1.2 24 Nov (--runner lab for the retr phase on the lab GPU)
 for Jonathan's line-by-line review (§18 of the budget registration). Cluster (two H200s, Config B runner ~/slr/run_labels_agenttts.py imported
 unchanged -- same pools, same retrieval prompt, same QA prompt, same models). Delta on hotpotqa_samplek_cells.py (reviewed 17 Nov): new parts
 are marked # RETRK.
@@ -26,10 +26,20 @@ USAGE  SLR_POOL_K=110 SLR_SHUFFLE=off python3 hotpotqa_retrk_cells.py --split va
 import argparse, datetime, hashlib, json, math, os, sys, time
 
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
-sys.path.insert(0, os.path.expanduser("~/slr"))
-import torch                                                      # noqa: E402
-import run_labels_agenttts as L                                   # noqa: E402
-DEF_DATA, DEF_IDS = os.path.expanduser("~/slr/data/tts_test.json"), os.path.expanduser("~/slr/STAIR/common/stair_common/splits/hotpotqa")
+# v1.2 (24 Nov): --runner lab imports the lab's copy of the same runner (run_labels4.py, identical API) with the lab paths as defaults, so the
+# retrieval phase (7B weak retriever, fp16) can run on the lab GPU; the qa_strong phase (70B) stays on the cluster. The lab runner's model
+# defaults are Qwen2.5-1.5B / 7B, so SLR_RETR_WEAK, SLR_QA_WEAK and SLR_QA_STRONG MUST be exported to the Config B ids -- the guards below check.
+_RUNNER = "lab" if "--runner" in sys.argv and sys.argv[sys.argv.index("--runner") + 1] == "lab" else "cluster"
+if _RUNNER == "lab":
+    sys.path.insert(0, "/mnt/hdd/jonathan/slr/stage-level-routing/lab_package")
+    import torch                                                  # noqa: E402
+    import run_labels4 as L                                       # noqa: E402
+    DEF_DATA, DEF_IDS = "/mnt/hdd/jonathan/data/tts_test.json", "/mnt/hdd/jonathan/STAIR/common/stair_common/splits/hotpotqa"
+else:
+    sys.path.insert(0, os.path.expanduser("~/slr"))
+    import torch                                                  # noqa: E402
+    import run_labels_agenttts as L                               # noqa: E402
+    DEF_DATA, DEF_IDS = os.path.expanduser("~/slr/data/tts_test.json"), os.path.expanduser("~/slr/STAIR/common/stair_common/splits/hotpotqa")
 
 SYS_QA = "You are a helpful assistant."                           # the runner's QA system message (as the answer-stage script)
 ID_KEYS = ("_id", "id", "qid", "question_id")
@@ -86,6 +96,7 @@ def main():
     ap.add_argument("--retr-out", type=int, default=None, help="v1.1: max new tokens for the SAMPLED retrievals (default = runner RETR_OUT 768; the pilot uses 320 -- a cut-off sample still parses the [n] it has emitted)")
     ap.add_argument("--temp", type=float, default=0.7); ap.add_argument("--top-p", type=float, default=0.9)
     ap.add_argument("--seed", type=int, default=20261118); ap.add_argument("--dtype", default="fp16")
+    ap.add_argument("--runner", default="cluster", choices=["cluster", "lab"], help="v1.2: which runner module to import (decided at import time from argv)")
     ap.add_argument("--start", type=int, default=0); ap.add_argument("--end", type=int, default=None)
     a = ap.parse_args()
     assert os.environ.get("SLR_POOL_K") == "110" and os.environ.get("SLR_SHUFFLE") == "off", "run with SLR_POOL_K=110 SLR_SHUFFLE=off"
@@ -108,7 +119,7 @@ def main():
     manifest.update({"version": "hotpotqa_retrk_cells v1.1 2026-11-19 (--retr-out cap; chunked retr phase)", "split": a.split, "n": len(positions), "range": [a.start, a.start + len(positions)],
                      "k_ret": a.kret, "k_ret_levels": list(KRETS), "rules": ["union", "vote>=ceil(k/2)"], "k_ans": a.kans, "temp": a.temp, "top_p": a.top_p,
                      "seed": a.seed, "dtype": a.dtype, "retr_out": (a.retr_out or L.RETR_OUT), "retr_out_runner": L.RETR_OUT, "qa_out": L.QA_OUT, "maxlen": L.MAXLEN,
-                     "models": {"retr_weak": L.RETR_WEAK, "qa_weak": L.QA_WEAK, "qa_strong": L.QA_STRONG}, "runner": L.__file__,
+                     "models": {"retr_weak": L.RETR_WEAK, "qa_weak": L.QA_WEAK, "qa_strong": L.QA_STRONG}, "runner": L.__file__, "runner_kind": _RUNNER,
                      "sha256": {"script": sha(os.path.abspath(__file__)), "runner": sha(L.__file__), "data": sha(a.data), "ids": sha(ids_file)}})
     manifest.setdefault("phases", {})
     print(f"{a.split}: {len(positions)} questions, phase {a.phase}, k_ret {a.kret} (levels {KRETS}), k_ans {a.kans}, T {a.temp} top_p {a.top_p}", flush=True)
