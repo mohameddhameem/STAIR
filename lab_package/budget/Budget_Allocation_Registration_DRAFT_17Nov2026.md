@@ -433,3 +433,14 @@ rests on §13–§15 and the §18 pilot at T = 0.7.
 - **24 Nov 2026 14:00 — SUBMITTED** (cluster, researchshort, 1 × H200 each): T = 0.3 chunks 0–200 / 200–400 = jobs **379571 / 379572**;
   T = 1.0 = **379573 / 379574**; T = 1.3 = **379575 / 379576**. All PD (Priority), no start estimate yet. The `qa_strong` job (2 × H200) per
   temperature follows after both of its chunks finish.
+- **24 Nov 2026 14:04 — §18 PILOT READ (POSITIVE for union; negative for vote).** Cells: cluster jobs 370037 / 370038 (retr, 71 min each) and
+  371659 (qa, 51 min), folder `retrk_pilot_val400` (tgz sha d1965e5f…, counts 200 / 200 / 1,600 × 4 / 200 × 2); scorer v1.1 (ce59da7077de…),
+  out `retrk_pilot_val400_scored`. Validation positions 0–399; k_ret = 1 reference on the same questions: WW 58.5 @ 80, WS 70.0 @ 195,
+  SW 66.5 @ 894, SS 78.75 @ 1,009. **WS with k on the retriever, one greedy strong answer:** u5 (union of 5 sampled retrievals) **72.50**
+  (+2.50) @ 503 per-call; u10 **73.75** (+3.75) @ 888; v5 (vote ≥ ⌈k/2⌉) 66.50 (−3.50); v10 67.50 (−2.50). **WW(k_ret, k_ans) on the union
+  context:** u5 55.75 / 57.75 / 57.75 / 57.25 / 57.75 (k_ans 1 / 5 / 10 / 20 / 40) vs greedy WW 58.5 at k_ret = 1; u10 56.00 … 58.25 — the weak
+  answerer does not profit from the wider context. Measured units (AgentTTS-normalised FLOPs) u5-S 152.1, u10-S 259.5 (k_ret = 1 reference
+  measured units not yet reported — re-score with `--meta-retr1/--meta-qa1`). **Reading (provisional):** union adds evidence the strong
+  answerer uses; vote discards it. The §18 decision rule fires (WS(k = 5) ≥ k = 1 + 0.45 on validation). Before any claim: (1) measured cost
+  of the union context vs WS/SS, (2) paired significance vs WS(k = 1) on the 400 (10 questions = +2.5 pts), (3) one held-out test read of the
+  union action — the next registered step. Nothing on test has been read.
