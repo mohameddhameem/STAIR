@@ -476,3 +476,26 @@ rests on §13–§15 and the §18 pilot at T = 0.7.
   u10 − WS(k = 1) in [+1.5, +6.25] (the validation CI), point estimate ≈ +3; u5 ≈ +2; vote variants negative; u10 remains below SS (76.77);
   measured cost ×1.1–1.3 of WS. Decision rule: u10 beats WS(k = 1) on test with McNemar p < 0.05 → ③ stands as "retrieval-stage K > 1 pays";
   otherwise ③ is reduced to the answer-stage negative and the validation result is reported as not replicated.
+
+## 20. AGENTTTS'S SELECTED HOTPOTQA STRATEGY ON OUR PIPELINE — registered 24 Nov 2026, 15:45 SGT, BEFORE any result is read
+(Jonathan 15:06: "with n = 50, AgentTTS selected the best combination (Strong for Ret and K = 40 Weak for Answer). This experiment is showing
+contradictory to AgentTTS findings. So, we have to validate this claim.")
+**Their design, read from their own code and record on the cluster (`~/slr/agenttts/code_others/archon_hotpotqa.py` 440–480, 655–675;
+`archon/completions/components/Fuser.py`; `.../components/prompts.py` 24–65), never assumed:** retrieval Qwen2.5-72B-Instruct-AWQ ×1 (T 0.9) →
+generation Llama-3.2-3B-Instruct ×40 (T 0.7, 512 tokens) → **fuser = the same 3B** (T 0.3, 512 tokens, 1 sample); "best config … 0.742". Fuser
+messages: system "You are a helpful assistant who fuses multiple answers"; user = `make_fuser_prompt` (no critiques) whose "latest user query" is
+`conversation[-1]["content"]` = "Query: " + question + "References: " + "\n[i] passage" over the WHOLE candidate pool (565–574), then "Once again,
+the query is: …", "Responses from models:" and the numbered 40 candidates. top_p never set in their utils (vLLM default 1.0). Their metric: lenient
+contains-gold (author-confirmed). Their strategy was selected on 50 training instances (SE ≈ 7 pts at n = 50).
+**Our reproduction of it:** the generation layer = our stored SW×40 samples (Strong retrieval ×1 → 3B ×40 at T 0.7; `samplek_k40`, cluster) — one
+recorded difference: our samples used top-p 0.9, theirs 1.0. New: `hotpotqa_fuser_cells.py` v1.0 (the fusion call only; prompt byte-faithful
+including their f-string line-continuation whitespace; 3B, T 0.3 / top-p 1.0 / 512 tokens, seed 20261124 + i), `hotpotqa_fuser.sbatch` (any GPU),
+`hotpotqa_fuser_score.py` v1.0 (lenient; same questions; vote@40 on the same samples; WW/WS/SW/SS k = 1; exact McNemar + bootstrap; mean fused
+length and measured units reported). Per-call price SW×40 + fuser = 891 + 120 + 3 = 1,014 (> SS 1,009).
+**Quantity read:** accuracy of the fused answer on the 1,481 held-out test questions (validation 1,110 as a second read if time allows).
+**Predictions:** fused accuracy between the vote@40 (62.1) and WS (64.0), most likely 60–66; below SS (76.77) by > 10 pts; fuser vs vote within
+±3 pts (the fuser reads the same 40 candidates; it can only re-select or paraphrase them). **Decision rule:** if their design on our pipeline beats
+our union action (u10 on test) or always-Strong, learning ③ is withdrawn and the slide says so; if it lands as predicted, ③ stands and the paper
+states the contradiction with its explanation (selection on n = 50; a weak Strong baseline in their pipeline; retrieval F1 vs final-answer
+yardstick). **Three checks before submission:** hashes (script + sbatch after pull), `bash -n`, 10-question smoke (`ARGS="--end 10"`, separate OUT);
+the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3 top_p 1.0`.
