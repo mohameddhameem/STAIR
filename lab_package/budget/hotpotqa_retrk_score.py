@@ -2,6 +2,9 @@
 """
 hotpotqa_retrk_score.py -- score the §18 cells (hotpotqa_retrk_cells.py): WS(k_ret) with union / vote, and WW(k_ret, k_ans) vote@k_ans, against
 the registered k_ret = 1 cells. CPU, seconds. DRAFT v1.0 18 Nov 2026 for Jonathan's line-by-line review.
+v1.2 24 Nov 2026: --meta-retr1 / --meta-qa1 implemented (they were documented but never parsed in v1.1): the measured units of the registered
+WS(k_ret = 1) call on the same questions = units(7B, meta_retr_weak[i]) + units(70B, meta_qa_strong["i|weak"]), printed in the reference
+line and as a Δ on every S row, so the union context's longer strong call is compared like for like.
 
 Rulers: lenient (stair_common.score.lenient over the gold alias list) = the headline ruler of every HotpotQA board; vote@k = majority over the
 first k samples (normalize_answer; tie -> earliest), as hotpotqa_samplek_score.py.
@@ -58,10 +61,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cells", required=True); ap.add_argument("--data", required=True); ap.add_argument("--grid", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--meta-retr1", default=None, help="Config B meta_retr_weak.jsonl (flat lines, k = idx)")
+    ap.add_argument("--meta-qa1", default=None, help="Config B meta_qa_strong.jsonl (flat lines, k = idx|weak / idx|strong)")
     a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
     data = json.load(open(a.data, encoding="utf-8"))
     grid = {g["idx"]: g for g in map(json.loads, (l for l in open(a.grid) if l.strip()))}
-    rows, summ = [], {"version": "hotpotqa_retrk_score v1.1 2026-11-19 (chunk files)", "by": {}, "reference": {}}
+    m_r1, m_q1 = load_meta(a.meta_retr1), load_meta(a.meta_qa1)   # v1.2: k_ret = 1 reference sidecars (empty dicts if not given)
+    rows, summ = [], {"version": "hotpotqa_retrk_score v1.2 2026-11-24 (k_ret=1 measured reference)", "by": {}, "reference": {}}
     for split in ("val", "test"):
         import glob
         f_retrs = sorted(glob.glob(os.path.join(a.cells, f"retrk_{split}*.jsonl")))      # v1.1: chunk files of the split
@@ -98,8 +104,12 @@ def main():
                                      "meas_units": (round(retr_units + per * k, 1) if (retr_units is not None and per is not None) else None)})
         if not qids: continue
         ref = {c: round(100 * sum(grid[i]["em_standard"][j] for i in qids) / len(qids), 2) for j, c in enumerate(("WW", "WS", "SW", "SS"))}
-        summ["reference"][split] = {"n": len(qids), **ref}
-        print(f"\n{split} n={len(qids)}  k_ret=1 reference: WW {ref['WW']} @ 80   WS {ref['WS']} @ 195   SW {ref['SW']} @ 894   SS {ref['SS']} @ 1009")
+        ws1 = [meas(m_r1.get(str(i)), PARAMS["retr_weak"]) + meas(m_q1.get(f"{i}|weak"), PARAMS["qa_strong"]) for i in qids
+               if m_r1.get(str(i)) and m_q1.get(f"{i}|weak")]                                   # v1.2: measured WS(k_ret = 1), same questions
+        ws1_mean = (sum(ws1) / len(ws1)) if ws1 else None
+        summ["reference"][split] = {"n": len(qids), **ref, "WS_meas_units": (round(ws1_mean, 1) if ws1_mean else None), "WS_meas_n": len(ws1)}
+        print(f"\n{split} n={len(qids)}  k_ret=1 reference: WW {ref['WW']} @ 80   WS {ref['WS']} @ 195   SW {ref['SW']} @ 894   SS {ref['SS']} @ 1009"
+              + (f"   | WS measured {ws1_mean:.1f} units (n={len(ws1)})" if ws1_mean else "   | WS measured: n/a (give --meta-retr1/--meta-qa1)"))
         print(f"  {'ctx':4s} {'rule':5s} {'ans':3s} {'k_ans':>5s} {'acc':>6s} {'price':>6s} {'meas':>7s}  note")
         for ctx in ("u5", "v5", "u10", "v10"):
             for ans, ks in (("S", [1]), ("W", KANS)):
@@ -108,7 +118,7 @@ def main():
                     if not rs: continue
                     acc = 100 * sum(r["correct"] for r in rs) / len(rs); price = rs[0]["price_units"]
                     mv = [r["meas_units"] for r in rs if r["meas_units"] is not None]; mm = (sum(mv) / len(mv)) if mv else float("nan")
-                    note = (f"vs WS {ref['WS']} @ 195  (Δ {acc - ref['WS']:+.2f})" if ans == "S" else (f"vs WW×{k} at k_ret=1" if k > 1 else f"vs WW {ref['WW']} @ 80"))
+                    note = (f"vs WS {ref['WS']} @ 195  (Δ {acc - ref['WS']:+.2f}" + (f"; meas ×{mm / ws1_mean:.2f}" if (ws1_mean and mm == mm) else "") + ")" if ans == "S" else (f"vs WW×{k} at k_ret=1" if k > 1 else f"vs WW {ref['WW']} @ 80"))
                     if price > 929: note += "  > 929 strong-only budget/instance"
                     summ["by"][f"{split}|{ctx}|{ans}|{k}"] = {"acc": round(acc, 2), "price_units": price, "meas_units": round(mm, 1), "n": len(rs)}
                     print(f"  {ctx:4s} {('union' if ctx[0]=='u' else 'vote'):5s} {ans:3s} {k:5d} {acc:6.2f} {price:6d} {mm:7.1f}  {note}")
