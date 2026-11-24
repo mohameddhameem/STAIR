@@ -499,3 +499,7 @@ our union action (u10 on test) or always-Strong, learning ③ is withdrawn and t
 states the contradiction with its explanation (selection on n = 50; a weak Strong baseline in their pipeline; retrieval F1 vs final-answer
 yardstick). **Three checks before submission:** hashes (script + sbatch after pull), `bash -n`, 10-question smoke (`ARGS="--end 10"`, separate OUT);
 the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3 top_p 1.0`.
+- **24 Nov 2026 15:47 — §19 SWEEP CANCELLED (jobs 379571–379576, never started; estimates 25 Nov 02:44 / 08:44 / 14:44 on `honey`).** Reason: the
+  §18 test retrieval moved to the lab GPU (15:34) and the sweep would hold the only H200 node exactly when the §18 test qa_strong job and the §20
+  fuser read need it before the 27 Nov deadline. The sweep is deferred, not dropped: resubmit with the same command after the §18/§20 reads.
+  §20 smoke submitted: job 379772 (`ARGS="--end 10"`, any GPU, OUT `fuser_smoke`).
