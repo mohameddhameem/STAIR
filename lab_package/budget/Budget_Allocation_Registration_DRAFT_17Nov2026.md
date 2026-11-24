@@ -410,3 +410,26 @@ only purchase", with the retrieval stage now measured rather than assumed. Score
   breaks; it does not add knowledge. Equal-price pairs unchanged in substance at every T (test): WW×40 at 197 = 50.4–50.8 vs WS at 195 = 64.01;
   SW×20 at 951 = 62.0–62.4 vs SS at 1,009 = 76.77. Answer-stage K > 1 on HotpotQA is closed negative at all four temperatures; the only open
   K > 1 question is retrieval-stage k (§18 pilot, cluster job 371659).
+
+## 19. TEMPERATURE SWEEP FOR THE RETRIEVAL-STAGE k PILOT (WS path) — registered 24 Nov 2026, 14:00 SGT, BEFORE any result is read
+(Jonathan 13:58 "I think we should run temperature sweep for WS and K > 1"; 13:45 question "why we didn't test with WS" → the §15 sweep varied k on the
+weak ANSWERER, which WS does not have; k on WS can only enter at the weak RETRIEVER, which is the §18 pilot, run at T = 0.7 only.)
+**Design.** Same as the §18 pilot in every respect except the sampling temperature of the weak retriever: the first 400 validation questions
+(positions 0–399 of slr-val), k_ret 10 (levels 5 / 10), union and vote combination, seed 20261118, fp16, `--retr-out 320`, cells script
+`hotpotqa_retrk_cells.py` v1.1 (sha f48a6a9e56c6…, unchanged); temperatures {0.3, 1.0, 1.3} around the pilot's 0.7 (top-p 0.9 throughout).
+The strong answerer is greedy, so T changes only which passages are picked. qa_weak is NOT run in the sweep (WW with k on retrieval is not the
+question). New sbatch `hotpotqa_retrk_tsweep.sbatch` (sha 2b4258d09fae…, commit bc96c79): differs from the pilot's only in TEMP from the
+environment → `--temp $TEMP`, OUT `retrk_tsweep_val400_t<T>` (one folder per T, never the pilot's), and a `qa_strong`-only phase. Three checks
+done before submission: hashes (sbatch 2b4258d09fae, cells f48a6a9e56c6), `bash -n` OK, no pre-existing sweep folders; the registered pilot
+(same code path at T = 0.7, 400 questions, exit 0) stands as the smoke; the `--temp` plumbing is verified from the first running job's banner.
+**Quantity read.** WS(k_ret = 5 / 10, union / vote) on the 400 validation questions per temperature, scored by `hotpotqa_retrk_score.py` v1.1
+against WS(k = 1) = 65.05 (registered cell on the same positions as the scorer reports it).
+**Predictions.** A hotter retriever yields more distinct picks (a wider union, longer context) but lower per-sample pick quality: union WS moves by
+at most ±2 pts across temperatures; vote WS falls with T (as the answer-stage vote did in §15); no temperature beats the §18 decision threshold
+(WS(k = 5) ≥ 65.5 on validation) if T = 0.7 does not — temperature is a second-order knob on this mechanism. **Decision rule** unchanged from §18:
+any temperature whose WS(k = 5) on validation reaches 65.5 is read once on test; otherwise the sweep closes the retrieval-stage question at all T.
+**Timing.** ERP I is due 27 Nov; if the sweep has not finished by then it is reported as running / future work, and the paper's K > 1 statement
+rests on §13–§15 and the §18 pilot at T = 0.7.
+- **24 Nov 2026 14:00 — SUBMITTED** (cluster, researchshort, 1 × H200 each): T = 0.3 chunks 0–200 / 200–400 = jobs **379571 / 379572**;
+  T = 1.0 = **379573 / 379574**; T = 1.3 = **379575 / 379576**. All PD (Priority), no start estimate yet. The `qa_strong` job (2 × H200) per
+  temperature follows after both of its chunks finish.
