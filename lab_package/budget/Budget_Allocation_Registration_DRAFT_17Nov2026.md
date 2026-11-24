@@ -509,3 +509,10 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   job 379776 (`--gres=gpu:a5000:1`). Rule from now on for any-GPU jobs: request a named Ampere-or-newer type (a5000 / 3090 / a40 / l40s / a100 /
   h100 / h200), never V100 / P100 / RTX 8000.** Model id recorded: the cluster runner's QA_WEAK is `unsloth/Llama-3.2-3B-Instruct` (a re-upload of
   Meta's Llama-3.2-3B-Instruct weights) — the same runner and id that produced the stored SW×40 samples, so fuser = generator, as in their design.
+- **24 Nov 2026 16:05 — §20 FULL RUN STARTED on the LAB GPU (tmux `fuser`; out `runs/hotpotqa/fuser_k40_lab`; log `fuser_k40_lab.log`), sharing the
+  card with the §18 retrieval run.** Reason: every Ampere-or-newer cluster card was occupied (smoke 379776 estimated 23:46; left queued as backup,
+  to be cancelled). Lab smoke (`fuser_smoke_lab`, 10 q., 2.0 min): banner `ctx S, fuser over first 40 samples, T 0.3 top_p 1.0 max_new 512`,
+  `[fuser] meta-llama/Llama-3.2-3B-Instruct loaded`, 10 fused paragraphs (28–191 words; they tend to continue the last candidate rather than restate
+  — their design's behaviour, recorded). Inputs: the lab copy of `samplek_k40/samples_test.jsonl` (2,962 rows; sha printed in manifest). Model id on
+  the lab: `meta-llama/Llama-3.2-3B-Instruct` (the cluster id is the `unsloth/` re-upload of the same weights); script sha 03ccbede0068, seed
+  20261124 + i. Expected ≈ 12 s/question shared → ≈ 5 h, done ≈ 21:30. Read: `hotpotqa_fuser_score.py` v1.0 on the lab (CPU).
