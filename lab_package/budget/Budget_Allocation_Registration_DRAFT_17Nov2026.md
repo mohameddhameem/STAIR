@@ -522,3 +522,8 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   1:51, 10 rows); §18 test retrieval **jobs 381477–381484** (8 chunks of 200 on 1 × H200, `hotpotqa_retrk_test.sbatch` sha 780b01023208 —
   the pilot sbatch with `--split test`, OUT `retrk_test1481`, qa phase restricted to `qa_strong`). Whichever copy (lab or cluster) finishes
   first feeds the read; the other is cancelled, and the registration records which was used.
+- **25 Nov 2026 11:46 — §18 cluster retrieval chunks re-spread.** Slurm serialised the 8 H200 chunks on `honey` six hours apart (past the 27 Nov
+  deadline). Chunk 0–200 kept as 381477 (honey, est. 12:34); chunks 200–1481 cancelled (381478–381484) and resubmitted on 48–80 GB cards —
+  **381522 (a40, 200–400), 381523 (l40s, 400–600), 381524 (a100, 600–800), 381525 (h100_nvl, 800–1000), 381526 (a40, 1000–1200),
+  381527 (l40s, 1200–1400), 381528 (a100, 1400–1481)** — same script, settings and seed; the 7B retriever needed ≈ 24 GB on the lab. Each chunk
+  writes its own file, so mixed card types are fine. §20 fuser job 381472 running on `torpedo` (A5000): 8.9 s/question, ETA ≈ 15:10.
