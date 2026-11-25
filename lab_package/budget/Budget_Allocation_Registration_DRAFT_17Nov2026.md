@@ -527,3 +527,21 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   **381522 (a40, 200–400), 381523 (l40s, 400–600), 381524 (a100, 600–800), 381525 (h100_nvl, 800–1000), 381526 (a40, 1000–1200),
   381527 (l40s, 1200–1400), 381528 (a100, 1400–1481)** — same script, settings and seed; the 7B retriever needed ≈ 24 GB on the lab. Each chunk
   writes its own file, so mixed card types are fine. §20 fuser job 381472 running on `torpedo` (A5000): 8.9 s/question, ETA ≈ 15:10.
+- **25 Nov 2026 20:24 — §20 READ (cluster copy, job 381472, torpedo/A5000, 215 min, 1,481 fused answers; scored on the cluster login node with
+  `hotpotqa_fuser_score.py` v1.0 sha 12301ffa4d9c, grid `STAIR/jonathan/runs/config_b/router_data_standard.jsonl`, data `tts_test.json`).**
+  **AgentTTS design on our pipeline (SW × 40 + 3B fuser, T 0.3): 62.12** on held-out test — inside the registered 60–66 band. Same 40 samples,
+  majority vote@40: 62.12 (fuser vs vote Δ 0.00, 201 wins / 201 losses / 1,079 ties, p = 1.00, CI [−2.63, +2.63]). vs SW greedy k = 1 (61.78):
+  +0.34, p = 0.84. vs WS k = 1 (64.01 @ 195): −1.89, p = 0.20, CI [−4.66, +0.88]. vs always-Strong (76.77): −14.65, p < 10⁻⁴, CI [−17.15, −12.15].
+  Price per call 1,017 units (> SS 1,009); fuser call measured 140.5 units (3B over a ≈ 13k-token prompt); mean fused length 92.6 words
+  (contains-gold ruler, length-favourable — recorded). **Decision rule outcome: learning ③ stands** — their selected strategy, run on our
+  pipeline, neither beats always-Strong nor the single-call WS escalation; the fusion step adds nothing over voting, and voting adds nothing
+  significant over one greedy Weak answer. The gap to their published 0.742 is pipeline/model difference (selection on n = 50; their pipeline's
+  own baselines), kept as reference only. Caveats recorded: samples top-p 0.9 vs their 1.0; validation (1,110) read not run. The lab copy
+  (`fuser_k40_lab`) is superseded and will be stopped when the lab is reachable.
+- **25 Nov 2026 20:24 — §18 test retrieval: chunk status and resubmission.** Done: 0–200 (381477, h200, 77 min) and 800–1000 (381525, h100_nvl,
+  75 min). 381522 (a40) pre-empted; 381523/381524/381526/381527/381528 (l40s / a100-40G / a40) **failed with CUDA out-of-memory** — the 7B
+  retriever sampling 10× over the 110-passage pool at 16k context holds ≈ 38 GB and asks for 5–6 GB more; 40/44 GB cards cannot run it, 94/141 GB
+  cards can. Partial rows kept (400–600: 20, 1000–1200: 5, 1200–1400: 1; resume-safe). Resubmitted the six unfinished ranges unchanged:
+  **382328–382330 (h100_nvl: 200–400, 400–600, 600–800), 382331–382333 (h200: 1000–1200, 1200–1400, 1400–1481)**; all pending on priority at
+  20:24. Next: when all eight ranges are complete, `PHASE=qa_strong START=0 END=1481` on 2 × H200, then the v1.3 scorer read (rule: u10 vs WS
+  McNemar p < 0.05).
