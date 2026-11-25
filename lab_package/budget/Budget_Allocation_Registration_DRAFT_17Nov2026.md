@@ -516,3 +516,9 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   — their design's behaviour, recorded). Inputs: the lab copy of `samplek_k40/samples_test.jsonl` (2,962 rows; sha printed in manifest). Model id on
   the lab: `meta-llama/Llama-3.2-3B-Instruct` (the cluster id is the `unsloth/` re-upload of the same weights); script sha 03ccbede0068, seed
   20261124 + i. Expected ≈ 12 s/question shared → ≈ 5 h, done ≈ 21:30. Read: `hotpotqa_fuser_score.py` v1.0 on the lab (CPU).
+- **25 Nov 2026 11:21 — LAB UNREACHABLE since 24 Nov ≈ 19:30 (ssh/ping time out; traceroute dies after the campus hop 10.172.1.50); the two lab
+  runs (§18 test retrieval in tmux `retrk`, §20 fuser in tmux `fuser`) cannot be checked. Cluster copies submitted so neither read depends on the
+  lab:** §20 full fuser run job **381472** (`SPLIT=test`, A5000, OUT `runs/hotpotqa/fuser_k40`; the cluster smoke 379776 had completed clean,
+  1:51, 10 rows); §18 test retrieval **jobs 381477–381484** (8 chunks of 200 on 1 × H200, `hotpotqa_retrk_test.sbatch` sha 780b01023208 —
+  the pilot sbatch with `--split test`, OUT `retrk_test1481`, qa phase restricted to `qa_strong`). Whichever copy (lab or cluster) finishes
+  first feeds the read; the other is cancelled, and the registration records which was used.
