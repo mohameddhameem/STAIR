@@ -545,3 +545,17 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   **382328–382330 (h100_nvl: 200–400, 400–600, 600–800), 382331–382333 (h200: 1000–1200, 1200–1400, 1400–1481)**; all pending on priority at
   20:24. Next: when all eight ranges are complete, `PHASE=qa_strong START=0 END=1481` on 2 × H200, then the v1.3 scorer read (rule: u10 vs WS
   McNemar p < 0.05).
+- **25 Nov 2026 20:45 — ABLATIONS REGISTERED (post-ERP I; no run before the §18 test read).** Scope note recorded for the K > 1 study as run:
+  one stage repeated at a time, Weak model only, Strong always ×1; retrieval-k ∈ {5, 10} feeds the Strong answerer only (k = 10 is the largest
+  k inside the always-Strong budget per call: 10 × ≈ 77 + 118 = 888 = 88 %; k = 20 ≈ 178 %); not run: both stages repeated, W-union → Weak answer,
+  k_ret ∈ {20, 40}.
+  **A1 — W-union → Weak answer (does evidence-widening help a Weak reader?).** Cells: Weak retrieval × k, k ∈ {5, 10}, union of picked passages →
+  Weak (3B) answer × 1, on the 400 validation questions whose k sampled retrievals are stored (pilot run); one 3B call per question per k;
+  scored by `hotpotqa_retrk_score.py` v1.3 against WW k = 1 (50.3 test / pilot WW on the 400), paired McNemar + bootstrap. **Prediction:** WW
+  50.3 → 51–54 at k = 10; gain smaller than the Strong answerer's +3.75 (union k = 10 → Strong) and far below SW 61.8; mechanism reading: the
+  union pays only with a reader strong enough to use it (AgentTTS Insight 2 for the 3B). **Use:** one paragraph in the paper's ablation only if it
+  changes the wording of learning ③; never an ERP I result (WS 64.01 @ 19 % dominates any WW cell).
+  **A2 — union size and gold coverage vs k (CPU).** From the stored retrievals: mean union size and the share of questions whose gold passages
+  (`ctxs_gt`) are all inside the union, for k ∈ {1, 5, 10} (and 20 if the stored samples permit). **Prediction:** coverage rises steeply 1 → 5 and
+  flattens 5 → 10; union size at k = 10 is a substantial fraction of the 110-passage pool — the reason k > 10 is not pursued. Answer-stage
+  repetition on top of either cell is not registered: vote converges to greedy (closed, four temperatures).
