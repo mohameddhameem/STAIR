@@ -1,11 +1,39 @@
-# Report changes: System One sections (Dhameem, 19 Nov 2026)
+# Report changes: System One sections (Dhameem)
+
+## 26 Nov 2026: final pass on the team's Overleaf version
+
+The files here are now the team's Overleaf version (as of 26 Nov), with the changes below.
+
+- **Bibliography (the "TODO" author labels in the PDF):**
+  - Overleaf still had the old placeholder entries. Now merged: the Overleaf bib is the base (`iec60812` and every other
+    team entry kept).
+  - 12 entries replaced by the verified versions from 19 Nov: `r2reasoner2025`, `routingsurvey2026`, `nanojev2026`,
+    `strandsdecider2026`, `dekoninck2025unified`, `he2025cognify`, `yue2025masrouter`, `liao2025rsd`,
+    `pan2025specreason`, `shao2025dot`, `kadavath2022know`, `bajaj2016msmarco`.
+  - `chen2023frugalgpt` changed to `@article`, so its venue (TMLR) prints. No TODO is left in the bib.
+- **Review markup removed:** the teal `\upd` / `\updnote` / `updblock` notes and their definitions are gone; the text
+  is unchanged. `\ifshowupdates` stays, because Andy's purple notes use it.
+- **Confirmed:** the team's edits to our parts. Table 1's new cost basis (task-model compute as % of Strong alone,
+  decision compute reported separately) gives 79.4 (HotpotQA) and 72.6 (MedAgentBench = 59.0 × 1.23) for the
+  System One row. Both are correct.
+- **Small content fixes:**
+  - **Notes to Table 1:** the judges' own compute is now reported, as the caption promises (E4B three passes +20.2
+    units = 2.2 points, 81.6% with them; the point needs the three-seed ensemble; nano-jev's price rounds to zero).
+  - **MedAgentBench judge table and paragraph:** the ×1.23 conversion to Table 1's basis (59.0 → 72.6), and the GRPO
+    54.1 marked as "of always-escalate".
+  - **§4.2:** "trained on the same per-stage labels as SFT (label) *on HotpotQA*". The implementation appendix now
+    states the MedAgentBench label.
+  - **Compute appendix:** our TODO is replaced. The cluster keeps no per-job accounting history, so per-run times stand
+    in for a GPU-hour total.
+- **TODOs left for teammates:**
+  - Jonathan: early grid card (compute appendix);
+  - Jonathan: 72B-AWQ serving card;
+  - Andy and Ziming: GPU-hours.
+
+## 19 Nov 2026: System One sections filled
 
 Changes to `Final_Report.tex` and `final_refs.bib`. Teammates' sections are unchanged, except for two items flagged
-below.
-
-**Seeing them in the PDF:** every change is in **teal**, and a bracketed `[Update (Dhameem): …]` note says what changed
-or was removed. To get a clean copy, set `\showupdatestrue` to `\showupdatesfalse` near the top of the file. The
-macros then print plain text and the notes disappear.
+below. (On 19 Nov every change was marked in teal in the PDF; that markup was removed on 26 Nov.)
 
 ## Updated (corrections to existing text)
 
