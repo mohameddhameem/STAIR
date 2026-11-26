@@ -5,6 +5,8 @@ the registered k_ret = 1 cells. CPU, seconds. DRAFT v1.0 18 Nov 2026 for Jonatha
 v1.2 24 Nov 2026: --meta-retr1 / --meta-qa1 implemented (they were documented but never parsed in v1.1): the measured units of the registered
 WS(k_ret = 1) call on the same questions = units(7B, meta_retr_weak[i]) + units(70B, meta_qa_strong["i|weak"]), printed in the reference
 line and as a Δ on every S row, so the union context's longer strong call is compared like for like.
+v1.4 26 Nov 2026: samples_retrk_<split>.jsonl is optional -- a split with only the retrieval and Strong-answer phases (the held-out test) is
+scored without WW x k rows; validation output unchanged.
 v1.3 24 Nov 2026: (a) --meta-retr1s (Config B meta_retr_strong.jsonl) adds the measured SS(k = 1) = units(72B, meta_retr_strong[i]) +
 units(70B, meta_qa_strong["i|strong"]) -- the budget reference; (b) the retrieval share of a k_ret < batch context now charges the PROMPT
 once in full and only the generated tokens pro-rata (v1.1/v1.2 charged k_ret/batch of the prompt too, which understated u5/v5 -- if only
@@ -72,7 +74,7 @@ def main():
     data = json.load(open(a.data, encoding="utf-8"))
     grid = {g["idx"]: g for g in map(json.loads, (l for l in open(a.grid) if l.strip()))}
     m_r1, m_q1, m_r1s = load_meta(a.meta_retr1), load_meta(a.meta_qa1), load_meta(a.meta_retr1s)   # v1.2/v1.3: k_ret = 1 reference sidecars
-    rows, summ = [], {"version": "hotpotqa_retrk_score v1.3 2026-11-24 (WS/SS measured reference; prompt-once retrieval share)", "by": {}, "reference": {}}
+    rows, summ = [], {"version": "hotpotqa_retrk_score v1.4 2026-11-26 (samples phase optional; WS/SS measured reference; prompt-once retrieval share)", "by": {}, "reference": {}}
     for split in ("val", "test"):
         import glob
         f_retrs = sorted(glob.glob(os.path.join(a.cells, f"retrk_{split}*.jsonl")))      # v1.1: chunk files of the split
@@ -84,8 +86,10 @@ def main():
         qs = {}; qw = {}
         for l in open(os.path.join(a.cells, f"qa_strong_retrk_{split}.jsonl")):
             if l.strip(): r = json.loads(l); qs[r["k"]] = r["v"]
-        for l in open(os.path.join(a.cells, f"samples_retrk_{split}.jsonl")):
-            if l.strip(): r = json.loads(l); qw[r["k"]] = json.loads(r["v"])["samples"]
+        sp = os.path.join(a.cells, f"samples_retrk_{split}.jsonl")
+        if os.path.exists(sp):                                   # v1.4: the Weak-answer samples phase is optional (test ran retr + qa_strong only)
+            for l in open(sp):
+                if l.strip(): r = json.loads(l); qw[r["k"]] = json.loads(r["v"])["samples"]
         qids = []
         for l in (line for f in f_retrs for line in open(f)):
             if not l.strip(): continue
