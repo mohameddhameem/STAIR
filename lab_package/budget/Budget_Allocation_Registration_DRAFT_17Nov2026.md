@@ -559,3 +559,11 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   (`ctxs_gt`) are all inside the union, for k ∈ {1, 5, 10} (and 20 if the stored samples permit). **Prediction:** coverage rises steeply 1 → 5 and
   flattens 5 → 10; union size at k = 10 is a substantial fraction of the 110-passage pool — the reason k > 10 is not pursued. Answer-stage
   repetition on top of either cell is not registered: vote converges to greedy (closed, four temperatures).
+- **26 Nov 2026 15:25 — §18 test: retrieval complete, Strong-answer phase queued.** All eight retrieval ranges completed (382328–382330 on
+  h100_nvl, 382331–382333 on h200, 47–82 min each; 1,481 / 1,481 rows across the eight chunk files; manifest written 01:15). Strong-answer
+  phase submitted: **job 383079** (`PHASE=qa_strong START=0 END=1481`, 2 × H200, 6 h limit; expected start ≈ 19:48, finish ≈ 01:48 Fri 27 Nov).
+  A duplicate submission (383087) is cancelled. Read, when done: `hotpotqa_retrk_score.py` v1.3 with the `--meta-*` sidecars on test;
+  **decision rule unchanged: union k = 10 vs WS k = 1, exact McNemar p < 0.05 on the 1,481 held-out questions → learning ③'s retrieval half is
+  a test result; otherwise it stays "validation only".** Prediction (restated from the pilot): u10 − WS ≈ +3 to +4 points, p < 0.01; u5 ≈ +2 to +3;
+  v5 / v10 negative. ERP I documents (due 27 Nov) carry the validation numbers and "test read in progress"; the test row is added only if the
+  job lands before submission.
