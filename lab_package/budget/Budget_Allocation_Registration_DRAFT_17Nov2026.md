@@ -567,3 +567,23 @@ the first full-run log line must show `ctx S, fuser over first 40 samples, T 0.3
   a test result; otherwise it stays "validation only".** Prediction (restated from the pilot): u10 − WS ≈ +3 to +4 points, p < 0.01; u5 ≈ +2 to +3;
   v5 / v10 negative. ERP I documents (due 27 Nov) carry the validation numbers and "test read in progress"; the test row is added only if the
   job lands before submission.
+
+## 21. GPU PROVENANCE OF EVERY REPORTED NUMBER (from `sacct`, read 26 Nov 2026 20:25 SGT; for ERP I Appendix H)
+
+HotpotQA (cluster origami, Slurm):
+- `cfgB_qs` 319671 — 4 × A40, 13 Oct — Strong (Llama-3.1-70B) answering; the single run behind every WS / SS cell (test 64.01 / 76.77) and the k_ret = 1 grid. Never re-run on H200.
+- `cfgB_rw` 316329_0–7, `cfgB_qw` 319670 — 1 × A40 — Weak retrieval / Weak answering cells (WW, WS, SW). Not the lab card.
+- `cfgB_rs` 316330_0–4 — 2 × H200, ~7.5 h each — Strong retrieval cells (SW, SS).
+- `hp_samplek` 367972 / 368176 / 368177 — 1 × H200 — answer-stage vote@k validation pilot (closed negative, §19).
+- `hotpotqa_retrk` 368524 — 2 × H200 — first retrieval-k validation smoke (§18).
+- `retrk_pilot` 370037 / 370038 / 371659 — 1–2 × H200 — retrieval-stage k validation pilot, 400 q (+2.5 at k = 5, +3.75 at k = 10). Cluster, not lab.
+- `retrk_test` retrieval chunks — 4 × (1 × H200): 381477, 382331, 382332, 382333; 4 × (1 × H100 NVL): 381525, 382328, 382329, 382330 — after A40 / L40S / A100 attempts OOM'd (§18). Strong-answer phase `qa_strong` 383079 — 2 × H200 (running at write time).
+- `rep40_*` 352639 / 352672 / 353791 / 353792 / 355776 — 1 × H200 — SW × 40 Weak-answer samples (AgentTTS reproduction; fuser read §20 = 62.12). [job-name reading; Jonathan to confirm]
+- `hp_fuser` — A5000 — AgentTTS 3B fuser read (§20).
+- `twowiki_*` (346550–364544) and `gpab_*` (347293–359311) — H200 — 2WikiMultihop and GPAgentBench pilots; not reported in ERP I. [Jonathan to confirm no twowiki figure appears]
+- `slr_smoke` 314582 / 315101 — environment tests. Failed jobs 314582, 347293, 347398, 348361, 367962 were rerun; none is behind a number.
+
+MedAgentBench (lab box only, never the cluster):
+- Qwen2.5-7B and Qwen2.5-72B-AWQ served by vLLM on the lab RTX 6000 Ada; router training (SFT / GRPO) and episode replay on the same box.
+
+Correction to the appendix draft: "lab card" for the HotpotQA Weak cells → "cluster A40".
