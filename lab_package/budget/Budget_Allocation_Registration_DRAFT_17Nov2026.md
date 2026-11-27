@@ -587,3 +587,24 @@ MedAgentBench (lab box only, never the cluster):
 - Qwen2.5-7B and Qwen2.5-72B-AWQ served by vLLM on the lab RTX 6000 Ada; router training (SFT / GRPO) and episode replay on the same box.
 
 Correction to the appendix draft: "lab card" for the HotpotQA Weak cells → "cluster A40".
+
+## 22. HELD-OUT TEST READ — retrieval-stage k > 1 (job 383079, read 27 Nov 2026 11:13 SGT; one declared read, scorer v1.4 e68cbcad0f5c, paired test 1fc71cebf290)
+
+Decision rule (§18, registered before the read): u10 vs WS(k = 1), exact McNemar p < 0.05. Prediction: +3 to +4 pts, p < 0.01.
+
+Result on the 1,481 held-out test questions (k_ret = 1 reference from `router_data_standard.jsonl`: WW 50.30, WS 64.01, SW 61.78, SS 76.77):
+
+| context | rule | acc | Δ vs WS | wins / losses / ties | McNemar p | 95 % CI | price units | measured units |
+|---|---|---|---|---|---|---|---|---|
+| u5  | union, k = 5  | 68.13 | +4.12 | 80 / 19 / 1382 | < 0.0001 | +2.84 … +5.40 | 503 | 237.4 |
+| u10 | union, k = 10 | **69.07** | **+5.06** | 98 / 23 / 1360 | **< 0.0001** | +3.65 … +6.48 | 888 | 257.5 |
+| v5  | vote, k = 5   | 62.73 | −1.28 | 24 / 43 / 1414 | 0.027 | −2.36 … −0.20 | 503 | 220.3 |
+| v10 | vote, k = 10  | 63.20 | −0.81 | 27 / 39 / 1415 | 0.175 | −1.89 … +0.27 | 888 | 232.5 |
+
+Secondary: u10 vs u5 +0.95 (26 / 12 / 1443, p = 0.034, CI +0.14 … +1.76). u10 vs SS −7.70 (23 / 137 / 1321, p < 0.0001). Of the 209 questions SS gets right and WS wrong, u5 fixes 73 and u10 fixes 86; u10 breaks 23 of WS's 948 correct answers.
+
+Verdict: DECISION PASSES. Direction, significance and the k-ordering (u10 > u5 > WS; vote < WS) replicate validation (§18: +2.5 / +3.75); the effect size on test (+5.06) is above the predicted +3 … +4 band — reported as such, not re-predicted. Learning 3 stands on the held-out test: in our setting, repeating the Weak model helps at the retrieval stage (union) and not at the answer stage (vote).
+
+Limits of this read: (a) the measured-cost ratio to WS (×1.1 / ×1.2 on validation) is not recomputable on the cluster — no Config B meta sidecars there; the price column (888 = 88 % of the 1,009-unit always-Strong price) is the budget statement until the lab stores are reachable; (b) k = 10 was the registered ceiling (§18), so no larger k is read.
+
+Artefacts: `$R/retrk_test1481/score/retrk_summary.json`, `retrk_outcomes.jsonl` (cluster); `qa_strong_retrk_test.jsonl` 5,924 lines = 1,481 × 4 contexts. GPU: 2 × H200, 55 min (§21).
