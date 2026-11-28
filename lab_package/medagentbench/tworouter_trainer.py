@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# tworouter_trainer.py — VERSION: v0.1 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
+# tworouter_trainer.py — VERSION: v0.2 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
 # "Two-router stage-level routing on MedAgentBench: Router 1 at every information lookup (W/S),
 #  Router 2 at every decision stage (W/S/H)."
 #
@@ -52,7 +52,7 @@
 import os, sys, json, time, random, argparse, hashlib, collections
 import torch
 
-VERSION = "tworouter_trainer v0.1 2026-11-28 (two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
+VERSION = "tworouter_trainer v0.2 2026-11-28 (Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
 
 MAB     = "/mnt/hdd/jonathan/medagentbench"
 WEAK    = f"{MAB}/outputs/WeakPilot7B_run1/qwen2.5-7b-local/medagentbench-std/overall.json"
@@ -87,15 +87,16 @@ SYS1 = ("You route a medical record-system task one step at a time. The weak mod
         + OBJ + " " + BASED).format(weak=WEAK_NAME, strong=STRONG_NAME)
 SYS2_HEAD = ("You route a medical record-system task one step at a time. The weak model {weak} is working on it; the "
              "transcript so far is shown below, ending with the decision it has prepared - an order to write to the "
-             "record, or its final answer. The decision has not been carried out yet. Decide whether the weak model's "
-             "decision goes through, the task is escalated to {strong}, which redoes the task from the start"
-             ).format(weak=WEAK_NAME, strong=STRONG_NAME)
-SYS2_RISK = (", or the decision is escalated to a doctor. This decision is high-risk: a wrong order or answer that "
-             "reaches the patient costs far more than a doctor's time, and a doctor's time costs more than either "
-             "model. Weigh that risk cost against the cost of escalating: escalate to a doctor when the strong model "
-             "is also likely to get it wrong; otherwise the strong model is the cheaper safe choice.")
-SYS2_LOW  = SYS2_HEAD + ". " + OBJ + " " + BASED
-SYS2_HIGH = SYS2_HEAD + SYS2_RISK + " " + OBJ + " " + BASED
+             "record, or its final answer. The decision has not been carried out yet. Decide which one happens: the "
+             "weak model's decision goes through, ").format(weak=WEAK_NAME)
+SYS2_LOW  = (SYS2_HEAD + "or the task is escalated to {strong}, which redoes the task from the start. ".format(strong=STRONG_NAME)
+             + OBJ + " " + BASED)
+SYS2_HIGH = (SYS2_HEAD + ("the task is escalated to {strong}, which redoes the task from the start, or the decision is "
+             "escalated to a doctor. This decision is high-risk: a wrong order or answer that reaches the patient costs "
+             "far more than a doctor's time, and a doctor's time costs more than either model. Weigh that risk cost "
+             "against the cost of escalating: escalate to a doctor only when you judge that the strong model would also "
+             "fail to get it right; otherwise the strong model is the cheaper safe choice. ").format(strong=STRONG_NAME)
+             + OBJ + " " + BASED)
 TAIL1  = "\nThis step is: information lookup\nOptions:\nW) The weak model carries on\nS) Escalate the task to the strong model\nAnswer with a single letter: W or S."
 TAIL2_LOW  = "\nOptions:\nW) The weak model's decision goes through\nS) Escalate the task to the strong model\nAnswer with a single letter: W or S."
 TAIL2_HIGH = "\nOptions:\nW) The weak model's decision goes through\nS) Escalate the task to the strong model\nH) Escalate the decision to a doctor\nAnswer with a single letter: W, S or H."
