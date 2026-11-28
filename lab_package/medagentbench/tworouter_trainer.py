@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# tworouter_trainer.py — VERSION: v0.5 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
+# tworouter_trainer.py — VERSION: v0.5.1 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
 # "Two-router stage-level routing on MedAgentBench: Router 1 at every information lookup (W/S),
 #  Router 2 at every decision stage (W/S/H)."
 #
@@ -55,7 +55,7 @@
 import os, sys, json, time, random, argparse, hashlib, collections
 import torch
 
-VERSION = "tworouter_trainer v0.5 2026-11-28 (warm-up samples uniformly over trajectories, not per stage — found in Jonathan's line read; mean_pW per router in eval; per-adapter update-norm check after training; Training-6b-policy anchor = kill bar; c_w,T tolerance 0.006 — table stores 2 dp; escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
+VERSION = "tworouter_trainer v0.5.1 2026-11-28 (--audit replay table; all_paths_n at module level; warm-up samples uniformly over trajectories, not per stage — found in Jonathan's line read; mean_pW per router in eval; per-adapter update-norm check after training; Training-6b-policy anchor = kill bar; c_w,T tolerance 0.006 — table stores 2 dp; escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
 
 MAB     = "/mnt/hdd/jonathan/medagentbench"
 WEAK    = f"{MAB}/outputs/WeakPilot7B_run1/qwen2.5-7b-local/medagentbench-std/overall.json"
@@ -267,6 +267,18 @@ def build_rows(rho, C_H, C_F, cap_decision, splits=("train", "val"), tok=None):
 
 
 # ---- trajectory outcome: the Training 6 reward on the delivered path ---------------------------------------------
+def all_paths_n(n_opts):
+    """Every distinct trajectory of an instance given the number of allowed actions at each stage (2 or 3):
+    stop at stage i with S (or H where offered), or W throughout — at most 2n+1 for n stages."""
+    paths = []
+    for si, n in enumerate(n_opts):
+        prefix = [(j, "W") for j in range(si)]
+        for c in ["W", "S", "H"][1:n]:
+            paths.append(prefix + [(si, c)])
+    paths.append([(j, "W") for j in range(len(n_opts))])
+    return paths
+
+
 def outcome(r, path):
     """path = list of (stage_index, action). Returns (q, ai_cost, terminal_action) with terminal_action in
     {'W','S','H'}; the reward is assembled by reward()."""
@@ -307,6 +319,9 @@ def main():
     ap.add_argument("--baseline", type=float, default=None, help="kill-criterion bar: always-escalate val mean-R'")
     ap.add_argument("--seed", type=int, default=SEED)
     ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--audit", action="store_true",
+                    help="replay audit (no GPU): every trajectory of every train/val instance with its terminal action, q, AI cost, "
+                         "x and R' (full rho and cap 15) -> runs/mab/tworouter_audit_<date>.csv; one instance per task type printed")
     ap.add_argument("--dry-run", action="store_true", dest="dry_run",
                     help="checks 1-2: hashes, stage table, pre-check totals, example messages; no GPU; writes nothing")
     a = ap.parse_args()
@@ -319,6 +334,33 @@ def main():
 
     rho, C_H, C_F = load_prices(a.price)
     rows = build_rows(rho, C_H, C_F, cap_decision)
+
+    if a.audit:
+        import csv, datetime
+        out = f"/mnt/hdd/jonathan/runs/mab/tworouter_audit_{datetime.date.today():%d%b%Y}.csv"
+        cols = ["tid", "split", "task", "tau", "high", "n_stages", "qw", "qs", "cw", "cs", "path", "stop_stage", "stop_router",
+                "stop_stype", "terminal", "q", "ai_cost", "x", "R_full", "R_cap15"]
+        shown = set(); n_rows = 0
+        with open(out, "w", newline="") as f:
+            w = csv.writer(f); w.writerow(cols)
+            for sp in ("train", "val"):
+                for r in rows[sp]:
+                    n_opts = [3 if (s_["router"] == 2 and r["high"]) else 2 for s_ in r["stages"]]
+                    show = r["task"] not in shown; shown.add(r["task"])
+                    if show: print(f"\n### {r['tid']} split={sp} tau={r['tau']} high={r['high']} stages={len(r['stages'])} qw={r['qw']} qs={r['qs']} cw={r['cw']} cs={r['cs']}")
+                    if show: print("  path | stop | router | step type | terminal | q | ai_cost | x | R'(full) | R'(cap15)")
+                    for path in all_paths_n(n_opts):
+                        q, cost, term = outcome(r, path)
+                        R_full = reward(r, q, cost, term); R_cap = reward(r, q, cost, term, rho_for_grad=15.0)
+                        si = path[-1][0]; st = r["stages"][si]
+                        label = "".join(c for _, c in path)
+                        row = [r["tid"], sp, r["task"], r["tau"], int(r["high"]), len(r["stages"]), r["qw"], r["qs"], r["cw"], r["cs"],
+                               label, si + 1, st["router"], st["stype"], term, q, round(cost, 2), round(cost / r["cs"], 4),
+                               round(R_full, 4), round(R_cap, 4)]
+                        w.writerow(row); n_rows += 1
+                        if show: print(f"  {label:10s} | {si+1:2d} | R{st['router']} | {st['stype']:18s} | {term} | {q} | {cost:8.2f} | {cost/r['cs']:.4f} | {R_full:+.4f} | {R_cap:+.4f}")
+        print(f"\n[audit] wrote {n_rows} trajectory rows for {sum(len(rows[sp]) for sp in ('train','val'))} instances -> {out}")
+        return
 
     if a.dry_run:
         seen = set()
@@ -410,18 +452,9 @@ def main():
         return [logprobs(s, r["high"]) for s in r["stages"]]
 
     def all_paths(probs):
-        """Every distinct trajectory of an instance: stop at stage i with S (or H where offered), or W throughout —
-        at most 2n+1 for n stages. v0.5: the warm-up samples uniformly over THESE, not independently per stage, so the
-        path 'W at every lookup, then H (or S) at the decision stage' is drawn as often as 'S at call 1'. Per-stage
-        uniform sampling reaches the decision stage of an 8-lookup episode with probability 1/256, which starves
-        Router 2 (and the tier) of any reward signal during the warm-up."""
-        paths = []
-        for si, p in enumerate(probs):
-            prefix = [(j, "W") for j in range(si)]
-            for c in ACT[1:len(p)]:
-                paths.append(prefix + [(si, c)])
-        paths.append([(j, "W") for j in range(len(probs))])
-        return paths
+        """v0.5 warm-up: uniform over the instance's distinct trajectories (see all_paths_n), so 'W at every lookup,
+        then H/S at the decision stage' is drawn as often as 'S at call 1' (per-stage uniform: 2^-8 on 8 lookups)."""
+        return all_paths_n([len(p) for p in probs])
 
     def greedy_path(r, lps):
         path = []
