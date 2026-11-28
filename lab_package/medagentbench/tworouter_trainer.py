@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# tworouter_trainer.py — VERSION: v0.4 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
+# tworouter_trainer.py — VERSION: v0.4.1 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
 # "Two-router stage-level routing on MedAgentBench: Router 1 at every information lookup (W/S),
 #  Router 2 at every decision stage (W/S/H)."
 #
@@ -34,7 +34,7 @@
 #     kept verbatim from the Training 5/6 prompt are asserted. Reply cut REPLY_CUT = 600 (registered rule).
 #   * REMOVED: Training 1's table (training1_table.json) is no longer the router input; it is still read for
 #     split, q_w, q_s, c_s and the whole-episode c_w, and c_w,t is recomputed with the same tokenizer and the
-#     same (no-separator) context accounting so that c_w,T == table c_w (asserted, tolerance 1e-6).
+#     same (no-separator) context accounting so that c_w,T == table c_w (asserted, tolerance 0.006: the table stores round(cw, 2)).
 #
 # THREE CHECKS (Jonathan's convention), all before any registered run:
 #   1. hashes   : --dry-run prints sha256 of this script and of every input file; the manifest records them.
@@ -52,7 +52,7 @@
 import os, sys, json, time, random, argparse, hashlib, collections
 import torch
 
-VERSION = "tworouter_trainer v0.4 2026-11-28 (escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
+VERSION = "tworouter_trainer v0.4.1 2026-11-28 (c_w,T tolerance 0.006 — table stores 2 dp; escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
 
 MAB     = "/mnt/hdd/jonathan/medagentbench"
 WEAK    = f"{MAB}/outputs/WeakPilot7B_run1/qwen2.5-7b-local/medagentbench-std/overall.json"
@@ -228,7 +228,7 @@ def build_rows(rho, C_H, C_F, cap_decision, splits=("train", "val"), tok=None):
         d = data[tid]
         task_text = d["instruction"] + (("\nContext: " + d["context"]) if d.get("context", "").strip() else "")
         cum = weak_costs_by_round(W[idx], tok)
-        assert abs(cum[-1] - t["cw"]) < 1e-6, f"{tid}: c_w,T {cum[-1]:.4f} != table c_w {t['cw']:.4f}"
+        assert abs(cum[-1] - t["cw"]) < 0.006, f"{tid}: c_w,T {cum[-1]:.4f} != table c_w {t['cw']:.4f}"   # table stores round(cw, 2)
         high = taus[tid] >= TAU_GATE
         task = tid.split("_")[0]
         stages = build_messages(task_text, steps, cap_decision)
