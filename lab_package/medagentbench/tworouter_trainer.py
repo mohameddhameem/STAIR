@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# tworouter_trainer.py — VERSION: v0.2 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
+# tworouter_trainer.py — VERSION: v0.3 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
 # "Two-router stage-level routing on MedAgentBench: Router 1 at every information lookup (W/S),
 #  Router 2 at every decision stage (W/S/H)."
 #
@@ -52,7 +52,7 @@
 import os, sys, json, time, random, argparse, hashlib, collections
 import torch
 
-VERSION = "tworouter_trainer v0.2 2026-11-28 (Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
+VERSION = "tworouter_trainer v0.3 2026-11-28 ({actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
 
 MAB     = "/mnt/hdd/jonathan/medagentbench"
 WEAK    = f"{MAB}/outputs/WeakPilot7B_run1/qwen2.5-7b-local/medagentbench-std/overall.json"
@@ -161,9 +161,12 @@ def weak_costs_by_round(rec, tok):
     return cum
 
 
-def fmt_round(k, action, reply):
+def fmt_round(k, action, reply, actor="weak model"):
+    """One transcript line. `actor` is who produced the round: 'weak model' / 'strong model' / 'doctor'. In Run A
+    (restart semantics) every routed round is the weak model's; the slot exists so Run B (per-stage, one escalation)
+    keeps the same prompt format."""
     rep = (reply if reply is not None else "")[:REPLY_CUT]
-    return f"Round {k} — weak model: {action.strip()} → record system: {rep}"
+    return f"Round {k} — {actor}: {action.strip()} → record system: {rep}"
 
 
 def build_messages(task_text, steps, cap_decision):
