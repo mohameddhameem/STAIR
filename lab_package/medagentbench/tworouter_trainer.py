@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# tworouter_trainer.py — VERSION: v0.4.1 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
+# tworouter_trainer.py — VERSION: v0.4.2 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
 # "Two-router stage-level routing on MedAgentBench: Router 1 at every information lookup (W/S),
 #  Router 2 at every decision stage (W/S/H)."
 #
@@ -52,7 +52,7 @@
 import os, sys, json, time, random, argparse, hashlib, collections
 import torch
 
-VERSION = "tworouter_trainer v0.4.1 2026-11-28 (c_w,T tolerance 0.006 — table stores 2 dp; escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
+VERSION = "tworouter_trainer v0.4.2 2026-11-28 (mean_pW per router in eval; per-adapter update-norm check after training; Training-6b-policy anchor = kill bar; c_w,T tolerance 0.006 — table stores 2 dp; escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
 
 MAB     = "/mnt/hdd/jonathan/medagentbench"
 WEAK    = f"{MAB}/outputs/WeakPilot7B_run1/qwen2.5-7b-local/medagentbench-std/overall.json"
@@ -296,7 +296,7 @@ def main():
     ap.add_argument("--no-cap-decision", action="store_true", dest="no_cap_decision",
                     help="turn the amendment OFF: no Router 2 call when the weak episode ends without POST/FINISH")
     ap.add_argument("--rho-cap", type=float, default=None, dest="rho_cap",
-                    help="cap on rho_i in the TRAINING penalty only (Training 6b used 15); evaluation keeps full rho_i")
+                    help="cap on rho_i in the TRAINING penalty only; evaluation keeps full rho_i. REGISTERED VALUE 15 (as Training 6b)")
     ap.add_argument("--G", type=int, default=8, help="trajectories per instance")
     ap.add_argument("--epochs", type=int, default=40)
     ap.add_argument("--explore-epochs", type=int, default=0, dest="explore_epochs",
@@ -337,8 +337,13 @@ def main():
             def s_at(r, k):      # escalate at the k-th router call (or at the last call if the episode is shorter)
                 st = r["stages"][min(k, len(r["stages"])) - 1]; return reward(r, r["qs"], st["cw_t"] + r["cs"], "S")
             m1 = sum(s_at(r, 1) for r in rs) / len(rs); m2 = sum(s_at(r, 2) for r in rs) / len(rs)
+            def t6b(r):          # Training 6b's learned policy: S at call 1 below the gate; on the tier, H at the (only) decision stage
+                if not r["high"]: return s_at(r, 1)
+                st = [x for x in r["stages"] if x["router"] == 2][-1]; return reward(r, Q_H, st["cw_t"], "H")
+            m6 = sum(t6b(r) for r in rs) / len(rs)
             print(f"[anchors] {sp}: always-W mean R' {mW:+.4f} | always-S after the whole weak attempt (Training 6 bar) {mS:+.4f} | "
-                  f"always-S at call 1 {m1:+.4f} | at call 2 (Training 3's rule) {m2:+.4f}  <- --baseline candidates")
+                  f"always-S at call 1 {m1:+.4f} | at call 2 (Training 3's rule) {m2:+.4f} | "
+                  f"S-below-gate + H-on-tier (Training 6b policy) {m6:+.4f}  <- --baseline = this last value (val)")
         print("\n[dry-run] OK — nothing written", flush=True)
         return
 
@@ -412,10 +417,12 @@ def main():
         model.eval()
         tot_r = tot_acc = tot_cost = 0.0; n = len(vrows)
         term_count = collections.Counter(); r1_S = r1_calls = 0
+        pw = {1: [], 2: []}                     # mean P(W) per router: moves long before the greedy argmax flips
         hi = collections.Counter()
         with torch.no_grad():
             for r in vrows:
                 lps = stage_lps(r); path = greedy_path(r, lps)
+                for st, lp in zip(r["stages"], lps): pw[st["router"]].append(float(lp[0].exp()))
                 q, cost, term = outcome(r, path)
                 tot_r += reward(r, q, cost, term); tot_acc += q; tot_cost += cost
                 term_count[term] += 1
@@ -430,6 +437,8 @@ def main():
         H = hi["H"]
         return {"val_meanR_delivered": round(tot_r / n, 4), "val_acc": round(tot_acc / n, 4),
                 "val_mean_ai_cost": round(tot_cost / n, 1),
+                "mean_pW_router1": (round(sum(pw[1]) / len(pw[1]), 4) if pw[1] else None),
+                "mean_pW_router2": (round(sum(pw[2]) / len(pw[2]), 4) if pw[2] else None),
                 "terminal": dict(term_count), "router1_calls": r1_calls, "router1_escalations": r1_S,
                 "high_tier": {"n": hi["n"], "deliver": hi["W"], "escalate": hi["S"], "to_doctor": H,
                               "acc": (round(hi["acc"] / hi["n"], 4) if hi["n"] else None),
@@ -441,6 +450,13 @@ def main():
     ev0 = evaluate(rows["val"])
     print(json.dumps({"step": 0, "FRESH_START_EVAL": True, **ev0, "baseline": a.baseline}), flush=True)
 
+    snap = {n: p.detach().clone() for n, p in model.named_parameters() if "lora_" in n}   # for the update check
+    def delta_norms():
+        d = {"router1": 0.0, "router2": 0.0}
+        for n, p in model.named_parameters():
+            if "lora_" in n:
+                d["router1" if ".router1." in n else "router2"] += float((p.detach() - snap[n]).norm() ** 2)
+        return {k: round(v ** 0.5, 6) for k, v in d.items()}
     curve = open(os.path.join(a.outdir, "curve.jsonl"), "a")
     best_obj, step, t0, stop = -1e9, 0, time.time(), False
     order = rows["train"][:]
@@ -486,6 +502,9 @@ def main():
                 if max_steps and step >= max_steps:
                     stop = True; break
     model.save_pretrained(os.path.join(a.outdir, "last_adapter"))
+    dn = delta_norms()
+    print(json.dumps({"UPDATE_CHECK": True, "steps": step, "param_change_norm": dn}), flush=True)
+    assert dn["router1"] > 0 and dn["router2"] > 0, f"an adapter received no update: {dn}"
 
     # ---- final: reload BEST, score val per stage ----------------------------------------------------------------
     del model; torch.cuda.empty_cache()
