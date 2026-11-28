@@ -710,7 +710,7 @@ Runs training6_priced_operating_cap15_xbg_seed{17,18,19} (trainer v1.2 sha f71aa
 - OVERWRITE GUARD: active in both trainers from this version (tested 9 Nov 10:58: REFUSING on the registered 6b dir).
 
 ## TWO-ROUTER STAGE-LEVEL ROUTING — REGISTRATION (DRAFT 28 Nov 2026; NOT yet validated by Jonathan; nothing has run)
-Trainer: `tworouter_trainer.py` v0.1 (sha to be recorded at the dry-run). Lineage: Training 6 v1.2 reward, GRPO A1, fresh LoRA, kill baseline, overwrite guard.
+Trainer: `tworouter_trainer.py` v0.4.2 (commit 9e8ec6c, sha f5b1cb7a8bb2…). Lineage: Training 6 v1.2 reward, GRPO A1, fresh LoRA, kill baseline, overwrite guard.
 
 **Design.** The stored weak episode (WeakPilot7B_run1, canonical) is replayed stage by stage. Router 1 is called after every information lookup (round with action GET) and chooses W (carry on) or S (Qwen2.5-72B restarts the task; cost = weak cost paid so far + full strong run). Router 2 is called at every decision stage — the prepared order (POST) or final answer (FINISH), shown before it is committed — and chooses W (the decision goes through), S, or, when τᵢ ≥ 0.8, H (escalate the decision to a doctor; Q_H = 1, one hand-off unit, outcome-free as Training 6). Two routers = two fresh LoRA adapters on one Qwen2.5-1.5B-Instruct base, same LoRA shape as the SFT router, trained jointly by GRPO on the trajectory reward. Decision rule greedy argmax at every stage (K = 1). Reply cut 600 characters (registered rule, `runs/mab/tworouter_check_28Nov2026.txt`, script d06edad745af, commit 8eea7cb: 61/61 weak, 321/321 strong key-bearing replies pass; strong passes at 400).
 
@@ -722,8 +722,13 @@ Trainer: `tworouter_trainer.py` v0.1 (sha to be recorded at the dry-run). Lineag
 
 **Splits.** train 90 / val 60 / test 150, unchanged; the test stays sealed; one declared held-out read per trained configuration (test-read script to be written and validated before that read).
 
+**Three checks — done 28 Nov 2026, 22:45–22:58 SGT (logs in runs/mab/: tworouter_dryrun_28Nov2026_v042.txt, tworouter_smoke_28Nov2026_v042.txt, tworouter_guard_28Nov2026.txt).** Dry-run: exit 0, pre-check totals reproduced (1439/60/131/8), train 430 Router-1 / 108 Router-2 calls (50 no-decision), val 289 / 72 (34); c_w,T agrees with the Training 1 table to the table's 2 dp. Smoke: exit 0, 8,716,288 trainable params (2 × 4,358,144), 6 steps, UPDATE_CHECK ‖Δθ‖ router1 0.0616 / router2 0.0694, mean P(W) Router 2 0.59→0.73, Router 1 0.28 (greedy decisions unchanged in 6 steps, as Training 6's smoke). Guard: REFUSING on an existing outdir. Launch prefix: `PYTHONPATH=/mnt/hdd/jonathan/pyshim:/mnt/hdd/jonathan/STAIR/common HF_HUB_OFFLINE=1`.
+
+**Reconciliation of the 25 Oct note ("weak retried orders 2–8×, all rejected" on type 9).** The dry-run transcripts show the weak model writing the POST inside its GET action (`GET …Observation?…%0A%0APOST%20…ServiceRequest…`), rejected with HTTP 400 — so the orders were attempted, as malformed lookups; the stage classifier counts them as lookups and the attempt ends with no decision. Router 1's main escalation signal on type 9 is therefore the 400 error text.
+
 **Bars and predictions (registered before any run).**
-- Kill criterion: validation mean-R′ of the best checkpoint must exceed `--baseline` = always-S at call 1 (printed by `--dry-run`; the two-router analogue of Training 6's 0.2076).
+- Kill criterion: validation mean-R′ of the best checkpoint must exceed `--baseline 0.3744` = the Training 6b policy (S at the first lookup below the gate, H at the end of the weak attempt on the tier) scored under this run's accounting (dry-run anchor; train 0.3742). The escalate-everything anchors are −13.0 on val (8 both-fail tier instances × ρ) and are not bars.
+- ρ-cap: `--rho-cap 15` in the gradient (Training 6b's registered value; full ρ in every evaluation). Registered command: `--price operating --rho-cap 15 --explore-epochs 10 --baseline 0.3744`.
 - P1 (accuracy): held-out test accuracy with the doctor ≥ Training 6b's 77.33 is NOT predicted; prediction is 73–77.33 — Router 1 escalations to S on tier instances before the cap replace some hand-offs, and S fails on part of the tier.
 - P2 (cost): mean AI cost on the held-out test below Training 3's 81.5 % of always-escalate, predicted 55–70 %: Router 1 escalates types 5–7 by round 3 instead of after the full weak attempt.
 - P3 (mechanism): on types 5, 6, 7 the greedy Router 1 escalates ≥ 80 % of instances at or before call 3; on types 1–3 and 8 Router 2 delivers ≥ 90 %.
