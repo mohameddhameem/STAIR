@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# tworouter_trainer.py — VERSION: v0.3 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
+# tworouter_trainer.py — VERSION: v0.4 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
 # "Two-router stage-level routing on MedAgentBench: Router 1 at every information lookup (W/S),
 #  Router 2 at every decision stage (W/S/H)."
 #
@@ -52,7 +52,7 @@
 import os, sys, json, time, random, argparse, hashlib, collections
 import torch
 
-VERSION = "tworouter_trainer v0.3 2026-11-28 ({actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
+VERSION = "tworouter_trainer v0.4 2026-11-28 (escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
 
 MAB     = "/mnt/hdd/jonathan/medagentbench"
 WEAK    = f"{MAB}/outputs/WeakPilot7B_run1/qwen2.5-7b-local/medagentbench-std/overall.json"
@@ -93,9 +93,7 @@ SYS2_LOW  = (SYS2_HEAD + "or the task is escalated to {strong}, which redoes the
              + OBJ + " " + BASED)
 SYS2_HIGH = (SYS2_HEAD + ("the task is escalated to {strong}, which redoes the task from the start, or the decision is "
              "escalated to a doctor. This decision is high-risk: a wrong order or answer that reaches the patient costs "
-             "far more than a doctor's time, and a doctor's time costs more than either model. Weigh that risk cost "
-             "against the cost of escalating: escalate to a doctor only when you judge that the strong model would also "
-             "fail to get it right; otherwise the strong model is the cheaper safe choice. ").format(strong=STRONG_NAME)
+             "far more than a doctor's time, and a doctor's time costs more than either model. ").format(strong=STRONG_NAME)
              + OBJ + " " + BASED)
 TAIL1  = "\nThis step is: information lookup\nOptions:\nW) The weak model carries on\nS) Escalate the task to the strong model\nAnswer with a single letter: W or S."
 TAIL2_LOW  = "\nOptions:\nW) The weak model's decision goes through\nS) Escalate the task to the strong model\nAnswer with a single letter: W or S."
@@ -105,7 +103,7 @@ TAIL2_HIGH = "\nOptions:\nW) The weak model's decision goes through\nS) Escalate
 def _prompt_selfcheck():
     for s in (SYS1, SYS2_LOW, SYS2_HIGH):
         assert OBJ in s and BASED in s, "objective / based-on sentence drifted"
-        for banned in ("Routing principles", "only when needed", "(1)", "(2)", "(3)", "cheap)", "expensive)"):
+        for banned in ("Routing principles", "only when needed", "only when", "Weigh that", "(1)", "(2)", "(3)", "cheap)", "expensive)"):
             assert banned not in s, f"banned (principle-flavored) phrase: {banned}"
     assert "doctor" not in SYS2_LOW and "doctor" in SYS2_HIGH
     assert TAIL2_HIGH.count("\n") == TAIL2_LOW.count("\n") + 1, "H adds exactly one option line"
