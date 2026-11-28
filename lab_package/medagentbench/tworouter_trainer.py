@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # =============================================================================
-# tworouter_trainer.py — VERSION: v0.4.2 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
+# tworouter_trainer.py — VERSION: v0.5 2026-11-28 (DRAFT for Jonathan's line-by-line review; NOT yet run)
 # "Two-router stage-level routing on MedAgentBench: Router 1 at every information lookup (W/S),
 #  Router 2 at every decision stage (W/S/H)."
 #
@@ -29,6 +29,9 @@
 #     trajectory, group mean baseline over G trajectories of the same instance). Stage inputs do not depend on
 #     earlier router verdicts, so the per-stage log-probabilities are computed ONCE per instance per epoch and
 #     the G trajectories are sampled from them (<= 9 forwards per instance, not 9 x G).
+#   * WARM-UP (v0.5): during --explore-epochs each of the G draws is one trajectory chosen UNIFORMLY OVER THE INSTANCE'S
+#     DISTINCT TRAJECTORIES (stop at stage i with S/H, or W throughout; <= 2n+1). Per-stage uniform sampling would reach
+#     the decision stage of an 8-lookup episode with probability 2^-8 and never show the tier its H outcome.
 #   * DECISION RULE: greedy argmax at every stage (K = 1), as Training 6. --theta-h is reserved (not used in v0.1).
 #   * PROMPTS: Router 1 / Router 2 system and user messages as on master-deck slide 51 (28 Nov). The two sentences
 #     kept verbatim from the Training 5/6 prompt are asserted. Reply cut REPLY_CUT = 600 (registered rule).
@@ -52,7 +55,7 @@
 import os, sys, json, time, random, argparse, hashlib, collections
 import torch
 
-VERSION = "tworouter_trainer v0.4.2 2026-11-28 (mean_pW per router in eval; per-adapter update-norm check after training; Training-6b-policy anchor = kill bar; c_w,T tolerance 0.006 — table stores 2 dp; escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
+VERSION = "tworouter_trainer v0.5 2026-11-28 (warm-up samples uniformly over trajectories, not per stage — found in Jonathan's line read; mean_pW per router in eval; per-adapter update-norm check after training; Training-6b-policy anchor = kill bar; c_w,T tolerance 0.006 — table stores 2 dp; escalation-rule sentence removed from SYS2_HIGH, kept on file as ablation E5b; {actor} slot in transcript lines; Router 2 system wording per Jonathan 22:15; two LoRA routers on one base; stage replay of WeakPilot7B_run1; trajectory GRPO A1; cap-decision amendment default on)"
 
 MAB     = "/mnt/hdd/jonathan/medagentbench"
 WEAK    = f"{MAB}/outputs/WeakPilot7B_run1/qwen2.5-7b-local/medagentbench-std/overall.json"
@@ -172,7 +175,7 @@ def build_messages(task_text, steps, cap_decision):
     Returns a list of stages, each {"router": 1|2, "round": k, "stype": ..., "user": str, "decision": action|None}.
     Router 1 after each lookup round (transcript through that round); Router 2 at each POST/FINISH round
     (lookups so far + 'has prepared: ...'); if the episode ends with no decision and cap_decision is on, one final
-    Router 2 stage with 'no decision (round limit reached)'."""
+    Router 2 stage with 'no decision (stopped without an order or a final answer | context limit reached)'."""
     stages, lines = [], []
     has_decision = False
     for k, action, reply in steps:
@@ -265,8 +268,8 @@ def build_rows(rho, C_H, C_F, cap_decision, splits=("train", "val"), tok=None):
 
 # ---- trajectory outcome: the Training 6 reward on the delivered path ---------------------------------------------
 def outcome(r, path):
-    """path = list of (stage_index, action). Returns (q, ai_cost, action_class, pen_rho) where action_class in
-    {'W','S','H'} is the terminal action and the reward is assembled by reward()."""
+    """path = list of (stage_index, action). Returns (q, ai_cost, terminal_action) with terminal_action in
+    {'W','S','H'}; the reward is assembled by reward()."""
     for si, a in path:
         s = r["stages"][si]
         if a == "S":
@@ -406,6 +409,20 @@ def main():
     def stage_lps(r):
         return [logprobs(s, r["high"]) for s in r["stages"]]
 
+    def all_paths(probs):
+        """Every distinct trajectory of an instance: stop at stage i with S (or H where offered), or W throughout —
+        at most 2n+1 for n stages. v0.5: the warm-up samples uniformly over THESE, not independently per stage, so the
+        path 'W at every lookup, then H (or S) at the decision stage' is drawn as often as 'S at call 1'. Per-stage
+        uniform sampling reaches the decision stage of an 8-lookup episode with probability 1/256, which starves
+        Router 2 (and the tier) of any reward signal during the warm-up."""
+        paths = []
+        for si, p in enumerate(probs):
+            prefix = [(j, "W") for j in range(si)]
+            for c in ACT[1:len(p)]:
+                paths.append(prefix + [(si, c)])
+        paths.append([(j, "W") for j in range(len(probs))])
+        return paths
+
     def greedy_path(r, lps):
         path = []
         for si, lp in enumerate(lps):
@@ -466,14 +483,15 @@ def main():
         for k, r in enumerate(order):
             lps = stage_lps(r)                                    # one forward per stage, with grad
             probs = [lp.exp().detach().tolist() for lp in lps]
-            if ep < a.explore_epochs:
-                probs = [[1.0 / len(p)] * len(p) for p in probs]
             draws = []
-            for _ in range(a.G):                                  # G trajectories sampled from the stage policies
-                path = []
-                for si, p in enumerate(probs):
-                    c = random.choices(ACT[:len(p)], weights=p)[0]; path.append((si, c))
-                    if c != "W": break
+            for _ in range(a.G):                                  # G trajectories per instance
+                if ep < a.explore_epochs:
+                    path = random.choice(all_paths(probs))        # v0.5 warm-up: uniform over TRAJECTORIES (see all_paths)
+                else:
+                    path = []                                     # policy sampling: independent at every stage
+                    for si, p in enumerate(probs):
+                        c = random.choices(ACT[:len(p)], weights=p)[0]; path.append((si, c))
+                        if c != "W": break
                 q, cost, term = outcome(r, path)
                 draws.append((path, reward(r, q, cost, term, rho_for_grad=a.rho_cap)))
             rewards = [d[1] for d in draws]; mu = sum(rewards) / a.G
